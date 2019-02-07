@@ -145,7 +145,9 @@ export default {
     },
     onResizePanel(pane,container,size){    
       this.$global.$emit('panel-resize',size);
-      this.$refs.rtabs.onResize();
+      if(this.$refs.rtabs){
+        this.$refs.rtabs.onResize();
+      }
     },
     /*getTabNumber(tabModel,tabs) {
       let name = (tabModel.split('-')[1]);
