@@ -1,0 +1,72 @@
+
+<svg width="108px" height="130px" viewBox="0 0 108 130" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="sprites" transform="translate(-3.000000, -1.000000)">
+            <rect id="background" fill-rule="nonzero" x="0" y="0" width="115" height="134"></rect>
+            <g id="Group" transform="translate(13.000000, 1.000000)" fill="#000000" fill-rule="nonzero">
+                <polygon id="Shape" points="12 0.5 12 13.5 0.74 7"></polygon>
+                <polygon id="Shape" points="16.5 2 29.5 2 23 13.26"></polygon>
+                <polygon id="Shape" points="34 0.5 34 13.5 45.26 7"></polygon>
+            </g>
+            <g id="Group" transform="translate(13.000000, 17.000000)" fill="#000000" fill-rule="nonzero">
+                <polygon id="Shape" points="12 0.5 12 13.5 0.74 7"></polygon>
+                <polygon id="Shape" points="16.5 2 29.5 2 23 13.26"></polygon>
+                <polygon id="Shape" points="34 0.5 34 13.5 45.26 7"></polygon>
+            </g>
+            <text id="✓" fill="#000000" font-family="LucidaGrande, Lucida Grande" font-size="12.5" font-weight="normal">
+                <tspan x="62.5" y="27">✓</tspan>
+            </text>
+            <g id="current" transform="translate(5.000000, 99.000000)" stroke="#009C77">
+                <circle id="Oval" stroke-width="3" cx="15" cy="15" r="15"></circle>
+                <circle id="Oval" stroke-width="7" cx="15.15" cy="14.85" r="8.25"></circle>
+            </g>
+            <g id="zoom-out" transform="translate(81.000000, 95.000000)" stroke="#1A6271" stroke-linecap="round" stroke-width="3">
+                <g id="Group" transform="translate(0.000000, 0.303191)">
+                    <path d="M7.8742268,8.06489362 L0.910824742,1.27340426" id="Shape"></path>
+                    <polyline id="Shape" points="5.99381443 0.27287234 0.235051546 0.697340426 0.235051546 6.54893617"></polyline>
+                </g>
+                <g id="Group" transform="translate(0.000000, 20.313830)">
+                    <path d="M7.90360825,0.242553191 L0.822680412,6.91276596" id="Shape"></path>
+                    <polyline id="Shape" points="0.235051546 1.60691489 0.235051546 7.54946809 5.87628866 7.97393617"></polyline>
+                </g>
+                <g id="Group" transform="translate(19.979381, 20.313830)">
+                    <path d="M0.146907216,0.181914894 L7.11030928,6.94308511" id="Shape"></path>
+                    <polyline id="Shape" points="2.02731959 7.94361702 7.78608247 7.51914894 7.78608247 1.66755319"></polyline>
+                </g>
+                <g id="Group" transform="translate(20.273196, 0.000000)">
+                    <path d="M0.205670103,8.06489362 L7.31597938,1.24308511" id="Shape"></path>
+                    <polyline id="Shape" points="7.96237113 6.60957447 7.90360825 0.57606383 2.1742268 0.212234043"></polyline>
+                </g>
+            </g>
+            <g id="zoom-in" transform="translate(45.000000, 95.000000)" stroke="#1A6271" stroke-linecap="round" stroke-width="3">
+                <g id="Group">
+                    <path d="M0.0632511069,0.158127767 L7.17900063,7.8115117" id="Shape"></path>
+                    <polyline id="Shape" points="1.58127767 8.47564832 7.87476281 8.44402277 8.285895 2.27703985"></polyline>
+                </g>
+                <g id="Group" transform="translate(1.138520, 19.924099)">
+                    <path d="M0,8.53889943 L6.92745585,0.948766603" id="Shape"></path>
+                    <polyline id="Shape" points="7.96963947 6.48323846 7.50985258 0.189753321 1.53262297 0.221378874"></polyline>
+                </g>
+                <g id="Group" transform="translate(20.493359, 20.493359)">
+                    <path d="M7.96963947,7.96963947 L1.22609838,0.61304919" id="Shape"></path>
+                    <polyline id="Shape" points="6.43701649 0 0.425085995 0 0 6.1304919"></polyline>
+                </g>
+                <g id="Group" transform="translate(20.493359, 0.000000)">
+                    <path d="M8.47564832,0.221378874 L1.23339658,7.74826059" id="Shape"></path>
+                    <polyline id="Shape" points="0.221378874 2.21378874 0.632511069 8.47564832 6.79949399 8.53889943"></polyline>
+                </g>
+            </g>
+            <g id="trash" transform="translate(13.000000, 36.000000)">
+                <path d="M42,15 L37.5978261,47.6727989 C37.5978261,50.0551905 35.6413043,52 33.2445652,52 L15.2445652,52 C12.8478261,52 10.8913043,50.0551905 10.8913043,47.6727989 L6,15" id="Shape" stroke="#E62D4F" stroke-width="3"></path>
+                <rect id="Rectangle-path" fill="#E62D4F" fill-rule="nonzero" x="0" y="7" width="50" height="3"></rect>
+                <path d="M15,8 L15,2.7826087 C15,1.24223602 16.2210797,0 17.7352185,0 L31.2647815,0 C32.7789203,0 34,1.24223602 34,2.7826087 L34,8 L15,8 Z" id="Shape" stroke="#E62D4F" stroke-width="3"></path>
+                <path d="M19,48 C18.1011236,48 17.4269663,48 16.5842697,48 C15.741573,37.3333333 14.8426966,26.7160494 14,16 C14.8426966,16 15.5730337,16 16.4157303,16 C17.258427,26.617284 18.1573034,37.2345679 19,48 Z" id="Shape" stroke="#E62D4F" fill="#E62D4F" fill-rule="nonzero"></path>
+                <path d="M33.8061224,16 C34.5204082,16 35.1836735,16 36,16 C35.0816327,26.6830769 34.1122449,37.3169231 33.1938776,48 C32.4285714,47.9507692 31.7653061,47.9507692 31,47.9015385 C31.9183673,37.2184615 32.8367347,26.6338462 33.8061224,16 Z" id="Shape" stroke="#E62D4F" fill="#E62D4F" fill-rule="nonzero"></path>
+                <path d="M26,48 C25.3,48 24.65,48 24,48 C24,37.3497689 24,26.6995378 24,16 C24.65,16 25.3,16 26,16 C26,26.6995378 26,37.3004622 26,48 Z" id="Shape" stroke="#E62D4F" fill="#E62D4F" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>
