@@ -1,9 +1,5 @@
 <template>
-  <v-card>
-
-    <v-card-media src="/static/nature/n3.jpeg" class="white--text">
-    <v-card-text>
- 
+  <v-card> 
     <v-divider></v-divider>
     <v-toolbar card color="white">
         <v-text-field
