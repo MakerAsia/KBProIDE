@@ -27,9 +27,6 @@ export default {
                     this.component = () => { return import(`${this.base}/${this.target}`); };
                 }else{
                     console.log('loading async component : ' + `${this.target}`);
-                    //var vv = __non_webpack_require__(`${this.target}`);
-                    var vv = import(`${this.target}`);
-                    console.log(vv);
                     this.component = () => { return import(`${this.target}`); };                    
                 }
             }else{
