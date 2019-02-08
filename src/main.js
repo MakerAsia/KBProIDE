@@ -15,9 +15,6 @@ import util from '@/engine/utils';
 
 Vue.config.productionTip = false;
 
-//var v = require.context('./', false, /.*?/).keys();
-//console.log(v);
-
 var loadCofigComponents = function(obj,compName){
   var componentData = {};
   var presistanceData = [];
@@ -68,6 +65,30 @@ Object.keys(comps).forEach(function(key){
 
 //=========== board manager ===========//
 var boards = bm.listBoard();
+/*
+//var v = require.context('./', false, /.*?/).keys();
+//console.log(v);
+
+console.log('vvvvvv');
+var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
+var vl = util.vueLoader(cc);
+var compp = eval(vl.js);
+console.log(vl);
+console.log('cccccc');
+console.log(compp);
+console.log('cc2cccc');
+*/
+//var v = require.context('./', false, /.*?/).keys();
+//console.log(v);
+
+console.log('vvvvvv');
+var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
+var vl = util.vueLoader(cc);
+var compp = eval(vl.js);
+console.log(vl);
+console.log('cccccc');
+console.log(compp);
+console.log('cc2cccc');
 
 //=====================================//
 

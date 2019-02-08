@@ -1,3 +1,3 @@
 module.exports = {
-    platform : 'arduino-esp32'
+    platform : 'arduino-esp32',
 };

@@ -1,7 +1,47 @@
 import file from './file';
 import ui from './ui';
+const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
 const baseDir = rootDir + ((process.env.NODE_ENV == 'development') ? '/../../..' : '');
+const vueLoader = function(file)
+{
+  let vue = fs.readFileSync(file, 'utf-8');
+  let validRegex = new RegExp('^[^]*<template>[^]+<\/template>[^]*<script>[^]*export default[^]+<\/script>[^]*(<style[^]*>[^]*<\/style>[^]*)?$', 'gm')
+
+  if (validRegex.test(vue))
+  {
+      let template = vue.replace(new RegExp('^[^]*<template>([^]+)<\/template>[^]*$', 'gm'), '$1')
+      template = template.split('`').join('\\`')
+
+      let script = vue.replace(new RegExp('^[^]*<script>([^]*)export default[^]+<\/script>[^]*$', 'gm'), '$1')
+      let component = vue.replace(new RegExp('^[^]*export default[\s\n]*(\{[^]*\})[^]*<\/script>[^]*$', 'gm'), '$1')
+
+      let style = null
+      if (new RegExp('<style[^]*>[^]*<\/style>', 'gm').test(vue))
+      {
+          style = vue.replace(new RegExp('^[^]*<style[^]*>([^]*)<\/style>[^]*$', 'gm'), '$1')
+      }
+      
+      let styleLang = 'css'
+      if (/lang="[^]+"/.test(vue))
+      {
+          styleLang = vue.replace(/^[^]*lang="([^]+)"[^]*$/, '$1')
+      }
+
+      let js = `${script}
+
+var component = ${component}
+component.template = \`${template}\`
+
+component`
+
+      return {js, style, styleLang}
+  }
+  else
+  {
+      throw new Error('This is not a valid Vue single file.')
+  }
+};
 // export function camel (str) {
 //   const camel = (str || '').replace(/-([^-])/g, g => g[1].toUpperCase());
 
@@ -78,12 +118,14 @@ export default {
     return res;
   },
   //-------- file ------//
-  fs : require('fs'),
+  fs : fs,
   baseDir : baseDir,
   componentDir : baseDir + '/components',    
   staticComponentWebpackDir : './components',
   pluginDir : baseDir + '/plugins',
   packageDir : baseDir + '/packages',
   boardDir : baseDir + '/boards',
-  platformDir : baseDir + '/platforms'
+  platformDir : baseDir + '/platforms',
+  //------- plugin -----//
+  vueLoader,
 };
