@@ -9,24 +9,9 @@
   <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">
     <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
   </v-toolbar-title>
-
-  <v-menu offset-y origin="left top" :nudge-bottom="10" transition="scale-transition">
-        <v-btn icon large flat slot="activator">
-          <v-avatar size="30px">
-            <img src="/static/avatar/man_4.jpg" alt="Michael Wang"/>
-          </v-avatar>
-        </v-btn>
-        <v-list class="pa-0">
-          <v-list-tile v-for="(item,index) in items" :to="!item.href ? { name: item.name } : null" :href="item.href" @click="item.click" ripple="ripple" :disabled="item.disabled" :target="item.target" rel="noopener" :key="index">
-            <v-list-tile-action v-if="item.icon">
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-  </v-menu>
+  
+  <img src="/static/trollface.jpg" height="48" alt="Problem? report me at fb.com/comdet" class="mr-3" style="border-radius: 5px;">
+  
   
   <!-- dynamic left toolbar -->
   <template v-for="(comp,compName) in components">
@@ -59,7 +44,7 @@
     
 
     <v-tooltip bottom>
-      <v-btn color="info" slot="activator" icon>
+      <v-btn color="primary darken-2" slot="activator" icon>
         <v-icon dark>fa-file-o</v-icon>      
       </v-btn>
       <span>New file</span>
@@ -151,7 +136,7 @@ export default {
       window.getApp.$emit('APP_DRAWER_TOGGLED');
     },
     handleFullScreen () {
-      Utils.toggleFullScreen();
+      utils.toggleFullScreen();
     }
   }
 };

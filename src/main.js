@@ -15,6 +15,12 @@ import util from '@/engine/utils';
 
 Vue.config.productionTip = false;
 
+//---- load data to global variable ----//
+var componentAllData = { data : {}, presistance : {}};
+var watcher = {};
+var watcherHandler = {};
+//--------------------------------------//
+
 var loadCofigComponents = function(obj,compName){
   var componentData = {};
   var presistanceData = [];
@@ -46,9 +52,20 @@ var loadCofigComponents = function(obj,compName){
   return {data : componentData, presistance : presistanceData, method: methods};
 }
 
-//---- load data to global variable ----//
-var componentAllData = { data : {}, presistance : {}};
-//--------------------------------------//
+var addWatcher = function(name,ghandler,deep){
+  if(!(name in watcherHandler)){ // new handler      
+    watcherHandler[name] = [];    
+  }
+  watcherHandler[name].push(ghandler);
+  watcher[name] = {
+    handler : function(val){
+      watcherHandler[name].forEach(h => {
+        h(val);
+      });      
+    },
+    deep : deep
+  }
+}
 
 
 //========= component  manager =========//
@@ -65,6 +82,19 @@ Object.keys(comps).forEach(function(key){
 
 //=========== board manager ===========//
 var boards = bm.listBoard();
+var boardInfo = bm.loadBoardManagerConfig();
+var boardInfoComponent = loadCofigComponents(boardInfo);
+// assign data to $global
+componentAllData.data['board'] = boardInfoComponent.data;
+componentAllData.presistance['board'] = boardInfoComponent.presistance;
+
+addWatcher('board.board',function(val){ //listen board name change we need to reload everything
+  console.log('board changed to : ' + val);
+  Vue.prototype.$global.$emit('board-change',val);  
+},false);
+
+//TODO load platform block
+
 /*
 //var v = require.context('./', false, /.*?/).keys();
 //console.log(v);
@@ -80,7 +110,7 @@ console.log('cc2cccc');
 */
 //var v = require.context('./', false, /.*?/).keys();
 //console.log(v);
-
+/*
 console.log('vvvvvv');
 var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
 var vl = util.vueLoader(cc);
@@ -88,7 +118,7 @@ var compp = eval(vl.js);
 console.log(vl);
 console.log('cccccc');
 console.log(compp);
-console.log('cc2cccc');
+console.log('cc2cccc');*/
 
 //=====================================//
 
@@ -102,15 +132,11 @@ componentAllData.presistance['ui'] = uiComponentData.presistance;
 
 
 //---- presistance data watcher ----//
-var watcher = {};
 Object.keys(componentAllData.presistance).forEach(function(key){
   componentAllData.presistance[key].forEach(function(pkey){
-    watcher[key+'.'+pkey] = {
-      handler : function(val){        
-        localStorage[key+'.'+pkey] = JSON.stringify(val);        
-      },
-      deep : true
-    }
+    addWatcher(key+'.'+pkey,function(val){      
+      localStorage[key+'.'+pkey] = JSON.stringify(val);
+    },true);
   });
 });
 

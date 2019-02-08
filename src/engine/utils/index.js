@@ -3,8 +3,9 @@ import ui from './ui';
 const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
 const baseDir = rootDir + ((process.env.NODE_ENV == 'development') ? '/../../..' : '');
+const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 const vueLoader = function(file)
-{
+{ //this section from https://www.npmjs.com/package/vue-file-compiler
   let vue = fs.readFileSync(file, 'utf-8');
   let validRegex = new RegExp('^[^]*<template>[^]+<\/template>[^]*<script>[^]*export default[^]+<\/script>[^]*(<style[^]*>[^]*<\/style>[^]*)?$', 'gm')
 
@@ -39,37 +40,31 @@ component`
   }
   else
   {
-      throw new Error('This is not a valid Vue single file.')
+      console.log('Invalid vue file : ' + file);
   }
 };
-// export function camel (str) {
-//   const camel = (str || '').replace(/-([^-])/g, g => g[1].toUpperCase());
+const vueRuntimeComponent = function(file){
+  let res = vueLoader(file);
+  let component = eval(res.js);
+  return component;
+}
+var camel = function(str) {
+  const camel = (str || '').replace(/-([^-])/g, g => g[1].toUpperCase());
+  return capitalize(camel);
+}
 
-//   return capitalize(camel);
-// }
+var camelActual = function(str) {
+  return (str || '').replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ''));
+}
 
-// export function camelActual (str) {
-//   return (str || '').replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ''));
-// }
-
-// export function kebab (str) {
-//   return (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-// }
-
-// export function randomNumber (min, max) {
-//   return Math.floor(Math.random() * max) + min;
-// }
-
-// export function randomString (length = 5) {
-//   let text = '';
-//   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-//   for (let i = 0; i < length; i++) {
-//     text += possible.charAt(Math.floor(Math.random() * possible.length));
-//   }
-
-//   return text;
-// }
+var randomString = function(length = 5) {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
 const randomElement = (arr = []) => {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -93,16 +88,15 @@ const toggleFullScreen = () => {
     cancelFullScreen.call(doc);
   }
 };
-const readFile = (dir,callback)=>{
-  file.readFile('E:\\Bloccoly\\Research\\vue-material-admin-master\\LICENSE',"utf8", callback);;
-}
-
 export default {
-  readFile,
+  camel,
+  camelActual,
+  randomString,  
   randomElement,
   toggleFullScreen,
   kebab,
   ui,
+  requireFunc,
   filterFileName : function(obj,filterName){    
     var res = {};
     Object.keys(obj).forEach(key=>{
@@ -128,4 +122,5 @@ export default {
   platformDir : baseDir + '/platforms',
   //------- plugin -----//
   vueLoader,
+  vueRuntimeComponent,
 };

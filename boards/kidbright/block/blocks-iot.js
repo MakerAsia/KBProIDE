@@ -3,7 +3,7 @@ module.exports = function(Blockly){
 // =============================================================================
 // publish data to gauge
 // =============================================================================
-var gauge_colour =  Blockly.Msg.GAUGE_HUE;
+var gauge_colour =  256;
 // var gauge_colour = "#5BC2E2";
 Blockly.Blocks["gauge_iot"] = {
 	init: function() {

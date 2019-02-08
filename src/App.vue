@@ -2,7 +2,6 @@
   <div id="appRoot">
     <template v-if="!$route.meta.public">
       <v-app id="inspire" class="app">             
-        <user-pop user="123test test" main="sfsdfwer sdf"></user-pop>
         <app-toolbar class="app--toolbar"></app-toolbar>
         <v-content>
           <!-- Page Header -->

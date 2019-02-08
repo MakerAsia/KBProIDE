@@ -1,13 +1,11 @@
 <template>
     <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
         <!-- editor -->
-        <div class="pane"  :style="[this.$global.editor.mode > 1 ? { minWidth: '500px', width: '75%' } : { width:'100%', height :'100%'}]">
+        <div class="pane" :style="[this.$global.editor.mode > 1 ? { minWidth: '500px', width: '75%' } : { width:'100%', height :'100%'}]">
             <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
-            <xml id="toolbox" ref=toolbox style="display: none"> 
-                <category name='Basic' icon="./static/icons/SVG/c1.svg">
-                    <block type="controls_if"></block> 
-                    <block type="text"></block>
-                    <block type="text_print"></block>
+            <xml id="toolbox" ref=toolbox style="display: none">
+                <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
+                    <block type="basic_led16x8"></block>
                 </category>
             </xml>
         </div>
@@ -18,7 +16,7 @@
             <code-mirror
                 v-model="sourcecode"
                 :options="editor_options">
-            </code-mirror>      
+            </code-mirror>
         </div>
         <!-- end -->
     </multipane>
@@ -39,6 +37,74 @@ import 'codemirror/addon/selection/active-line';
 // === uitls ===
 import util from '@/engine/utils';
 
+var renderBlock = function(blocks,level = 1){
+    let res = '';
+    blocks.forEach(element=>{        
+        if(level == 1){            
+            let insideBlock = renderBlock(element.blocks,level+1);
+            res += `<category name="${element.name}" colour="${element.color}" icon="${element.icon}">${insideBlock}</category>`;
+        }else{            
+            if(typeof(element) === 'string'){ //block element
+                res += `<block type="${element}"></block>`;
+            }else if(typeof(element) === 'object' && 'type' in element && element.type == 'category'){
+                let insideBlock = renderBlock(element.blocks,level+1);
+                res += `<category name="${element.name}" icon="${element.icon}">${insideBlock}</category>`;
+            }else if(typeof(element) === 'object' && 'mutation' in element){
+                let objKey = [];
+                Object.keys(element.mutation).forEach(key=>{
+                    objKey.push(`${key}="${element.mutation[key]}"`);
+                })
+                res += `<mutation ${objKey.join(' ')}></mutation>`;
+            }else if(typeof(element) === 'object'){
+                let insideBlock = renderBlock(element.blocks,level+1);
+                res += `<block type="${element.name}">${insideBlock}</block>`;
+            }
+        }
+    });
+    return res;
+};
+
+var loadBlock = function(boardName,target){
+    //look for board first
+    var blockFile = util.boardDir+'/'+boardName+'/block/config.js';
+    if(!util.fs.existsSync(blockFile)){
+        return null;
+    }
+    var blocks = util.requireFunc(blockFile);
+    //TODO : look for platform blocks
+
+    return blocks;
+};
+var initBlockly = function(boardName){
+    var blockyDir = util.boardDir+'/'+boardName+'/block';
+    var blocklyFile = util.fs.readdirSync(blockyDir);
+    
+    if(blocklyFile.length > 0){
+        blocklyFile.sort(function(a, b){  
+            return a.length - b.length;
+        });
+        blocklyFile.forEach(element => {
+            if(element.includes('config.js')){ //skip config.js file
+                return;
+            }            
+            try {
+                if(element.startsWith('block') && element.endsWith('.js')){
+                    util.requireFunc(blockyDir+'/'+element)(Blockly);
+                    let generatorFile = element.replace("block","generator");
+                    util.requireFunc(blockyDir+'/'+generatorFile)(Blockly);
+                }
+                
+            } catch (error) {
+                console.log('load blockly error');
+                console.log(error);
+            }            
+        });
+    }
+};
+
+/*var reloadBlockly = function(toolbox,workspace,updatecode){
+    
+}*/
 export default {
     name: 'editor',
     components: {
@@ -59,19 +125,16 @@ export default {
             styleActiveLine: true,
             matchBrackets: true,
             readOnly: true
-       }
+       }       
      }
    },
-   mounted(){
-        
+   mounted(){        
         Blockly.Msg = Object.assign(en, Blockly.Msg);
         Blockly.Msg = Blockly.Msg();
-
 
         Blockly.utils.getMessageArray_ = function () {
             return Blockly.Msg
         }
-
 
         this.toolbox = document.getElementById('toolbox');
         this.workspace = Blockly.inject('blocklyDiv', {
@@ -80,19 +143,19 @@ export default {
                 length: 3,
                 colour: '#ccc',
                 snap: true
-		    },
-		    media: './static/blockly/media/',
-		    //rtl: rtl,
-		    toolbox: this.toolbox,
-		    zoom: {
+            },
+            media: './static/blockly/media/',
+            //rtl: rtl,
+            toolbox: this.toolbox,
+            zoom: {
                 controls: true,
                 wheel: true,
                 startScale: 1,
                 maxScale: 2,
                 minScale: 0.3,
-                scaleSpeed: 1.2
-			//scrollbars: false
-		    }
+                scaleSpeed: 1.2,
+                //scrollbars: false
+            },
         });    
 
         this.workspace.addChangeListener(this.updatecode);
@@ -102,24 +165,49 @@ export default {
             console.log('set default lang to en');
 		    this.setCookie('lang', 'en', 365);
         }*/
-
         //---- global event
         this.$global.$on('theme-change',this.onThemeChange);
         this.$global.$on('panel-resize',this.onResizePanel);
+        this.$global.$on('board-change',this.onBoardChange);        
+        this.$global.$on('editor-change-mode',this.onEditorModeChange);
         let theme = this.$vuetify.theme.primary;
         var lighter = util.ui.colorLuminance(theme,0.2);
         document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
+        
+        //---- render block
+        this.onBoardChange(this.$global.board.board);
     },
     methods:{
+        onEditorModeChange(mode){
+            Blockly.svgResize(this.workspace);
+        },
+        onBoardChange: function(boardName){
+            initBlockly(boardName);            
+            let blocks = loadBlock(boardName);
+            let stringBlock = '';
+            if('base_blocks' in blocks){ //render block base from platform
+                stringBlock += renderBlock(blocks.base_blocks);
+            }
+
+            if('blocks' in blocks){ //render extended block
+                stringBlock += renderBlock(blocks.blocks);
+            }
+
+            this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
+            this.workspace.updateToolbox(this.toolbox);            
+        },
+
         onThemeChange(theme){            
             var lighter = util.ui.colorLuminance(theme,0.2);            
             document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         },
+
         onResizePanel(pane,container,size){            
             Blockly.svgResize(this.workspace);
             console.log('editor resized');
             //console.log(this.$root.editor.MODE);
         },
+
         updatecode(e){
             if(e.type != Blockly.Events.UI){
                 this.sourcecode = Blockly.JavaScript.workspaceToCode(this.workspace); 
@@ -134,6 +222,7 @@ export default {
                 }
             }
         },
+
         getCookie(c_name) {
             if (document.cookie.length > 0) {
                 var c_start = document.cookie.indexOf(c_name + '=');
@@ -148,6 +237,7 @@ export default {
             }
             return null;
         },
+
         setCookie(cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -164,10 +254,13 @@ export default {
   height: 100%; /* minus header and footer */
   border: 1px solid #ccc;
 }
+.vertical-panes-editor > .pane {
+  width : 25%;
+}
 .vertical-panes > .pane {
   text-align: left;  
   overflow: hidden;
-  background: #eee;
+  background: #eee;  
 }
 .vertical-panes > .pane ~ .pane {
   border-left: 4px solid #ccc;
@@ -196,6 +289,9 @@ export default {
     border: 1px solid #eee;
     height: 100%; 
 }  /* minus header and footer */
+.blocklyToolboxDiv{
+    overflow: scroll;
+}
 </style>
 
 

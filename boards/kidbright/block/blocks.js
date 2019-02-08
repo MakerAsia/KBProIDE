@@ -11,7 +11,7 @@ Blockly.Blocks["basic_led16x8"] = {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.BASIC_LED16X8_TITLE)
 			.appendField("                                ")
-			.appendField(new Blockly.FieldImage("/icons/shift_left_24px.svg", 24, 24, "*", function(e) {
+			.appendField(new Blockly.FieldImage("/static/block_icons/shift_left_24px.svg", 24, 24, "*", function(e) {
 				for (var y = 0; y < 8; y++) {
 					for (var x = 0; x < 16; x++) {
 						if (x != 15) {
@@ -23,7 +23,7 @@ Blockly.Blocks["basic_led16x8"] = {
 					}
 				}
 			}, true))
-			.appendField(new Blockly.FieldImage("/icons/shift_right_24px.svg", 24, 24, "*", function(e) {
+			.appendField(new Blockly.FieldImage("/static/block_icons/shift_right_24px.svg", 24, 24, "*", function(e) {
 				for (var y = 0; y < 8; y++) {
 					for (var x = 15; x >= 0; x--) {
 						if (x != 0) {
@@ -35,7 +35,7 @@ Blockly.Blocks["basic_led16x8"] = {
 					}
 				}
 			}, true))
-			.appendField(new Blockly.FieldImage("/icons/shift_up_24px.svg", 24, 24, "*", function(e) {
+			.appendField(new Blockly.FieldImage("/static/block_icons/shift_up_24px.svg", 24, 24, "*", function(e) {
 				for (var y = 7; y >= 0; y--) {
 					for (var x = 0; x < 16; x++) {
 						if (y != 0) {
@@ -47,7 +47,7 @@ Blockly.Blocks["basic_led16x8"] = {
 					}
 				}
 			}, true))
-			.appendField(new Blockly.FieldImage("/icons/shift_down_24px.svg", 24, 24, "*", function(e) {
+			.appendField(new Blockly.FieldImage("/static/block_icons/shift_down_24px.svg", 24, 24, "*", function(e) {
 				for (var y = 0; y < 8; y++) {
 					for (var x = 0; x < 16; x++) {
 						if (y != 7) {
@@ -272,7 +272,7 @@ Blockly.Blocks['logic_led16x8_scroll_ready'] = {
 Blockly.Blocks['logic_sw1_pressed'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.LOGIC_SW1_PRESSED_TITLE);
 		this.setOutput(true, 'Boolean');
 		this.setPreviousStatement(false);
@@ -286,7 +286,7 @@ Blockly.Blocks['logic_sw1_pressed'] = {
 Blockly.Blocks['logic_sw1_released'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.LOGIC_SW1_RELEASED_TITLE);
 		this.setOutput(true, 'Boolean');
 		this.setPreviousStatement(false);
@@ -300,7 +300,7 @@ Blockly.Blocks['logic_sw1_released'] = {
 Blockly.Blocks['logic_sw2_pressed'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.LOGIC_SW2_PRESSED_TITLE);
 		this.setOutput(true, 'Boolean');
 		this.setPreviousStatement(false);
@@ -314,7 +314,7 @@ Blockly.Blocks['logic_sw2_pressed'] = {
 Blockly.Blocks['logic_sw2_released'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.LOGIC_SW2_RELEASED_TITLE);
 		this.setOutput(true, 'Boolean');
 		this.setPreviousStatement(false);
@@ -374,7 +374,7 @@ Blockly.Blocks["wait_led_matrix_ready"] = {
 Blockly.Blocks["wait_sw1_pressed"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.WAIT_SW1_PRESSED_TITLE);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
@@ -387,7 +387,7 @@ Blockly.Blocks["wait_sw1_pressed"] = {
 Blockly.Blocks["wait_sw1_released"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.WAIT_SW1_RELEASED_TITLE);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
@@ -400,7 +400,7 @@ Blockly.Blocks["wait_sw1_released"] = {
 Blockly.Blocks["wait_sw2_pressed"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.WAIT_SW2_PRESSED_TITLE);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
@@ -413,7 +413,7 @@ Blockly.Blocks["wait_sw2_pressed"] = {
 Blockly.Blocks["wait_sw2_released"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.WAIT_SW2_RELEASED_TITLE);
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
@@ -430,31 +430,31 @@ var music_colour=Blockly.Msg.MUSIC_HUE ;
 // var music_colour="#FB8CC3";
 Blockly.Blocks["music_duration_opt"] = [
 	[{
-		'src': '/icons/notes/whole.svg',
+		'src': '/static/block_icons/notes/whole.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
 	}, "0"],
 	[{
-		'src': '/icons/notes/half.svg',
+		'src': '/static/block_icons/notes/half.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
 	}, "1"],
 	[{
-		'src': '/icons/notes/quarter.svg',
+		'src': '/static/block_icons/notes/quarter.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
 	}, "2"],
 	[{
-		'src': '/icons/notes/eighth.svg',
+		'src': '/static/block_icons/notes/eighth.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
 	}, "3"],
 	[{
-		'src': '/icons/notes/sixteenth.svg',
+		'src': '/static/block_icons/notes/sixteenth.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
@@ -464,7 +464,7 @@ Blockly.Blocks["music_duration_opt"] = [
 Blockly.Blocks["music_note"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/buzzer.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_NOTE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				[Blockly.Msg.MUSIC_NOTE_C7, "36"],
@@ -523,7 +523,7 @@ Blockly.Blocks["music_note"] = {
 Blockly.Blocks["music_rest"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/buzzer.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_REST_TITLE)
 			.appendField(Blockly.Msg.MUSIC_NOTE_DURATION)
 			.appendField(new Blockly.FieldDropdown(
@@ -1112,7 +1112,7 @@ Blockly.Blocks["music_scale_opt"] = [
 Blockly.Blocks["music_scale"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/buzzer.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_SCALE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				[Blockly.Msg.MUSIC_SCALE_CMAJ, "0"],
@@ -1179,7 +1179,7 @@ Blockly.Blocks["music_set_volume"] = {
 	init: function() {
 		// music volume 0 - 100 %
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/buzzer.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_SET_VOLUME_TITLE)
 			.appendField(new Blockly.FieldNumber(50, 0, 100, 1), 'VALUE')
 			.appendField("%");
@@ -1194,7 +1194,7 @@ Blockly.Blocks["music_set_volume"] = {
 Blockly.Blocks["music_get_volume"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/buzzer.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_GET_VOLUME_TITLE);
 		this.setOutput(true, 'Number');
 		this.setPreviousStatement(false);
@@ -1213,7 +1213,7 @@ var sensor_colour= Blockly.Msg.SENSOR_HUE ;
 Blockly.Blocks["sensor_lm73"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sot23-6_1.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sot23-6_1.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.SENSOR_LM73_TITLE);
 		this.setOutput(true, 'Number');
 		this.setPreviousStatement(false);
@@ -1227,7 +1227,7 @@ Blockly.Blocks["sensor_lm73"] = {
 Blockly.Blocks["sensor_ldr"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/ldr1.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/ldr1.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.SENSOR_LDR_TITLE);
 		this.setOutput(true, 'Number');
 		this.setPreviousStatement(false);
@@ -1241,7 +1241,7 @@ Blockly.Blocks["sensor_ldr"] = {
 Blockly.Blocks["sensor_switch1"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.SENSOR_SWITCH1_TITLE);
 		this.setOutput(true, 'Number');
 		this.setPreviousStatement(false);
@@ -1255,7 +1255,7 @@ Blockly.Blocks["sensor_switch1"] = {
 Blockly.Blocks["sensor_switch2"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/sw12x12.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.SENSOR_SWITCH2_TITLE);
 		this.setOutput(true, 'Number');
 		this.setPreviousStatement(false);
@@ -1435,7 +1435,7 @@ var io_colour = Blockly.Msg.IO_HUE;
 Blockly.Blocks["output_write"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/banana.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_WRITE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				["1", "1"],
@@ -1458,7 +1458,7 @@ Blockly.Blocks["output_write"] = {
 Blockly.Blocks["output_toggle"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/banana.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_TOGGLE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				["1", "1"],
@@ -1477,7 +1477,7 @@ Blockly.Blocks["output_toggle"] = {
 Blockly.Blocks["output_read"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/banana.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_READ_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				["1", "1"],
@@ -1496,7 +1496,7 @@ Blockly.Blocks["output_read"] = {
 Blockly.Blocks["usbsw_write"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/usb_con.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/usb_con.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.USBSW_WRITE_TITLE)
 			.appendField(Blockly.Msg.USBSW_WRITE_STATUS)
 			.appendField(new Blockly.FieldDropdown([
@@ -1515,7 +1515,7 @@ Blockly.Blocks["usbsw_write"] = {
 Blockly.Blocks["usbsw_toggle"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/usb_con.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/usb_con.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.USBSW_TOGGLE_TITLE);
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
@@ -1529,7 +1529,7 @@ Blockly.Blocks["usbsw_toggle"] = {
 Blockly.Blocks["usbsw_read"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/usb_con.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/usb_con.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.USBSW_READ_TITLE);
 		this.setOutput(true, 'Number');
 		this.setInputsInline(true);
@@ -1544,7 +1544,7 @@ Blockly.Blocks["usbsw_read"] = {
 Blockly.Blocks["input_read"] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldImage("/icons/banana.png", 20, 20, "*"))
+			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.INPUT_READ_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				["1", "1"],

@@ -1,0 +1,22 @@
+
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="m5" stroke="#000000">
+            <g id="Oval" transform="translate(0.811659, 0.914798)">
+                <circle cx="18.3236431" cy="18.4759548" r="17.896629"></circle>
+            </g>
+            <g id="Group-5" transform="translate(5.000000, 7.000000)" stroke-width="2">
+                <path d="M13.4027778,6 L13.4027778,13" id="Line-3" stroke-linecap="round"></path>
+                <path d="M17,15 L13.1538462,13.0666667" id="Line-3" stroke-linecap="round"></path>
+                <path d="M8,22 L7,23" id="Line-2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M20,22 L19,23" id="Line-2" stroke-linecap="round" stroke-linejoin="round" transform="translate(19.500000, 22.500000) scale(-1, 1) translate(-19.500000, -22.500000) "></path>
+                <path d="M4.5,6.96633707 C6.43299662,6.96633707 8,7.36024587 8,5.45313311 C8,3.54602035 6.43299662,2 4.5,2 C2.56700338,2 1,3.54602035 1,5.45313311 C1,7.36024587 2.56700338,6.96633707 4.5,6.96633707 Z" id="Oval-3" transform="translate(4.500000, 4.500000) rotate(-48.000000) translate(-4.500000, -4.500000) "></path>
+                <path d="M23.5,6.96633707 C25.4329966,6.96633707 27,7.36024587 27,5.45313311 C27,3.54602035 25.4329966,2 23.5,2 C21.5670034,2 20,3.54602035 20,5.45313311 C20,7.36024587 21.5670034,6.96633707 23.5,6.96633707 Z" id="Oval-3" transform="translate(23.500000, 4.500000) rotate(48.000000) translate(-23.500000, -4.500000) "></path>
+                <circle id="Oval-2" cx="14" cy="13" r="10"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

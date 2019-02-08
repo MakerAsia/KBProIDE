@@ -7,7 +7,7 @@
             </v-btn>
             <span>User Level</span>
         </v-tooltip>-->
-        <v-btn slot="activator" icon>
+        <v-btn slot="activator" icon color="primary darken-2">
             <v-icon dark>fa-users</v-icon>
         </v-btn>
         <v-card>
@@ -110,12 +110,15 @@ export default {
           console.log('editor change mode to : '+mode);    
           this.basic.dialog = false;
           this.$global.editor.mode = mode;
+          setTimeout(() => {
+            this.$global.$emit('editor-change-mode', mode);    
+          }, 300);
       }
   },
   watch:{
       'basic.dialog': function(val){
           if(val){//on opening
-            this.selectingMode = this.$global.editor.mode;
+            this.selectingMode = this.$global.editor.mode;            
           }
       }
   }

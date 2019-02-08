@@ -1,9 +1,9 @@
-export default {
+module.exports = {
     base_blocks : [ // use "blocks : [ " in normally situation but this need to override base block from esp-idf platforms
         {
             name : 'Basic',
             color : '230',
-            icon : '/images/SVG/c1.svg',
+            icon : '/static/icons/SVG/c1.svg',
             blocks : [
                 'basic_led16x8',
                 'basic_led16x8_clr',
@@ -18,7 +18,7 @@ export default {
         {
             name : 'Math',
             color : '230',
-            icon : '/images/SVG/c2.svg',
+            icon : '/static/icons/SVG/c2.svg',
             blocks : [
                 'math_number',
                 'math_arithmetic',
@@ -36,14 +36,14 @@ export default {
         {
             name : 'Logic',
             color : '210',
-            icon : '/images/SVG/c3.svg',
+            icon : '/static/icons/SVG/c3.svg',
             blocks : [
                 'controls_if',
                 {
                     name : 'controls_if' , 
                     blocks : [
                         {
-                            mutator : { else : '1'}
+                            mutation : { else : '1'}
                         }
                     ]
                 },
@@ -61,7 +61,7 @@ export default {
         {
             name : 'Loop',
             color : '120',
-            icon : '/images/SVG/c4.svg',
+            icon : '/static/icons/SVG/c4.svg',
             blocks : [
                 'controls_whileUntil',
                 'loop_break',
@@ -71,7 +71,7 @@ export default {
         {
             name : 'Wait',
             color : '160',
-            icon : '/images/SVG/c5.svg',
+            icon : '/static/icons/SVG/c5.svg',
             blocks : [
                 'wait_led_matrix_ready',
                 'wait_sw1_pressed',
@@ -83,7 +83,7 @@ export default {
         {
             name : 'Music',
             color : '330',
-            icon : '/images/SVG/c6.svg',
+            icon : '/static/icons/SVG/c6.svg',
             blocks : [
                 'music_note',
                 'music_rest',
@@ -95,7 +95,7 @@ export default {
         {
             name : 'Sensor',
             color : '58',
-            icon : '/images/SVG/c7.svg',
+            icon : '/static/icons/SVG/c7.svg',
             blocks : [
                 'sensor_ldr',
                 'sensor_lm73',
@@ -106,7 +106,7 @@ export default {
         {
             name : 'Clock',
             color : '19',
-            icon : '/images/SVG/c8.svg',
+            icon : '/static/icons/SVG/c8.svg',
             blocks : [
                 'rtc_get',
                 'rtc_get_date',
@@ -122,7 +122,7 @@ export default {
         {
             name : 'I/O',
             color : '19',
-            icon : '/images/SVG/c9.svg',
+            icon : '/static/icons/SVG/c9.svg',
             blocks : [
                 'output_write',
                 'output_toggle',
@@ -136,7 +136,7 @@ export default {
         {
             name : 'Advance',
             color : '290',
-            icon : '/images/SVG/c10.svg',
+            icon : '/static/icons/SVG/c10.svg',
             blocks : [
                 'advance_task'                
             ]
@@ -144,11 +144,12 @@ export default {
         {
             name : 'IoT',
             color : '195',
-            icon : '/images/SVG/c11.svg',
+            icon : '/static/icons/SVG/c11.svg',
             blocks : [
                 {
+                    type : 'category',
                     name : 'Gauge',
-                    icon : '/images/SVG/13.svg',
+                    icon : '/static/icons/SVG/13.svg',
                     blocks : [
                         'gauge_iot',
                         'gauge_title',
@@ -158,8 +159,9 @@ export default {
                     ]
                 },
                 {
+                    type : 'category',
                     name : 'Graph',
-                    icon : '/images/SVG/13.svg',
+                    icon : '/static/icons/SVG/13.svg',
                     blocks : [
                         'feed_iot',
                         'feed_main_title',
@@ -168,8 +170,9 @@ export default {
                     ]
                 },
                 {
+                    type : 'category',
                     name : 'Messaging',
-                    icon : '/images/SVG/13.svg',
+                    icon : '/static/icons/SVG/13.svg',
                     blocks : [
                         'push_notification',                        
                     ]
