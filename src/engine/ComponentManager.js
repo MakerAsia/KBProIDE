@@ -47,6 +47,7 @@ export default {
     components,
     listComponent,
     listToolbar : utils.filterFileName(components(),'Toolbar'),
+    listActionbar : utils.filterFileName(components(),'Actionbar'),
     listPage : utils.filterFileName(components(),'Page'),
     listLeftDrawer : utils.filterFileName(components(),'LeftDrawer'),
     listRightDrawer : utils.filterFileName(components(),'RightDrawer'),

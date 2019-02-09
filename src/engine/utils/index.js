@@ -101,7 +101,7 @@ export default {
     var res = {};
     Object.keys(obj).forEach(key=>{
         Object.keys(obj[key]).forEach(ckey=>{
-            if(ckey.startsWith(filterName)){
+            if(ckey.toLowerCase().startsWith(filterName.toLowerCase())){ //ignorcase naja
                 if(!(key in res)){
                     res[key] = {};
                 }

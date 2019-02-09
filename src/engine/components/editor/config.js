@@ -6,7 +6,9 @@ export default {
     presistance:{
         mode : 1,
         blockCode : '',
-        sourceCode : ''
+        sourceCode : '',
+        fontSize : '24',
+        theme : 'mdn-like'
     },
     data:{
         test : true

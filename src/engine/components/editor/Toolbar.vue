@@ -110,9 +110,7 @@ export default {
           console.log('editor change mode to : '+mode);    
           this.basic.dialog = false;
           this.$global.editor.mode = mode;
-          setTimeout(() => {
-            this.$global.$emit('editor-change-mode', mode);    
-          }, 300);
+          this.$global.$emit('editor-mode-change', mode);          
       }
   },
   watch:{

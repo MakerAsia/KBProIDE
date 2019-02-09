@@ -1,7 +1,7 @@
 <template>
     <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
         <!-- editor -->
-        <div class="pane" :style="[this.$global.editor.mode > 1 ? { minWidth: '500px', width: '75%' } : { width:'100%', height :'100%'}]">
+        <div class="pane" :style="[this.$global.editor.mode > 1 ? { minWidth: '500px', width: '75%' } : { width:'100%', height :'100%'}]" v-if="this.$global.editor.mode <= 2">
             <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
             <xml id="toolbox" ref=toolbox style="display: none">
                 <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
@@ -10,10 +10,10 @@
             </xml>
         </div>
         <!-- end --> 
-        <multipane-resizer v-if="this.$global.editor.mode > 1"></multipane-resizer>
+        <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
         <!-- source code -->
-        <div class="pane" :style="{ flexGrow: 1 }" v-if="this.$global.editor.mode > 1">
-            <code-mirror
+        <div class="pane" :style="[this.$global.editor.mode != 3 ? { flexGrow: 1 } : { width:'100%', height :'100%'}]" v-if="this.$global.editor.mode > 1">
+            <code-mirror ref="cm"
                 v-model="sourcecode"
                 :options="editor_options">
             </code-mirror>
@@ -169,17 +169,47 @@ export default {
         this.$global.$on('theme-change',this.onThemeChange);
         this.$global.$on('panel-resize',this.onResizePanel);
         this.$global.$on('board-change',this.onBoardChange);        
-        this.$global.$on('editor-change-mode',this.onEditorModeChange);
+        this.$global.$on('editor-mode-change',this.onEditorModeChange);
+        this.$global.$on('editor-theme-change',this.onEditorThemeChange);
+
         let theme = this.$vuetify.theme.primary;
         var lighter = util.ui.colorLuminance(theme,0.2);
         document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         
         //---- render block
         this.onBoardChange(this.$global.board.board);
+        //---- render editor theme
+        this.onEditorThemeChange(this.$global.editor.theme);
+        //---- render editor fontsize
+        this.onEditorFontsizeChange(this.$global.editor.fontSize);
     },
     methods:{
+        onEditorFontsizeChange(value){
+            if('cm' in this.$refs){
+                let cm = this.$refs.cm.getCodeMirror();
+                cm.getWrapperElement().style["font-size"] = value+"px";
+                editor.refresh();
+            }
+        },
+        onEditorThemeChange(value){
+            //console.log(value);
+            import('codemirror/theme/'+value+'.css');
+            if('cm' in this.$refs){
+                let code = this.$refs.cm.getCodeMirror();
+                code.setOption("theme", value);
+            }
+        },
         onEditorModeChange(mode){
-            Blockly.svgResize(this.workspace);
+            if(mode < 3){
+                setTimeout(() => {
+                    Blockly.svgResize(this.workspace);
+                }, 300);
+            }else{ //mode 3
+                if('cm' in this.$refs){ //enable editing code
+                    let code = this.$refs.cm.getCodeMirror();
+                    code.setOption("readOnly", false);
+                }
+            }
         },
         onBoardChange: function(boardName){
             initBlockly(boardName);            
