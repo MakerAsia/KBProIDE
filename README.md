@@ -3,7 +3,7 @@
 
 ## Install
 use vue cli 3 & electron
-- npm uninstall -g vue-cli & npm install -g @vue/vue-cli
+- npm uninstall -g vue-cli & npm install -g @vue/cli
 - npm install -g electron
 - npm install -g electron-builder
 - npm install
