@@ -172,7 +172,12 @@ export default {
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
 
+        if(this.$vuetify.theme.primary == null){
+            this.$vuetify.theme.primary = '#009688';
+        }
+        
         let theme = this.$vuetify.theme.primary;
+
         var lighter = util.ui.colorLuminance(theme,0.2);
         document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         

@@ -8,7 +8,7 @@ use vue cli 3 & electron
 - npm install -g electron-builder
 - npm install
 - vue add electron-builder (maybe ref : https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/)
-- (may be install eletron again npm install electron)
+- (may be install eletron again 'npm install electron')
 ## Run
 - npm run electron:serve
 
