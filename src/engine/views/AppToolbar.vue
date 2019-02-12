@@ -44,10 +44,10 @@
       
     <template v-for="(comp,compName) in actionbar">
       <template v-for="(toobarTarget,tbName) in comp">
-        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>           
+        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
       </template>
     </template>
-    
+    <vuetify-table/>
       <v-btn icon @click="handleFullScreen()">
         <v-icon>fullscreen</v-icon>
       </v-btn>
@@ -64,9 +64,16 @@
 </template>
 <script>
 import NotificationList from '@/engine/views/widgets/list/NotificationList';
-import utils from '@/engine/utils';
+import util from '@/engine/utils';
 import cm from '@/engine/ComponentManager';
 import AsyncComponent from '@/engine/AsyncComponent';
+import Vue from "vue";
+
+//var boardComponentData = util.vueRuntimeComponent('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue');
+//var componentRegisterName = 'actionbar-newfile-1';
+//Vue.extend(boardComponentData);
+//var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.umd.js');
+//Vue.use(vv);
 
 export default {  
   name: 'app-toolbar',
@@ -88,7 +95,7 @@ export default {
       window.getApp.$emit('APP_DRAWER_TOGGLED');
     },
     handleFullScreen () {
-      utils.toggleFullScreen();
+      util.toggleFullScreen();
     }
   }
 };

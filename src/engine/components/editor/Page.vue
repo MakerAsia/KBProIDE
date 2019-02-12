@@ -193,7 +193,7 @@ export default {
             if('cm' in this.$refs){
                 let cm = this.$refs.cm.getCodeMirror();
                 cm.getWrapperElement().style["font-size"] = value+"px";
-                editor.refresh();
+                cm.refresh();
             }
         },
         onEditorThemeChange(value){

@@ -84,9 +84,13 @@ Object.keys(comps).forEach(function(key){
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
 var boardInfoComponent = loadCofigComponents(boardInfo);
+// load pacakges
+var boardPacakges = bm.listPackage(boardInfoComponent.data.board);
 // assign data to $global
 componentAllData.data['board'] = boardInfoComponent.data;
 componentAllData.presistance['board'] = boardInfoComponent.presistance;
+// assign package to board
+componentAllData.data['board']['package'] = boardPacakges;
 
 addWatcher('board.board',function(val){ //listen board name change we need to reload everything
   console.log('board changed to : ' + val);
@@ -95,6 +99,26 @@ addWatcher('board.board',function(val){ //listen board name change we need to re
 
 //TODO load platform block
 
+var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.common.js');
+
+var vs = import('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.css');
+//console.log(vs);
+Vue.component('vuetify-table',vv);
+//register component
+/*Object.keys(componentAllData.data.board.package).forEach(packageName => {
+  Object.keys(componentAllData.data.board.package[packageName]).forEach(componentFile =>{
+    var vueFile = componentAllData.data.board.package[packageName][componentFile];
+    try { // load components
+      var boardComponentData = util.vueRuntimeComponent(vueFile);
+      var componentRegisterName = packageName.toLowerCase() + '-' + util.kebab(componentFile);
+      Vue.component(componentRegisterName,boardComponentData);      
+    } catch (error) {
+      
+    }
+  });  
+});
+*/
+//console.log(vv);
 /*
 //var v = require.context('./', false, /.*?/).keys();
 //console.log(v);
@@ -139,7 +163,9 @@ Object.keys(componentAllData.presistance).forEach(function(key){
     },true);
   });
 });
-
+console.log('======> $global data <=====');
+console.log(componentAllData);
+console.log('===========================')
 //---- setup $global ----//
 Vue.prototype.$global = new Vue({
   data: componentAllData.data,
@@ -147,7 +173,7 @@ Vue.prototype.$global = new Vue({
 });
 
 //=======================================================//
-new Vue({
+new Vue({  
   router,
   store,
   render: h => h(App),

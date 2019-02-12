@@ -1,17 +1,22 @@
 const path = require('path');
-const webpack = require('webpack');
-var ExternalsPlugin = require('webpack-externals-plugin');
-//const Copy = require('copy-webpack-plugin');
-const nodeEnv = process.env.NODE_ENV || 'development';
-const isProd = nodeEnv === 'production';
 
-module.exports = 
-{
-    name: 'bloccoly',
-    plugins: [
-        new ExternalsPlugin({
-            type: 'commonjs',
-            include: __dirname + '/packages'
-        }),
-    ]
+module.exports = {
+    entry: './resources/js/app.js',
+    output: {
+        filename: './public/javascripts/bundle.js',
+    },
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+        },
+        extensions: ['*', '.js', '.vue', '.json']
+    },
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            }
+        ]
+    }
 };

@@ -5,38 +5,41 @@ const {homedir} = require('os');
 
 var listedBoards = [];
 var listedPackages = {};
-var loadPackage = function()
+var listPackage = function(boardName)
 {
-    if(!util.fs.existsSync(util.boardDir+'/package')){ //no package folder
-        return null; 
+    if(!util.fs.existsSync(`${util.boardDir}/${boardName}/package`)){ //util.boardDir+'/'+boardName+'/package')){ //no package folder
+        return null;
     }
-    var pacakgeName = util.fs.readdirSync(util.boardDir+'/package'); //<<< "./component" must fix value, cannot use dynamic variable in webpack naja!!!!
+    var pacakgeName = util.fs.readdirSync(`${util.boardDir}/${boardName}/package`); //<<< "./component" must fix value, cannot use dynamic variable in webpack naja!!!!
     var context = {};
-    pacakgeName.keys().forEach(element => { //folder
-        let fullPathPackage = util.boardDir+'/package/'+element;
+    pacakgeName.forEach(element => { //folder
+        let fullPathPackage = `${util.boardDir}/${boardName}/package/${element}`;
         if(util.fs.lstatSync(fullPathPackage).isFile()){// skip file
             return;
         }
         let vcomponents = util.fs.readdirSync(fullPathPackage);
         vcomponents.forEach(componentFile =>{
-            let tmp = (/\.\/([A-Za-z0-9]+)\/([A-Za-z0-9]+)\.(vue|js)$/g).exec(element);
-        });
-        
-        if(tmp != null && tmp.length == 4){                
-            let fullPath = tmp[0];
+            let fullPathComponent = `${util.boardDir}/${boardName}/package/${element}/${componentFile}`;
+            let tmp = (/([A-Za-z0-9]+)\.(vue|js)$/g).exec(componentFile);
+            if(tmp == null || tmp.length != 3){
+                return;
+            }
             let name = tmp[1];
-            let componentName = tmp[2];
-            let type = tmp[3];
-            if (!(name in context)){//existing key
-                context[name] = {};
+            let fileType = tmp[2];
+            if(!(element in context)){
+                context[element] = {};
             }
-            if(type == 'vue'){
-                context[name][componentName] = './components/'+name+'/'+componentName;                    
+            if(fileType == 'vue'){
+                context[element][name] = fullPathComponent;
             }
-            if(type == 'js' && componentName == 'config'){                    
-                context[name]['config'] = require('./components/'+name+'/'+componentName).default;
+            if(fileType == 'js' && name == 'config'){
+                try {
+                    context[element]['config'] = util.requireFunc(fullPathComponent);    
+                } catch (error) {
+                    console.log('connot import config : '+fullPathComponent);
+                }
             }
-        }
+        });
     });
     //sort menu by config index
     var orderedContext = {};
@@ -48,8 +51,7 @@ var loadPackage = function()
         return 0;
     }).forEach(function(key) {
         orderedContext[key] = context[key];
-    });        
-    if(components)
+    });    
     return orderedContext;
 };
 
@@ -84,10 +86,17 @@ var boards = function(){
     }    
     return listedBoards;
 };
-
+var packages = function(){
+    if(Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object){ // check empty object !!!
+        listedPackages = listedPackages();
+    }    
+    return listedPackages;
+};
 export default {
     boards,
+    packages,
     listBoard,
+    listPackage,
     loadBoardManagerConfig,
     listPublicBoard : function(){
 

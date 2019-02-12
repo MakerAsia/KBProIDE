@@ -3,13 +3,17 @@
         <v-btn slot="activator" icon @click.native="$global.ui.addRightTab('package','Test tab','./components/setting/RightDrawer')">
         <v-icon dark>fa-archive</v-icon>
         </v-btn>
-        <span>Upload</span>
+        <span>{{message}}</span>
     </v-tooltip>
 </template>
 
 <script>
 export default{
-    
+    data () {
+        return {
+            message: 'Compile'
+        }
+    }
 }
 </script>
 <style>
