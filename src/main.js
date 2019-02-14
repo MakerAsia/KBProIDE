@@ -96,54 +96,6 @@ addWatcher('board.board',function(val){ //listen board name change we need to re
   console.log('board changed to : ' + val);
   Vue.prototype.$global.$emit('board-change',val);  
 },false);
-
-//TODO load platform block
-
-//var vv = util.requireFunc('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/kidbright-actionbar/dist/kb-actionbar.umd.js');
-//console.log(vv);
-//Vue.use(vv);
-
-//Vue.component('vuetify-table',vv);
-//register component
-/*Object.keys(componentAllData.data.board.package).forEach(packageName => {
-  Object.keys(componentAllData.data.board.package[packageName]).forEach(componentFile =>{
-    var vueFile = componentAllData.data.board.package[packageName][componentFile];
-    try { // load components
-      var boardComponentData = util.vueRuntimeComponent(vueFile);
-      var componentRegisterName = packageName.toLowerCase() + '-' + util.kebab(componentFile);
-      Vue.component(componentRegisterName,boardComponentData);      
-    } catch (error) {
-      
-    }
-  });  
-});
-*/
-//console.log(vv);
-/*
-//var v = require.context('./', false, /.*?/).keys();
-//console.log(v);
-
-console.log('vvvvvv');
-var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
-var vl = util.vueLoader(cc);
-var compp = eval(vl.js);
-console.log(vl);
-console.log('cccccc');
-console.log(compp);
-console.log('cc2cccc');
-*/
-//var v = require.context('./', false, /.*?/).keys();
-//console.log(v);
-/*
-console.log('vvvvvv');
-var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
-var vl = util.vueLoader(cc);
-var compp = eval(vl.js);
-console.log(vl);
-console.log('cccccc');
-console.log(compp);
-console.log('cc2cccc');*/
-
 //=====================================//
 
 //============= ui manager ============//

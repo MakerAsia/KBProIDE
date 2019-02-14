@@ -2,6 +2,17 @@ import file from './file';
 import ui from './ui';
 const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
+const os = require('os');
+var baseRootPlatform = "";
+if(process.env.NODE_ENV == 'development'){
+  if(process.platform == 'win32'){
+    baseRootPlatform == '/../../..';
+  }else if(process.platform == 'darwin'){
+    baseRootPlatform == '/../../../../..';
+  }else if(process.platform == 'linux'){ //TODO : didnot defined yet
+
+  }
+}
 const baseDir = rootDir + ((process.env.NODE_ENV == 'development') ? '/../../..' : '');
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 const vueLoader = function(file)
@@ -113,6 +124,8 @@ export default {
   },
   //-------- file ------//
   fs : fs,
+  os : os,
+  rootDir : rootDir,
   baseDir : baseDir,
   componentDir : baseDir + '/components',    
   staticComponentWebpackDir : './components',
