@@ -6,14 +6,14 @@ const os = require('os');
 var baseRootPlatform = "";
 if(process.env.NODE_ENV == 'development'){
   if(process.platform == 'win32'){
-    baseRootPlatform == '/../../..';
+    baseRootPlatform = '/../../..';
   }else if(process.platform == 'darwin'){
-    baseRootPlatform == '/../../../../..';
+    baseRootPlatform = '/../../../../..';
   }else if(process.platform == 'linux'){ //TODO : didnot defined yet
 
   }
 }
-const baseDir = rootDir + ((process.env.NODE_ENV == 'development') ? '/../../..' : '');
+const baseDir = rootDir + baseRootPlatform;
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 const vueLoader = function(file)
 { //this section from https://www.npmjs.com/package/vue-file-compiler
