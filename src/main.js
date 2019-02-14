@@ -99,11 +99,11 @@ addWatcher('board.board',function(val){ //listen board name change we need to re
 
 //TODO load platform block
 
-var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.common.js');
+//var vv = util.requireFunc('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/kidbright-actionbar/dist/kb-actionbar.umd.js');
+//console.log(vv);
+//Vue.use(vv);
 
-var vs = import('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.css');
-//console.log(vs);
-Vue.component('vuetify-table',vv);
+//Vue.component('vuetify-table',vv);
 //register component
 /*Object.keys(componentAllData.data.board.package).forEach(packageName => {
   Object.keys(componentAllData.data.board.package[packageName]).forEach(componentFile =>{

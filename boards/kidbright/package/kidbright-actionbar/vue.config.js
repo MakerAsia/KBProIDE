@@ -16,11 +16,6 @@ module.exports = {
     externals: isDev ? {} : externals,
     plugins: [
       new VuetifyLoaderPlugin()
-    ],
-    module: {
-        loaders: [
-         { test: /\.css$/, loader: "css-loader" }
-      ]
-    }
+    ]
   }
 }

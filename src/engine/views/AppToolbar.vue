@@ -47,7 +47,7 @@
         <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
       </template>
     </template>
-    <vuetify-table/>
+
       <v-btn icon @click="handleFullScreen()">
         <v-icon>fullscreen</v-icon>
       </v-btn>

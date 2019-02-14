@@ -3,10 +3,10 @@
   "version": "1.0.29",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vuetify-table src/VuetifyTable.vue",
+    "build": "vue-cli-service build --target lib --name kb-actionbar src/main.js",
     "lint": "vue-cli-service lint"
   },
-  "main": "./dist/vuetify-table.common.js",
+  "main": "./dist/kb-actionbar.common.js",
   "dependencies": {
     "dot-object": "^1.7.0",
     "moment": "^2.22.2",
@@ -19,7 +19,7 @@
     "@vue/cli-plugin-babel": "^3.0.0-rc.5",
     "@vue/cli-plugin-eslint": "^3.0.0-rc.5",
     "@vue/cli-service": "^3.0.0-rc.5",
-    "vue-template-compiler": "^2.5.16",    
+    "vue-template-compiler": "^2.5.16",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vuetify-loader": "^1.2.1"
