@@ -6,7 +6,7 @@
             </v-btn>
             <span>Board Manager</span>
         </v-tooltip>
-        <v-dialog v-model="boardDialog" max-width="800px" max-height="80%" scrollable>            
+        <v-dialog v-model="boardDialog" max-width="80%" max-height="80%" scrollable>            
             <v-card>
                 <v-card-title>
                     <span class="headline">Select board</span>
@@ -24,26 +24,29 @@
                     <v-card-text>
                     <div id="pageCard">
                         <v-container grid-list-xl fluid>   
-                            <v-layout row wrap>                        
-                                <v-flex sm6>
+                            <v-layout wrap>            
+                                <v-flex sm4 v-for="(data,index) in boardData" :key="index">
                                     <v-card>
                                         <v-card-media>
-                                            <h4 class="white--text pa-1 board-header">
-                                                Kid Bright (Original)
+                                            <h4 class="white--text pa-1 pl-2 board-header">
+                                                {{data.name}}
                                             </h4>
-                                            <img class="board-image" src="https://i.ibb.co/K7NsyGN/display.jpg"/>
+                                            <img class="board-image" :src="data.image"/>
                                         </v-card-media>
                                         <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
+                                            <v-btn v-if="data.installed" icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px">
+                                                <v-icon>fa-trash-o</v-icon>
+                                            </v-btn>
+                                            <v-btn v-else icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
                                                 <v-icon>fa-download</v-icon>
                                             </v-btn>
                                             <div>
-                                                {{cardText}}
+                                                {{data.desc}}
                                             </div>
                                         </v-card-text>
                                         <v-divider></v-divider>
                                         <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
+                                            <span class="ml-2"><strong>{{data.author}}</strong></span>
                                             <v-spacer></v-spacer>
                                             <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
                                                 <v-icon>fa-link</v-icon>
@@ -56,152 +59,7 @@
                                             </v-btn>
                                         </v-card-actions>   
                                     </v-card>
-                                </v-flex>
-                                <v-flex sm6>
-                                    <v-card>
-                                        <v-card-media src="https://i.ibb.co/K7NsyGN/display.jpg" height="150" contain>
-                                        <h4 class="white--text pa-1 board-header">
-                                            Kid Bright (Original)
-                                        </h4>
-                                        </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
-                                                <v-icon>fa-download</v-icon>
-                                            </v-btn>
-                                            <div>
-                                                {{cardText}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>   
-                                    </v-card>
-                                </v-flex>
-                            </v-layout>     
-                            <v-layout row wrap>                        
-                                <v-flex sm6>
-                                    <v-card>
-                                        <v-card-media src="/static/nature/n1.jpeg" height="150">
-                                        <h4 class="white--text pa-2">
-                                            Kid Bright (Original)
-                                        </h4>
-                                        </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
-                                                <v-icon>fa-download</v-icon>
-                                            </v-btn>
-                                            <div>
-                                                {{cardText}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>   
-                                    </v-card>
-                                </v-flex>
-                                <v-flex sm6>
-                                    <v-card>
-                                        <v-card-media src="/static/nature/n2.jpeg" height="150">
-                                        <h4 class="white--text pa-2">
-                                            Kid Bright (Original)
-                                        </h4>
-                                        </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px">
-                                                <v-icon>fa-trash</v-icon>
-                                            </v-btn>
-                                            <div>
-                                                {{cardText}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>   
-                                    </v-card>
-                                </v-flex>
-                            </v-layout>   
-
-                            <v-layout row wrap>
-                                <v-flex sm6>
-                                    <v-card>
-                                        <v-card-media src="/static/nature/n1.jpeg" height="150">
-                                        <h4 class="white--text pa-2">
-                                            Kid Bright (Original)
-                                        </h4>
-                                        </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
-                                                <v-icon>fa-download</v-icon>
-                                            </v-btn>
-                                            <div>
-                                                {{cardText}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>   
-                                    </v-card>
-                                </v-flex>
-                                <v-flex sm6>
-                                    <v-card>
-                                        <v-card-media src="/static/nature/n2.jpeg" height="150">
-                                        <h4 class="white--text pa-2">
-                                            Kid Bright (Original)
-                                        </h4>
-                                        </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px">
-                                                <v-icon>fa-trash</v-icon>
-                                            </v-btn>
-                                            <div>
-                                                {{cardText}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>by Comdet</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>   
-                                    </v-card>
-                                </v-flex>
+                                </v-flex>                                
                             </v-layout>               
                         </v-container>
                     </div>
@@ -240,7 +98,59 @@ export default {
                     glowColor: '#222a2d'
                 }
             },
-        } 
+        },
+        boardData : [
+            {
+                name : 'KidBright (Original)',
+                desc : 'test test test test more ...',
+                author : 'xxxx test',
+                link : 'http://google.com',
+                mail : 'comdet.p@gmail.com',
+                git : 'https://github.com/xxxx',
+                installed : true,
+                image : 'https://i.ibb.co/K7NsyGN/display.jpg'
+            },
+            {
+                name : 'KidBright (Arduino)',
+                desc : 'test test test test more ...',
+                author : 'xxxx test',
+                link : 'http://google.com',
+                mail : 'comdet.p@gmail.com',
+                git : 'https://github.com/xxxx',
+                installed : true,
+                image : 'https://i.ibb.co/K7NsyGN/display.jpg'
+            },
+            {
+                name : 'KidBright (Original)',
+                desc : 'test test test test more ...',
+                author : 'xxxx test',
+                link : 'http://google.com',
+                mail : 'comdet.p@gmail.com',
+                git : 'https://github.com/xxxx',
+                installed : false,
+                image : '/static/nature/n2.jpeg'
+            },
+            {
+                name : 'KidBright (Original)',
+                desc : 'test test test test more ...',
+                author : 'xxxx test',
+                link : 'http://google.com',
+                mail : 'comdet.p@gmail.com',
+                git : 'https://github.com/xxxx',
+                installed : true,
+                image : '/static/nature/n3.jpeg'
+            },
+            {
+                name : 'KidBright (Original)',
+                desc : 'test test test test more ...',
+                author : 'xxxx test',
+                link : 'http://google.com',
+                mail : 'comdet.p@gmail.com',
+                git : 'https://github.com/xxxx',
+                installed : false,
+                image : '/static/nature/n4.jpeg'
+            },
+        ]
     }
   },
   mounted(){
