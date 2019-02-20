@@ -23,12 +23,12 @@
                 <smooth-scrollbar :options="scrollSettings" ref="scrollbar">
                     <v-card-text>
                     <div id="pageCard">
-                        <v-container grid-list-xl fluid>   
+                        <v-container grid-list-xl fluid>
                             <v-layout wrap>            
                                 <v-flex sm4 v-for="(data,index) in boardData" :key="index">
                                     <v-card>
                                         <v-card-media>
-                                            <h4 class="white--text pa-1 pl-2 board-header">
+                                            <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
                                                 {{data.name}}
                                             </h4>
                                             <img class="board-image" :src="data.image"/>
@@ -37,7 +37,7 @@
                                             <v-btn v-if="data.installed" icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px">
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
-                                            <v-btn v-else icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px">
+                                            <v-btn v-else icon fab absolute right bottom small dark color="blue" style="bottom:25px; right:5px">
                                                 <v-icon>fa-download</v-icon>
                                             </v-btn>
                                             <div>
@@ -163,7 +163,7 @@ export default {
     margin-bottom: -10px !important;
 }
 .board-header {
-    background-color: rgba(0,0,0,0.4);
+    
 }
 .board-image{
     display: block;
