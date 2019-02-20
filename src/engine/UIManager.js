@@ -164,8 +164,5 @@ export default {
             //TODO implement here
         },
         
-    },
-    presistance :{
-
     }
 }

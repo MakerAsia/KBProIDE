@@ -3,7 +3,7 @@ export default {
     index : 0,
     description : "no have",
     tooltip : 'Setting',
-    presistance:{
+    persistence:{
         color : '',
         rightSeperator : 80,
     },

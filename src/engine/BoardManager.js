@@ -5,6 +5,8 @@ const {homedir} = require('os');
 
 var listedBoards = [];
 var listedPackages = {};
+var listedPackagesBoard = '';
+
 var listPackage = function(boardName)
 {
     if(!util.fs.existsSync(`${util.boardDir}/${boardName}/package`)){ //util.boardDir+'/'+boardName+'/package')){ //no package folder
@@ -20,7 +22,7 @@ var listPackage = function(boardName)
         let vcomponents = util.fs.readdirSync(fullPathPackage);
         vcomponents.forEach(componentFile =>{
             let fullPathComponent = `${util.boardDir}/${boardName}/package/${element}/${componentFile}`;
-            let tmp = (/([A-Za-z0-9]+)\.(vue|js)$/g).exec(componentFile);
+            let tmp = (/^([A-Za-z0-9]+)\.(vue|js)$/g).exec(componentFile);
             if(tmp == null || tmp.length != 3){
                 return;
             }
@@ -29,9 +31,9 @@ var listPackage = function(boardName)
             if(!(element in context)){
                 context[element] = {};
             }
-            if(fileType == 'vue'){
+            /*if(fileType == 'vue'){ //TODO : check if have a way to load vue at runtime at the future. but now we disabled.
                 context[element][name] = fullPathComponent;
-            }
+            }*/
             if(fileType == 'js' && name == 'config'){
                 try {
                     context[element]['config'] = util.requireFunc(fullPathComponent);    
@@ -51,7 +53,7 @@ var listPackage = function(boardName)
         return 0;
     }).forEach(function(key) {
         orderedContext[key] = context[key];
-    });    
+    });
     return orderedContext;
 };
 
@@ -86,17 +88,46 @@ var boards = function(){
     }    
     return listedBoards;
 };
-var packages = function(){
-    if(Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object){ // check empty object !!!
-        listedPackages = listedPackages();
-    }    
+
+var packages = function(selectedBoard){
+    if(Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object && listedPackagesBoard != selectedBoard){ // check empty object !!!
+        listedPackages = listPackage(selectedBoard);
+        listedPackagesBoard = selectedBoard;
+    }
     return listedPackages;
+};
+var filerBoardPackageComponent = function(localPackage,name){
+    var components = {};
+    Object.keys(localPackage).forEach(packageName => {
+        if('config' in localPackage[packageName]){
+            let conf = localPackage[packageName].config;
+            components[packageName] = [];
+            if('component' in conf){
+                conf.component.forEach(componentName => {                    
+                    if(componentName.toLowerCase().startsWith(name.toLowerCase())){
+                        if(!components[packageName].includes(componentName)){
+                            components[packageName].push(componentName);
+                        }
+                    }
+                });
+            }
+        }
+    });
+    return components;
 };
 export default {
     boards,
     packages,
     listBoard,
     listPackage,
+    listToolbar : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'Toolbar'),
+    listActionbar : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'Actionbar'),
+    listPage : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'Page'),
+    listLeftDrawer : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'LeftDrawer'),
+    listRightDrawer : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'RightDrawer'),
+    listBottomPanel : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomPanel'),
+    listRightTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'RightTab'),
+    listBottomTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomTab'),
     loadBoardManagerConfig,
     listPublicBoard : function(){
 

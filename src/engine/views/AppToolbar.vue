@@ -19,8 +19,16 @@
         <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>        
       </template>
     </template>
-    <!-- dynamic left toolbar -->
-    
+    <!-- dynamic left toolbar -->    
+
+    <!-- load board package toolbar -->
+    <v-divider class="mx-1" inset vertical></v-divider>
+    <template v-for="(packageInfo,packageName) in $global.board.package">
+      <template v-for="(comp,index) in boardToolbar[packageName]">        
+        <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
+      </template>
+    </template>
+
     <!-- TODO : enable this when toolbar > xxx -->
     <!--v-menu origin="left top" :nudge-bottom="10" transition="scale-transition" offset-y=""> 
           <v-btn slot="activator" color="warning" icon>
@@ -40,13 +48,24 @@
     </v-menu-->
 
 
-      <v-spacer></v-spacer>            
-      
+    <v-spacer></v-spacer>
+    
     <template v-for="(comp,compName) in actionbar">
       <template v-for="(toobarTarget,tbName) in comp">
         <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
       </template>
     </template>
+
+    <v-divider class="mx-1" inset vertical></v-divider>
+    
+    <!-- load board package actionbar -->
+    <template v-for="(packageInfo,packageName) in $global.board.package">
+      <template v-for="(comp,index) in boardActionbar[packageName]">        
+        <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
+      </template>
+    </template>
+
+    <v-divider class="mx-1" inset vertical></v-divider>
 
       <v-btn icon @click="handleFullScreen()">
         <v-icon>fullscreen</v-icon>
@@ -63,11 +82,12 @@
   </v-toolbar>
 </template>
 <script>
+import Vue from 'vue';
 import NotificationList from '@/engine/views/widgets/list/NotificationList';
 import util from '@/engine/utils';
 import cm from '@/engine/ComponentManager';
+import bm from '@/engine/BoardManager';
 import AsyncComponent from '@/engine/AsyncComponent';
-import Vue from "vue";
 
 //var boardComponentData = util.vueRuntimeComponent('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue');
 //var componentRegisterName = 'actionbar-newfile-1';
@@ -82,9 +102,14 @@ export default {
     AsyncComponent
   },
   data: () => ({
+    boardActionbar : bm.listActionbar(Vue.prototype.$global.board.board),
+    boardToolbar : bm.listToolbar(Vue.prototype.$global.board.board),
     toolbars : cm.listToolbar,
-    actionbar : cm.listActionbar,   
+    actionbar : cm.listActionbar,
   }),
+  created(){
+    
+  },
   computed: {
     toolbarColor () {
       return this.$vuetify.options.extra.mainNav;

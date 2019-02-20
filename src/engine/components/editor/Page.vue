@@ -1,7 +1,7 @@
 <template>
     <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
         <!-- editor -->
-        <div class="pane" :style="[this.$global.editor.mode > 1 ? { minWidth: '500px', width: '75%' } : { width:'100%', height :'100%'}]" v-if="this.$global.editor.mode <= 2">
+        <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '1px' })]">
             <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
             <xml id="toolbox" ref=toolbox style="display: none">
                 <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
@@ -12,7 +12,7 @@
         <!-- end --> 
         <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
         <!-- source code -->
-        <div class="pane" :style="[this.$global.editor.mode != 3 ? { flexGrow: 1 } : { width:'100%', height :'100%'}]" v-if="this.$global.editor.mode > 1">
+        <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '1px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
             <code-mirror ref="cm"
                 v-model="sourcecode"
                 :options="editor_options">
@@ -156,11 +156,11 @@ export default {
                 scaleSpeed: 1.2,
                 //scrollbars: false
             },
-        });    
+        });
 
         this.workspace.addChangeListener(this.updatecode);
         Blockly.svgResize(this.workspace);
-        console.log('blocly mounted');        
+        console.log('blocly mounted');
         /*if (this.getCookie('lang') == null) {
             console.log('set default lang to en');
 		    this.setCookie('lang', 'en', 365);
@@ -190,7 +190,7 @@ export default {
     },
     methods:{
         onEditorFontsizeChange(value){
-            if('cm' in this.$refs){
+            if('cm' in this.$refs && this.$refs.cm != undefined){
                 let cm = this.$refs.cm.getCodeMirror();
                 cm.getWrapperElement().style["font-size"] = value+"px";
                 cm.refresh();
@@ -295,7 +295,7 @@ export default {
 .vertical-panes > .pane {
   text-align: left;  
   overflow: hidden;
-  background: #eee;  
+  background: #fff;  
 }
 .vertical-panes > .pane ~ .pane {
   border-left: 4px solid #ccc;

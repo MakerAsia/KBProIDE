@@ -7,18 +7,18 @@
           <!-- Page Header -->
           <page-header v-if="$route.meta.breadcrumb"></page-header>
           <div class="page-wrapper">
-            <!-- screen divider (into 3 section page,rightTab,bottomTab) -->            
+            <!-- screen divider (into 3 section page,rightTab,bottomTab) -->
             <multipane class="multiplate-warper" layout="horizontal" @paneResizeStop="onResizePanel">
               <!-- upper pane -->
               <multipane class="vertical-panes" layout="vertical" @paneResizeStop="onResizePanel" :style="[$global.ui.bottomTab.length > 0 ? {} : {'width':'100%', 'height' :'100%'}]">
                   <!-- left page -->
-                  <div class="page-navigation-display" :style="[$global.ui.rightTab.length > 0 ? {} : {'width':'100%', 'height' :'100%'}]">
+                  <div class="page-navigation-display" :style="[$global.ui.rightTab.length > 0 ? {'display' : 'none'} : {'width':'100%', 'height' :'100%','display' : 'block'}]">
                     <router-view></router-view>
                   </div>
                   <!-- end -->
                   <multipane-resizer v-if="$global.ui.rightTab.length > 0"></multipane-resizer>
                   <!--right tab -->
-                  <div class="pane" :style="[{ flexGrow: 1 }, ($global.ui.rightTab.length > 0 ? ({'min-width':'20%'}) : ({}))]" v-if="$global.ui.rightTab.length > 0">
+                  <div class="pane" :style="[{ flexGrow: 1 }, ($global.ui.rightTab.length > 0 ? ({'min-width':'20%','display' : 'block'}) : ({'display' : 'none'}))]">
                     
                     <v-tabs color="primary" v-model="$global.ui.rightTabModel" dark slider-color="yellow" ref="rtabs">
                       <draggable v-model="$global.ui.rightTab" class="v-tabs__container" :options="{group: 'tab-group'}">
@@ -104,16 +104,17 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
 import AppDrawer from '@/engine/views/AppDrawer';
 import AppToolbar from '@/engine/views/AppToolbar';
 import PageHeader from '@/engine/views/PageHeader';
 import { Multipane, MultipaneResizer } from 'vue-multipane';
 import draggable from 'vuedraggable'
 //========= load manager ==========//
-import ComponentManager from '@/engine/ComponentManager';
+import bm from '@/engine/BoardManager';
 import AsyncComponent from '@/engine/AsyncComponent';
 import AppEvents from  './event';
-
+import util from '@/engine/utils';
 
 export default {
   components: {
@@ -126,7 +127,7 @@ export default {
     AsyncComponent
   },
   data: () => ({        
-    expanded: true,        
+    expanded: true,
   }),
   computed: {
 
@@ -139,11 +140,33 @@ export default {
     //======== INIT ========//
     //----- load color -----//
     this.$vuetify.theme.primary = this.$global.setting.color;
-
-  },  
+    //----- load external plugin -----//    
+    this.reloadBoardPackage();
+  },
   methods: {
-    closeTab(name){      
-      this.$global.ui.removeAllTab(name);      
+    closeTab(name){
+      this.$global.ui.removeAllTab(name);
+    },
+    reloadBoardPackage(){      
+      var boardName = this.$global.board.board;
+      var boardPackages = bm.packages(boardName);      
+      Object.keys(boardPackages).forEach(packageName => {
+        let packageFilename = boardPackages[packageName].config.name;
+        let targetJsFile = `${util.boardDir}/${boardName}/package/${packageName}/dist/${packageFilename}.umd.js`;
+        let targetLinkFile = `file:///${targetJsFile}`;        
+        if(util.fs.existsSync(targetJsFile)){
+          let script = document.createElement('script');
+          script.setAttribute('src',targetLinkFile);
+          script.onload = function(){
+            if(packageName in window){
+              Vue.use(window[packageName]);
+              Vue.prototype.$global.board.package[packageName].loaded = true;
+              console.log(`board [${boardName}] loaded package : ${packageName}`);
+            }
+          }
+          document.head.appendChild(script);
+        }
+      });
     },
     onResizePanel(pane,container,size){    
       this.$global.$emit('panel-resize',size);

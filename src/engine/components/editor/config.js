@@ -3,7 +3,7 @@ export default {
     index : 0,
     description : "no have",
     tooltip : 'Change Editor',
-    presistance:{
+    persistence:{
         mode : 1,
         blockCode : '',
         sourceCode : '',

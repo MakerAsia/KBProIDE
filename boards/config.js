@@ -4,7 +4,7 @@ module.exports = {
         block : {},
         template : '',
     },
-    presistance : {
+    persistence : {
         board : 'kidbright',        
     }
 }

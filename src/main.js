@@ -13,29 +13,32 @@ import ui from '@/engine/UIManager';
 import pfm from '@/engine/PlatformManager';
 import util from '@/engine/utils';
 
+import SmoothScrollbar from 'vue-smooth-scrollbar'
+Vue.use(SmoothScrollbar);
+
 Vue.config.productionTip = false;
 
 //---- load data to global variable ----//
-var componentAllData = { data : {}, presistance : {}};
+var componentAllData = { data : {}, persistence : {}};
 var watcher = {};
 var watcherHandler = {};
 //--------------------------------------//
 
 var loadCofigComponents = function(obj,compName){
   var componentData = {};
-  var presistanceData = [];
+  var persistenceData = [];
   var methods = {};
   
-  if('presistance' in obj){//load presistance
-    Object.keys(obj.presistance).forEach(function(pkey){
-      if(!presistanceData.includes(pkey)){
-        presistanceData.push(pkey);
+  if('persistence' in obj){//load persistence
+    Object.keys(obj.persistence).forEach(function(pkey){
+      if(!persistenceData.includes(pkey)){
+        persistenceData.push(pkey);
       }
       // load data from localStorage if exist
       if(localStorage[compName+'.'+pkey]){
         componentData[pkey] = JSON.parse(localStorage[compName+'.'+pkey]);
       }else{
-        componentData[pkey] = obj.presistance[pkey];
+        componentData[pkey] = obj.persistence[pkey];
       }
     });
   }
@@ -49,7 +52,7 @@ var loadCofigComponents = function(obj,compName){
       methods[mkey] = obj.method[mkey];
     });
   }
-  return {data : componentData, presistance : presistanceData, method: methods};
+  return {data : componentData, persistence : persistenceData, method: methods};
 }
 
 var addWatcher = function(name,ghandler,deep){
@@ -74,7 +77,7 @@ Object.keys(comps).forEach(function(key){
   if('config' in comps[key]){
     let cmConfigData = loadCofigComponents(comps[key].config,key);
     componentAllData.data[key] = cmConfigData.data;
-    componentAllData.presistance[key] = cmConfigData.presistance;
+    componentAllData.persistence[key] = cmConfigData.persistence;
   }
 });
 //=====================================//
@@ -84,32 +87,98 @@ Object.keys(comps).forEach(function(key){
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
 var boardInfoComponent = loadCofigComponents(boardInfo);
-// load pacakges
-var boardPacakges = bm.listPackage(boardInfoComponent.data.board);
 // assign data to $global
 componentAllData.data['board'] = boardInfoComponent.data;
-componentAllData.presistance['board'] = boardInfoComponent.presistance;
+componentAllData.persistence['board'] = boardInfoComponent.persistence;
+// load pacakges
+var boardPackage = bm.packages(boardInfoComponent.data.board);
+
 // assign package to board
-componentAllData.data['board']['package'] = boardPacakges;
+componentAllData.data['board']['package'] = {};
+Object.keys(boardPackage).forEach(packageName => {
+  componentAllData.data.board.package[packageName] = {};
+  let boardPackageData = loadCofigComponents(boardPackage[packageName].config,'board.package.'+packageName);
+  componentAllData.data.board.package[packageName] = boardPackageData.data;
+  componentAllData.persistence['board.package.'+packageName] = boardPackageData.persistence;
+});
 
 addWatcher('board.board',function(val){ //listen board name change we need to reload everything
   console.log('board changed to : ' + val);
   Vue.prototype.$global.$emit('board-change',val);  
 },false);
+
+//console.log(process.platform);
+//console.log(util.rootDir);
+
+//TODO load platform block
+
+//var vv = util.requireFunc('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/kidbright-actionbar/dist/kb-actionbar.umd.js');
+//var cv = eval(vv);
+//var text = util.fs.readFileSync('E:/Bloccoly/Research/vuetify-table-master/dist/vuetify-actionbar.umd.js','utf8');
+//var vv = util.requireFunc('E:/Bloccoly/Research/dayspan-vuetify-master/dist/lib/dayspan-vuetify.min.js');
+//var vv = util.requireFunc('E:/Bloccoly/Research/vuetify-table-master/dist/vuetify-actionbar.umd.js');
+//var vv = util.requireFunc('E:/Bloccoly/Research/vuetify-actionbar.umd.js');
+//console.log(text);
+//var vv = eval(text);
+//console.log(vv);
+//Vue.use(vv);
+
+
+//Vue.component('actionbar-wifi',vv.ActionbarWifi);
+//register component
+/*Object.keys(componentAllData.data.board.package).forEach(packageName => {
+  Object.keys(componentAllData.data.board.package[packageName]).forEach(componentFile =>{
+    var vueFile = componentAllData.data.board.package[packageName][componentFile];
+    try { // load components
+      var boardComponentData = util.vueRuntimeComponent(vueFile);
+      var componentRegisterName = packageName.toLowerCase() + '-' + util.kebab(componentFile);
+      Vue.component(componentRegisterName,boardComponentData);      
+    } catch (error) {
+      
+    }
+  });  
+});
+*/
+//console.log(vv);
+/*
+//var v = require.context('./', false, /.*?/).keys();
+//console.log(v);
+
+console.log('vvvvvv');
+var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
+var vl = util.vueLoader(cc);
+var compp = eval(vl.js);
+console.log(vl);
+console.log('cccccc');
+console.log(compp);
+console.log('cc2cccc');
+*/
+//var v = require.context('./', false, /.*?/).keys();
+//console.log(v);
+/*
+console.log('vvvvvv');
+var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
+var vl = util.vueLoader(cc);
+var compp = eval(vl.js);
+console.log(vl);
+console.log('cccccc');
+console.log(compp);
+console.log('cc2cccc');*/
+
 //=====================================//
 
 //============= ui manager ============//
 var uiComponentData = loadCofigComponents(ui);
 componentAllData.data['ui'] = uiComponentData.data;
-componentAllData.presistance['ui'] = uiComponentData.presistance;
+componentAllData.persistence['ui'] = uiComponentData.persistence;
 //=====================================//
 
 
 
 
-//---- presistance data watcher ----//
-Object.keys(componentAllData.presistance).forEach(function(key){
-  componentAllData.presistance[key].forEach(function(pkey){
+//---- persistence data watcher ----//
+Object.keys(componentAllData.persistence).forEach(function(key){
+  componentAllData.persistence[key].forEach(function(pkey){
     addWatcher(key+'.'+pkey,function(val){      
       localStorage[key+'.'+pkey] = JSON.stringify(val);
     },true);
