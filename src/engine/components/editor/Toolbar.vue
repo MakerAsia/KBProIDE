@@ -17,8 +17,8 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12 md4 v-for="(mode,index) in modes" :key="index">                                
-                                    <v-hover>                                    
-                                        <v-card light slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingMode == index+1? 8 : 2)}`" @click.native="selectingMode = mode.mode" height="200">                                        
+                                    <v-hover>                              
+                                        <v-card light slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingMode == index+1? 8 : 2)}`" @click.native="selectingMode = mode.mode" height="200">
                                             <div class="sneaker" v-if="selectingMode == index+1" transition="fade-transition">                
                                                 <v-layout row justify-space-between class="ma-0 grey lighten-2">
                                                     <v-flex xs2>

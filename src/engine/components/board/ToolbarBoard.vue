@@ -25,8 +25,9 @@
                     <div id="pageCard">
                         <v-container grid-list-xl fluid>
                             <v-layout wrap>            
-                                <v-flex sm4 v-for="(data,index) in boardData" :key="index">
-                                    <v-card>
+                                <v-flex sm6 md4 v-for="(data,index) in boardData" :key="index">
+                                    <v-hover>
+                                    <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingBoard == data.boardName? 8 : 2)}`" @click.native="selectingBoard = data.boardName">
                                         <v-card-media>
                                             <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
                                                 {{data.name}}
@@ -48,17 +49,18 @@
                                         <v-card-actions>
                                             <span class="ml-2"><strong>{{data.author}}</strong></span>
                                             <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink(data.link)">
                                                 <v-icon>fa-link</v-icon>
                                             </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px">
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink('mailto:'+data.mail)">
                                                 <v-icon>fa-envelope-o</v-icon>
                                             </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px">
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px" @click="openLink(data.git)">
                                                 <v-icon>fa-github</v-icon>
                                             </v-btn>
                                         </v-card-actions>   
                                     </v-card>
+                                    </v-hover>
                                 </v-flex>                                
                             </v-layout>               
                         </v-container>
@@ -77,6 +79,9 @@
 </template>
 
 <script>
+
+const { shell } = require('electron');
+
 import VWidget from '@/engine/views/VWidget';
 export default {
   components: {
@@ -84,6 +89,7 @@ export default {
   },
   data () {
     return {
+        selectingBoard : 'kidbright',
         cardText : 'test test test\ntest test test\ntest test test\ntest test test',
         boardDialog : false,
         searchText : '',        
@@ -101,6 +107,7 @@ export default {
         },
         boardData : [
             {
+                boardName : 'kidbright',
                 name : 'KidBright (Original)',
                 desc : 'test test test test more ...',
                 author : 'xxxx test',
@@ -111,6 +118,7 @@ export default {
                 image : 'https://i.ibb.co/K7NsyGN/display.jpg'
             },
             {
+                boardName : 'kidbright-arduino',
                 name : 'KidBright (Arduino)',
                 desc : 'test test test test more ...',
                 author : 'xxxx test',
@@ -121,6 +129,7 @@ export default {
                 image : 'https://i.ibb.co/K7NsyGN/display.jpg'
             },
             {
+                boardName : 'KBPro',
                 name : 'KidBright (Original)',
                 desc : 'test test test test more ...',
                 author : 'xxxx test',
@@ -131,6 +140,7 @@ export default {
                 image : '/static/nature/n2.jpeg'
             },
             {
+                boardName : 'arduino-uno',
                 name : 'KidBright (Original)',
                 desc : 'test test test test more ...',
                 author : 'xxxx test',
@@ -141,6 +151,7 @@ export default {
                 image : '/static/nature/n3.jpeg'
             },
             {
+                boardName : 'arduino-mega',
                 name : 'KidBright (Original)',
                 desc : 'test test test test more ...',
                 author : 'xxxx test',
@@ -152,6 +163,11 @@ export default {
             },
         ]
     }
+  },
+  methods:{
+      openLink : (url)=>{
+          shell.openExternal(url);
+      }
   },
   mounted(){
   }

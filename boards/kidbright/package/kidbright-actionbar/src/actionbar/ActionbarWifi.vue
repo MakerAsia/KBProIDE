@@ -3,7 +3,7 @@
         <i aria-hidden="true" class="v-icon fa fa-wifi theme--dark"></i>
     </v-btn-->
     <div>
-        <v-dialog v-model="dialogxx" max-width="500px">
+        <v-dialog v-model="dialog" max-width="500px">
             <v-btn slot="activator" color="red lighten-2" dark>
             {{wording}}
             </v-btn>
@@ -48,7 +48,7 @@
 export default{
     data () {
         return {
-            dialogxx: false,
+            dialog: false,
             isIoT : false,
             wording : 'Open it'
         }
