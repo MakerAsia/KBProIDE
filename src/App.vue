@@ -12,7 +12,7 @@
               <!-- upper pane -->
               <multipane class="vertical-panes" layout="vertical" @paneResizeStop="onResizePanel" :style="[$global.ui.bottomTab.length > 0 ? {} : {'width':'100%', 'height' :'100%'}]">
                   <!-- left page -->
-                  <div class="page-navigation-display" :style="[$global.ui.rightTab.length > 0 ? {'display' : 'none'} : {'width':'100%', 'height' :'100%','display' : 'block'}]">
+                  <div class="page-navigation-display" :style="[$global.ui.rightTab.length > 0 ? {'display' : 'block'} : {'width':'100%', 'height' :'100%','display' : 'block'}]">
                     <router-view></router-view>
                   </div>
                   <!-- end -->
@@ -22,7 +22,7 @@
                     
                     <v-tabs color="primary" v-model="$global.ui.rightTabModel" dark slider-color="yellow" ref="rtabs">
                       <draggable v-model="$global.ui.rightTab" class="v-tabs__container" :options="{group: 'tab-group'}">
-                        <!-- tab header -->  
+                        <!-- tab header -->
                         <v-tab v-for="(tab, index) in $global.ui.rightTab" :key="index" :href="`#rtab-${tab.name}`">
                           {{ tab.title }}
                           <v-btn icon small class="close-tab-btn-control" @click="closeTab(tab.name)">
@@ -142,6 +142,7 @@ export default {
     this.$vuetify.theme.primary = this.$global.setting.color;
     //----- load external plugin -----//    
     this.reloadBoardPackage();
+    this.$global.on('board-change',reloadBoardPackage);
   },
   methods: {
     closeTab(name){

@@ -83,9 +83,9 @@ var loadBoardManagerConfig = function(){
 };
 
 var boards = function(){
-    if(Object.entries(listedBoards).length === 0 && listedBoards.constructor === Object){ // check empty object !!!
+    if(listedBoards.length === 0){ // check empty object !!!
         listedBoards = listBoard();
-    }    
+    }
     return listedBoards;
 };
 

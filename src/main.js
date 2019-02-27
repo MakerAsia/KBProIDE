@@ -16,6 +16,7 @@ import util from '@/engine/utils';
 import SmoothScrollbar from 'vue-smooth-scrollbar'
 Vue.use(SmoothScrollbar);
 
+
 Vue.config.productionTip = false;
 
 //---- load data to global variable ----//

@@ -14,19 +14,19 @@
 #include "mcp7940n.h"
 #include <math.h>
 
-{{plugins_includes_code}}
+${plugins_includes_code}
 
 // kbiot
 #include "nvs_flash.h"
 #include "wificontroller.h"
 #include "kbiot.h"
 
-#define KBSERIAL "{{kbmac_addr}}"
-#define CLIENTID "{{kbmac_addr}}"
-#define USERNAME "{{md5_mac_addr}}"
+#define KBSERIAL "${kbmac_addr}"
+#define CLIENTID "${kbmac_addr}"
+#define USERNAME "${md5_mac_addr}"
 #define PASSWORD ""
-#define CONFIG_WIFI_SSID "{{sta_ssid}}"
-#define CONFIG_WIFI_PASSWORD "{{sta_password}}"
+#define CONFIG_WIFI_SSID "${sta_ssid}"
+#define CONFIG_WIFI_PASSWORD "${sta_password}"
 
 #define PI 3.14159265' + '
 // ===
@@ -46,18 +46,18 @@ MCP7940N mcp7940n = MCP7940N(0, MCP7940N_ONBOARD_ADDR);
 // ==================================================================================
 // plug-ins devices
 // ==================================================================================
-{{plugins_obj_inst_code}}
+${plugins_obj_inst_code}
 
-{{var_str}}
-{{prime_func_code}}
-{{iot_task}}
-{{task_code}}
+${var_str}
+${prime_func_code}
+${iot_task}
+${task_code}
 
 void user_app(void) {
     xTaskCreatePinnedToCore(iotTask, "iotTask", 4096, NULL, USERAPP_TASK_PRIORITY, NULL, KIDBRIGHT_RUNNING_CORE);
     srand(mcp7940n.get(5)); // random seed
-    {{setup_code}}
-    {{task_fn_code}}
+    ${setup_code}
+    ${task_fn_code}
 }
 
 void vUserAppTask(void *pvParameters) {
@@ -82,7 +82,7 @@ void vUserAppTask(void *pvParameters) {
   // add plug-ins devices
   // ================================================================================
     
-  {{plugins_obj_reg_code}}
+  ${plugins_obj_reg_code}
 
   // start device manager
   devman_start();

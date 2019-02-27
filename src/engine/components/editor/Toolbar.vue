@@ -19,15 +19,17 @@
                                 <v-flex xs12 md4 v-for="(mode,index) in modes" :key="index">                                
                                     <v-hover>                              
                                         <v-card light slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingMode == index+1? 8 : 2)}`" @click.native="selectingMode = mode.mode" height="200">
-                                            <div class="sneaker" v-if="selectingMode == index+1" transition="fade-transition">                
-                                                <v-layout row justify-space-between class="ma-0 grey lighten-2">
-                                                    <v-flex xs2>
-                                                    </v-flex>
-                                                    <v-flex xs2 class="text-sm-right">
-                                                        <v-icon color="green">check_circle</v-icon>
-                                                    </v-flex>
-                                                </v-layout>
-                                            </div>
+                                            <transition name="fade">
+                                                <div class="sneaker" v-if="selectingMode == index+1" transition="fade-transition">                
+                                                    <v-layout row justify-space-between class="ma-0 grey lighten-2">
+                                                        <v-flex xs2>
+                                                        </v-flex>
+                                                        <v-flex xs2 class="text-sm-right">
+                                                            <v-icon color="green">check_circle</v-icon>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </div>
+                                            </transition>
                                             <v-card-text>
                                                 <div class="layout ma-0 align-center column pt-4">
                                                     <v-avatar color="primary" :size="mode.icon.size">
@@ -133,4 +135,10 @@ export default {
       position: absolute;
       z-index : 999;
   }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
