@@ -12,7 +12,7 @@ const ospath = function (p) {
 }
 
 const setConfig = (AppContext) => {
-    const app_dir = `${AppContext.process_dir}/${AppContext.user_app_dir}/${AppContext.board_name}`
+    const app_dir = `${AppContext.user_app_dir}/${AppContext.board_name}`
     G = Object.assign({}, AppContext)
     G.compiler = AppContext.compiler
     G.Log = require('./log')
@@ -38,11 +38,11 @@ let compileFiles = async function ({plugins_sources, cflags, plugins_includes_sw
         "-Wno-error=unused-variable", "-Wno-error=deprecated-declarations", "-Wextra", "-Wno-unused-parameter", "-Wno-sign-compare",
         "-fno-exceptions", "-DESP_PLATFORM", "-D", "IDF_VER='\"\"'", "-MMD", "-MP", "-Wno-unused-variable", "-Wno-unused-value",
         "-DESP32=1", "-DWITH_POSIX", "-DMBEDTLS_CONFIG_FILE='\"mbedtls/esp_config.h\"'", "-DHAVE_CONFIG_H",
-        "-Iesp32/lib/release/netpie/include"].join(" ")
+        "-Ilib/netpie/include"].join(" ")
     plugins_sources.forEach(async (file, idx, arr) => {
         let filename = getName(file)
         let fn_obj = `${G.user_app_dir}/${filename}.o`;
-        let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${plugins_includes_switch} -c "${file}" -o "${fn_obj}"`;
+        let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${plugins_includes_switch} -c "${file}" -o "${fn_obj}"`;        
         try {
             const {stdout, stderr} = await execPromise(G.ospath(cmd), {cwd: G.process_dir})
             if (!stderr) {
@@ -92,8 +92,8 @@ async function flash({portname: port, baudrate, G, stdio}) {
     var flash_cmd = util.format(
         `"${G.esptool}" --chip esp32 %s --before "default_reset" --after "hard_reset" write_flash -z --flash_mode "dio" --flash_freq "40m" --flash_size detect 0x1000 "%s" 0x8000 "%s" 0x10000 "%s"`,
         `--port "${port}" --baud ${baudrate}`,
-        `./${G.release_dir}/bootloader.bin`,
-        `./${G.release_dir}/partitions_singleapp.bin`,
+        `./${G.library_dir}/bootloader.bin`,
+        `./${G.library_dir}/partitions_singleapp.bin`,
         `./${G.user_app_dir}/${G.board_name}/${G.board_name}.bin`
     );
     execSync(flash_cmd, {cwd: G.process_dir, stdio})

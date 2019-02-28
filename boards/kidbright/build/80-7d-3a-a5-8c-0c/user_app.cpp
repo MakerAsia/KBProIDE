@@ -21,9 +21,9 @@
 #include "wificontroller.h"
 #include "kbiot.h"
 
-#define KBSERIAL "80-7D-3A-A5-8C-0C"
-#define CLIENTID "80-7D-3A-A5-8C-0C"
-#define USERNAME "5049e6c71e8bb2d7231f171cb3f8100f"
+#define KBSERIAL "807D3AA58C0C"
+#define CLIENTID "807D3AA58C0C"
+#define USERNAME "3e5bc98f789ab1b6e712d677bc33a6af"
 #define PASSWORD ""
 #define CONFIG_WIFI_SSID ""
 #define CONFIG_WIFI_PASSWORD ""

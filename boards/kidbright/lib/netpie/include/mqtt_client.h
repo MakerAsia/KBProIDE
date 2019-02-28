@@ -61,11 +61,11 @@ typedef struct {
     const char *host;
     const char *uri;
     uint32_t port;
-    char *client_id;
-    char *username;
-    char *password;
-    char *lwt_topic;
-    char *lwt_msg;
+    const char *client_id;
+    const char *username;
+    const char *password;
+    const char *lwt_topic;
+    const char *lwt_msg;
     int lwt_qos;
     int lwt_retain;
     int lwt_msg_len;
@@ -76,7 +76,9 @@ typedef struct {
     int task_prio;
     int task_stack;
     int buffer_size;
-    char *cert_pem;
+    const char *cert_pem;
+    const char *client_cert_pem;
+    const char *client_key_pem;
     esp_mqtt_transport_t transport;
 } esp_mqtt_client_config_t;
 
@@ -89,9 +91,7 @@ esp_err_t esp_mqtt_client_unsubscribe(esp_mqtt_client_handle_t client, const cha
 int esp_mqtt_client_publish(esp_mqtt_client_handle_t client, const char *topic, const char *data, int len, int qos, int retain);
 esp_err_t esp_mqtt_client_destroy(esp_mqtt_client_handle_t client);
 
-/* added */
 bool esp_mqtt_client_connected(esp_mqtt_client_handle_t client);
-
 
 #ifdef __cplusplus
 }

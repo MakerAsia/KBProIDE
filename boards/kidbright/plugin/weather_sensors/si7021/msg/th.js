@@ -1,0 +1,7 @@
+Blockly.Msg.SI7021_GET_TEMPERATURE_TITLE = "อุณหภูมิ SI7021";
+Blockly.Msg.SI7021_GET_TEMPERATURE_TOOLTIP = "อ่านค่าอุณหภูมิ SI7021";
+Blockly.Msg.SI7021_GET_TEMPERATURE_HELPURL = "";
+
+Blockly.Msg.SI7021_GET_HUMIDITY_TITLE = "ความชื้น SI7021";
+Blockly.Msg.SI7021_GET_HUMIDITY_TOOLTIP = "อ่านค่าความชื้น SI7021";
+Blockly.Msg.SI7021_GET_HUMIDITY_HELPURL = "";

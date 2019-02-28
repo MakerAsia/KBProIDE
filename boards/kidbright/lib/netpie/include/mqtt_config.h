@@ -8,6 +8,9 @@
 
 #include "sdkconfig.h"
 
+// This Line is manually added, otherwise MQTT will not connect 
+#define CONFIG_MQTT_PROTOCOL_311
+
 #define MQTT_PROTOCOL_311           CONFIG_MQTT_PROTOCOL_311
 #define MQTT_RECONNECT_TIMEOUT_MS   (10*1000)
 
@@ -58,6 +61,19 @@
 #else
 #define MQTT_WSS_DEFAULT_PORT       443
 #endif
+
+// #define MQTT_CORE_SELECTION_ENABLED CONFIG_MQTT_TASK_CORE_SELECTION_ENABLED
+
+// #ifdef CONFIG_MQTT_USE_CORE_0
+// 	#define MQTT_TASK_CORE	0
+// #else
+// 	#ifdef CONFIG_MQTT_USE_CORE_1
+// 		#define MQTT_TASK_CORE 1
+// 	#else
+// 		#define MQTT_TASK_CORE 0
+// 	#endif
+// #endif
+
 
 #define MQTT_ENABLE_SSL             CONFIG_MQTT_TRANSPORT_SSL
 #define MQTT_ENABLE_WS              CONFIG_MQTT_TRANSPORT_WEBSOCKET
