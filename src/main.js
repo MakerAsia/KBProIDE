@@ -11,6 +11,7 @@ import cm from '@/engine/ComponentManager';
 import bm from '@/engine/BoardManager';
 import ui from '@/engine/UIManager';
 import pfm from '@/engine/PlatformManager';
+import compiler from '@/engine/Compiler';
 import util from '@/engine/utils';
 
 import SmoothScrollbar from 'vue-smooth-scrollbar'
@@ -91,7 +92,7 @@ var boardInfoComponent = loadCofigComponents(boardInfo);
 // assign data to $global
 componentAllData.data['board'] = boardInfoComponent.data;
 componentAllData.persistence['board'] = boardInfoComponent.persistence;
-// load pacakges
+// load packages
 var boardPackage = bm.packages(boardInfoComponent.data.board);
 
 // assign package to board
@@ -193,7 +194,18 @@ Vue.prototype.$global = new Vue({
   data: componentAllData.data,
   watch: watcher
 });
-
+//---- setup $engine ----//
+var engineData = {
+  util : util,
+  compiler : compiler,
+  componentManager : cm,
+  boardManager : bm,
+  platformManager : pfm,
+  uiManager : ui
+};
+Vue.prototype.$engine = new Vue({
+  data : engineData
+})
 //=======================================================//
 new Vue({  
   router,

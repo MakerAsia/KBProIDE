@@ -9,10 +9,9 @@ const driver_type_arr = [
     'DEV_I2C1',
     'DEV_SPI'
 ];
-var obj_inst_tab = [];
-var pluginsInfo = [];
 
 module.exports = {
+
     gen_iot_code : function(setup_code, current_setup_code) {
         var config_flag = false;
         var iot_config = [];        
@@ -87,7 +86,8 @@ module.exports = {
         }
         return line_inst_arr;
     },
-    generateObjectInstantTab : function(line_inst_arr){        
+    generateObjectInstantTab : function(line_inst_arr){   
+		var obj_inst_tab = [];     
         if (line_inst_arr.length > 0) {
             for (var line_inst_index in line_inst_arr) {
                 var obj_inst = line_inst_arr[line_inst_index].obj_inst;
@@ -127,9 +127,10 @@ module.exports = {
                     };
                 }
             }
-        }
+		}
+		return obj_inst_tab;
     },
-    generatePluginCode : function(){
+    generatePluginCode : function(pluginsInfo,obj_inst_tab){
         // plug-ins includes
 		var plugins_includes_code = '';
 		var plugins_includes_switch = '';
@@ -146,26 +147,16 @@ module.exports = {
         return {code : plugins_includes_code, switch : plugins_includes_switch, source : plugins_sources};
     },
     generateIoTTask : function(sta_ssid,sta_password,enable_iot){        
-        var start_wifi_code = '';
-		var start_iot_code = '';
-        if (sta_ssid !== '') {
-			if (sta_password !== '') {
-				// set wifi and enable wifi
-				start_wifi_code = 'wifi_sta_start(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD);';
-				if (enable_iot === 'true') {
-					start_iot_code = 'kbiot_init(KBSERIAL, CLIENTID, USERNAME, PASSWORD);';
-				}
-			}
-        }
+		//TODO : some wifi no need password to connect internet
         return `void iotTask(void *pvParameters) {
-			${start_wifi_code}
-			${start_iot_code}
+			${(sta_ssid != '' && sta_password != '')? 'wifi_sta_start(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD);' : ''} 
+			${(sta_ssid != '' && sta_password != '' && enable_iot === true)? 'kbiot_init(KBSERIAL, CLIENTID, USERNAME, PASSWORD);' : ''}
 			vTaskDelay(500 / portTICK_RATE_MS);
 			vTaskDelete(NULL);
 		}`;
     },
-    codeGenerate : function(rawCode,context,template){
-        var codeContext = this.createCodeContext(rawCode,context);
+    codeGenerate : function(rawCode,template,config){
+        var codeContext = this.createCodeContext(rawCode,config);
         const entries = Object.entries(codeContext)
         const result = entries.reduce( (output, entry) => {
             const [key, value] = entry;
@@ -174,22 +165,16 @@ module.exports = {
         }, template );
         return result;
     },
-	createCodeContext : function(rawCode,context){
-		var mac_addr = context.board_mac_addr;
+	createCodeContext : function(rawCode,config){
+		var mac_addr = config.board_mac_addr;
 		var kbmac_addr = (mac_addr.replace(/:/g, "")).toUpperCase();
 		var md5_mac_addr = md5('K:' + kbmac_addr);
 
 		// console.log('=== ' + kbmac_addr);
 		// console.log(md5_mac_addr);
-
-		var sta_ssid = context.sta_ssid;
-		var sta_password = context.sta_password;
-		var enable_iot = context.enable_iot;
 		
 		var prime_func_code = '';
 		var use_prime_func = false;
-
-		
 
 		//Log.i('building board id ' + board_id + ' (' + mac_addr + ')');
 
@@ -210,7 +195,7 @@ module.exports = {
                         
             // collect plug-ins object instantiation
 			var line_inst_arr = this.getPluginInstatantLine(line);
-            this.generateObjectInstantTab(line_inst_arr);
+            obj_inst_tab = this.generateObjectInstantTab(line_inst_arr,config.plugins);
 
 			// perform plug-ins object instantiate substitution
 			for (var line_inst_index in line_inst_arr) {
@@ -305,7 +290,7 @@ module.exports = {
 				'  }\n';
 		}
 
-        var iot_task = this.generateIoTTask(sta_ssid,sta_password,enable_iot);        
+        var iot_task = this.generateIoTTask(config.sta_ssid,config.sta_password,config.enable_iot);        
         var code = {
             plugins_includes_code : plugins_includes_code,
             kbmac_addr : kbmac_addr,

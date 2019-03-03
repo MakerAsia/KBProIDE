@@ -96,16 +96,17 @@ var actionbar_namespaceObject = {};
 __webpack_require__.r(actionbar_namespaceObject);
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarWifi", function() { return ActionbarWifi; });
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarSetClock", function() { return ActionbarSetClock; });
+__webpack_require__.d(actionbar_namespaceObject, "ActionbarBuild", function() { return ActionbarBuild; });
 
 // EXTERNAL MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 var setPublicPath = __webpack_require__("HrLf");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"E://Bloccoly//Research//KBProIDE//boards//kidbright//package//kidbright-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarWifi.vue?vue&type=template&id=01c0903b&
-var ActionbarWifivue_type_template_id_01c0903b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.dialogxx),callback:function ($$v) {_vm.dialogxx=$$v},expression:"dialogxx"}},[_c('v-btn',{attrs:{"slot":"activator","color":"red lighten-2","dark":""},slot:"activator"},[_vm._v("\n        "+_vm._s(_vm.wording)+"\n        ")]),_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("User Profile")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"label":"SSID","required":""}})],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"label":"Password","type":"password"}})],1),_c('v-list-tile',[_c('v-list-tile-action',[_c('v-checkbox',{model:{value:(_vm.isIoT),callback:function ($$v) {_vm.isIoT=$$v},expression:"isIoT"}})],1),_c('v-list-tile-content',[_c('v-list-tile-title',[_vm._v("Notifications")]),_c('v-list-tile-sub-title',[_vm._v("Notify me about updates to apps or games that I downloaded")])],1)],1)],1)],1),_c('small',[_vm._v("*indicates required field")])],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.dialog = false}}},[_vm._v("Close")]),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.dialog = false}}},[_vm._v("Save")])],1)],1)],1)],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"E://Bloccoly//Research//KBProIDE//boards//kidbright//package//kidbright-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarWifi.vue?vue&type=template&id=2ff72f7b&
+var ActionbarWifivue_type_template_id_2ff72f7b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.dialog),callback:function ($$v) {_vm.dialog=$$v},expression:"dialog"}},[_c('v-btn',{attrs:{"slot":"activator","color":"red lighten-2","dark":""},slot:"activator"},[_vm._v("\n        "+_vm._s(_vm.wording)+"\n        ")]),_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("User Profile")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"label":"SSID","required":""}})],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"label":"Password","type":"password"}})],1),_c('v-list-tile',[_c('v-list-tile-action',[_c('v-checkbox',{model:{value:(_vm.isIoT),callback:function ($$v) {_vm.isIoT=$$v},expression:"isIoT"}})],1),_c('v-list-tile-content',[_c('v-list-tile-title',[_vm._v("Notifications")]),_c('v-list-tile-sub-title',[_vm._v("Notify me about updates to apps or games that I downloaded")])],1)],1)],1)],1),_c('small',[_vm._v("*indicates required field")])],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.dialog = false}}},[_vm._v("Close")]),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.dialog = false}}},[_vm._v("Save")])],1)],1)],1)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=template&id=01c0903b&
+// CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=template&id=2ff72f7b&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarWifi.vue?vue&type=script&lang=js&
 //
@@ -157,7 +158,7 @@ var staticRenderFns = []
 /* harmony default export */ var ActionbarWifivue_type_script_lang_js_ = ({
   data: function data() {
     return {
-      dialogxx: false,
+      dialog: false,
       isIoT: false,
       wording: 'Open it'
     };
@@ -5586,7 +5587,7 @@ var wrapper = {
 
 var component = normalizeComponent(
   actionbar_ActionbarWifivue_type_script_lang_js_,
-  ActionbarWifivue_type_template_id_01c0903b_render,
+  ActionbarWifivue_type_template_id_2ff72f7b_render,
   staticRenderFns,
   false,
   null,
@@ -5672,7 +5673,1136 @@ var ActionbarSetClock_component = normalizeComponent(
 
 installComponents_default()(ActionbarSetClock_component, {VBtn: VBtn})
 
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"E://Bloccoly//Research//KBProIDE//boards//kidbright//package//kidbright-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=template&id=2ac2398a&
+var ActionbarBuildvue_type_template_id_2ac2398a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-play")])],1),_c('span',[_vm._v("Compile & Run")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile & Run")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep < 3)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep >= 3)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("check_circle_outline")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 0},on:{"click":function($event){_vm.compileStep = 1}}},[_vm._v("\n                                    Find KidBright\n                                    "),(_vm.compileStep >= 2)?_c('small',[_vm._v("KidBright at COM15 mac : 12-AA-58-48-AC-25")]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    KidBright at COM15 mac : 12-AA-58-48-AC-25\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 1}},[_vm._v("\n                                    Create an ad group\n                                    "),(_vm.compileStep >= 3)?_c('small',[_vm._v("check if KidBright connected")]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    KidBright Compile Step 2\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"3","complete":_vm.compileStep > 2}},[_vm._v("\n                                    Create an ad\n                                ")]),(_vm.compileStep >= 3)?_c('v-stepper-content',{attrs:{"step":"3"}},[_vm._v("\n                                    KidBright Compile Step 3\n                                    "),_c('v-progress-linear',{attrs:{"height":"2","active":_vm.show,"indeterminate":_vm.query,"query":true},model:{value:(_vm.value),callback:function ($$v) {_vm.value=$$v},expression:"value"}})],1):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},on:{"click":function($event){_vm.compileStep = 1}}},[_vm._v("Reset")]),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},on:{"click":function($event){_vm.compileStep += 1}}},[_vm._v("Step")]),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 3},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)])],1)}
+var ActionbarBuildvue_type_template_id_2ac2398a_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=template&id=2ac2398a&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var engine = Vue.prototype.$engine;
+var G = Vue.prototype.$global;
+var ActionbarBuildvue_type_script_lang_js_path = "".concat(engine.util.boardDir, "/").concat(G.board.board, "/compiler");
+console.log(ActionbarBuildvue_type_script_lang_js_path);
+var boardCompiler = engine.util.requireFunc(ActionbarBuildvue_type_script_lang_js_path);
+console.log(boardCompiler);
+/* harmony default export */ var ActionbarBuildvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      compileStep: 1,
+      compileDialog: false,
+      complete: false,
+      //test progress bar
+      value: 0,
+      query: false,
+      show: true,
+      interval: 0
+    };
+  },
+  mounted: function mounted() {
+    this.queryAndIndeterminate();
+  },
+  beforeDestroy: function beforeDestroy() {
+    clearInterval(this.interval);
+  },
+  methods: {
+    queryAndIndeterminate: function queryAndIndeterminate() {
+      var _this = this;
+
+      this.query = true;
+      this.show = true;
+      this.value = 0;
+      setTimeout(function () {
+        _this.query = false;
+        _this.interval = setInterval(function () {
+          if (_this.value === 100) {
+            clearInterval(_this.interval);
+            _this.show = false;
+            return setTimeout(_this.queryAndIndeterminate, 2000);
+          }
+
+          _this.value += 25;
+        }, 1000);
+      }, 2500);
+    }
+  },
+  watch: {
+    'compileDialog': function compileDialog(val) {
+      if (val) {
+        //on opening
+        this.compileStep = 1;
+        this.complete = false;
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
+ /* harmony default export */ var actionbar_ActionbarBuildvue_type_script_lang_js_ = (ActionbarBuildvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_steppers.styl
+var _steppers = __webpack_require__("v/Yf");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepper.js
+var VStepper_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Styles
+
+// Mixins
+
+
+// Util
+
+/* harmony default export */ var VStepper = (mixins(provide('stepper'), themeable
+/* @vue/component */
+).extend({
+    name: 'v-stepper',
+    provide: function provide() {
+        return {
+            stepClick: this.stepClick,
+            isVertical: this.vertical
+        };
+    },
+
+    props: {
+        nonLinear: Boolean,
+        altLabels: Boolean,
+        vertical: Boolean,
+        value: [Number, String]
+    },
+    data: function data() {
+        return {
+            inputValue: null,
+            isBooted: false,
+            steps: [],
+            content: [],
+            isReverse: false
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return VStepper_extends({
+                'v-stepper': true,
+                'v-stepper--is-booted': this.isBooted,
+                'v-stepper--vertical': this.vertical,
+                'v-stepper--alt-labels': this.altLabels,
+                'v-stepper--non-linear': this.nonLinear
+            }, this.themeClasses);
+        }
+    },
+    watch: {
+        inputValue: function inputValue(val, prev) {
+            this.isReverse = Number(val) < Number(prev);
+            for (var index = this.steps.length; --index >= 0;) {
+                this.steps[index].toggle(this.inputValue);
+            }
+            for (var _index = this.content.length; --_index >= 0;) {
+                this.content[_index].toggle(this.inputValue, this.isReverse);
+            }
+            this.$emit('input', this.inputValue);
+            prev && (this.isBooted = true);
+        },
+        value: function value() {
+            var _this = this;
+
+            this.$nextTick(function () {
+                return _this.inputValue = _this.value;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.inputValue = this.value || this.steps[0].step || 1;
+    },
+
+    methods: {
+        register: function register(item) {
+            if (item.$options.name === 'v-stepper-step') {
+                this.steps.push(item);
+            } else if (item.$options.name === 'v-stepper-content') {
+                item.isVertical = this.vertical;
+                this.content.push(item);
+            }
+        },
+        unregister: function unregister(item) {
+            if (item.$options.name === 'v-stepper-step') {
+                this.steps = this.steps.filter(function (i) {
+                    return i !== item;
+                });
+            } else if (item.$options.name === 'v-stepper-content') {
+                item.isVertical = this.vertical;
+                this.content = this.content.filter(function (i) {
+                    return i !== item;
+                });
+            }
+        },
+        stepClick: function stepClick(step) {
+            var _this2 = this;
+
+            this.$nextTick(function () {
+                return _this2.inputValue = step;
+            });
+        }
+    },
+    render: function render(h) {
+        return h('div', {
+            'class': this.classes
+        }, this.$slots.default);
+    }
+}));
+//# sourceMappingURL=VStepper.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperContent.js
+// Components
+
+// Mixins
+
+// Helpers
+
+// Util
+
+/* harmony default export */ var VStepperContent = (mixins(inject('stepper', 'v-stepper-content', 'v-stepper')
+/* @vue/component */
+).extend({
+    name: 'v-stepper-content',
+    inject: {
+        isVerticalProvided: {
+            from: 'isVertical'
+        }
+    },
+    props: {
+        step: {
+            type: [Number, String],
+            required: true
+        }
+    },
+    data: function data() {
+        return {
+            height: 0,
+            // Must be null to allow
+            // previous comparison
+            isActive: null,
+            isReverse: false,
+            isVertical: this.isVerticalProvided
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return {
+                'v-stepper__content': true
+            };
+        },
+        computedTransition: function computedTransition() {
+            return this.isReverse ? VTabReverseTransition : VTabTransition;
+        },
+        styles: function styles() {
+            if (!this.isVertical) return {};
+            return {
+                height: convertToUnit(this.height)
+            };
+        },
+        wrapperClasses: function wrapperClasses() {
+            return {
+                'v-stepper__wrapper': true
+            };
+        }
+    },
+    watch: {
+        isActive: function isActive(current, previous) {
+            // If active and the previous state
+            // was null, is just booting up
+            if (current && previous == null) {
+                this.height = 'auto';
+                return;
+            }
+            if (!this.isVertical) return;
+            if (this.isActive) this.enter();else this.leave();
+        }
+    },
+    mounted: function mounted() {
+        this.$refs.wrapper.addEventListener('transitionend', this.onTransition, false);
+        this.stepper && this.stepper.register(this);
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.$refs.wrapper.removeEventListener('transitionend', this.onTransition, false);
+        this.stepper && this.stepper.unregister(this);
+    },
+
+    methods: {
+        onTransition: function onTransition(e) {
+            if (!this.isActive || e.propertyName !== 'height') return;
+            this.height = 'auto';
+        },
+        enter: function enter() {
+            var _this = this;
+
+            var scrollHeight = 0;
+            // Render bug with height
+            requestAnimationFrame(function () {
+                scrollHeight = _this.$refs.wrapper.scrollHeight;
+            });
+            this.height = 0;
+            // Give the collapsing element time to collapse
+            setTimeout(function () {
+                return _this.isActive && (_this.height = scrollHeight || 'auto');
+            }, 450);
+        },
+        leave: function leave() {
+            var _this2 = this;
+
+            this.height = this.$refs.wrapper.clientHeight;
+            setTimeout(function () {
+                return _this2.height = 0;
+            }, 10);
+        },
+        toggle: function toggle(step, reverse) {
+            this.isActive = step.toString() === this.step.toString();
+            this.isReverse = reverse;
+        }
+    },
+    render: function render(h) {
+        var contentData = {
+            'class': this.classes
+        };
+        var wrapperData = {
+            'class': this.wrapperClasses,
+            style: this.styles,
+            ref: 'wrapper'
+        };
+        if (!this.isVertical) {
+            contentData.directives = [{
+                name: 'show',
+                value: this.isActive
+            }];
+        }
+        var wrapper = h('div', wrapperData, [this.$slots.default]);
+        var content = h('div', contentData, [wrapper]);
+        return h(this.computedTransition, {
+            on: this.$listeners
+        }, [content]);
+    }
+}));
+//# sourceMappingURL=VStepperContent.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperStep.js
+// Components
+
+// Mixins
+
+
+// Directives
+
+// Util
+
+/* harmony default export */ var VStepperStep = (mixins(colorable, inject('stepper', 'v-stepper-step', 'v-stepper')
+/* @vue/component */
+).extend({
+    name: 'v-stepper-step',
+    directives: { Ripple: directives_ripple },
+    inject: ['stepClick'],
+    props: {
+        color: {
+            type: String,
+            default: 'primary'
+        },
+        complete: Boolean,
+        completeIcon: {
+            type: String,
+            default: '$vuetify.icons.complete'
+        },
+        editIcon: {
+            type: String,
+            default: '$vuetify.icons.edit'
+        },
+        errorIcon: {
+            type: String,
+            default: '$vuetify.icons.error'
+        },
+        editable: Boolean,
+        rules: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        step: [Number, String]
+    },
+    data: function data() {
+        return {
+            isActive: false,
+            isInactive: true
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return {
+                'v-stepper__step': true,
+                'v-stepper__step--active': this.isActive,
+                'v-stepper__step--editable': this.editable,
+                'v-stepper__step--inactive': this.isInactive,
+                'v-stepper__step--error': this.hasError,
+                'v-stepper__step--complete': this.complete,
+                'error--text': this.hasError
+            };
+        },
+        hasError: function hasError() {
+            return this.rules.some(function (validate) {
+                return validate() !== true;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.stepper && this.stepper.register(this);
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.stepper && this.stepper.unregister(this);
+    },
+
+    methods: {
+        click: function click(e) {
+            e.stopPropagation();
+            this.$emit('click', e);
+            if (this.editable) {
+                this.stepClick(this.step);
+            }
+        },
+        toggle: function toggle(step) {
+            this.isActive = step.toString() === this.step.toString();
+            this.isInactive = Number(step) < Number(this.step);
+        }
+    },
+    render: function render(h) {
+        var data = {
+            'class': this.classes,
+            directives: [{
+                name: 'ripple',
+                value: this.editable
+            }],
+            on: { click: this.click }
+        };
+        var stepContent = void 0;
+        if (this.hasError) {
+            stepContent = [h(components_VIcon, {}, this.errorIcon)];
+        } else if (this.complete) {
+            if (this.editable) {
+                stepContent = [h(components_VIcon, {}, this.editIcon)];
+            } else {
+                stepContent = [h(components_VIcon, {}, this.completeIcon)];
+            }
+        } else {
+            stepContent = String(this.step);
+        }
+        var color = !this.hasError && (this.complete || this.isActive) ? this.color : false;
+        var step = h('span', this.setBackgroundColor(color, {
+            staticClass: 'v-stepper__step__step'
+        }), stepContent);
+        var label = h('div', {
+            staticClass: 'v-stepper__label'
+        }, this.$slots.default);
+        return h('div', data, [step, label]);
+    }
+}));
+//# sourceMappingURL=VStepperStep.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_tooltips.styl
+var _tooltips = __webpack_require__("YOhz");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/delayable.js
+
+/**
+ * Delayable
+ *
+ * @mixin
+ *
+ * Changes the open or close delay time for elements
+ */
+/* harmony default export */ var delayable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend().extend({
+    name: 'delayable',
+    props: {
+        openDelay: {
+            type: [Number, String],
+            default: 0
+        },
+        closeDelay: {
+            type: [Number, String],
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            openTimeout: undefined,
+            closeTimeout: undefined
+        };
+    },
+    methods: {
+        /**
+         * Clear any pending delay timers from executing
+         */
+        clearDelay: function clearDelay() {
+            clearTimeout(this.openTimeout);
+            clearTimeout(this.closeTimeout);
+        },
+
+        /**
+         * Runs callback after a specified delay
+         */
+        runDelay: function runDelay(type, cb) {
+            var _this = this;
+
+            this.clearDelay();
+            var delay = parseInt(this[type + 'Delay'], 10);
+            this[type + 'Timeout'] = setTimeout(cb || function () {
+                _this.isActive = { open: true, close: false }[type];
+            }, delay);
+        }
+    }
+}));
+//# sourceMappingURL=delayable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/menuable.js
+var menuable_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+
+
+
+
+/* eslint-disable object-property-newline */
+var dimensions = {
+    activator: {
+        top: 0, left: 0,
+        bottom: 0, right: 0,
+        width: 0, height: 0,
+        offsetTop: 0, scrollHeight: 0
+    },
+    content: {
+        top: 0, left: 0,
+        bottom: 0, right: 0,
+        width: 0, height: 0,
+        offsetTop: 0, scrollHeight: 0
+    },
+    hasWindow: false
+};
+/* eslint-enable object-property-newline */
+/**
+ * Menuable
+ *
+ * @mixin
+ *
+ * Used for fixed or absolutely positioning
+ * elements within the DOM
+ * Can calculate X and Y axis overflows
+ * As well as be manually positioned
+ */
+/* @vue/component */
+/* harmony default export */ var menuable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'menuable',
+    mixins: [positionable, stackable],
+    props: {
+        activator: {
+            default: null,
+            validator: function validator(val) {
+                return ['string', 'object'].includes(typeof val === 'undefined' ? 'undefined' : menuable_typeof(val));
+            }
+        },
+        allowOverflow: Boolean,
+        inputActivator: Boolean,
+        light: Boolean,
+        dark: Boolean,
+        maxWidth: {
+            type: [Number, String],
+            default: 'auto'
+        },
+        minWidth: [Number, String],
+        nudgeBottom: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeLeft: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeRight: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeTop: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeWidth: {
+            type: [Number, String],
+            default: 0
+        },
+        offsetOverflow: Boolean,
+        positionX: {
+            type: Number,
+            default: null
+        },
+        positionY: {
+            type: Number,
+            default: null
+        },
+        zIndex: {
+            type: [Number, String],
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            absoluteX: 0,
+            absoluteY: 0,
+            dimensions: Object.assign({}, dimensions),
+            isContentActive: false,
+            pageYOffset: 0,
+            stackClass: 'v-menu__content--active',
+            stackMinZIndex: 6
+        };
+    },
+    computed: {
+        computedLeft: function computedLeft() {
+            var a = this.dimensions.activator;
+            var c = this.dimensions.content;
+            var activatorLeft = (this.isAttached ? a.offsetLeft : a.left) || 0;
+            var minWidth = Math.max(a.width, c.width);
+            var left = 0;
+            left += this.left ? activatorLeft - (minWidth - a.width) : activatorLeft;
+            if (this.offsetX) {
+                var maxWidth = isNaN(this.maxWidth) ? a.width : Math.min(a.width, this.maxWidth);
+                left += this.left ? -maxWidth : a.width;
+            }
+            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
+            if (this.nudgeRight) left += parseInt(this.nudgeRight);
+            return left;
+        },
+        computedTop: function computedTop() {
+            var a = this.dimensions.activator;
+            var c = this.dimensions.content;
+            var top = 0;
+            if (this.top) top += a.height - c.height;
+            if (this.isAttached) top += a.offsetTop;else top += a.top + this.pageYOffset;
+            if (this.offsetY) top += this.top ? -a.height : a.height;
+            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
+            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
+            return top;
+        },
+        hasActivator: function hasActivator() {
+            return !!this.$slots.activator || !!this.$scopedSlots.activator || this.activator || this.inputActivator;
+        },
+        isAttached: function isAttached() {
+            return this.attach !== false;
+        }
+    },
+    watch: {
+        disabled: function disabled(val) {
+            val && this.callDeactivate();
+        },
+        isActive: function isActive(val) {
+            if (this.disabled) return;
+            val ? this.callActivate() : this.callDeactivate();
+        },
+
+        positionX: 'updateDimensions',
+        positionY: 'updateDimensions'
+    },
+    beforeMount: function beforeMount() {
+        this.checkForWindow();
+    },
+
+    methods: {
+        absolutePosition: function absolutePosition() {
+            return {
+                offsetTop: 0,
+                offsetLeft: 0,
+                scrollHeight: 0,
+                top: this.positionY || this.absoluteY,
+                bottom: this.positionY || this.absoluteY,
+                left: this.positionX || this.absoluteX,
+                right: this.positionX || this.absoluteX,
+                height: 0,
+                width: 0
+            };
+        },
+        activate: function activate() {},
+        calcLeft: function calcLeft(menuWidth) {
+            return (this.isAttached ? this.computedLeft : this.calcXOverflow(this.computedLeft, menuWidth)) + 'px';
+        },
+        calcTop: function calcTop() {
+            return (this.isAttached ? this.computedTop : this.calcYOverflow(this.computedTop)) + 'px';
+        },
+        calcXOverflow: function calcXOverflow(left, menuWidth) {
+            var xOverflow = left + menuWidth - this.getInnerWidth() + 12;
+            if ((!this.left || this.right) && xOverflow > 0) {
+                left = Math.max(left - xOverflow, 0);
+            } else {
+                left = Math.max(left, 12);
+            }
+            return left + this.getOffsetLeft();
+        },
+        calcYOverflow: function calcYOverflow(top) {
+            var documentHeight = this.getInnerHeight();
+            var toTop = this.pageYOffset + documentHeight;
+            var activator = this.dimensions.activator;
+            var contentHeight = this.dimensions.content.height;
+            var totalHeight = top + contentHeight;
+            var isOverflowing = toTop < totalHeight;
+            // If overflowing bottom and offset
+            // TODO: set 'bottom' position instead of 'top'
+            if (isOverflowing && this.offsetOverflow &&
+            // If we don't have enough room to offset
+            // the overflow, don't offset
+            activator.top > contentHeight) {
+                top = this.pageYOffset + (activator.top - contentHeight);
+                // If overflowing bottom
+            } else if (isOverflowing && !this.allowOverflow) {
+                top = toTop - contentHeight - 12;
+                // If overflowing top
+            } else if (top < this.pageYOffset && !this.allowOverflow) {
+                top = this.pageYOffset + 12;
+            }
+            return top < 12 ? 12 : top;
+        },
+        callActivate: function callActivate() {
+            if (!this.hasWindow) return;
+            this.activate();
+        },
+        callDeactivate: function callDeactivate() {
+            this.isContentActive = false;
+            this.deactivate();
+        },
+        checkForWindow: function checkForWindow() {
+            if (!this.hasWindow) {
+                this.hasWindow = typeof window !== 'undefined';
+            }
+        },
+        checkForPageYOffset: function checkForPageYOffset() {
+            if (this.hasWindow) {
+                this.pageYOffset = this.getOffsetTop();
+            }
+        },
+        deactivate: function deactivate() {},
+        getActivator: function getActivator(e) {
+            if (this.inputActivator) {
+                return this.$el.querySelector('.v-input__slot');
+            }
+            if (this.activator) {
+                return typeof this.activator === 'string' ? document.querySelector(this.activator) : this.activator;
+            }
+            if (this.$refs.activator) {
+                return this.$refs.activator.children.length > 0 ? this.$refs.activator.children[0] : this.$refs.activator;
+            }
+            if (e) {
+                this.activatedBy = e.currentTarget || e.target;
+                return this.activatedBy;
+            }
+            if (this.activatedBy) return this.activatedBy;
+            if (this.activatorNode) {
+                var activator = Array.isArray(this.activatorNode) ? this.activatorNode[0] : this.activatorNode;
+                var el = activator && activator.elm;
+                if (el) return el;
+            }
+            consoleError('No activator found');
+        },
+        getInnerHeight: function getInnerHeight() {
+            if (!this.hasWindow) return 0;
+            return window.innerHeight || document.documentElement.clientHeight;
+        },
+        getInnerWidth: function getInnerWidth() {
+            if (!this.hasWindow) return 0;
+            return document.documentElement.clientWidth;
+        },
+        getOffsetLeft: function getOffsetLeft() {
+            if (!this.hasWindow) return 0;
+            return window.pageXOffset || document.documentElement.scrollLeft;
+        },
+        getOffsetTop: function getOffsetTop() {
+            if (!this.hasWindow) return 0;
+            return window.pageYOffset || document.documentElement.scrollTop;
+        },
+        getRoundedBoundedClientRect: function getRoundedBoundedClientRect(el) {
+            var rect = el.getBoundingClientRect();
+            return {
+                top: Math.round(rect.top),
+                left: Math.round(rect.left),
+                bottom: Math.round(rect.bottom),
+                right: Math.round(rect.right),
+                width: Math.round(rect.width),
+                height: Math.round(rect.height)
+            };
+        },
+        measure: function measure(el) {
+            if (!el || !this.hasWindow) return null;
+            var rect = this.getRoundedBoundedClientRect(el);
+            // Account for activator margin
+            if (this.isAttached) {
+                var style = window.getComputedStyle(el);
+                rect.left = parseInt(style.marginLeft);
+                rect.top = parseInt(style.marginTop);
+            }
+            return rect;
+        },
+        sneakPeek: function sneakPeek(cb) {
+            var _this = this;
+
+            requestAnimationFrame(function () {
+                var el = _this.$refs.content;
+                if (!el || _this.isShown(el)) return cb();
+                el.style.display = 'inline-block';
+                cb();
+                el.style.display = 'none';
+            });
+        },
+        startTransition: function startTransition() {
+            var _this2 = this;
+
+            return new Promise(function (resolve) {
+                return requestAnimationFrame(function () {
+                    _this2.isContentActive = _this2.hasJustFocused = _this2.isActive;
+                    resolve();
+                });
+            });
+        },
+        isShown: function isShown(el) {
+            return el.style.display !== 'none';
+        },
+        updateDimensions: function updateDimensions() {
+            var _this3 = this;
+
+            this.checkForWindow();
+            this.checkForPageYOffset();
+            var dimensions = {};
+            // Activator should already be shown
+            if (!this.hasActivator || this.absolute) {
+                dimensions.activator = this.absolutePosition();
+            } else {
+                var activator = this.getActivator();
+                dimensions.activator = this.measure(activator);
+                dimensions.activator.offsetLeft = activator.offsetLeft;
+                if (this.isAttached) {
+                    // account for css padding causing things to not line up
+                    // this is mostly for v-autocomplete, hopefully it won't break anything
+                    dimensions.activator.offsetTop = activator.offsetTop;
+                } else {
+                    dimensions.activator.offsetTop = 0;
+                }
+            }
+            // Display and hide to get dimensions
+            this.sneakPeek(function () {
+                dimensions.content = _this3.measure(_this3.$refs.content);
+                _this3.dimensions = dimensions;
+            });
+        }
+    }
+}));
+//# sourceMappingURL=menuable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VTooltip/VTooltip.js
+function VTooltip_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+// Mixins
+
+
+
+
+
+
+// Helpers
+
+
+/* @vue/component */
+/* harmony default export */ var VTooltip = ({
+    name: 'v-tooltip',
+    mixins: [colorable, delayable, dependent, detachable, menuable, toggleable],
+    props: {
+        closeDelay: {
+            type: [Number, String],
+            default: 200
+        },
+        debounce: {
+            type: [Number, String],
+            default: 0
+        },
+        disabled: Boolean,
+        fixed: {
+            type: Boolean,
+            default: true
+        },
+        openDelay: {
+            type: [Number, String],
+            default: 200
+        },
+        tag: {
+            type: String,
+            default: 'span'
+        },
+        transition: String,
+        zIndex: {
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            calculatedMinWidth: 0,
+            closeDependents: false
+        };
+    },
+    computed: {
+        calculatedLeft: function calculatedLeft() {
+            var _dimensions = this.dimensions,
+                activator = _dimensions.activator,
+                content = _dimensions.content;
+
+            var unknown = !this.bottom && !this.left && !this.top && !this.right;
+            var activatorLeft = this.isAttached ? activator.offsetLeft : activator.left;
+            var left = 0;
+            if (this.top || this.bottom || unknown) {
+                left = activatorLeft + activator.width / 2 - content.width / 2;
+            } else if (this.left || this.right) {
+                left = activatorLeft + (this.right ? activator.width : -content.width) + (this.right ? 10 : -10);
+            }
+            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
+            if (this.nudgeRight) left += parseInt(this.nudgeRight);
+            return this.calcXOverflow(left, this.dimensions.content.width) + 'px';
+        },
+        calculatedTop: function calculatedTop() {
+            var _dimensions2 = this.dimensions,
+                activator = _dimensions2.activator,
+                content = _dimensions2.content;
+
+            var activatorTop = this.isAttached ? activator.offsetTop : activator.top;
+            var top = 0;
+            if (this.top || this.bottom) {
+                top = activatorTop + (this.bottom ? activator.height : -content.height) + (this.bottom ? 10 : -10);
+            } else if (this.left || this.right) {
+                top = activatorTop + activator.height / 2 - content.height / 2;
+            }
+            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
+            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
+            return this.calcYOverflow(top + this.pageYOffset) + 'px';
+        },
+        classes: function classes() {
+            return {
+                'v-tooltip--top': this.top,
+                'v-tooltip--right': this.right,
+                'v-tooltip--bottom': this.bottom,
+                'v-tooltip--left': this.left
+            };
+        },
+        computedTransition: function computedTransition() {
+            if (this.transition) return this.transition;
+            if (this.top) return 'slide-y-reverse-transition';
+            if (this.right) return 'slide-x-transition';
+            if (this.bottom) return 'slide-y-transition';
+            if (this.left) return 'slide-x-reverse-transition';
+            return '';
+        },
+        offsetY: function offsetY() {
+            return this.top || this.bottom;
+        },
+        offsetX: function offsetX() {
+            return this.left || this.right;
+        },
+        styles: function styles() {
+            return {
+                left: this.calculatedLeft,
+                maxWidth: convertToUnit(this.maxWidth),
+                opacity: this.isActive ? 0.9 : 0,
+                top: this.calculatedTop,
+                zIndex: this.zIndex || this.activeZIndex
+            };
+        }
+    },
+    beforeMount: function beforeMount() {
+        var _this = this;
+
+        this.$nextTick(function () {
+            _this.value && _this.callActivate();
+        });
+    },
+    mounted: function mounted() {
+        if (getSlotType(this, 'activator', true) === 'v-slot') {
+            consoleError('v-tooltip\'s activator slot must be bound, try \'<template #activator="data"><v-btn v-on="data.on>\'', this);
+        }
+    },
+
+    methods: {
+        activate: function activate() {
+            // Update coordinates and dimensions of menu
+            // and its activator
+            this.updateDimensions();
+            // Start the transition
+            requestAnimationFrame(this.startTransition);
+        },
+        genActivator: function genActivator() {
+            var _this2 = this;
+
+            var listeners = this.disabled ? {} : {
+                mouseenter: function mouseenter(e) {
+                    _this2.getActivator(e);
+                    _this2.runDelay('open');
+                },
+                mouseleave: function mouseleave(e) {
+                    _this2.getActivator(e);
+                    _this2.runDelay('close');
+                }
+            };
+            if (getSlotType(this, 'activator') === 'scoped') {
+                var activator = this.$scopedSlots.activator({ on: listeners });
+                this.activatorNode = activator;
+                return activator;
+            }
+            return this.$createElement('span', {
+                on: listeners,
+                ref: 'activator'
+            }, this.$slots.activator);
+        }
+    },
+    render: function render(h) {
+        var _class;
+
+        var tooltip = h('div', this.setBackgroundColor(this.color, {
+            staticClass: 'v-tooltip__content',
+            'class': (_class = {}, VTooltip_defineProperty(_class, this.contentClass, true), VTooltip_defineProperty(_class, 'menuable__content__active', this.isActive), _class),
+            style: this.styles,
+            attrs: this.getScopeIdAttrs(),
+            directives: [{
+                name: 'show',
+                value: this.isContentActive
+            }],
+            ref: 'content'
+        }), this.showLazyContent(this.$slots.default));
+        return h(this.tag, {
+            staticClass: 'v-tooltip',
+            'class': this.classes
+        }, [h('transition', {
+            props: {
+                name: this.computedTransition
+            }
+        }, [tooltip]), this.genActivator()]);
+    }
+});
+//# sourceMappingURL=VTooltip.js.map
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue
+
+
+
+
+
+/* normalize component */
+
+var ActionbarBuild_component = normalizeComponent(
+  actionbar_ActionbarBuildvue_type_script_lang_js_,
+  ActionbarBuildvue_type_template_id_2ac2398a_render,
+  ActionbarBuildvue_type_template_id_2ac2398a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ActionbarBuild = (ActionbarBuild_component.exports);
+
+/* vuetify-loader */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+installComponents_default()(ActionbarBuild_component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VFadeTransition: VFadeTransition,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VProgressCircular: VProgressCircular,VProgressLinear: VProgressLinear,VSpacer: VSpacer,VStepper: VStepper,VStepperContent: VStepperContent,VStepperStep: VStepperStep,VTooltip: VTooltip})
+
 // CONCATENATED MODULE: ./src/actionbar/index.js
+
 
 
 // CONCATENATED MODULE: ./src/lib.js
@@ -5843,6 +6973,13 @@ if (typeof window !== 'undefined') {
 
 /***/ }),
 
+/***/ "YOhz":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "ZUTo":
 /***/ (function(module, exports) {
 
@@ -5926,6 +7063,13 @@ module.exports = require("vue");
 /***/ }),
 
 /***/ "tPfQ":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "v/Yf":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
