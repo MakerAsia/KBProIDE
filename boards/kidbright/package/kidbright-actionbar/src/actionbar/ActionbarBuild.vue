@@ -19,7 +19,7 @@
                             <v-container>
                                 <v-layout align-center column>           
                                     <v-flex xs12>
-                                        <v-progress-circular v-if="compileStep < 3"
+                                        <v-progress-circular v-if="compileStep <= 3"
                                             :size="80"
                                             :width="8"
                                             color="primary"

@@ -67,7 +67,7 @@
           </multipane>
           </div>
           <v-footer height="23" min-height="10" class="grey lighten-3 pl-2">
-            &copy;2018 — <strong>Maker Asia</strong>      
+            ~ <strong>&nbsp; Satchan &nbsp;</strong> forever ~
           </v-footer>
         </v-content>
         <!-- left drawer -->

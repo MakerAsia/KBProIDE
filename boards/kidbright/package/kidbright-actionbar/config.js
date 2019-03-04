@@ -10,7 +10,8 @@ module.exports = {
     component : [
         'actionbar-build',
         'actionbar-wifi',
-        'actionbar-set-clock'
+        'actionbar-set-clock',
+        'actionbar-qrcode'
     ],
     data : {
         wifi_ssid : '',
