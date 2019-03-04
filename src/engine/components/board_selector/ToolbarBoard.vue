@@ -60,7 +60,7 @@
                                         </v-card-text>
                                         <v-divider></v-divider>
                                         <v-card-actions>
-                                            <span class="ml-2"><strong>{{data.author}}</strong></span>
+                                            <span class="ml-2"><strong>{{data.version}}</strong></span>
                                             <v-spacer></v-spacer>
                                             <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink(data.website)" v-if="data.website">
                                                 <v-icon>fa-link</v-icon>
@@ -105,7 +105,7 @@ export default {
     data () {
         return {
             boardImageDir : utils.boardDir,
-            selectingBoard : 'kidbright',
+            selectingBoard : this.$global.board.board,
             cardText : 'test test test\ntest test test\ntest test test\ntest test test',
             boardDialog : false,
             searchText : '',        
@@ -137,7 +137,7 @@ export default {
         }
     },
     mounted(){
-        console.log(bm.boards());
+        //console.log(bm.boards());
     }
 }
 </script>

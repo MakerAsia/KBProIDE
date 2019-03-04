@@ -1,5 +1,5 @@
 export default {
-    name : 'board',
+    name : 'board_selector',
     description : "no have",
     index : 1,
     tooltip : 'Board Manager',

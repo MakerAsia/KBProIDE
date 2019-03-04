@@ -26,37 +26,6 @@ var watcher = {};
 var watcherHandler = {};
 //--------------------------------------//
 
-var loadCofigComponents = function(obj,compName){
-  var componentData = {};
-  var persistenceData = [];
-  var methods = {};
-  
-  if('persistence' in obj){//load persistence
-    Object.keys(obj.persistence).forEach(function(pkey){
-      if(!persistenceData.includes(pkey)){
-        persistenceData.push(pkey);
-      }
-      // load data from localStorage if exist
-      if(localStorage[compName+'.'+pkey]){
-        componentData[pkey] = JSON.parse(localStorage[compName+'.'+pkey]);
-      }else{
-        componentData[pkey] = obj.persistence[pkey];
-      }
-    });
-  }
-  if('data' in obj){//load reactive data
-    Object.keys(obj.data).forEach(function(dkey){
-      componentData[dkey] = obj.data[dkey];
-    });
-  }
-  if('method' in obj){//load method
-    Object.keys(obj.method).forEach(function(mkey){
-      methods[mkey] = obj.method[mkey];
-    });
-  }
-  return {data : componentData, persistence : persistenceData, method: methods};
-}
-
 var addWatcher = function(name,ghandler,deep){
   if(!(name in watcherHandler)){ // new handler      
     watcherHandler[name] = [];    
@@ -77,7 +46,7 @@ var addWatcher = function(name,ghandler,deep){
 var comps = cm.listComponent();
 Object.keys(comps).forEach(function(key){
   if('config' in comps[key]){
-    let cmConfigData = loadCofigComponents(comps[key].config,key);
+    let cmConfigData = util.loadCofigComponents(comps[key].config,key);
     componentAllData.data[key] = cmConfigData.data;
     componentAllData.persistence[key] = cmConfigData.persistence;
   }
@@ -88,7 +57,7 @@ Object.keys(comps).forEach(function(key){
 //=========== board manager ===========//
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
-var boardInfoComponent = loadCofigComponents(boardInfo);
+var boardInfoComponent = util.loadCofigComponents(boardInfo,'board');
 // assign data to $global
 componentAllData.data['board'] = boardInfoComponent.data;
 componentAllData.persistence['board'] = boardInfoComponent.persistence;
@@ -99,13 +68,14 @@ var boardPackage = bm.packages(boardInfoComponent.data.board);
 componentAllData.data['board']['package'] = {};
 Object.keys(boardPackage).forEach(packageName => {
   componentAllData.data.board.package[packageName] = {};
-  let boardPackageData = loadCofigComponents(boardPackage[packageName].config,'board.package.'+packageName);
+  let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,'board.package.'+packageName);
   componentAllData.data.board.package[packageName] = boardPackageData.data;
   componentAllData.persistence['board.package.'+packageName] = boardPackageData.persistence;
 });
 
 addWatcher('board.board',function(val){ //listen board name change we need to reload everything
   console.log('board changed to : ' + val);
+  localStorage['board.board'] = JSON.stringify(val);
   Vue.prototype.$global.$emit('board-change',val);  
 },false);
 
@@ -170,7 +140,7 @@ console.log('cc2cccc');*/
 //=====================================//
 
 //============= ui manager ============//
-var uiComponentData = loadCofigComponents(ui);
+var uiComponentData = util.loadCofigComponents(ui,'ui');
 componentAllData.data['ui'] = uiComponentData.data;
 componentAllData.persistence['ui'] = uiComponentData.persistence;
 //=====================================//

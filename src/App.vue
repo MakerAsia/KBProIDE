@@ -142,17 +142,25 @@ export default {
     this.$vuetify.theme.primary = this.$global.setting.color;
     //----- load external plugin -----//    
     this.reloadBoardPackage();
-    this.$global.on('board-change',reloadBoardPackage);
+    this.$global.$on('board-change',this.reloadBoardPackage);
   },
   methods: {
     closeTab(name){
       this.$global.ui.removeAllTab(name);
     },
-    reloadBoardPackage(){      
+    reloadBoardPackage(){
       var boardName = this.$global.board.board;
-      var boardPackages = bm.packages(boardName);      
-      Object.keys(boardPackages).forEach(packageName => {
-        let packageFilename = boardPackages[packageName].config.name;
+      var boardPackage = bm.packages(boardName);      
+      var bp = {};
+      // re-assign package to board      
+      Object.keys(boardPackage).forEach(packageName => {
+        bp[packageName] = {};
+        let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,'board.package.'+packageName);
+        bp[packageName] = boardPackageData.data;  
+      });
+
+      Object.keys(boardPackage).forEach((packageName,index,arr) => {        
+        let packageFilename = boardPackage[packageName].config.name;
         let targetJsFile = `${util.boardDir}/${boardName}/package/${packageName}/dist/${packageFilename}.umd.js`;
         let targetLinkFile = `file:///${targetJsFile}`;        
         if(util.fs.existsSync(targetJsFile)){
@@ -161,11 +169,14 @@ export default {
           script.onload = function(){
             if(packageName in window){
               Vue.use(window[packageName]);
-              Vue.prototype.$global.board.package[packageName].loaded = true;
+              bp[packageName].loaded = true;
               console.log(`board [${boardName}] loaded package : ${packageName}`);
+              if(index === arr.length -1){
+                Vue.prototype.$global.board.package = bp;
+              }
             }
           }
-          document.head.appendChild(script);
+          document.head.appendChild(script);          
         }
       });
     },

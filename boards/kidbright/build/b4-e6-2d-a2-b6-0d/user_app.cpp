@@ -63,7 +63,7 @@ void user_app(void) {
     srand(mcp7940n.get(5)); // random seed
       // setup
   while(1) {
-    if (ht16k33.idle()) { ht16k33.scroll((char *)"Hello World!", true); }
+    if (ht16k33.idle()) { ht16k33.scroll((char *)"My name is Comdet", true); }
     vTaskDelay(500 / portTICK_RATE_MS);
   }
   

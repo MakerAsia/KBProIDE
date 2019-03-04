@@ -14,7 +14,7 @@
         <!-- source code -->
         <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '1px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
             <code-mirror ref="cm"
-                v-model="sourcecode"
+                v-model="$global.editor.sourceCode"
                 :options="editor_options">
             </code-mirror>
         </div>
@@ -111,13 +111,11 @@ export default {
         Multipane,
         MultipaneResizer,
         CodeMirror
-    },  
+    },
     data(){
      return {
        workspace: null,
        toolbox: null,
-       sourcecode : null,
-       editor_mode: this.$global.editor.selectedMode,
        editor_options: {
             mode: 'text/x-c++src',
             theme: 'mdn-like',
@@ -160,6 +158,8 @@ export default {
 
         this.workspace.addChangeListener(this.updatecode);
         Blockly.svgResize(this.workspace);
+        this.workspace.scrollCenter();
+
         console.log('blocly mounted');
         /*if (this.getCookie('lang') == null) {
             console.log('set default lang to en');
@@ -188,14 +188,25 @@ export default {
         //---- render editor fontsize
         this.onEditorFontsizeChange(this.$global.editor.fontSize);
 
-        this.$global.editor.sourceCode = "";
+        //---- load code ----//
+        if(this.$global.editor.mode <= 2){
+            if(this.$global.editor.blockCode != ''){
+                var text = this.$global.editor.blockCode;
+                var xml = Blockly.Xml.textToDom(text);
+        		Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+            }
+        }else if(this.$global.editor.mode >= 2){
+
+        }        
     },
-    methods:{
+    methods:{        
         onEditorFontsizeChange(value){
-            if('cm' in this.$refs && this.$refs.cm != undefined){
-                let cm = this.$refs.cm.getCodeMirror();
-                cm.getWrapperElement().style["font-size"] = value+"px";
-                cm.refresh();
+            if('cm' in this.$refs){
+                if(this.$refs.cm != undefined){
+                    let cm = this.$refs.cm.getCodeMirror();
+                    cm.getWrapperElement().style["font-size"] = value+"px";
+                    cm.refresh();
+                }
             }
         },
         onEditorThemeChange(value){
@@ -212,9 +223,11 @@ export default {
                     Blockly.svgResize(this.workspace);
                 }, 300);
             }else{ //mode 3
-                if('cm' in this.$refs){ //enable editing code
-                    let code = this.$refs.cm.getCodeMirror();
-                    code.setOption("readOnly", false);
+                if('cm' in this.$refs){
+                    if(this.$refs.cm != undefined){ //enable editing code
+                        let code = this.$refs.cm.getCodeMirror();
+                        code.setOption("readOnly", false);
+                    }
                 }
             }
         },
@@ -247,9 +260,11 @@ export default {
 
         updatecode(e){
             if(e.type != Blockly.Events.UI){
-                this.sourcecode = Blockly.JavaScript.workspaceToCode(this.workspace); 
-                this.$global.editor.sourceCode = this.sourcecode;
-            }else{                                
+                Blockly.JavaScript.resetTaskNumber();
+                this.$global.editor.sourceCode = Blockly.JavaScript.workspaceToCode(this.workspace);
+                var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+                this.$global.editor.blockCode = xml;
+            }else{
                 if(e.element == 'selected'){
                     if(e.newValue != null){ //selected block
                         var block = this.workspace.getBlockById(e.newValue);

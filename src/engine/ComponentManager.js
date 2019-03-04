@@ -5,7 +5,7 @@ var listComponent = function(){
     var res = require.context('./components', true, /^\.\/.*?\.(vue|js)$/); //<<< "./component" must fix value, cannot use dynamic variable in webpack naja!!!!
     var context = {};
     res.keys().forEach(element => {
-        let tmp = (/\.\/([A-Za-z0-9]+)\/([A-Za-z0-9]+)\.(vue|js)$/g).exec(element);
+        let tmp = (/\.\/([_A-Za-z0-9]+)\/([A-Za-z0-9]+)\.(vue|js)$/g).exec(element);
         if(tmp != null && tmp.length == 4){                
             let fullPath = tmp[0];
             let name = tmp[1];

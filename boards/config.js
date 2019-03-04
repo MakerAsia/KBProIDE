@@ -5,6 +5,6 @@ module.exports = {
         template : '',
     },
     persistence : {
-        board : 'kidbright',        
+        board : 'kidbright', 
     }
 }

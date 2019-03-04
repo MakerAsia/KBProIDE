@@ -90,7 +90,7 @@ var boards = function(){
 };
 
 var packages = function(selectedBoard){
-    if(Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object && listedPackagesBoard != selectedBoard){ // check empty object !!!
+    if((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object) || (listedPackagesBoard != selectedBoard)){ // check empty object !!!
         listedPackages = listPackage(selectedBoard);
         listedPackagesBoard = selectedBoard;
     }

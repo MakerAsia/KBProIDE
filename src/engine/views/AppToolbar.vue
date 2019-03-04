@@ -20,33 +20,14 @@
       </template>
     </template>
     <!-- dynamic left toolbar -->    
-
+    
     <!-- load board package toolbar -->
     <v-divider class="mx-1" inset vertical></v-divider>
     <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in boardToolbar[packageName]">        
+      <template v-for="(comp,index) in (boardToolbar())[packageName]">        
         <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
       </template>
     </template>
-
-    <!-- TODO : enable this when toolbar > xxx -->
-    <!--v-menu origin="left top" :nudge-bottom="10" transition="scale-transition" offset-y=""> 
-          <v-btn slot="activator" color="warning" icon>
-            <v-icon dark>fa-chevron-circle-down</v-icon>
-          </v-btn>
-    
-          <v-list class="pa-0">
-            <v-list-tile v-for="(item,index) in items" :to="!item.href ? { name: item.name } : null" :href="item.href" @click="item.click" ripple="ripple" :disabled="item.disabled" :target="item.target" rel="noopener" :key="index">
-              <v-list-tile-action v-if="item.icon">
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-    </v-menu-->
-
 
     <v-spacer></v-spacer>
     
@@ -60,7 +41,7 @@
     
     <!-- load board package actionbar -->
     <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in boardActionbar[packageName]">        
+      <template v-for="(comp,index) in (boardActionbar())[packageName]">        
         <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
       </template>
     </template>
@@ -101,9 +82,7 @@ export default {
     NotificationList,
     AsyncComponent
   },
-  data: () => ({
-    boardActionbar : bm.listActionbar(Vue.prototype.$global.board.board),
-    boardToolbar : bm.listToolbar(Vue.prototype.$global.board.board),
+  data: () => ({    
     toolbars : cm.listToolbar,
     actionbar : cm.listActionbar,
   }),
@@ -116,6 +95,12 @@ export default {
     }
   },
   methods: {
+    boardToolbar(){
+      return bm.listToolbar(this.$global.board.board);
+    },
+    boardActionbar(){
+      return bm.listActionbar(this.$global.board.board);
+    },
     handleDrawerToggle () {
       window.getApp.$emit('APP_DRAWER_TOGGLED');
     },

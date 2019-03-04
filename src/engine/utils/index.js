@@ -99,6 +99,39 @@ const toggleFullScreen = () => {
     cancelFullScreen.call(doc);
   }
 };
+
+
+var loadCofigComponents = function(obj,compName){
+  var componentData = {};
+  var persistenceData = [];
+  var methods = {};
+  
+  if('persistence' in obj){//load persistence
+    Object.keys(obj.persistence).forEach(function(pkey){
+      if(!persistenceData.includes(pkey)){
+        persistenceData.push(pkey);
+      }
+      // load data from localStorage if exist
+      if(localStorage[compName+'.'+pkey]){
+        componentData[pkey] = JSON.parse(localStorage[compName+'.'+pkey]);
+      }else{
+        componentData[pkey] = obj.persistence[pkey];
+      }
+    });
+  }
+  if('data' in obj){//load reactive data
+    Object.keys(obj.data).forEach(function(dkey){
+      componentData[dkey] = obj.data[dkey];
+    });
+  }
+  if('method' in obj){//load method
+    Object.keys(obj.method).forEach(function(mkey){
+      methods[mkey] = obj.method[mkey];
+    });
+  }
+  return {data : componentData, persistence : persistenceData, method: methods};
+};
+
 export default {
   camel,
   camelActual,
@@ -108,6 +141,7 @@ export default {
   kebab,
   ui,
   requireFunc,
+  loadCofigComponents,
   filterFileName : function(obj,filterName){    
     var res = {};
     Object.keys(obj).forEach(key=>{
