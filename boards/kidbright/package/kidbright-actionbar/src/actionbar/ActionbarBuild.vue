@@ -26,50 +26,47 @@
                                             indeterminate>
                                         </v-progress-circular>
                                         <v-fade-transition :hide-on-leave="true">
-                                            <v-icon color="green" size="110" v-if="compileStep >= 3">check_circle_outline</v-icon>
+                                            <v-icon color="green" size="110" v-if="compileStep > 3">check_circle_outline</v-icon>
                                         </v-fade-transition>
-                                    </v-flex>                                    
+                                    </v-flex>   
                                 </v-layout>
                             </v-container>
                             <v-flex xs12>
                                 <v-stepper v-model="compileStep" vertical class="elevation-0 pb-0">
-                                    <v-stepper-step step="1" :complete="compileStep > 0" @click="compileStep = 1">
+                                    <v-stepper-step step="1" :complete="compileStep > 1" :rules="[()=>{ return stepResult['1'].result }]">
                                         Find KidBright
-                                        <small v-if="compileStep >= 2">KidBright at COM15 mac : 12-AA-58-48-AC-25</small>
+                                        <small v-if="compileStep > 1">{{stepResult['1'].msg}}</small>
                                     </v-stepper-step>
                                     <v-stepper-content step="1" v-if="compileStep >= 1">
-                                        KidBright at COM15 mac : 12-AA-58-48-AC-25
+                                        {{stepResult['1'].msg}}
                                     </v-stepper-content>
 
-                                    <v-stepper-step step="2" :complete="compileStep > 1">
-                                        Create an ad group
-                                        <small v-if="compileStep >= 3">check if KidBright connected</small>
+                                    <v-stepper-step step="2" :complete="compileStep > 2" :rules="[()=>{ return stepResult['2'].result }]">
+                                        Compile the code
+                                        <small v-if="compileStep > 2">{{stepResult['2'].msg}}</small>
                                     </v-stepper-step>
                                     <v-stepper-content step="2" v-if="compileStep >= 2">
-                                        KidBright Compile Step 2
+                                        {{stepResult['2'].msg}}
                                     </v-stepper-content>
 
-                                    <v-stepper-step step="3" :complete="compileStep > 2">
-                                        Create an ad
+                                    <v-stepper-step step="3" :complete="compileStep > 3" :rules="[()=>{ return stepResult['3'].result }]">
+                                        Upload program and Run
+                                        <small v-if="compileStep > 3">{{stepResult['3'].msg}}</small>
                                     </v-stepper-step>
                                     <v-stepper-content step="3" v-if="compileStep >= 3">
-                                        KidBright Compile Step 3
-                                        <v-progress-linear        
+                                        {{stepResult['3'].msg}}
+                                        <v-progress-linear
                                             height="2"
-                                            v-model="value"
-                                            :active="show"
-                                            :indeterminate="query"
-                                            :query="true"
-                                        ></v-progress-linear>                                        
+                                            :active="compileStep < 4"
+                                            :indeterminate="true"
+                                        ></v-progress-linear>                                     
                                     </v-stepper-content>
                                 </v-stepper>
                             </v-flex>                 
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" flat @click="compileStep = 1">Reset</v-btn>
-                            <v-btn color="blue darken-1" flat @click="compileStep += 1">Step</v-btn>
-                            <v-btn color="blue darken-1" flat @click="compileDialog = false" :disabled="compileStep < 3">Close</v-btn>
+                            <v-btn color="blue darken-1" flat @click="compileDialog = false" :disabled="compileStep < 4 && failed === false">Close</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -82,57 +79,92 @@
 const engine = Vue.prototype.$engine;
 const G = Vue.prototype.$global;
 var path = `${engine.util.boardDir}/${G.board.board}/compiler`;
-console.log(path);
 var boardCompiler = engine.util.requireFunc(path);
-console.log(boardCompiler);
+
+var comport = '';
+var mac = '';
+var boardName = '';
 
 export default {
   data () {
     return {
         compileStep : 1,
         compileDialog : false,
-        complete : false,
-        //test progress bar
-        value: 0,
-        query: false,
-        show: true,
-        interval: 0
+        failed : false,
+        stepResult :{
+            '1' : {result : true, msg : ""},
+            '2' : {result : true, msg : ""},
+            '3' : {result : true, msg : ""},            
+        }
     };
   },
   
   mounted () {
-    this.queryAndIndeterminate()
   },
 
   beforeDestroy () {
-    clearInterval(this.interval)
+
   },
   methods: {
-      
-    queryAndIndeterminate () {
-      this.query = true
-      this.show = true
-      this.value = 0
-
-      setTimeout(() => {
-        this.query = false
-
-        this.interval = setInterval(() => {
-          if (this.value === 100) {
-            clearInterval(this.interval)
-            this.show = false
-            return setTimeout(this.queryAndIndeterminate, 2000)
-          }
-          this.value += 25
-        }, 1000)
-      }, 2500)
+    run(){ //find port and mac
+        console.log('---> step 1 <---');
+        this.stepResult['1'].msg = "Find KidBright ";
+        boardCompiler.listPort().then(comp=>{
+            comport = comp[0];
+            this.stepResult['1'].msg += " at " + comport;
+            return boardCompiler.readMac(comport)
+        }).then(boardMac=>{
+            this.stepResult['1'].msg += " MAC " + boardMac.mac;            
+            mac = boardMac.mac;
+            boardName = mac.replace(/:/g,'-');
+            console.log('[STEP 1] got it boardName = ' + boardName + ' mac = '+mac);
+            this.compileStep = 2;
+            console.log('---> step 2 <---');
+            
+            this.stepResult['2'].msg = "Compile board ... ";
+            var rawCode = G.editor.sourceCode;
+            var config = {
+                board_mac_addr : mac,            
+                sta_ssid : this.$global.board.package['kidbright-actionbar'].wifi_ssid,
+                sta_password : this.$global.board.package['kidbright-actionbar'].wifi_password,
+                enable_iot : this.$global.board.package['kidbright-actionbar'].enable_iot,
+            };
+            return boardCompiler.compile(rawCode,boardName,config,null);
+        }).then(()=>{
+            this.stepResult['2'].msg += 'done!';
+            this.compileStep = 3;
+            this.stepResult['3'].msg = "Uploading ... ";
+            console.log('---> step 3 <---');            
+            return boardCompiler.flash(comport);
+        }).then(()=>{
+            this.stepResult['3'].msg = "Upload success";
+            this.compileStep = 4;
+        }).catch(err=> {
+            console.log('------ process error ------');
+            console.log(err);
+            this.failed = true;
+            if(this.compileStep == 1){
+                this.stepResult['1'].msg = 'Cannot find KidBright : ' + err;
+                this.stepResult['1'].result = false;
+            }else if(this.compileStep == 2){
+                this.stepResult['2'].msg = 'Compile error : ' + err;
+                this.stepResult['2'].result = false;
+            }else if(this.compileStep == 3){
+                this.stepResult['3'].msg = 'Cannot upload program : ' + err;
+                this.stepResult['3'].result = false;
+            }
+        });
     }
   },
   watch:{
         'compileDialog': function(val){
-            if(val){//on opening
+            if(val){//on opening                
                 this.compileStep = 1;
-                this.complete = false;
+                this.failed = false;
+                this.stepResult['1'].result = true;
+                this.stepResult['2'].result = true;
+                this.stepResult['3'].result = true;
+                this.run();
             }
         }
     }

@@ -187,6 +187,8 @@ export default {
         this.onEditorThemeChange(this.$global.editor.theme);
         //---- render editor fontsize
         this.onEditorFontsizeChange(this.$global.editor.fontSize);
+
+        this.$global.editor.sourceCode = "";
     },
     methods:{
         onEditorFontsizeChange(value){
@@ -246,6 +248,7 @@ export default {
         updatecode(e){
             if(e.type != Blockly.Events.UI){
                 this.sourcecode = Blockly.JavaScript.workspaceToCode(this.workspace); 
+                this.$global.editor.sourceCode = this.sourcecode;
             }else{                                
                 if(e.element == 'selected'){
                     if(e.newValue != null){ //selected block

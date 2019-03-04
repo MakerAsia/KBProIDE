@@ -16,6 +16,7 @@
                         label="Board name" 
                         class="ma-0 pa-0 search-board"
                         single-line
+                        clearable
                         hide-details
                         v-model="searchText"></v-text-field>                    
                 </v-card-title>

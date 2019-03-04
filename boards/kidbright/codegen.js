@@ -133,7 +133,7 @@ module.exports = {
     generatePluginCode : function(pluginsInfo,obj_inst_tab){
         // plug-ins includes
 		var plugins_includes_code = '';
-		var plugins_includes_switch = '';
+		var plugins_includes_switch = [];
 		var plugins_sources = [];
 		for (var inst_index in obj_inst_tab) {
 			for (var i in pluginsInfo[obj_inst_tab[inst_index].dir].incs) {
@@ -142,7 +142,7 @@ module.exports = {
 			for (var i in pluginsInfo[obj_inst_tab[inst_index].dir].srcs) {
 				plugins_sources.push(pluginsInfo[obj_inst_tab[inst_index].dir].abs_dir + '/' + pluginsInfo[obj_inst_tab[inst_index].dir].srcs[i]);
 			}
-			plugins_includes_switch += ' -I"' + pluginsInfo[obj_inst_tab[inst_index].dir].rel_dir + '"';
+			plugins_includes_switch.push(`-I"${pluginsInfo[obj_inst_tab[inst_index].dir].rel_dir}"`);
         }
         return {code : plugins_includes_code, switch : plugins_includes_switch, source : plugins_sources};
     },
@@ -155,30 +155,26 @@ module.exports = {
 			vTaskDelete(NULL);
 		}`;
     },
-    codeGenerate : function(rawCode,template,config){
-        var codeContext = this.createCodeContext(rawCode,config);
+    codeGenerate : function(rawCode,template,plugins,config){
+        var codeContext = this.createCodeContext(rawCode,config,plugins);
         const entries = Object.entries(codeContext)
         const result = entries.reduce( (output, entry) => {
             const [key, value] = entry;
             const regex = new RegExp( `\\$\{${key}\}`, 'g');
             return output.replace( regex, value );
         }, template );
-        return result;
+        return {sourceCode : result, codeContext : codeContext};
     },
-	createCodeContext : function(rawCode,config){
+	createCodeContext : function(code,config,pluginsInfo){
+		//require config.board_mac_addr
+		//option  config.sta_ssid, config.sta_password, config.enable_iot
 		var mac_addr = config.board_mac_addr;
 		var kbmac_addr = (mac_addr.replace(/:/g, "")).toUpperCase();
 		var md5_mac_addr = md5('K:' + kbmac_addr);
 
-		// console.log('=== ' + kbmac_addr);
-		// console.log(md5_mac_addr);
-		
 		var prime_func_code = '';
 		var use_prime_func = false;
-
-		//Log.i('building board id ' + board_id + ' (' + mac_addr + ')');
-
-		var code = rawCode;// new Buffer(rawCodeBase64, 'base64').toString('utf8');
+		
 		// extract setup and task statements
 		var var_str = '';
 		var code_strlst = code.split('\n');
@@ -244,7 +240,7 @@ module.exports = {
 		}
 
         // plug-ins includes
-        var pluginRes = this.generatePluginCode();
+        var pluginRes = this.generatePluginCode(pluginsInfo,obj_inst_tab);
 		var plugins_includes_code = pluginRes.code;
 		var plugins_includes_switch = pluginRes.switch;
 		var plugins_sources = pluginRes.source;		
@@ -252,12 +248,12 @@ module.exports = {
 		// plug-ins object instantiate code, ex: SHT31 sht31_0 = SHT31(64, 0x44, 1000);
 		var plugins_obj_inst_code = '';
 		for (var inst_index in obj_inst_tab) {
-			plugins_obj_inst_code += obj_inst_tab[inst_index].class + ' ' + obj_inst_tab[inst_index].declare + ' = ' + inst_index + ';\n';
+			plugins_obj_inst_code += `${obj_inst_tab[inst_index].class} ${obj_inst_tab[inst_index].declare} = ${inst_index};\n`;
 		}
 		// plug-ins object registration, ex: devman_add("sht31_0", DEV_I2C1, &sht31_0);
 		var plugins_obj_reg_code = '';
 		for (var inst_index in obj_inst_tab) {
-			plugins_obj_reg_code += '  devman_add((char *)"' + obj_inst_tab[inst_index].declare + '", ' + obj_inst_tab[inst_index].driver + ',' + ' &' + obj_inst_tab[inst_index].declare + ');\n';
+			plugins_obj_reg_code += `  devman_add((char *)"${obj_inst_tab[inst_index].declare}",${obj_inst_tab[inst_index].driver},&${obj_inst_tab[inst_index].declare});\n`;
 		}
 
 		// add setup code indent
@@ -265,29 +261,25 @@ module.exports = {
 		setup_code = '';
 		for (var setup_code_index in setup_code_list) {
 			use_prime_func = this.check_use_prime_func(setup_code_list[setup_code_index], use_prime_func);
-			setup_code = this.gen_iot_code(setup_code, setup_code_list[setup_code_index]); // generate iot code
-			// setup_code += '  ' + setup_code_list[setup_code_index] + '\n';
+			setup_code = this.gen_iot_code(setup_code, setup_code_list[setup_code_index]); // generate iot code			
 		}
 
 		var task_fn_code = '  // create tasks\n';
 		for (var task_fn_index in task_fn_name) {
 			var task_fn = task_fn_name[task_fn_index];
-			task_fn_code += '  xTaskCreatePinnedToCore(' + task_fn + ', "' + task_fn + '", USERAPP_STACK_SIZE_MIN, NULL, USERAPP_TASK_PRIORITY, NULL, KIDBRIGHT_RUNNING_CORE);\n';
+			task_fn_code += `  xTaskCreatePinnedToCore(${task_fn}, "${task_fn}", USERAPP_STACK_SIZE_MIN, NULL, USERAPP_TASK_PRIORITY, NULL, KIDBRIGHT_RUNNING_CORE);\n`;
 		}
 
 		if (use_prime_func === true) {
 			prime_func_code =
-				'bool check_is_prime(int num){\n' +
-				'	bool isPrime = true; \n' +
-				'	for(int i = 2; i <= int(sqrt(num)); ++i)\n' +
-				'	{\n' +
-				'		if(num % i == 0){\n' +
-				'			isPrime = false;\n' +
-				'			break;\n' +
-				'		}\n' +
-				'	}\n' +
-				'	return isPrime;\n' +
-				'  }\n';
+			`bool check_is_prime(int num){				
+				for(int i = 2; i <= int(sqrt(num)); ++i){
+					if(num % i == 0){
+						return false;
+					}
+				}
+				return true;
+			}\n`;
 		}
 
         var iot_task = this.generateIoTTask(config.sta_ssid,config.sta_password,config.enable_iot);        
@@ -295,8 +287,8 @@ module.exports = {
             plugins_includes_code : plugins_includes_code,
             kbmac_addr : kbmac_addr,
             md5_mac_addr : md5_mac_addr,
-            sta_ssid : sta_ssid,
-            sta_password : sta_password,
+            sta_ssid :config.sta_ssid,
+            sta_password : config.sta_password,
             plugins_obj_inst_code : plugins_obj_inst_code,
             var_str : var_str,
             prime_func_code : prime_func_code,
@@ -304,7 +296,9 @@ module.exports = {
             task_code : task_code,
             setup_code : setup_code,
             task_fn_code : task_fn_code,
-            plugins_obj_reg_code : plugins_obj_reg_code
+			plugins_obj_reg_code : plugins_obj_reg_code,
+			plugins_includes_switch : plugins_includes_switch,
+			plugins_sources : plugins_sources
         };        
         return code;
 	}

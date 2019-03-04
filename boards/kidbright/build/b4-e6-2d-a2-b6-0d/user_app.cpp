@@ -21,12 +21,12 @@
 #include "wificontroller.h"
 #include "kbiot.h"
 
-#define KBSERIAL "807D3AA58C0C"
-#define CLIENTID "807D3AA58C0C"
-#define USERNAME "3e5bc98f789ab1b6e712d677bc33a6af"
+#define KBSERIAL "B4E62DA2B60D"
+#define CLIENTID "B4E62DA2B60D"
+#define USERNAME "e39e694501650a4fde400a2487b11afa"
 #define PASSWORD ""
-#define CONFIG_WIFI_SSID ""
-#define CONFIG_WIFI_PASSWORD ""
+#define CONFIG_WIFI_SSID "minino"
+#define CONFIG_WIFI_PASSWORD "123456789"
 
 #define PI 3.14159265' + '
 // ===
@@ -51,7 +51,7 @@ MCP7940N mcp7940n = MCP7940N(0, MCP7940N_ONBOARD_ADDR);
 
 
 void iotTask(void *pvParameters) {
-			
+			wifi_sta_start(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD); 
 			
 			vTaskDelay(500 / portTICK_RATE_MS);
 			vTaskDelete(NULL);
@@ -62,10 +62,6 @@ void user_app(void) {
     xTaskCreatePinnedToCore(iotTask, "iotTask", 4096, NULL, USERAPP_TASK_PRIORITY, NULL, KIDBRIGHT_RUNNING_CORE);
     srand(mcp7940n.get(5)); // random seed
       // setup
-  while(1) {
-    if (ht16k33.idle()) { ht16k33.scroll((char *)"Hello World!", true); }
-    vTaskDelay(500 / portTICK_RATE_MS);
-  }
   
 
       // create tasks

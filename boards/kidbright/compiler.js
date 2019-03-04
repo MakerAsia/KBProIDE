@@ -2,16 +2,25 @@ const codegen = require('./codegen');
 const path = require('path')
 const fs = require('fs')
 const log = require('./log')
-const util = require('util')
 const SerialPort = require('serialport');
+const moment = require('moment');
+
 //const QRCode = require('qrcode');
 
-var context = JSON.parse(fs.readFileSync('./context.json').toString())
-var config = require('./config')
-var platformDir = `../../platforms/${config.platform}`
-var platformCompiler = require(platformDir+"/compiler");
-var pluginDir = `./plugin`
+var engine = Vue.prototype.$engine;
+var G = Vue.prototype.$global;
+
+//---- setup dir and config ----//
+var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
+
+var context = JSON.parse(fs.readFileSync(boardDirectory+"/context.json","utf8"))
+var config = require(boardDirectory+'/config')
+
+var platformDir = `${engine.util.platformDir}/${config.platform}`
+var pluginDir = `${boardDirectory}/plugin`
 var toolDir = `${platformDir}/tools`
+
+var platformCompiler = require(platformDir+"/compiler");
 
 function is_null(val) {
     return ((val == null) || (typeof (val) == 'undefined'));
@@ -30,41 +39,13 @@ function esptool() {
     return `${toolDir}/esptool.py`;
 }
 
-var listPlugin = function(dir){    
+var listPlugin = function(dir){
     var plugins = {};
     let catPlugins = fs.readdirSync(dir);
     if(catPlugins.length > 0){
         catPlugins.forEach(plugin => {
             let dir = `${pluginDir}/${dir}/${plugin}`;
             if(fs.lstatSync(dir).isDirectory()){                
-                // extract block definitions
-                var blocks = [];                
-                var Blockly = {
-                    Blocks : []
-                }
-                try{
-                    eval(fs.readFileSync(`${dir}/blocks.js`,'utf8'));
-                    for (var i in Blockly.Blocks) {
-                        blocks.push(i);
-                    }
-                }catch(e){
-                    log.e(`plugin "${plugin}" blocks.js error`);
-                }//----------------------//
-
-                // extrack block generators
-                var generators = [];
-                var Blockly = {
-                    JavaScript: []
-                };
-                try {
-                    eval(fs.readFileSync(`${dir}/generators.js`,'utf8'));
-                    for (var i in Blockly.JavaScript) {
-                        generators.push(i);
-                    }
-                } catch (e) {
-                    log.e(`plugin "${plugin}" generator.js error`);
-                }//----------------------//
-
                 // read source and include file
                 var srcs = [];
                 var incs = [];
@@ -86,8 +67,7 @@ var listPlugin = function(dir){
                     dir : dir,
                     incs : incs,
                     srcs : srcs,
-                    name : plugin,
-                    blocks : blocks
+                    name : plugin,                    
                 };
                 Log.i(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? 's' : ''}`);
             }
@@ -120,12 +100,13 @@ var listCategoryPlugins = function()
     return {categories:categories,plugins:allPlugin};
 };
 
-async function listPort()
+function listPort()
 {
     return new Promise(function(resolve,reject){
         try {
             require('serialport').list(function (err, ports) {
                 if (err) reject(err);
+                if(ports.length == 0) reject("No COM PORT found");
 
                 var port_list_str = 'none';
                 var port_list = [];
@@ -142,56 +123,114 @@ async function listPort()
                             }
                         }
                     }
-                }
+                }                
                 log.i('serial port enumerated (' + port_list_str + ')');
-                resolve(port_list);
+                if(port_list.length == 0){
+                    reject('no COM port found');
+                }else{
+                    resolve(port_list);
+                }
             });
         } catch (err) {
-            log.e('port read error : ' + err);            
+            log.e('port read error : ' + err);
+            reject(err);
         }
     });
 }
 
 
-async function compile(rawCode,boardName,config,cb)
+function compile(rawCode,boardName,config,cb)
 {
-    var res = {
-        status : 'OK',  //OK,FAIL,PROGRESS,LOG
-        msg : '',       //error or return message
-        progress : 0,   //build progress percentage if status = PROGRESS
-    };
-    //--- init ---//
-    var C = {};
-    var app_dir = `./build/${boardName}`;
-    //--- step 1 load template and create full code ---//
-    var template = fs.readFileSync('template.c','utf8');
-    var code = codegen.codeGenerate(rawCode,template,config);
-    !fs.existsSync(app_dir) && fs.mkdirSync(app_dir,{recursive : true}); //create app_dir if not existing
-    fs.writeFileSync(`./build/${boardName}/user_app.cpp`,code,'utf8');
-    //--- step 2 list plugins dependency ---//
-    var categoriesInfo = listCategoryPlugins();
-    var categories = categoriesInfo.categories;
-    var plugins = categories.plugins;
-
-    //--- step 3 load variable and flags ---//
-    C.cflags = context.cflags;
-    C.ldflags = context.ldflags;
-
-    //--- step 4 compile
-    var contextBoard = {
-        board_name : "123456",
-        app_dir : `./build/${boardName}`,
-        process_dir : "./",
-    };
-    platformCompiler.setConfig(contextBoard);
-    //platformCompiler.compileFiles()
+    return new Promise((resolve,reject) => {
+        //--- init ---//    
+        var app_dir = `${boardDirectory}/build/${boardName}`;
+        //--- step 2 list plugins dependency ---//
+        var categoriesInfo = listCategoryPlugins();
+        var categories = categoriesInfo.categories;
+        var plugins = categories.plugins;
+        //--- step 1 load template and create full code ---//
+        var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
+        var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,plugins,config);
+        !fs.existsSync(app_dir) && fs.mkdirSync(app_dir,{recursive : true}); //create app_dir if not existing
+        fs.writeFileSync(`${app_dir}/user_app.cpp`,sourceCode,'utf8');
+        //--- step 3 load variable and flags ---//
+        var cflags = context.cflags.map(f => f.replace('-Ilib',`-I"${boardDirectory}/lib`)+'"');
+        var ldflags = context.ldflags.map(f => f.startsWith('-Llib') ? (f.replace('-Llib',`-L"${boardDirectory}/lib`)+'"') : f);
+        ldflags = ldflags.map(f => f.startsWith("lib/") ? ('"'+f.replace("lib/",`${boardDirectory}/lib/`)+'"') : f);
+        //--- step 4 compile
+        var contextBoard = {
+            board_name : boardName,
+            app_dir : app_dir,
+            process_dir : boardDirectory,
+        };
+        var sourceFiles = codeContext.plugins_sources;
+        sourceFiles.push(`${app_dir}/user_app.cpp`);
+        var includeSwitch = codeContext.plugins_includes_switch;
+        platformCompiler.setConfig(contextBoard);
+        //(sources, boardCppOptions, boardcflags, plugins_includes_switch)    
+        platformCompiler.compileFiles(sourceFiles,[], cflags, includeSwitch)
+        .then(()=>{
+            return platformCompiler.archiveProgram(sourceFiles);
+        }).then(()=>{
+            return platformCompiler.linkObject(ldflags);
+        }).then(()=>{
+            return platformCompiler.createBin();            
+        }).then(()=>{
+            resolve();
+        }).catch(msg=>{
+            console.log('error msg : ' + msg);
+            reject(msg);
+        });
+        
+    });
 }
-
-
-module.exports = {        
-    //compileProgram: util.promisify(compileFiles),
-    listPlugin,
-    listPort,
-    listCategoryPlugins,
-    compile
+function setClock(portname){
+    return new Promise((resolve,reject)=>{
+        var tx_str = moment().format('YYMMDD0eHHmmss');
+        console.log('setting board real time clock... : ' + tx_str);
+        try {
+            var port_name = portname;            
+            var serialport = new SerialPort(port_name, {
+                baudRate: 115200,
+                dataBits: 8,
+                stopBits: 1,
+                parity: 'none',
+                rtscts: false,
+                xon: false,
+                xoff: false,
+                xany: false,
+                autoOpen: false
+            });
+            serialport.open(function (err) {
+                if (err) reject(err);
+                serialport.write('rtc set ' + tx_str + '\n', function (err) {
+                    if (err) {
+                        console.log('Error on write: ', err.message);
+                        reject(err);
+                    }
+                    // delay close port
+                    setTimeout(function () {
+                        serialport.close();
+                        resolve();
+                    }, 500);
+                });
+            });
+        } catch (err) {
+                console.log(err);
+                reject(err);
+        }
+    });
 }
+var exp = {};
+Object.assign(exp,platformCompiler);
+Object.assign(exp,
+    {
+        setClock,
+        listPlugin,
+        listPort,
+        listCategoryPlugins,
+        compile
+    }
+);
+//console.log(exp);
+module.exports = exp;

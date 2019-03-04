@@ -3,6 +3,6 @@
     "04b4:0003",
     "0403:6015"
   ],
-  "cflags": "-Ilib/kidbright32/include -Ilib/netpie/include",
-  "ldflags": "-Llib/kidbright32 -lkidbright32 -Llib/netpie -lnetpie"
+  "cflags": ["-Ilib/kidbright32/include","-Ilib/netpie/include"],
+  "ldflags": ["-Llib/kidbright32", "-lkidbright32", "-Llib/netpie", "-lnetpie"]
 }

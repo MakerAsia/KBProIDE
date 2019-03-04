@@ -1,5 +1,4 @@
 {
-    "esptool" : "./tools/esptool",
     "toolchain_dir" : "./tools/xtensa-esp32-elf",
     "cpp_options" : [
         "-std=gnu++11",
