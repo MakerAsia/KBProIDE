@@ -86,8 +86,7 @@ module.exports = {
         }
         return line_inst_arr;
     },
-    generateObjectInstantTab : function(line_inst_arr){   
-		var obj_inst_tab = [];     
+    generateObjectInstantTab : function(line_inst_arr,obj_inst_tab){   		   
         if (line_inst_arr.length > 0) {
             for (var line_inst_index in line_inst_arr) {
                 var obj_inst = line_inst_arr[line_inst_index].obj_inst;
@@ -140,9 +139,9 @@ module.exports = {
 				plugins_includes_code += '#include "' + pluginsInfo[obj_inst_tab[inst_index].dir].incs[i] + '"\n';
 			}
 			for (var i in pluginsInfo[obj_inst_tab[inst_index].dir].srcs) {
-				plugins_sources.push(pluginsInfo[obj_inst_tab[inst_index].dir].abs_dir + '/' + pluginsInfo[obj_inst_tab[inst_index].dir].srcs[i]);
+				plugins_sources.push(pluginsInfo[obj_inst_tab[inst_index].dir].dir + '/' + pluginsInfo[obj_inst_tab[inst_index].dir].srcs[i]);
 			}
-			plugins_includes_switch.push(`-I"${pluginsInfo[obj_inst_tab[inst_index].dir].rel_dir}"`);
+			plugins_includes_switch.push(`-I"${pluginsInfo[obj_inst_tab[inst_index].dir].dir}"`);
         }
         return {code : plugins_includes_code, switch : plugins_includes_switch, source : plugins_sources};
     },
@@ -191,7 +190,7 @@ module.exports = {
                         
             // collect plug-ins object instantiation
 			var line_inst_arr = this.getPluginInstatantLine(line);
-            obj_inst_tab = this.generateObjectInstantTab(line_inst_arr,config.plugins);
+            obj_inst_tab = this.generateObjectInstantTab(line_inst_arr,obj_inst_tab);
 
 			// perform plug-ins object instantiate substitution
 			for (var line_inst_index in line_inst_arr) {

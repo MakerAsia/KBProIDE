@@ -14,6 +14,7 @@
 #include "mcp7940n.h"
 #include <math.h>
 
+#include "mcp23s17_16out.h"
 
 
 // kbiot
@@ -46,6 +47,7 @@ MCP7940N mcp7940n = MCP7940N(0, MCP7940N_ONBOARD_ADDR);
 // ==================================================================================
 // plug-ins devices
 // ==================================================================================
+MCP23S17_16OUT mcp23s17_16out_0 = MCP23S17_16OUT(0, 32);
 
 
 
@@ -62,6 +64,7 @@ void user_app(void) {
     xTaskCreatePinnedToCore(iotTask, "iotTask", 4096, NULL, USERAPP_TASK_PRIORITY, NULL, KIDBRIGHT_RUNNING_CORE);
     srand(mcp7940n.get(5)); // random seed
       // setup
+  mcp23s17_16out_0.write(0, 0);
   while(1) {
     if (ht16k33.idle()) { ht16k33.scroll((char *)"Comdet", true); }
     vTaskDelay(500 / portTICK_RATE_MS);
@@ -94,7 +97,8 @@ void vUserAppTask(void *pvParameters) {
   // add plug-ins devices
   // ================================================================================
     
-  
+    devman_add((char *)"mcp23s17_16out_0",DEV_SPI,&mcp23s17_16out_0);
+
 
   // start device manager
   devman_start();

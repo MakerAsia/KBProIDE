@@ -62,15 +62,15 @@ async function readMac(portName)
 
 const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_includes_switch){
     return new Promise((resolve,reject)=>{
-        sources.forEach(async (file, idx, arr) => {
+        let cflags = G.cflags.join(" ") + ' ' + boardcflags.join(" ")
+        let cppOptions = G.cpp_options.join(" ") + boardCppOptions.join(" ")
+        let inc_switch = plugins_includes_switch.join(" ")
+
+        sources.forEach(async (file, idx, arr) => {            
             let filename = getName(file)
-            let fn_obj = `${G.app_dir}/${filename}.o`;
-            
-            let cflags = G.cflags.join(" ") + ' ' + boardcflags.join(" ")
-            let cppOptions = G.cpp_options.join(" ") + boardCppOptions.join(" ")
-            plugins_includes_switch = plugins_includes_switch.join(" ")
+            let fn_obj = `${G.app_dir}/${filename}.o`;            
     
-            let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${plugins_includes_switch} -c "${file}" -o "${fn_obj}"`;        
+            let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${inc_switch} -c "${file}" -o "${fn_obj}"`;        
             try {
                 const {stdout, stderr} = await execPromise(ospath(cmd), {cwd: G.process_dir})
                 if (!stderr) {
