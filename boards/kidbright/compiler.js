@@ -44,14 +44,14 @@ var listPlugin = function(dir){
     let catPlugins = fs.readdirSync(dir);
     if(catPlugins.length > 0){
         catPlugins.forEach(plugin => {
-            let dir = `${pluginDir}/${dir}/${plugin}`;
-            if(fs.lstatSync(dir).isDirectory()){                
+            let fdir = `${dir}/${plugin}`;
+            if(fs.lstatSync(fdir).isDirectory()){                
                 // read source and include file
                 var srcs = [];
                 var incs = [];
-                var files = fs.readdirSync(dir);
+                var files = fs.readdirSync(fdir);
                 files.forEach(file => {
-                    if(fs.lstatSync(`${dir}/${file}`).isFile()){
+                    if(fs.lstatSync(`${fdir}/${file}`).isFile()){
                         // source file (*.c, *.cpp)
                         if ((file.match(/\.c$/g) != null) || (file.match(/\.cpp$/g) != null)) {
                             srcs.push(file);
@@ -64,12 +64,12 @@ var listPlugin = function(dir){
                 });
                 // TODO : check block and generator must eq
                 plugins[plugin] = {
-                    dir : dir,
+                    dir : fdir,
                     incs : incs,
                     srcs : srcs,
                     name : plugin,                    
                 };
-                Log.i(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? 's' : ''}`);
+                log.i(`plugin "${plugin}" found ${incs.length} inc, ${srcs.length} src file(s)`);
             }
         });
     }
@@ -83,13 +83,13 @@ var listCategoryPlugins = function()
     var cats = fs.readdirSync(pluginDir);
     cats.forEach(cat => {
         var dir = `${pluginDir}/${cat}`
-        var infoFile = `${pluginDir}/${cat}.json`
+        var infoFile = `${dir}/${cat}.json`
 
         if(!fs.lstatSync(dir).isDirectory()){ return; }        
         if(!fs.existsSync(infoFile)) { return; }
 
         var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
-        var plugins = listCategoryPlugins(cat);
+        var plugins = listPlugin(dir);
         categories.push({
             directory : cat,
             plugins : plugins,
@@ -146,8 +146,11 @@ function compile(rawCode,boardName,config,cb)
         var app_dir = `${boardDirectory}/build/${boardName}`;
         //--- step 2 list plugins dependency ---//
         var categoriesInfo = listCategoryPlugins();
+        console.log('-------')
+        console.log(categoriesInfo);
+        console.log('-------')
         var categories = categoriesInfo.categories;
-        var plugins = categories.plugins;
+        var plugins = categoriesInfo.plugins;
         //--- step 1 load template and create full code ---//
         var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
         var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,plugins,config);

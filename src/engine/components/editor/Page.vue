@@ -36,6 +36,9 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/selection/active-line';
 // === uitls ===
 import util from '@/engine/utils';
+const fs = require('fs');
+// === engine ===
+import plug from '@/engine/PluginManager';
 
 var renderBlock = function(blocks,level = 1){
     let res = '';
@@ -64,6 +67,40 @@ var renderBlock = function(blocks,level = 1){
     return res;
 };
 
+var loadAndRenderPluginsBlock = function(Blockly,boardName)
+{
+    var pluginName = 'Plugins';
+    var plugins = plug.loadPlugin(boardName);
+    let catStr = '';
+    console.log(plugins);
+    plugins.categories.forEach(cat=>{        
+        let blockStr = '';
+        Object.keys(cat.plugins).forEach(subPlugin => {
+            let blocks = cat.plugins[subPlugin].blocks;
+            let dir = cat.plugins[subPlugin].dir;
+            //----- load block -----//
+            try{
+                eval(fs.readFileSync(`${dir}/blocks.js`,'utf8'));
+                eval(fs.readFileSync(`${dir}/generators.js`,'utf8'));
+            }catch(e){
+                console.log(`Error : cannot load plugin block [${subPlugin}] => `+e);
+            }
+            //----------------------//
+            blocks.forEach(typeName => {
+                blockStr += `<block type="${typeName}"></block>`;
+            });
+        })        
+        let thName = cat.category.name.th;
+        let enName = cat.category.name.en;
+        let color = cat.category.color;
+        catStr += `<category name="${enName}" colour="${color}">${blockStr}</category>`;
+    });
+    return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
+}
+var loadPluginBlock = function(boardName)
+{
+    
+}
 var loadBlock = function(boardName,target){
     //look for board first
     var blockFile = util.boardDir+'/'+boardName+'/block/config.js';
@@ -71,7 +108,6 @@ var loadBlock = function(boardName,target){
         return null;
     }
     var blocks = util.requireFunc(blockFile);
-    //TODO : look for platform blocks
 
     return blocks;
 };
@@ -101,6 +137,8 @@ var initBlockly = function(boardName){
         });
     }
 };
+
+
 
 /*var reloadBlockly = function(toolbox,workspace,updatecode){
     
@@ -242,9 +280,13 @@ export default {
             if('blocks' in blocks){ //render extended block
                 stringBlock += renderBlock(blocks.blocks);
             }
+            // render plugin blocks            
+            stringBlock += loadAndRenderPluginsBlock(Blockly,boardName);
+            // TODO : render platform block
+
 
             this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
-            this.workspace.updateToolbox(this.toolbox);            
+            this.workspace.updateToolbox(this.toolbox);                 
         },
 
         onThemeChange(theme){            

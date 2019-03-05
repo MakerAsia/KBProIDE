@@ -40,7 +40,7 @@ var listComponent = function(){
 var components = function(){
     if(Object.entries(listedComponents).length === 0 && listedComponents.constructor === Object){ // check empty object !!!
         listedComponents = listComponent();
-    }    
+    }  
     return listedComponents;
 };
 export default {
