@@ -36,19 +36,14 @@
                                             <img class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
                                         <v-card-text>
-                                            <v-btn v-if="data.installed" icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px">
+                                            <v-btn icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px" @click="confirmRemoveDialog = true">
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
-                                            <v-btn v-else icon fab absolute right bottom small dark color="blue" style="bottom:25px; right:5px">
-                                                <v-icon>fa-download</v-icon>
-                                            </v-btn>
-      
-        <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
-            <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
-            {{data.description}}
-        </div>
-      
-                                            
+                                            <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
+                                                <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
+                                                {{data.description}}
+                                            </div>
+    
                                             <transition name="fade">
                                                 <div v-if="selectingBoard == data.name" class="selected-board-icon">
                                                     <div class="corner-icon">
@@ -88,6 +83,17 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="confirmRemoveDialog" persistent max-width="500px">
+            <v-card>
+                <v-card-title class="headline">Remove board confirmation</v-card-title>
+                <v-card-text>Do you want to remove this board?.</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">Cancel</v-btn>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -100,7 +106,7 @@ import bm from '@/engine/BoardManager';
 import utils from '@/engine/utils';
 export default {
     components: {
-        VWidget    
+        VWidget
     },
     data () {
         return {
@@ -108,6 +114,7 @@ export default {
             selectingBoard : this.$global.board.board,
             cardText : 'test test test\ntest test test\ntest test test\ntest test test',
             boardDialog : false,
+            confirmRemoveDialog : false,
             searchText : '',        
             scrollSettings: {
                 alwaysShowTracks: false,

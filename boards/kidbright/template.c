@@ -28,7 +28,7 @@ ${plugins_includes_code}
 #define CONFIG_WIFI_SSID "${sta_ssid}"
 #define CONFIG_WIFI_PASSWORD "${sta_password}"
 
-#define PI 3.14159265' + '
+#define PI 3.14159265
 // ===
 // ==================================================================================
 // on-board devices

@@ -5,8 +5,6 @@ const log = require('./log')
 const SerialPort = require('serialport');
 const moment = require('moment');
 
-//const QRCode = require('qrcode');
-
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
 
@@ -29,76 +27,6 @@ function is_null(val) {
 function is_not_null(val) {
     return (!((val == null) || (typeof (val) == 'undefined')));
 }
-
-function esptool() {
-    if (process.platform == 'win32') {
-        return `${toolDir}/esptool.exe`;
-    } else if (process.platform == 'darwin') {
-        return `${toolDir}/esptool`;
-    }
-    return `${toolDir}/esptool.py`;
-}
-
-var listPlugin = function(dir){
-    var plugins = {};
-    let catPlugins = fs.readdirSync(dir);
-    if(catPlugins.length > 0){
-        catPlugins.forEach(plugin => {
-            let fdir = `${dir}/${plugin}`;
-            if(fs.lstatSync(fdir).isDirectory()){                
-                // read source and include file
-                var srcs = [];
-                var incs = [];
-                var files = fs.readdirSync(fdir);
-                files.forEach(file => {
-                    if(fs.lstatSync(`${fdir}/${file}`).isFile()){
-                        // source file (*.c, *.cpp)
-                        if ((file.match(/\.c$/g) != null) || (file.match(/\.cpp$/g) != null)) {
-                            srcs.push(file);
-                        }
-                        // header file (*.h, *.hpp)
-                        if (file.match(/\.h$/g) != null || (file.match(/\.hpp$/g) != null)) {
-                            incs.push(file);
-                        }
-                    }
-                });
-                // TODO : check block and generator must eq
-                plugins[plugin] = {
-                    dir : fdir,
-                    incs : incs,
-                    srcs : srcs,
-                    name : plugin,                    
-                };
-                log.i(`plugin "${plugin}" found ${incs.length} inc, ${srcs.length} src file(s)`);
-            }
-        });
-    }
-    return plugins;
-}
-
-var listCategoryPlugins = function()
-{
-    var categories = [];
-    var allPlugin = {};
-    var cats = fs.readdirSync(pluginDir);
-    cats.forEach(cat => {
-        var dir = `${pluginDir}/${cat}`
-        var infoFile = `${dir}/${cat}.json`
-
-        if(!fs.lstatSync(dir).isDirectory()){ return; }        
-        if(!fs.existsSync(infoFile)) { return; }
-
-        var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
-        var plugins = listPlugin(dir);
-        categories.push({
-            directory : cat,
-            plugins : plugins,
-            category : catInfoFile
-        });
-        Object.assign(allPlugin,plugins);
-    });
-    return {categories:categories,plugins:allPlugin};
-};
 
 function listPort()
 {
@@ -144,16 +72,9 @@ function compile(rawCode,boardName,config,cb)
     return new Promise((resolve,reject) => {
         //--- init ---//    
         var app_dir = `${boardDirectory}/build/${boardName}`;
-        //--- step 2 list plugins dependency ---//
-        var categoriesInfo = listCategoryPlugins();
-        console.log('-------')
-        console.log(categoriesInfo);
-        console.log('-------')
-        var categories = categoriesInfo.categories;
-        var plugins = categoriesInfo.plugins;
         //--- step 1 load template and create full code ---//
         var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
-        var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,plugins,config);
+        var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,config);
         !fs.existsSync(app_dir) && fs.mkdirSync(app_dir,{recursive : true}); //create app_dir if not existing
         fs.writeFileSync(`${app_dir}/user_app.cpp`,sourceCode,'utf8');
         //--- step 3 load variable and flags ---//
@@ -229,9 +150,7 @@ Object.assign(exp,platformCompiler);
 Object.assign(exp,
     {
         setClock,
-        listPlugin,
         listPort,
-        listCategoryPlugins,
         compile
     }
 );

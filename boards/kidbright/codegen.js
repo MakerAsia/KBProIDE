@@ -1,7 +1,14 @@
 const fs = require('fs');
-const path = require('path');
-const exec = require('child_process').exec;
 const md5 = require('md5');
+const log = require('./log');
+
+
+//---- setup dir ----//
+var engine = Vue.prototype.$engine;
+var G = Vue.prototype.$global;
+var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
+var pluginDir = `${boardDirectory}/plugin`
+//-------------------//
 
 const driver_type_arr = [
     'DEV_IO',
@@ -12,6 +19,67 @@ const driver_type_arr = [
 
 module.exports = {
 
+	listPlugin : function(dir){
+		var plugins = {};
+		let catPlugins = fs.readdirSync(dir);
+		if(catPlugins.length > 0){
+			catPlugins.forEach(plugin => {
+				let fdir = `${dir}/${plugin}`;
+				if(fs.lstatSync(fdir).isDirectory()){                
+					// read source and include file
+					var srcs = [];
+					var incs = [];
+					var files = fs.readdirSync(fdir);
+					files.forEach(file => {
+						if(fs.lstatSync(`${fdir}/${file}`).isFile()){
+							// source file (*.c, *.cpp)
+							if ((file.match(/\.c$/g) != null) || (file.match(/\.cpp$/g) != null)) {
+								srcs.push(file);
+							}
+							// header file (*.h, *.hpp)
+							if (file.match(/\.h$/g) != null || (file.match(/\.hpp$/g) != null)) {
+								incs.push(file);
+							}
+						}
+					});
+					// TODO : check block and generator must eq
+					plugins[plugin] = {
+						dir : fdir,
+						incs : incs,
+						srcs : srcs,
+						name : plugin,                    
+					};
+					log.i(`plugin "${plugin}" found ${incs.length} inc, ${srcs.length} src file(s)`);
+				}
+			});
+		}
+		return plugins;
+	},
+
+	listCategoryPlugins : function()
+	{
+		var categories = [];
+		var allPlugin = {};
+		var cats = fs.readdirSync(pluginDir);
+		cats.forEach(cat => {
+			var dir = `${pluginDir}/${cat}`
+			var infoFile = `${dir}/${cat}.json`
+	
+			if(!fs.lstatSync(dir).isDirectory()){ return; }        
+			if(!fs.existsSync(infoFile)) { return; }
+	
+			var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
+			var plugins = this.listPlugin(dir);
+			categories.push({
+				directory : cat,
+				plugins : plugins,
+				category : catInfoFile
+			});
+			Object.assign(allPlugin,plugins);
+		});
+		return {categories:categories,plugins:allPlugin};
+	},
+
     gen_iot_code : function(setup_code, current_setup_code) {
         var config_flag = false;
         var iot_config = [];        
@@ -21,10 +89,8 @@ module.exports = {
         var trim_code = current_setup_code.trim();
 		if (trim_code.substring(0, 10) == 'IOT_CONFIG') {
 			config_flag = true;
-			var current_line = JSON.parse(
-				trim_code.substring(10, trim_code.length));
+			var current_line = JSON.parse(trim_code.substring(10, trim_code.length));
 			iot_config.push(current_line);
-
 			if (topics.indexOf(current_line['topic']) == -1) {
 				topics.push(current_line['topic']);
 			}
@@ -152,9 +218,13 @@ module.exports = {
 			${(sta_ssid != '' && sta_password != '' && enable_iot === true)? 'kbiot_init(KBSERIAL, CLIENTID, USERNAME, PASSWORD);' : ''}
 			vTaskDelay(500 / portTICK_RATE_MS);
 			vTaskDelete(NULL);
-		}`;
+}`;
     },
-    codeGenerate : function(rawCode,template,plugins,config){
+    codeGenerate : function(rawCode,template,config){
+		//--- list plugins dependency ---//
+        var categoriesInfo = this.listCategoryPlugins();
+		var plugins = categoriesInfo.plugins;
+		        
         var codeContext = this.createCodeContext(rawCode,config,plugins);
         const entries = Object.entries(codeContext)
         const result = entries.reduce( (output, entry) => {

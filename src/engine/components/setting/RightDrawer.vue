@@ -25,21 +25,14 @@
               </span>
             </label>
           </v-layout>
-        </div>
-        <v-divider></v-divider>
-        <div class="theme-options">
-          <v-subheader class="px-1 my-2">
-            Editor Theme
-          </v-subheader>
-          <div class="my-3">
-            <v-select
-              :items="editorTheme"
-              label="Select theme"
-              v-model="editorThemeValue"
-            ></v-select>
-          </div>
-        </div>
+        </div>        
       </v-flex>
+      <!-- component setting -->
+      <template v-for="(comp,compName) in componentSetting">
+        <template v-for="(settingTarget,settingName) in comp">
+          <async-component :target="settingTarget" :key="compName+'.'+settingName"/>
+        </template>
+      </template>
 
     </v-layout>
   </v-container>
@@ -47,25 +40,19 @@
 </template>
 
 <script>
+import cm from '@/engine/ComponentManager';
 import colors from 'vuetify/es5/util/colors';
+import AsyncComponent from '@/engine/AsyncComponent';
 export default {
-  data () {
-    return {
+  name: 'app-setting',
+  components: {    
+    AsyncComponent
+  },
+  data: () => ({    
       themeColor: false,
       colors: colors,
-      editorTheme : [ 
-        'default','3024-day','3024-night','abcdef','ambiance','base16-dark',
-        'base16-light','bespin','blackboard','cobalt','colorforth','darcula',
-        'dracula','duotone-dark','duotone-light','eclipse','elegant','erlang-dark',
-        'gruvbox-dark','hopscotch','icecoder','idea','isotope','lesser-dark','liquibyte',
-        'lucario','material','mbo','mdn-like','midnight','monokai','neat','neo','night',
-        'oceanic-next','panda-syntax','paraiso-dark','paraiso-light','pastel-on-dark',
-        'railscasts','rubyblue','seti','shadowfox','solarized dark','solarized light',
-        'the-matrix','tomorrow-night-bright','tomorrow-night-eighties','ttcn','twilight',
-        'vibrant-ink','xq-dark','xq-light','yeti','zenburn'],
-      editorThemeValue : this.$global.editor.theme,
-    };
-  },
+      componentSetting : cm.listSetting,
+  }),
   mounted : function(){
     Object.keys(this.colors).forEach((key)=>{
       if(this.colors[key].base == this.$vuetify.theme.primary){
@@ -169,15 +156,6 @@ export default {
         }
       },
       immediate: true
-    },
-    editorThemeValue : {
-      handler(value){
-        if(value){
-          this.$global.editor.theme = value;
-          this.$global.$emit('editor-theme-change',value);
-        }
-      },
-      immediate : true
     }
   },
 };

@@ -54,6 +54,7 @@ export default {
     listBottomPanel : utils.filterFileName(components(),'BottomPanel'),
     listRightTab : utils.filterFileName(components(),'RightTab'),
     listBottomTab : utils.filterFileName(components(),'BottomTab'),
+    listSetting : utils.filterFileName(components(),'Setting'),
     load : ()=>{
 
     },

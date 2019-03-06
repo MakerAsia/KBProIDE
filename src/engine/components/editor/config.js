@@ -7,6 +7,7 @@ export default {
         mode : 1,
         blockCode : '',
         sourceCode : '',
+        rawCode : '',
         fontSize : '24',
         theme : 'mdn-like'
     },

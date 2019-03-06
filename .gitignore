@@ -9,6 +9,7 @@ yarn-error.log*
 selenium-debug.log
 node_modules
 release
+boards/kidbright/build/
 
 # Editor directories and files
 .idea

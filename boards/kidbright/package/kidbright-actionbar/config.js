@@ -16,7 +16,7 @@ module.exports = {
     data : {
         wifi_ssid : '',
         wifi_password : '',
-        enable_iot : false,        
+        enable_iot : false,
         loaded : false , //this will automatic set to 'true' if this pacakage loaded to IDE
     },
     persistence : {

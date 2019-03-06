@@ -1,7 +1,7 @@
 <template>
     <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
         <!-- editor -->
-        <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '1px' })]">
+        <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '0px' })]">
             <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
             <xml id="toolbox" ref=toolbox style="display: none">
                 <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
@@ -12,8 +12,12 @@
         <!-- end --> 
         <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
         <!-- source code -->
-        <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '1px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
-            <code-mirror ref="cm"
+        <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
+            <code-mirror ref="cm" v-if="$global.editor.mode < 3"
+                v-model="$global.editor.rawCode"
+                :options="editor_options">
+            </code-mirror>
+            <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
                 v-model="$global.editor.sourceCode"
                 :options="editor_options">
             </code-mirror>
@@ -34,11 +38,22 @@ import 'codemirror/theme/mdn-like.css';
 import 'codemirror/mode/clike/clike';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/selection/active-line';
+//---- search ----//
+import 'codemirror/addon/dialog/dialog.css';
+import 'codemirror/addon/search/matchesonscrollbar.css';
+import 'codemirror/addon/dialog/dialog';
+import "codemirror/addon/search/searchcursor";
+import "codemirror/addon/search/search";
+import "codemirror/addon/scroll/annotatescrollbar";
+import "codemirror/addon/search/matchesonscrollbar";
+import "codemirror/addon/search/jump-to-line";
 // === uitls ===
 import util from '@/engine/utils';
 const fs = require('fs');
 // === engine ===
 import plug from '@/engine/PluginManager';
+const boardDirectory = `${util.boardDir}/${Vue.prototype.$global.board.board}`;
+const codegen = util.requireFunc(`${boardDirectory}/codegen`);
 
 var renderBlock = function(blocks,level = 1){
     let res = '';
@@ -72,7 +87,7 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
     var pluginName = 'Plugins';
     var plugins = plug.loadPlugin(boardName);
     let catStr = '';
-    console.log(plugins);
+    //console.log(plugins);
     plugins.categories.forEach(cat=>{        
         let blockStr = '';
         Object.keys(cat.plugins).forEach(subPlugin => {
@@ -97,10 +112,7 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
 }
-var loadPluginBlock = function(boardName)
-{
-    
-}
+
 var loadBlock = function(boardName,target){
     //look for board first
     var blockFile = util.boardDir+'/'+boardName+'/block/config.js';
@@ -143,6 +155,7 @@ var initBlockly = function(boardName){
 /*var reloadBlockly = function(toolbox,workspace,updatecode){
     
 }*/
+var myself;
 export default {
     name: 'editor',
     components: {
@@ -160,11 +173,13 @@ export default {
             lineNumbers: true,
             styleActiveLine: true,
             matchBrackets: true,
-            readOnly: true
+            readOnly: true,
+            extraKeys: {"Alt-F": "findPersistent"},
        }       
      }
    },
    mounted(){        
+        myself = this;
         Blockly.Msg = Object.assign(en, Blockly.Msg);
         Blockly.Msg = Blockly.Msg();
 
@@ -209,6 +224,7 @@ export default {
         this.$global.$on('board-change',this.onBoardChange);        
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
+        this.$global.$on('editor-fontsize-change',this.onEditorFontsizeChange);
 
         if(this.$vuetify.theme.primary == null){
             this.$vuetify.theme.primary = '#009688';
@@ -225,49 +241,67 @@ export default {
         this.onEditorThemeChange(this.$global.editor.theme);
         //---- render editor fontsize
         this.onEditorFontsizeChange(this.$global.editor.fontSize);
-
-        //---- load code ----//
-        if(this.$global.editor.mode <= 2){
-            if(this.$global.editor.blockCode != ''){
-                var text = this.$global.editor.blockCode;
-                var xml = Blockly.Xml.textToDom(text);
-        		Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-            }
-        }else if(this.$global.editor.mode >= 2){
-
-        }        
+        //---- render editor mode change
+        this.onEditorModeChange(this.$global.editor.mode);
+        //---- load code ----//                
     },
-    methods:{        
-        onEditorFontsizeChange(value){
-            if('cm' in this.$refs){
-                if(this.$refs.cm != undefined){
-                    let cm = this.$refs.cm.getCodeMirror();
-                    cm.getWrapperElement().style["font-size"] = value+"px";
-                    cm.refresh();
+    methods:{
+        getCm(){
+            try{
+                if('cm' in myself.$refs){
+                    if(myself.$refs.cm != undefined){
+                        return myself.$refs.cm.getCodeMirror();
+                    }
                 }
+                return false;
+            }catch(e){
+                return false;
+            }
+        },
+        onEditorFontsizeChange(value){
+            let cm = myself.getCm();
+            if(cm){
+                cm.getWrapperElement().style["font-size"] = value+"px";
+                cm.refresh();
             }
         },
         onEditorThemeChange(value){
             //console.log(value);
             import('codemirror/theme/'+value+'.css');
-            if('cm' in this.$refs){
-                let code = this.$refs.cm.getCodeMirror();
-                code.setOption("theme", value);
+            let cm = myself.getCm();
+            if(cm){
+                cm.setOption("theme", value);
             }
         },
         onEditorModeChange(mode){
-            if(mode < 3){
+            if(mode < 3){         
+                if(this.$global.editor.blockCode != ''){
+                    var text = this.$global.editor.blockCode;
+                    var xml = Blockly.Xml.textToDom(text);
+                    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+                }        
                 setTimeout(() => {
                     Blockly.svgResize(this.workspace);
                 }, 300);
-            }else{ //mode 3
-                if('cm' in this.$refs){
-                    if(this.$refs.cm != undefined){ //enable editing code
-                        let code = this.$refs.cm.getCodeMirror();
-                        code.setOption("readOnly", false);
-                    }
+            }else if(mode == 3){
+                //------ generate template here ------//                
+                var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
+                var config = {
+                    board_mac_addr : 'Insert board MAC address',
+                    sta_ssid : this.$global.board.package['kidbright-actionbar'].wifi_ssid,
+                    sta_password : this.$global.board.package['kidbright-actionbar'].wifi_password,
+                    enable_iot : this.$global.board.package['kidbright-actionbar'].enable_iot,
+                };
+                var {sourceCode,codeContext} = codegen.codeGenerate(this.$global.editor.rawCode,template,config);
+                this.$global.editor.sourceCode = sourceCode;
+            }
+            if('cm' in this.$refs){
+                if(this.$refs.cm != undefined){ //enable editing code
+                    let code = this.$refs.cm.getCodeMirror();
+                    code.setOption("readOnly", mode < 3);
                 }
             }
+
         },
         onBoardChange: function(boardName){
             initBlockly(boardName);            
@@ -303,7 +337,7 @@ export default {
         updatecode(e){
             if(e.type != Blockly.Events.UI){
                 Blockly.JavaScript.resetTaskNumber();
-                this.$global.editor.sourceCode = Blockly.JavaScript.workspaceToCode(this.workspace);
+                this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(this.workspace);
                 var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
                 this.$global.editor.blockCode = xml;
             }else{

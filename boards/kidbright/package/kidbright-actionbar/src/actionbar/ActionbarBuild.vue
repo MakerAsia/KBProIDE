@@ -122,7 +122,7 @@ export default {
             console.log('---> step 2 <---');
             
             this.stepResult['2'].msg = "Compile board ... ";
-            var rawCode = G.editor.sourceCode;
+            var rawCode = G.editor.rawCode;
             var config = {
                 board_mac_addr : mac,            
                 sta_ssid : this.$global.board.package['kidbright-actionbar'].wifi_ssid,

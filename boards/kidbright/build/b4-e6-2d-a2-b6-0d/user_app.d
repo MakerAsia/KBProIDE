@@ -106,18 +106,6 @@ E:\Bloccoly\Research\KBProIDE\node_modules\electron\dist\..\..\..\boards\kidbrig
  e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\lm73.h \
  e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\mcp7940n.h \
  e:\bloccoly\research\kbproide\platforms\esp-idf\lib\newlib\include\math.h \
- e:\bloccoly\research\kbproide\boards\kidbright\plugin\gpio\mcp23s17_16out\mcp23s17_16out.h \
- e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\driver.h \
- e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\device.h \
- e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\spi-dev.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\driver\include\driver\spi_master.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\driver\include\driver\spi_common.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\esp32\include\rom\lldesc.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\esp32\include\rom\queue.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\include\soc\spi_periph.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_pins.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_reg.h \
- e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_struct.h \
  e:\bloccoly\research\kbproide\platforms\esp-idf\lib\nvs_flash\include\nvs_flash.h \
  e:\bloccoly\research\kbproide\platforms\esp-idf\lib\nvs_flash\include\nvs.h \
  e:\bloccoly\research\kbproide\boards\kidbright\lib\netpie\include\wificontroller.h \
@@ -377,30 +365,6 @@ e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\lm73.h:
 e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\mcp7940n.h:
 
 e:\bloccoly\research\kbproide\platforms\esp-idf\lib\newlib\include\math.h:
-
-e:\bloccoly\research\kbproide\boards\kidbright\plugin\gpio\mcp23s17_16out\mcp23s17_16out.h:
-
-e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\driver.h:
-
-e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\device.h:
-
-e:\bloccoly\research\kbproide\boards\kidbright\lib\kidbright32\include\spi-dev.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\driver\include\driver\spi_master.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\driver\include\driver\spi_common.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\esp32\include\rom\lldesc.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\esp32\include\rom\queue.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\include\soc\spi_periph.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_pins.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_reg.h:
-
-e:\bloccoly\research\kbproide\platforms\esp-idf\lib\soc\esp32\include\soc\spi_struct.h:
 
 e:\bloccoly\research\kbproide\platforms\esp-idf\lib\nvs_flash\include\nvs_flash.h:
 
