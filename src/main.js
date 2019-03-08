@@ -17,6 +17,21 @@ import util from '@/engine/utils';
 import SmoothScrollbar from 'vue-smooth-scrollbar'
 Vue.use(SmoothScrollbar);
 
+//---- firebase database ----//
+import firebase from 'firebase';
+require('firebase/firestore');
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyD8iU1-u0KFl7vFCJdwzJzAha7kOLtMKcQ",
+  authDomain: "kbproide.firebaseapp.com",
+  databaseURL: "https://kbproide.firebaseio.com",
+  projectId: "kbproide",
+  storageBucket: "kbproide.appspot.com",
+  messagingSenderId: "1046722656270"
+};
+firebase.initializeApp(config);
+Vue.prototype.$db = firebase.firestore();
+
 
 Vue.config.productionTip = false;
 

@@ -18,12 +18,17 @@
                         single-line
                         clearable
                         hide-details
+                        :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
+                        @click:append-outer="searchBoard(searchText)"
                         v-model="searchText"></v-text-field>                    
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar :options="scrollSettings" ref="scrollbar">
                     <v-card-text>
-                    <div id="pageCard">
+                        <v-subheader>
+                            Installed
+                        </v-subheader>
+                    <div>
                         <v-container grid-list-xl fluid>
                             <v-layout wrap>            
                                 <v-flex sm6 md4 v-for="(data,index) in installedBoard" :key="index">
@@ -66,9 +71,65 @@
                                             <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px" @click="openLink(data.git)" v-if="data.git">
                                                 <v-icon>fa-github</v-icon>
                                             </v-btn>
-                                        </v-card-actions>   
+                                        </v-card-actions>
                                     </v-card>
                                     </v-hover>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </div>
+
+                    <v-divider></v-divider>
+                    <v-subheader>
+                        Online available
+                    </v-subheader>
+
+                    <div>
+                        <v-container grid-list-xl fluid>
+                            <v-layout wrap>
+                                <v-flex v-if="isOnline() === false" xs12 md12 sm12 class="text-xs-center">
+                                    Please connect internet to use this feature.
+                                </v-flex>
+                                <v-flex v-else-if="onlineBoardStatus === 'wait'" xs12 md12 sm12 class="text-xs-center">
+                                    <v-progress-circular
+                                        :size="50"
+                                        color="primary"
+                                        indeterminate
+                                    ></v-progress-circular>
+                                </v-flex>
+                                <v-flex sm6 md4 v-for="(data,index) in onlineBoards" :key="index">
+                                    <v-card>
+                                        <v-card-media>
+                                            <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
+                                                {{data.title}}
+                                            </h4>                                            
+                                            <v-img contain="true" v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
+                                            <v-img contain="true" v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
+                                        </v-card-media>
+                                        <v-card-text>
+                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px" @click="confirmInstall = true">
+                                                <v-icon>fa-download</v-icon>
+                                            </v-btn>
+                                            <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
+                                                <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
+                                                {{data.description}}
+                                            </div>                                            
+                                        </v-card-text>
+                                        <v-divider></v-divider>
+                                        <v-card-actions>
+                                            <span class="ml-2"><strong>{{data.version}}</strong></span>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink(data.website)" v-if="data.website">
+                                                <v-icon>fa-link</v-icon>
+                                            </v-btn>
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink('mailto:'+data.email)" v-if="data.email">
+                                                <v-icon>fa-envelope-o</v-icon>
+                                            </v-btn>
+                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px" @click="openLink(data.git)" v-if="data.git">
+                                                <v-icon>fa-github</v-icon>
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>                                                                    
                                 </v-flex>                                
                             </v-layout>               
                         </v-container>
@@ -129,9 +190,16 @@ export default {
                 },
             },
             installedBoard : bm.boards(),
+
+            onlineBoardStatus : 'wait',
+            onlineBoardPage : 0,
+            onlineBoards : []
         }
     },
     methods:{
+        searchBoard(name){
+            this.$db.collection('boards');
+        },
         getBoardByName(name){
             return this.installedBoard.find(obj => { return obj.name == name});
         },
@@ -141,10 +209,33 @@ export default {
         changeBoard(boardname){        
             this.boardDialog = false;
             this.$global.board.board = boardname;
+        },
+        isOnline()
+        {
+            return window.navigator.onLine;
+        },
+        listOnlineBoard(){
+            this.onlineBoardStatus = 'wait';
+            this.onlineBoards = [];
+            var mother = this;
+            this.$db.collection('boards').get().then(boardData =>{  
+                this.onlineBoardStatus = 'OK';          
+                boardData.forEach(element => {
+                    mother.onlineBoards.push(element.data());
+                });
+            }).catch(err=>{
+                console.log(err);
+            });
         }
     },
-    mounted(){
-        //console.log(bm.boards());
+    mounted(){        
+    },
+    watch : {
+        boardDialog : function(val){
+            if(val){//on opening
+                this.listOnlineBoard();
+            }
+        }
     }
 }
 </script>

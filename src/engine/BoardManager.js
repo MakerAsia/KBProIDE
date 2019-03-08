@@ -130,7 +130,7 @@ export default {
     listBottomTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomTab'),
     loadBoardManagerConfig,
     listPublicBoard : function(){
-
+        
     },
     load : ()=>{
 
