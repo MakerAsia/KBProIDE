@@ -1,7 +1,8 @@
 import util from '@/engine/utils';
-//import nativeRequire from '@/NativeRequire';
-const {resolve, join} = require('path');
-const {homedir} = require('os');
+//import axios from 'axios';
+import fs from 'fs';
+var request = require('request');
+var progress = require('request-progress');
 
 var listedBoards = [];
 var listedPackages = {};
@@ -82,6 +83,31 @@ var loadBoardManagerConfig = function(){
     return util.requireFunc(configFile);
 };
 
+var installOnlineBoard = function(info)
+{
+    new Promise((resolve, reject) => {
+        if(!info.git){ reject('no git found'); }
+        var zipUrl = info.git + "/archive/master.zip";
+        var zipFile = '';
+        progress(
+            request(zipUrl),
+            {
+                throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms 
+                delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms 
+                followAllRedirects: true,
+                follow : true,        
+            }
+        ).on('progress', function (state) { 
+            cb & cb(state);
+        }).on('error', function (err) {
+            reject(err);
+        }).on('end', function () {
+            resolve();
+        })
+        .pipe(fs.createWriteStream(zipFile));
+    });
+};
+
 var boards = function(){
     if(listedBoards.length === 0){ // check empty object !!!
         listedBoards = listBoard();
@@ -129,6 +155,7 @@ export default {
     listRightTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'RightTab'),
     listBottomTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomTab'),
     loadBoardManagerConfig,
+    installOnlineBoard,
     listPublicBoard : function(){
         
     },

@@ -13,6 +13,22 @@ if(process.env.NODE_ENV == 'development'){
 
   }
 }
+
+var humanFileSize = function (bytes, si) {
+  var thresh = si ? 1000 : 1024;
+  if(Math.abs(bytes) < thresh) {
+      return bytes + ' B';
+  }
+  var units = si
+      ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+      : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+  var u = -1;
+  do {
+      bytes /= thresh;
+      ++u;
+  } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+  return bytes.toFixed(1)+' '+units[u];
+}
 const baseDir = rootDir + baseRootPlatform;
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 const vueLoader = function(file)
@@ -141,6 +157,7 @@ export default {
   kebab,
   ui,
   requireFunc,
+  humanFileSize,
   loadCofigComponents,
   filterFileName : function(obj,filterName){    
     var res = {};

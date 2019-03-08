@@ -103,8 +103,8 @@
                                             <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
                                                 {{data.title}}
                                             </h4>                                            
-                                            <v-img contain="true" v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
-                                            <v-img contain="true" v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
+                                            <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
+                                            <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
                                         <v-card-text>
                                             <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px" @click="confirmInstall = true">
@@ -198,7 +198,8 @@ export default {
     },
     methods:{
         searchBoard(name){
-            this.$db.collection('boards');
+            //this.$db.collection('boards');
+            bm.installOnlineBoard(null);
         },
         getBoardByName(name){
             return this.installedBoard.find(obj => { return obj.name == name});
