@@ -1,8 +1,9 @@
 import util from '@/engine/utils';
 //import axios from 'axios';
 import fs from 'fs';
-var request = require('request');
-var progress = require('request-progress');
+const os = require('os');
+const request = require('request');
+const progress = require('request-progress');
 
 var listedBoards = [];
 var listedPackages = {};
@@ -88,21 +89,33 @@ var installOnlineBoard = function(info)
     new Promise((resolve, reject) => {
         if(!info.git){ reject('no git found'); }
         var zipUrl = info.git + "/archive/master.zip";
-        var zipFile = '';
+        var zipFile = os.tmpdir()+'/'+util.randomString(10)+'.zip';
         progress(
             request(zipUrl),
             {
-                throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms 
-                delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms 
+                throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms 
+                delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms 
                 followAllRedirects: true,
-                follow : true,        
+                follow : true,
             }
         ).on('progress', function (state) { 
-            cb & cb(state);
+            cb & cb({status : 'DOWNLOAD',state:state});
         }).on('error', function (err) {
             reject(err);
         }).on('end', function () {
-            resolve();
+            //extracting zip file
+            var extract = require('extract-zip');
+            
+            util.unzip(zipFile,'',p => {
+                console.log('progress');
+                console.log(p);
+            },).then(()=>{
+                console.log('success');
+                resolve();
+            }).catch(err=>{
+                console.log('error');
+                console.log(err);
+            });            
         })
         .pipe(fs.createWriteStream(zipFile));
     });

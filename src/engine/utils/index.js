@@ -3,6 +3,8 @@ import ui from './ui';
 const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
 const os = require('os');
+import unzip from './unzip';
+
 var baseRootPlatform = "";
 if(process.env.NODE_ENV == 'development'){
   if(process.platform == 'win32'){
@@ -187,4 +189,6 @@ export default {
   //------- plugin -----//
   vueLoader,
   vueRuntimeComponent,
+  //------- zip --------//
+  unzip : unzip.unzip
 };

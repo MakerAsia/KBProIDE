@@ -172,8 +172,7 @@ export default {
     data () {
         return {
             boardImageDir : utils.boardDir,
-            selectingBoard : this.$global.board.board,
-            cardText : 'test test test\ntest test test\ntest test test\ntest test test',
+            selectingBoard : this.$global.board.board,            
             boardDialog : false,
             confirmRemoveDialog : false,
             searchText : '',        
@@ -197,9 +196,16 @@ export default {
         }
     },
     methods:{
-        searchBoard(name){
-            //this.$db.collection('boards');
-            bm.installOnlineBoard(null);
+        searchBoard(name){            
+            utils.unzip('E:\\Topic-20181027T084515Z-001.zip',utils.boardDir,p=>{
+                console.log(p);
+            }).then(()=>{
+                console.log('successsss');
+            }).catch(err=>{
+                console.log('errr');
+                console.log(err);
+            });
+            //bm.installOnlineBoard({git : ''});
         },
         getBoardByName(name){
             return this.installedBoard.find(obj => { return obj.name == name});
