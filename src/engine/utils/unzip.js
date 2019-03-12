@@ -59,39 +59,38 @@ function unzip(zipPath, opts, fcb){
       });
 
       zipfile.readEntry();
-      zipfile.on("entry", function(entry) {
-        if (/\/$/.test(entry.fileName)) { // directory file names end with '/'          
-          mkdirp(entry.fileName, function() {
-            if (err) throw err;
+      zipfile.on("entry", function(entry) {        
+        var dest = path.join(opts.dir, entry.fileName);
+        var mode = (entry.externalFileAttributes >> 16) & 0xFFFF;
+        var IFMT = 61440,IFDIR = 16384,IFLNK = 40960;
+        var symlink = (mode & IFMT) === IFLNK;
+        var isDir = (mode & IFMT) === IFDIR;                  
+        if (!isDir && entry.fileName.slice(-1) === '/') { // Failsafe, borrowed from jsZip
+          isDir = true;
+        }        
+        // check for windows weird way of specifying a directory
+        // https://github.com/maxogden/extract-zip/issues/13#issuecomment-154494566
+        var madeBy = entry.versionMadeBy >> 8;
+        if (!isDir) isDir = (madeBy === 0 && entry.externalFileAttributes === 16)
+        if (mode === 0) {// if no mode then default to default modes
+          if (isDir) {
+            if (opts.defaultDirMode) mode = parseInt(opts.defaultDirMode, 10)
+            if (!mode) mode = 493; // Default to 0755
+          } else {
+            if (opts.defaultFileMode) mode = parseInt(opts.defaultFileMode, 10)
+            if (!mode) mode = 420; // Default to 0644
+          }
+        }
+        var umask = ~process.umask();
+        var procMode = mode & umask;
+        var destDir = dest;
+        if (!isDir) destDir = path.dirname(dest);
+        if(isDir){
+          mkdirp(destDir, function() {
+            if (err){ reject(err); }
             zipfile.readEntry();
           });
-        } else { // ensure parent directory exists
-          var dest = path.join(opts.dir, entry.fileName);
-          var mode = (entry.externalFileAttributes >> 16) & 0xFFFF;
-          var IFMT = 61440,IFDIR = 16384,IFLNK = 40960;
-          var symlink = (mode & IFMT) === IFLNK;
-          var isDir = (mode & IFMT) === IFDIR;                  
-          if (!isDir && entry.fileName.slice(-1) === '/') { // Failsafe, borrowed from jsZip
-            isDir = true;
-          }
-          // check for windows weird way of specifying a directory
-          // https://github.com/maxogden/extract-zip/issues/13#issuecomment-154494566
-          var madeBy = entry.versionMadeBy >> 8;
-          if (!isDir) isDir = (madeBy === 0 && entry.externalFileAttributes === 16)
-          if (mode === 0) {// if no mode then default to default modes
-            if (isDir) {
-              if (opts.defaultDirMode) mode = parseInt(opts.defaultDirMode, 10)
-              if (!mode) mode = 493; // Default to 0755
-            } else {
-              if (opts.defaultFileMode) mode = parseInt(opts.defaultFileMode, 10)
-              if (!mode) mode = 420; // Default to 0644
-            }
-          }
-          var umask = ~process.umask();
-          var procMode = mode & umask;
-          var destDir = dest;
-          if (!isDir) destDir = path.dirname(dest);
-          
+        }else{
           mkdirp(destDir, function() {
             zipfile.openReadStream(entry, function(err, readStream) {
               if (err) reject(err); // report progress through large files
@@ -132,10 +131,10 @@ function unzip(zipPath, opts, fcb){
                 incrementHandleCount();
                 writeStream.on("close", decrementHandleCount);
                 readStream.pipe(filter).pipe(writeStream);
-              }              
+              }            
             });
           });
-        }
+        }   
       });
     });
   });

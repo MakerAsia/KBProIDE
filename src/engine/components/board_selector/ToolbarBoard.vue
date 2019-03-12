@@ -310,7 +310,7 @@ export default {
                 setTimeout(() => {
                     b.status = 'READY';
                     this.statusText = '';
-                }, 3000);
+                }, 5000);
             })
         }
     },

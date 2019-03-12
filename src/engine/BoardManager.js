@@ -3,6 +3,7 @@ import pfm from '@/engine/PlatformManager';
 //import axios from 'axios';
 import fs from 'fs';
 const os = require('os');
+const path = require('path');
 const request = require('request');
 const progress = require('request-progress');
 //const db = Vue.prototype.$db;
@@ -178,9 +179,11 @@ var installOnlineBoard = function(info,cb)
         //rename ended with word '-master' in boards 
         var dirs = fs.readdirSync(util.boardDir);
         for(let i =0; i< dirs.length; i++){
-            let dirname = dirs[i];
-            if(fs.statSync(dirname).isDirectory() && dirname.endsWith('-master')){
-                fs.renameSync(path.join(util.boardDir,dirname),path.join(util.boardDir,dirname.replace("-master","")));
+            let dirname = path.join(util.boardDir, dirs[i]);
+            if(fs.lstatSync(dirname).isDirectory() && dirname.endsWith('-master')){
+                let sourceDir = dirname;
+                let targetDir = dirname.replace(/\-master$/,"");
+                fs.renameSync(sourceDir,targetDir);
             }
         }
         return true;
