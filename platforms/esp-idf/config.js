@@ -1,5 +1,5 @@
 module.exports = {    
-    title : 'esp-idf',
+    name : 'esp-idf',
     description : 'esp32-idf platform',
     auther : 'Maker Asia',
     website : 'https://github.com/espressif/esp-idf',

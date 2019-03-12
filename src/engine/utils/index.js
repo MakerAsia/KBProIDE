@@ -190,5 +190,5 @@ export default {
   vueLoader,
   vueRuntimeComponent,
   //------- zip --------//
-  unzip : unzip.unzip
+  unzip : unzip.unzip,
 };

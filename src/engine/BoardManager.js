@@ -1,9 +1,11 @@
 import util from '@/engine/utils';
+import pfm from '@/engine/PlatformManager';
 //import axios from 'axios';
 import fs from 'fs';
 const os = require('os');
 const request = require('request');
 const progress = require('request-progress');
+//const db = Vue.prototype.$db;
 
 var listedBoards = [];
 var listedPackages = {};
@@ -75,6 +77,50 @@ var listBoard = function(){
     });
     return context;
 };
+var listOnlineBoard = function(name = '',start = 0){
+    return new Promise((resolve,reject)=>{
+        let onlineBoards = [];
+        if(name == ''){ //list all
+            Vue.prototype.$db.collection('boards')
+            .orderBy("name")
+            .startAfter(start)
+            .limit(50)
+            .get().then(boardData =>{
+                var lastVisible = boardData.docs[boardData.docs.length-1];
+                boardData.forEach(element => {
+                    onlineBoards.push(element.data());
+                });
+                resolve({end : lastVisible, boards : onlineBoards});
+            }).catch(err=>{                
+                reject(err);
+            });
+        }else{
+            var strSearch = name;
+            var strlength = strSearch.length;
+            var strFrontCode = strSearch.slice(0, strlength-1);
+            var strEndCode = strSearch.slice(strlength-1, strSearch.length);
+
+            var startcode = strSearch;
+            var endcode= strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+
+            Vue.prototype.$db.collection('boards')            
+            .where('name','>=',startcode) //search start with
+            .where('name','<',endcode)
+            .orderBy("name")
+            //.startAfter(start)
+            .limit(50)
+            .get().then(boardData =>{
+                var lastVisible = boardData.docs[boardData.docs.length-1];
+                boardData.forEach(element => {
+                    onlineBoards.push(element.data());
+                });
+                resolve({end : lastVisible, boards : onlineBoards});
+            }).catch(err=>{                
+                reject(err);
+            });
+        }
+    });    
+}
 
 var loadBoardManagerConfig = function(){
     let configFile = util.boardDir+'/config.js';
@@ -83,13 +129,30 @@ var loadBoardManagerConfig = function(){
     }
     return util.requireFunc(configFile);
 };
-
-var installOnlineBoard = function(info)
+var installBoardByName = function(name,cb)
 {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve,reject) => {
+        Vue.prototype.$db.collection('boards')
+            .where("name", "==", name)
+            .get()
+            .then(platfromData =>{    
+                platfromData.forEach(element => {
+                    return resolve(element.data());                    
+                });
+            }).catch(err=>{
+                reject(err);
+            });
+    }).then((info)=>{
+        return installOnlineBoard(info,cb);
+    });
+};
+var installOnlineBoard = function(info,cb)
+{
+    return new Promise((resolve, reject) => { //download zip
         if(!info.git){ reject('no git found'); }
         var zipUrl = info.git + "/archive/master.zip";
         var zipFile = os.tmpdir()+'/'+util.randomString(10)+'.zip';
+        var file = fs.createWriteStream(zipFile);
         progress(
             request(zipUrl),
             {
@@ -98,26 +161,24 @@ var installOnlineBoard = function(info)
                 followAllRedirects: true,
                 follow : true,
             }
-        ).on('progress', function (state) { 
-            cb & cb({status : 'DOWNLOAD',state:state});
+        ).on('progress', function (state) {
+            cb & cb({process : 'board', status : 'DOWNLOAD', state:state }); 
         }).on('error', function (err) {
             reject(err);
         }).on('end', function () {
-            //extracting zip file
-            var extract = require('extract-zip');
-            
-            util.unzip(zipFile,'',p => {
-                console.log('progress');
-                console.log(p);
-            },).then(()=>{
-                console.log('success');
-                resolve();
-            }).catch(err=>{
-                console.log('error');
-                console.log(err);
-            });            
+            file.end();
+            return resolve(zipFile);
         })
-        .pipe(fs.createWriteStream(zipFile));
+        .pipe(file);
+    }).then((zipFile)=>{ //unzip file
+        return util.unzip(zipFile,{dir: util.boardDir},p=>{ 
+            cb & cb({process : 'board', status : 'UNZIP', state: p });
+        });
+    }).then(()=>{ //install platform
+        if(!fs.readdirSync(util.platformDir).includes(info.platform)){
+            return pfm.installPlatfromByName(info.platform);
+        }
+        return Promise.resolve();
     });
 };
 
@@ -158,6 +219,7 @@ export default {
     boards,
     packages,
     listBoard,
+    listOnlineBoard,
     listPackage,
     listToolbar : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'Toolbar'),
     listActionbar : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'Actionbar'),
@@ -169,9 +231,7 @@ export default {
     listBottomTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomTab'),
     loadBoardManagerConfig,
     installOnlineBoard,
-    listPublicBoard : function(){
-        
-    },
+    installBoardByName,
     load : ()=>{
 
     },

@@ -6,7 +6,7 @@
             </v-btn>
             <span>Board Manager</span>
         </v-tooltip>
-        <v-dialog v-model="boardDialog" max-width="80%" max-height="80%" scrollable>            
+        <v-dialog v-model="boardDialog" max-width="80%" max-height="81%" scrollable persistent>            
             <v-card>
                 <v-card-title>
                     <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>
@@ -19,7 +19,9 @@
                         clearable
                         hide-details
                         :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
-                        @click:append-outer="searchBoard(searchText)"
+                        @click:append-outer="listAllBoard(searchText)"
+                        @click:clear="listAllBoard()"
+                        @change="listAllBoard(searchText)"
                         v-model="searchText"></v-text-field>                    
                 </v-card-title>
                 <v-divider></v-divider>
@@ -31,7 +33,7 @@
                     <div>
                         <v-container grid-list-xl fluid>
                             <v-layout wrap>            
-                                <v-flex sm6 md4 v-for="(data,index) in installedBoard" :key="index">
+                                <v-flex sm6 md4 v-for="(data) in localBoards" :key="data.name">
                                     <v-hover>
                                     <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingBoard == data.name? 8 : 2)}`">
                                         <v-card-media @click.native="selectingBoard = data.name">
@@ -41,7 +43,12 @@
                                             <img class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
                                         <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="red" style="bottom:25px; right:5px" @click="confirmRemoveDialog = true">
+                                            <v-btn 
+                                                icon fab absolute right bottom small dark 
+                                                color="red" 
+                                                style="bottom:25px; right:5px" 
+                                                @click="toberemove = data.name; confirmRemoveDialog = true"
+                                            >                                                                                                                                    
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
                                             <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
@@ -97,23 +104,28 @@
                                         indeterminate
                                     ></v-progress-circular>
                                 </v-flex>
-                                <v-flex sm6 md4 v-for="(data,index) in onlineBoards" :key="index">
+                                <v-flex v-else-if="onlineBoardStatus != 'wait'" sm6 md4 v-for="(data) in onlineBoards" :key="data.name">
                                     <v-card>
                                         <v-card-media>
                                             <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
                                                 {{data.title}}
-                                            </h4>                                            
+                                            </h4>
                                             <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
                                             <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
-                                        <v-card-text>
-                                            <v-btn icon fab absolute right bottom small dark color="primary" style="bottom:25px; right:5px" @click="confirmInstall = true">
+                                        <v-card-text>                                            
+                                            <v-btn                                                
+                                                icon fab absolute right bottom small dark 
+                                                color="primary" 
+                                                style="bottom:25px; right:5px" 
+                                                @click="tobeinstall = data.name; confirmInstallDialog = true"
+                                            >
                                                 <v-icon>fa-download</v-icon>
                                             </v-btn>
                                             <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
                                                 <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
                                                 {{data.description}}
-                                            </div>                                            
+                                            </div>
                                         </v-card-text>
                                         <v-divider></v-divider>
                                         <v-card-actions>
@@ -147,11 +159,22 @@
         <v-dialog v-model="confirmRemoveDialog" persistent max-width="500px">
             <v-card>
                 <v-card-title class="headline">Remove board confirmation</v-card-title>
-                <v-card-text>Do you want to remove this board?.</v-card-text>
+                <v-card-text>Do you want to remove <strong>{{toberemove}}</strong>?</v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">Cancel</v-btn>
                 <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="confirmInstallDialog" persistent max-width='500px'>
+            <v-card>
+                <v-card-title class="headline">Install board confirmation</v-card-title>
+                <v-card-text>Do you want to install <strong>{{tobeinstall}}</strong>?</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false">Cancel</v-btn>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false; installOnlineBoard(tobeinstall);">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -165,6 +188,7 @@ const { shell } = require('electron');
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import utils from '@/engine/utils';
+import { constants } from 'http2';
 export default {
     components: {
         VWidget
@@ -175,7 +199,8 @@ export default {
             selectingBoard : this.$global.board.board,            
             boardDialog : false,
             confirmRemoveDialog : false,
-            searchText : '',        
+            confirmInstallDialog : false,
+            searchText : '', 
             scrollSettings: {
                 alwaysShowTracks: false,
                 plugins: {
@@ -188,27 +213,23 @@ export default {
                     }
                 },
             },
-            installedBoard : bm.boards(),
+            isInstalling : false,
 
+            installedBoard : bm.boards().map(obj=>{ obj.active =  'WAIT'; return obj;}),
+            localBoards : bm.boards().map(obj=>{ obj.active =  'WAIT'; return obj;}),
             onlineBoardStatus : 'wait',
             onlineBoardPage : 0,
-            onlineBoards : []
+            onlineBoards : [],
+            tobeinstall : '',
+            toberemove : '',
         }
     },
-    methods:{
-        searchBoard(name){            
-            utils.unzip('E:\\Topic-20181027T084515Z-001.zip',utils.boardDir,p=>{
-                console.log(p);
-            }).then(()=>{
-                console.log('successsss');
-            }).catch(err=>{
-                console.log('errr');
-                console.log(err);
-            });
-            //bm.installOnlineBoard({git : ''});
-        },
+    methods:{        
         getBoardByName(name){
             return this.installedBoard.find(obj => { return obj.name == name});
+        },
+        getOnlineBoardByName(name){
+            return this.onlineBoards.find(obj=>{ return obj.name == name});
         },
         openLink(url){
             shell.openExternal(url);
@@ -221,18 +242,39 @@ export default {
         {
             return window.navigator.onLine;
         },
-        listOnlineBoard(){
+        listAllBoard(name = ''){            
+            this.listOnlineBoard(name);
+            this.listLocalBoard(name);
+        },
+        listOnlineBoard(name = ''){
             this.onlineBoardStatus = 'wait';
-            this.onlineBoards = [];
-            var mother = this;
-            this.$db.collection('boards').get().then(boardData =>{  
-                this.onlineBoardStatus = 'OK';          
-                boardData.forEach(element => {
-                    mother.onlineBoards.push(element.data());
-                });
+            bm.listOnlineBoard(name).then(res=>{
+                //name,start return {end : lastVisible, boards : onlineBoards}                
+                this.onlineBoardPage = res.end;
+                this.onlineBoards = res.boards;
+                this.onlineBoardStatus = 'OK';                
             }).catch(err=>{
+                this.onlineBoardStatus = 'ERROR';
+            });   
+        },
+        listLocalBoard(name = ''){
+            if(name != ''){
+                this.localBoards = this.installedBoard.filter(obj=> {return obj.name.startsWith(name)});
+            }else{
+                this.localBoards = this.installedBoard;
+            }            
+        },
+        installOnlineBoard(name){
+            bm.installBoardByName(name,progress => {
+                
+                //{process : 'board', status : 'DOWNLOAD', state:state }
+                console.log(progress);
+            }).then(()=>{
+                console.log('success');
+            }).catch(err=>{
+                console.log('err');
                 console.log(err);
-            });
+            })
         }
     },
     mounted(){        
