@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const Transform = require("stream").Transform;
 const yauzl = require('yauzl');
+var concat = require('concat-stream')
 var _0777 = parseInt('0777', 8);
 
 
@@ -123,8 +124,7 @@ function unzip(zipPath, opts, fcb){
                 readStream.pipe(concat(function (data) {
                   var link = data.toString();
                   fs.symlink(link, dest, function (err) {//debug('creating symlink', link, dest)
-                    if (err) cancelled = true;
-                    reject(err);
+                    if (err) reject(err);
                   });
                 }));
               }else{

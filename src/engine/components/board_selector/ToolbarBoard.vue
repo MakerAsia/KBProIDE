@@ -44,11 +44,12 @@
                                         </v-card-media>
                                         <v-card-text>
                                             <v-btn 
-                                                icon fab absolute right bottom small dark 
-                                                color="red" 
+                                                icon fab absolute right bottom small dark                                                 
+                                                class="red"
                                                 style="bottom:25px; right:5px" 
                                                 @click="toberemove = data.name; confirmRemoveDialog = true"
-                                            >                                                                                                                                    
+                                                :disabled="data.status != 'READY'"
+                                            >                                                                                 
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
                                             <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
@@ -105,43 +106,61 @@
                                     ></v-progress-circular>
                                 </v-flex>
                                 <v-flex v-else-if="onlineBoardStatus != 'wait'" sm6 md4 v-for="(data) in onlineBoards" :key="data.name">
-                                    <v-card>
-                                        <v-card-media>
-                                            <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
-                                                {{data.title}}
-                                            </h4>
-                                            <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
-                                            <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
-                                        </v-card-media>
-                                        <v-card-text>                                            
-                                            <v-btn                                                
-                                                icon fab absolute right bottom small dark 
-                                                color="primary" 
-                                                style="bottom:25px; right:5px" 
-                                                @click="tobeinstall = data.name; confirmInstallDialog = true"
-                                            >
-                                                <v-icon>fa-download</v-icon>
-                                            </v-btn>
-                                            <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
-                                                <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
-                                                {{data.description}}
-                                            </div>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
-                                        <v-card-actions>
-                                            <span class="ml-2"><strong>{{data.version}}</strong></span>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink(data.website)" v-if="data.website">
-                                                <v-icon>fa-link</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink('mailto:'+data.email)" v-if="data.email">
-                                                <v-icon>fa-envelope-o</v-icon>
-                                            </v-btn>
-                                            <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px" @click="openLink(data.git)" v-if="data.git">
-                                                <v-icon>fa-github</v-icon>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-card>                                                                    
+                                    <template v-if="data.status != 'DISABLED'">
+                                        <v-card>
+                                            <v-card-media>
+                                                <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
+                                                    {{data.title}}
+                                                </h4>
+                                                <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
+                                                <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
+                                            </v-card-media>
+                                            <v-card-text>                                            
+                                                <v-btn                                     
+                                                    icon fab absolute right bottom small dark                                                 
+                                                    style="bottom:25px; right:5px"
+                                                    class="primary"
+                                                    :disabled="data.status != 'READY'"                                                
+                                                    @click="tobeinstall = data.name; confirmInstallDialog = true"
+                                                >
+                                                    <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
+                                                    <v-progress-circular
+                                                        v-else-if="data.status != 'READY'"
+                                                        indeterminate
+                                                        color="primary lighten-4"
+                                                    >
+                                                    </v-progress-circular>
+                                                </v-btn>
+                                                <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
+                                                    <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
+                                                    {{data.description}}
+                                                </div>
+                                            </v-card-text>
+                                            <v-divider></v-divider>                                        
+                                            <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>
+                                            <v-progress-linear 
+                                                v-if="data.status != 'READY'"
+                                                height="2"
+                                                style="position:absolute; margin-top: -2px;"
+                                                color="primary"
+                                                v-model="statusProgress"
+                                                :indeterminate="data.status == 'DOWNLOAD'">
+                                            </v-progress-linear>
+                                            <v-card-actions>
+                                                <span class="ml-2"><strong>{{data.version}}</strong></span>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink(data.website)" v-if="data.website">
+                                                    <v-icon>fa-link</v-icon>
+                                                </v-btn>
+                                                <v-btn flat small color="primary" dark class="right pa-0 ma-0" style="min-width:40px" @click="openLink('mailto:'+data.email)" v-if="data.email">
+                                                    <v-icon>fa-envelope-o</v-icon>
+                                                </v-btn>
+                                                <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5" style="min-width:40px" @click="openLink(data.git)" v-if="data.git">
+                                                    <v-icon>fa-github</v-icon>
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-card> 
+                                    </template>                                                                   
                                 </v-flex>                                
                             </v-layout>               
                         </v-container>
@@ -184,10 +203,11 @@
 <script>
 
 const { shell } = require('electron');
+const fs = require('fs');
 
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
-import utils from '@/engine/utils';
+import util from '@/engine/utils';
 import { constants } from 'http2';
 export default {
     components: {
@@ -195,7 +215,7 @@ export default {
     },
     data () {
         return {
-            boardImageDir : utils.boardDir,
+            boardImageDir : util.boardDir,
             selectingBoard : this.$global.board.board,            
             boardDialog : false,
             confirmRemoveDialog : false,
@@ -215,13 +235,15 @@ export default {
             },
             isInstalling : false,
 
-            installedBoard : bm.boards().map(obj=>{ obj.active =  'WAIT'; return obj;}),
-            localBoards : bm.boards().map(obj=>{ obj.active =  'WAIT'; return obj;}),
+            installedBoard : bm.boards().map(obj=>{ obj.status =  'READY'; return obj;}),
+            localBoards : bm.boards().map(obj=>{ obj.status =  'READY'; return obj;}),
             onlineBoardStatus : 'wait',
             onlineBoardPage : 0,
             onlineBoards : [],
             tobeinstall : '',
             toberemove : '',
+            statusText : '',
+            statusProgress : 0,
         }
     },
     methods:{        
@@ -248,10 +270,10 @@ export default {
         },
         listOnlineBoard(name = ''){
             this.onlineBoardStatus = 'wait';
-            bm.listOnlineBoard(name).then(res=>{
+            bm.listOnlineBoard(name).then(res=>{                
                 //name,start return {end : lastVisible, boards : onlineBoards}                
                 this.onlineBoardPage = res.end;
-                this.onlineBoards = res.boards;
+                this.onlineBoards = res.boards.map(obj=>{ obj.status =  'READY'; return obj;});
                 this.onlineBoardStatus = 'OK';                
             }).catch(err=>{
                 this.onlineBoardStatus = 'ERROR';
@@ -265,15 +287,30 @@ export default {
             }            
         },
         installOnlineBoard(name){
+            let b = this.getOnlineBoardByName(name);
+            b.status='DOWNLOAD';
+            this.statusText = "Downloading";
+            this.statusProgress = 0;
             bm.installBoardByName(name,progress => {
-                
                 //{process : 'board', status : 'DOWNLOAD', state:state }
-                console.log(progress);
-            }).then(()=>{
-                console.log('success');
+                if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                    this.statusText = 
+                        `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
+                }else if(progress.status == 'UNZIP'){
+                    b.status = 'UNZIP';
+                    this.statusText = `Unzip file ${progress.state.percentage}%`;
+                    this.statusProgress = progress.state.percentage;
+                }
+            }).then(()=>{ //install success
+                b.status = 'DISABLED';
+                this.statusText = '';
             }).catch(err=>{
-                console.log('err');
-                console.log(err);
+                this.statusText = `Error : ${err}`
+                b.status = 'ERROR';
+                setTimeout(() => {
+                    b.status = 'READY';
+                    this.statusText = '';
+                }, 3000);
             })
         }
     },
@@ -289,6 +326,16 @@ export default {
 }
 </script>
 <style>
+.text-info-status{
+    position: absolute;
+    font-size: 12px;
+    right: 0px;
+    background-color: white;
+    margin: 0;
+    margin-right: 10px;
+    bottom: 2px;
+    z-index: 999;
+}
 .search-board {
     width: 40px;
     margin-bottom: -10px !important;

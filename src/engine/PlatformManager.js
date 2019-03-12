@@ -59,6 +59,15 @@ var installPlatfromByName = function(name,cb){
         }else{
             return Promise.reject('no data passing');
         }
+    }).then(()=>{
+        var dirs = fs.readdirSync(util.platformDir);
+        for(let i =0; i< dirs.length; i++){
+            let dirname = dirs[i];
+            if(fs.statSync(dirname).isDirectory() && dirname.endsWith('-master')){
+                fs.renameSync(path.join(util.platformDir,dirname),path.join(util.platformDir,dirname.replace("-master","")));
+            }
+        }
+        return true;
     });
 };
 

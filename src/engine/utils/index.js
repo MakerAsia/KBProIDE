@@ -16,7 +16,7 @@ if(process.env.NODE_ENV == 'development'){
   }
 }
 
-var humanFileSize = function (bytes, si) {
+var humanFileSize = function (bytes, si = true) {
   var thresh = si ? 1000 : 1024;
   if(Math.abs(bytes) < thresh) {
       return bytes + ' B';

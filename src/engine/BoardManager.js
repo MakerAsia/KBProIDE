@@ -174,6 +174,16 @@ var installOnlineBoard = function(info,cb)
         return util.unzip(zipFile,{dir: util.boardDir},p=>{ 
             cb & cb({process : 'board', status : 'UNZIP', state: p });
         });
+    }).then(()=>{ //rename folder
+        //rename ended with word '-master' in boards 
+        var dirs = fs.readdirSync(util.boardDir);
+        for(let i =0; i< dirs.length; i++){
+            let dirname = dirs[i];
+            if(fs.statSync(dirname).isDirectory() && dirname.endsWith('-master')){
+                fs.renameSync(path.join(util.boardDir,dirname),path.join(util.boardDir,dirname.replace("-master","")));
+            }
+        }
+        return true;
     }).then(()=>{ //install platform
         if(!fs.readdirSync(util.platformDir).includes(info.platform)){
             return pfm.installPlatfromByName(info.platform);
