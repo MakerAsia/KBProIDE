@@ -115,12 +115,12 @@
                                                 <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
                                                 <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                             </v-card-media>
-                                            <v-card-text>                                            
-                                                <v-btn                                     
-                                                    icon fab absolute right bottom small dark                                                 
+                                            <v-card-text>
+                                                <v-btn
+                                                    icon fab absolute right bottom small dark
                                                     style="bottom:25px; right:5px"
                                                     class="primary"
-                                                    :disabled="data.status != 'READY'"                                                
+                                                    :disabled="data.status != 'READY'"
                                                     @click="tobeinstall = data.name; confirmInstallDialog = true"
                                                 >
                                                     <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
@@ -136,7 +136,7 @@
                                                     {{data.description}}
                                                 </div>
                                             </v-card-text>
-                                            <v-divider></v-divider>                                        
+                                            <v-divider></v-divider>
                                             <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>
                                             <v-progress-linear 
                                                 v-if="data.status != 'READY'"
@@ -160,9 +160,9 @@
                                                 </v-btn>
                                             </v-card-actions>
                                         </v-card> 
-                                    </template>                                                                   
-                                </v-flex>                                
-                            </v-layout>               
+                                    </template>
+                                </v-flex>
+                            </v-layout>
                         </v-container>
                     </div>
 
@@ -216,7 +216,7 @@ export default {
     data () {
         return {
             boardImageDir : util.boardDir,
-            selectingBoard : this.$global.board.board,            
+            selectingBoard : this.$global.board.board,
             boardDialog : false,
             confirmRemoveDialog : false,
             confirmInstallDialog : false,
@@ -305,7 +305,7 @@ export default {
                 b.status = 'DISABLED';
                 this.statusText = '';
             }).catch(err=>{
-                this.statusText = `Error : ${err}`
+                this.statusText = `Error : ${err}`;
                 b.status = 'ERROR';
                 setTimeout(() => {
                     b.status = 'READY';
