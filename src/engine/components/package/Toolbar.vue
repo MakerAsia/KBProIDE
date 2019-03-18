@@ -6,7 +6,7 @@
             </v-btn>
             <span>Package Manager</span>
         </v-tooltip>
-        <v-dialog v-model="packageDialog" max-width="60%" max-height="81%" scrollable persistent>            
+        <v-dialog v-model="packageDialog" max-width="70%" max-height="81%" scrollable persistent>            
             <v-card>
                 <v-card-title>
                     <span class="headline">Pacakge Manager</span>                    
