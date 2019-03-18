@@ -26,7 +26,7 @@
                         v-model="searchText"></v-text-field>
                 </v-card-title>
                 <v-divider></v-divider>
-                 <div ref="scrollArea" class="smooth-scrollbar">
+                <smooth-scrollbar>
                     <v-card-text>
                         <v-subheader>
                             Installed
@@ -168,7 +168,7 @@
                     </div>
 
                     </v-card-text>
-                </div>
+                </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
@@ -206,11 +206,7 @@
 const { shell } = require('electron');
 const fs = require('fs');
 
-import SmoothScrollbar from 'smooth-scrollbar'
-const pg = require('smooth-scrollbar/plugins/overscroll');
-
-let scrollbar;
-
+import SmoothScrollbar from '@/engine/view/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import util from '@/engine/utils';
@@ -226,19 +222,7 @@ export default {
             boardDialog : false,
             confirmRemoveDialog : false,
             confirmInstallDialog : false,
-            searchText : '', 
-            scrollSettings: {
-                alwaysShowTracks: false,
-                plugins: {
-                    overscroll : { 
-                        enable: true,
-                        effect: 'glow',
-                        damping: 0.1,
-                        maxOverscroll: 150,
-                        glowColor: '#222a2d'
-                    }
-                },
-            },
+            searchText : '',             
             isInstalling : false,
 
             installedBoard : bm.boards().map(obj=>{ obj.status =  'READY'; return obj;}),
@@ -250,8 +234,6 @@ export default {
             toberemove : '',
             statusText : '',
             statusProgress : 0,
-
-            scrollbar: null,
         }
     },
     methods:{        
@@ -324,25 +306,10 @@ export default {
         }
     },
     mounted(){
-        let option = {
-            damping: 0.1,
-            thumbMinSize: 20,
-            renderByPixels: true,
-            alwaysShowTracks: false,
-            continuousScrolling: true,
-            delegateTo: null,
-            plugins: {}
-        }
-        scrollbar = SmoothScrollbar.init(
-            this.$refs.scrollArea,
-            Object.assign({},{}, option, this.scrollSettings)
-        )
-        this.scrollbar = scrollbar;
+        
     },
     destroyed() {
-      scrollbar.destroy()
-      scrollbar = null
-      this.scrollbar = null
+      
     },
     watch : {
         boardDialog : function(val){
@@ -354,10 +321,6 @@ export default {
 }
 </script>
 <style>
-.smooth-scrollbar {
-  width: 100%;
-  height: 100%;
-}
 .text-info-status{
     position: absolute;
     font-size: 12px;
