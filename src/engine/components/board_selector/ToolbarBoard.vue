@@ -11,7 +11,8 @@
                 <v-card-title>
                     <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>
                     <v-spacer class="hidden-xs-only"></v-spacer>
-                     <v-text-field 
+                     <v-btn ref="button" color="primary" block @click="$vuetify.goTo(888, {duration: 500,offset: 100,easing: 'easeInOutCubic'})">scroll</v-btn>
+                    <v-text-field 
                         prepend-icon="search" 
                         label="Board name" 
                         class="ma-0 pa-0 search-board"
@@ -22,7 +23,7 @@
                         @click:append-outer="listAllBoard(searchText)"
                         @click:clear="listAllBoard()"
                         @change="listAllBoard(searchText)"
-                        v-model="searchText"></v-text-field>                    
+                        v-model="searchText"></v-text-field>
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar :options="scrollSettings" ref="scrollbar">
@@ -32,7 +33,7 @@
                         </v-subheader>
                     <div>
                         <v-container grid-list-xl fluid>
-                            <v-layout wrap>            
+                            <v-layout wrap>
                                 <v-flex sm6 md4 v-for="(data) in localBoards" :key="data.name">
                                     <v-hover>
                                     <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingBoard == data.name? 8 : 2)}`">
@@ -43,20 +44,20 @@
                                             <img class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
                                         <v-card-text>
-                                            <v-btn 
-                                                icon fab absolute right bottom small dark                                                 
+                                            <v-btn
+                                                icon fab absolute right bottom small dark
                                                 class="red"
-                                                style="bottom:25px; right:5px" 
+                                                style="bottom:25px; right:5px"
                                                 @click="toberemove = data.name; confirmRemoveDialog = true"
                                                 :disabled="data.status != 'READY'"
-                                            >                                                                                 
+                                            >
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
                                             <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
                                                 <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
                                                 {{data.description}}
                                             </div>
-    
+
                                             <transition name="fade">
                                                 <div v-if="selectingBoard == data.name" class="selected-board-icon">
                                                     <div class="corner-icon">
@@ -106,7 +107,7 @@
                                     ></v-progress-circular>
                                 </v-flex>
                                 <v-flex v-else-if="onlineBoardStatus != 'wait'" sm6 md4 v-for="(data) in onlineBoards" :key="data.name">
-                                    <template v-if="data.status != 'DISABLED'">
+                                    <template v-if="data.status != 'INSTALLED'">
                                         <v-card>
                                             <v-card-media>
                                                 <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1" color="primary">
@@ -271,7 +272,7 @@ export default {
         listOnlineBoard(name = ''){
             this.onlineBoardStatus = 'wait';
             bm.listOnlineBoard(name).then(res=>{                
-                //name,start return {end : lastVisible, boards : onlineBoards}                
+                //name,start return {end : lastVisible, boards : onlineBoards}
                 this.onlineBoardPage = res.end;
                 this.onlineBoards = res.boards.map(obj=>{ obj.status =  'READY'; return obj;});
                 this.onlineBoardStatus = 'OK';                
@@ -302,8 +303,9 @@ export default {
                     this.statusProgress = progress.state.percentage;
                 }
             }).then(()=>{ //install success
-                b.status = 'DISABLED';
-                this.statusText = '';
+                b.status = 'INSTALLED';
+                this.statusText = '';                
+                this.localBoards.push(b);
             }).catch(err=>{
                 this.statusText = `Error : ${err}`;
                 b.status = 'ERROR';
