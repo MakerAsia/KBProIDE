@@ -9,7 +9,7 @@
         <v-dialog v-model="boardDialog" max-width="80%" max-height="81%" scrollable persistent>            
             <v-card>
                 <v-card-title>
-                    <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>
+                    <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>                    
                     <v-spacer class="hidden-xs-only"></v-spacer>
                      <v-btn ref="button" color="primary" block @click="$vuetify.goTo(888, {duration: 500,offset: 100,easing: 'easeInOutCubic'})">scroll</v-btn>
                     <v-text-field 
@@ -26,7 +26,7 @@
                         v-model="searchText"></v-text-field>
                 </v-card-title>
                 <v-divider></v-divider>
-                <smooth-scrollbar :options="scrollSettings" ref="scrollbar">
+                 <div ref="scrollArea" class="smooth-scrollbar">
                     <v-card-text>
                         <v-subheader>
                             Installed
@@ -168,7 +168,7 @@
                     </div>
 
                     </v-card-text>
-                </smooth-scrollbar>
+                </div>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
@@ -205,6 +205,11 @@
 
 const { shell } = require('electron');
 const fs = require('fs');
+
+import SmoothScrollbar from 'smooth-scrollbar'
+const pg = require('smooth-scrollbar/plugins/overscroll');
+
+let scrollbar;
 
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
@@ -245,6 +250,8 @@ export default {
             toberemove : '',
             statusText : '',
             statusProgress : 0,
+
+            scrollbar: null,
         }
     },
     methods:{        
@@ -316,7 +323,26 @@ export default {
             })
         }
     },
-    mounted(){        
+    mounted(){
+        let option = {
+            damping: 0.1,
+            thumbMinSize: 20,
+            renderByPixels: true,
+            alwaysShowTracks: false,
+            continuousScrolling: true,
+            delegateTo: null,
+            plugins: {}
+        }
+        scrollbar = SmoothScrollbar.init(
+            this.$refs.scrollArea,
+            Object.assign({},{}, option, this.scrollSettings)
+        )
+        this.scrollbar = scrollbar;
+    },
+    destroyed() {
+      scrollbar.destroy()
+      scrollbar = null
+      this.scrollbar = null
     },
     watch : {
         boardDialog : function(val){
@@ -328,6 +354,10 @@ export default {
 }
 </script>
 <style>
+.smooth-scrollbar {
+  width: 100%;
+  height: 100%;
+}
 .text-info-status{
     position: absolute;
     font-size: 12px;
