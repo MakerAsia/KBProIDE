@@ -1,0 +1,58 @@
+{
+  "name": "arduino-esp32-actionbar",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name arduino-esp32-actionbar src/lib.js",
+    "lint": "vue-cli-service lint"
+  },
+  "main": "./dist/arduino-esp32-actionbar.common.js",
+  "dependencies": {
+    "dot-object": "^1.7.0",
+    "font-awesome": "^4.7.0",
+    "lodash.truncate": "^4.4.2",
+    "moment": "^2.22.2",
+    "vue": "^2.5.21",
+    "vuetify": "^1.3.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-rc.5",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.5",
+    "@vue/cli-service": "^3.0.0-rc.5",
+    "vue-template-compiler": "^2.5.21",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vuetify-loader": "^1.2.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
