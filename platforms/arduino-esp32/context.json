@@ -1,0 +1,9 @@
+{
+    "toolchain_dir" : "./tools/xtensa-esp32-elf",
+    "cflags" : [
+        "-Ilib/include","-Ilib/include/apps/sntp","-Ilib/include/libb64"
+    ],
+    "ldflags" : [
+        "-Llib","-larduino_esp32"
+    ]
+}

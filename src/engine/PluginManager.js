@@ -79,8 +79,15 @@ var listCategoryPlugins = function(pluginDir)
 var loadPlugin = function(boardName,boardInfo){
     if((Object.entries(localPlugins).length === 0 && localPlugins.constructor === Object)||(boardName != localBoardName)){ // check empty object !!!
         localPlugins = listCategoryPlugins(`${util.boardDir}/${boardName}/plugin`);
+        localBoardName = boardName;
     }
     return localPlugins;
+};
+var plugins = function(boardName)
+{
+    let lpg = loadPlugin(boardName);
+    let cat = lpg.categories.map(data => { return data.category; });      
+    return cat;
 };
 
 var listOnlinePlugin = function(name = '',start = 0){
@@ -184,5 +191,6 @@ var installOnlinePlugin = function(info,cb)
 export default{
     listPlugin,
     loadPlugin,
+    plugins,
     listOnlinePlugin,
 }

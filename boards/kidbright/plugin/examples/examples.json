@@ -1,7 +1,11 @@
 {
-	"name": {
-		"en": "Examples",
-		"th": "ตัวอย่าง"
-	},
-	"color": 160
+	"title": "ตัวอย่าง",
+	"color": 160,
+	"author" : "comdet",
+	"description" : "ปลั๊กอินสตัวอย่าง",
+	"git" : "http://www.github.com/comdet/data",
+	"image" : "https://robu.in/wp-content/uploads/2017/09/IMG_0521.jpg",
+	"name" : "kb-example",
+	"scope" : ["board"],
+	"version" : "1.0.0"
 }

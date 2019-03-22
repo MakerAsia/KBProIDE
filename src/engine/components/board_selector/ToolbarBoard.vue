@@ -206,7 +206,7 @@
 const { shell } = require('electron');
 const fs = require('fs');
 
-import SmoothScrollbar from '@/engine/view/widgets/list/SmoothScrollbar'
+import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import util from '@/engine/utils';

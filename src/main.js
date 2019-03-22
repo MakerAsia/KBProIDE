@@ -13,6 +13,7 @@ import ui from '@/engine/UIManager';
 import pfm from '@/engine/PlatformManager';
 import compiler from '@/engine/Compiler';
 import util from '@/engine/utils';
+import updater from '@/engine/UpdateManager';
 
 import SmoothScrollbar from 'vue-smooth-scrollbar'
 Vue.use(SmoothScrollbar);
@@ -99,59 +100,6 @@ addWatcher('board.board',function(val){ //listen board name change we need to re
 
 //TODO load platform block
 
-//var vv = util.requireFunc('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/kidbright-actionbar/dist/kb-actionbar.umd.js');
-//var cv = eval(vv);
-//var text = util.fs.readFileSync('E:/Bloccoly/Research/vuetify-table-master/dist/vuetify-actionbar.umd.js','utf8');
-//var vv = util.requireFunc('E:/Bloccoly/Research/dayspan-vuetify-master/dist/lib/dayspan-vuetify.min.js');
-//var vv = util.requireFunc('E:/Bloccoly/Research/vuetify-table-master/dist/vuetify-actionbar.umd.js');
-//var vv = util.requireFunc('E:/Bloccoly/Research/vuetify-actionbar.umd.js');
-//console.log(text);
-//var vv = eval(text);
-//console.log(vv);
-//Vue.use(vv);
-
-
-//Vue.component('actionbar-wifi',vv.ActionbarWifi);
-//register component
-/*Object.keys(componentAllData.data.board.package).forEach(packageName => {
-  Object.keys(componentAllData.data.board.package[packageName]).forEach(componentFile =>{
-    var vueFile = componentAllData.data.board.package[packageName][componentFile];
-    try { // load components
-      var boardComponentData = util.vueRuntimeComponent(vueFile);
-      var componentRegisterName = packageName.toLowerCase() + '-' + util.kebab(componentFile);
-      Vue.component(componentRegisterName,boardComponentData);      
-    } catch (error) {
-      
-    }
-  });  
-});
-*/
-//console.log(vv);
-/*
-//var v = require.context('./', false, /.*?/).keys();
-//console.log(v);
-
-console.log('vvvvvv');
-var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
-var vl = util.vueLoader(cc);
-var compp = eval(vl.js);
-console.log(vl);
-console.log('cccccc');
-console.log(compp);
-console.log('cc2cccc');
-*/
-//var v = require.context('./', false, /.*?/).keys();
-//console.log(v);
-/*
-console.log('vvvvvv');
-var cc = "E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue";
-var vl = util.vueLoader(cc);
-var compp = eval(vl.js);
-console.log(vl);
-console.log('cccccc');
-console.log(compp);
-console.log('cc2cccc');*/
-
 //=====================================//
 
 //============= ui manager ============//
@@ -174,6 +122,9 @@ Object.keys(componentAllData.persistence).forEach(function(key){
 console.log('======> $global data <=====');
 console.log(componentAllData);
 console.log('===========================')
+//---- app update ----//
+updater.run();
+
 //---- setup $global ----//
 Vue.prototype.$global = new Vue({
   data: componentAllData.data,

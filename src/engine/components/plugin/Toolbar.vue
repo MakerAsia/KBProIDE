@@ -6,7 +6,7 @@
             </v-btn>
             <span>Plugin Manager</span>
         </v-tooltip>
-        <v-dialog v-model="packageDialog" max-width="70%" max-height="80%" scrollable persistent>            
+        <v-dialog v-model="pluginDialog" max-width="70%" max-height="80%" scrollable persistent>            
             <v-card>
                 <v-card-title>
                     <span class="headline">Plugin Manager</span>
@@ -28,7 +28,49 @@
                             Installed
                         </v-subheader>
                         <div>
-                            
+                            <v-list three-line>
+
+                                <template v-for="(data, index) in localPlugin">                                    
+                                    <v-list-tile
+                                        :key="data.name"
+                                        avatar
+                                        class="list-title"
+                                    >
+                                        <v-list-tile-avatar size="60px">
+                                            <img :src="data.image">
+                                        </v-list-tile-avatar>
+                                        <v-list-tile-content class="ml-2">
+                                            <v-list-tile-title>
+                                                <strong>{{data.title}}</strong>
+                                                <span class="body-1">
+                                                    [ v{{data.version}} by {{data.author}} ]
+                                                    [ <a v-if="data.git" @click="openLink(data.git)"> git </a> ]
+                                                </span>
+                                            </v-list-tile-title>
+                                            <v-list-tile-sub-title v-html="data.description"></v-list-tile-sub-title>
+                                        </v-list-tile-content>
+                                        
+                                        <v-list-tile-action>                                            
+                                            <v-btn
+                                                icon fab small dark
+                                                class="red"
+                                                :disabled="data.status != 'READY'"
+                                                @click="toberemove = data.name; confirmRemoveDialog = true"
+                                            >
+                                                <v-icon v-if="data.status == 'READY'">fa-trash</v-icon>
+                                                <v-progress-circular
+                                                    v-else-if="data.status != 'READY'"
+                                                    indeterminate
+                                                    color="primary lighten-4"
+                                                >
+                                                </v-progress-circular>                                
+                                            </v-btn>
+                                        </v-list-tile-action>
+                                        <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
+                                    </v-list-tile>
+                                    <v-divider :key="index" inset></v-divider>
+                                </template>
+                            </v-list>
                         </div>
 
                         <v-divider></v-divider>
@@ -38,46 +80,67 @@
                         </v-subheader>
 
                         <div>
-                            <v-list three-line>
+                            <v-flex v-if="isOnline() === false" xs12 md12 sm12 class="text-xs-center">
+                                Please connect internet to use this feature.
+                            </v-flex>
+                            
+                            <v-flex v-else-if="onlinePluginStatus === 'wait'" xs12 md12 sm12 class="text-xs-center">
+                                <v-progress-circular
+                                    :size="50"
+                                    color="primary"
+                                    indeterminate
+                                ></v-progress-circular>
+                            </v-flex>
 
-                                <template v-for="(item, index) in items">
+                            <v-list three-line v-else-if="onlinePluginStatus != 'wait'">
 
-                                    <v-divider :key="index" inset></v-divider>
-                        
+                                <template v-for="(data, index) in onlinePlugin">                                    
                                     <v-list-tile
-                                        :key="item.title"
+                                        :key="data.name"
                                         avatar
                                         class="list-title"
                                     >
-                                        <v-list-tile-avatar>
-                                            <img :src="item.avatar">
+                                        <v-list-tile-avatar size="60px">
+                                            <img :src="data.image">
                                         </v-list-tile-avatar>
-                        
-                                        <v-list-tile-content>
-                                            <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                                            <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                        <v-list-tile-content class="ml-2">
+                                            <v-list-tile-title>
+                                                <strong>{{data.title}}</strong>
+                                                <span class="body-1">
+                                                    [ v{{data.version}} by {{data.author}} ]
+                                                    [ <a v-if="data.git" @click="openLink(data.git)"> git </a> ]
+                                                </span>
+                                            </v-list-tile-title>
+                                            <v-list-tile-sub-title v-html="data.description"></v-list-tile-sub-title>
                                         </v-list-tile-content>
                                         
-                                        <v-list-tile-action>                  
+                                        <v-list-tile-action>                                            
                                             <v-btn
                                                 icon fab small dark
-                                                class="primary"                                                    
-                                                @click="tobeinstall = '123456'; confirmInstallDialog = true"
+                                                class="primary"
+                                                :disabled="data.status != 'READY'"
+                                                @click="tobeinstall = data.name; confirmInstallDialog = true"
                                             >
-                                                <v-icon>fa-download</v-icon>
+                                                <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
+                                                <v-progress-circular
+                                                    v-else-if="data.status != 'READY'"
+                                                    indeterminate
+                                                    color="primary lighten-4"
+                                                >
+                                                </v-progress-circular>                                
                                             </v-btn>
                                         </v-list-tile-action>
+                                        <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
                                     </v-list-tile>
-                                
+                                    <v-divider :key="index" inset></v-divider>
                                 </template>
                             </v-list>
                         </div>
-
                     </v-card-text>
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="packageDialog = false">Close</v-btn>                    
+                    <v-btn color="blue darken-1" flat @click.native="pluginDialog = false">Close</v-btn>                    
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -110,13 +173,11 @@
 </template>
 
 <script>
-
 const { shell } = require('electron');
 const fs = require('fs');
 
 import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
-import pm from '@/engine/PackageManager';
 import util from '@/engine/utils';
 import pm from '@/engine/PluginManager';
 
@@ -125,23 +186,15 @@ export default {
         VWidget
     },
     data () {
-        return {    
-            items: [
-                {
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                    title: 'Brunch this weekend?',
-                    subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-                },
-                { divider: true, inset: true },                
-            ],
+        return {
             pluginDialog : false,
             confirmRemoveDialog : false,
             confirmInstallDialog : false,
             searchText : '', 
             isInstalling : false,
             
-            installedPlugin : null,//bm.boards().map(obj=>{ obj.status =  'READY'; return obj;}),
-            localPlugin : null,//bm.boards().map(obj=>{ obj.status =  'READY'; return obj;}),
+            installedPlugin : pm.plugins(this.$global.board.board).map(obj=>{ obj.status =  'READY'; return obj;}),
+            localPlugin : pm.plugins(this.$global.board.board).map(obj=>{ obj.status =  'READY'; return obj;}),
             onlinePluginStatus : 'wait',
             onlinePluginPage : 0,
             onlinePlugin : [],
@@ -165,13 +218,13 @@ export default {
         {
             return window.navigator.onLine;
         },
-        listAllPlugins(name = ''){            
+        listAllPlugins(name = ''){
             this.listOnlinePlugin(name);
             this.listLocalPlugin(name);
         },
         listOnlinePlugin(name = ''){
             this.onlinePluginStatus = 'wait';
-            pm.listOnlinePlugin(name).then(res=>{                
+            pm.listOnlinePlugin(name).then(res=>{
                 //name,start return {end : lastVisible, plugins : onlinePlugins}
                 this.onlinePluginPage = res.end;
                 this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
@@ -217,7 +270,7 @@ export default {
         }
     },
     mounted(){
-        
+        console.log(this.localPlugin);
     },
     destroyed() {
 
@@ -225,7 +278,7 @@ export default {
     watch : {
         pluginDialog : function(val){
             if(val){//on opening
-                //this.listOnlineBoard();
+                this.listOnlinePlugin();
             }
         }
     }
@@ -233,7 +286,11 @@ export default {
 </script>
 <style>
 .list-title {
-    background-color: white !important;
+    background-color: white !important;    
+}
+.v-list--three-line .v-list__tile__avatar {
+    margin-top: unset !important;
+    margin-left: -5px !important;
 }
 .list-title:hover {
     background: #EEE !important;

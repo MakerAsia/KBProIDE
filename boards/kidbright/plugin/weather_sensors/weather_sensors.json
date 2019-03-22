@@ -1,7 +1,11 @@
 {
-	"name": {
-		"en": "Weather Sensors",
-		"th": "เซนเซอร์สภาพอากาศ"
-	},
-	"color": 58
+	"title": "Weather สภาพอากาศ",
+	"color": 160,
+	"author" : "nectec",
+	"description" : "ปลั๊กอินสำหรับการเชื่อมต่อเซ็นเซอร์สภาพอากาศ",
+	"git" : "http://www.github.com/comdet/data",
+	"image" : "https://images-na.ssl-images-amazon.com/images/I/61R8t7LoecL._SX425_.jpg",
+	"name" : "kb-weather-sensor",
+	"scope" : ["board"],
+	"version" : "1.0.0"
 }

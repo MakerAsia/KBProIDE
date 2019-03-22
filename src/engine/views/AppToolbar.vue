@@ -4,6 +4,7 @@
     fixed
     dark
     app
+    height="64px"
   >
 
     <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">
@@ -48,27 +49,19 @@
 
     <v-divider class="mx-1" inset vertical></v-divider>
 
-      <v-btn icon @click="handleFullScreen()">
-        <v-icon>fullscreen</v-icon>
-      </v-btn>
-      <v-menu offset-y bottom left origin="top right" class="elelvation-1" :nudge-bottom="14" transition="scale-transition">
-        <v-btn icon flat slot="activator">
-        <v-badge color="red" overlap>
-          <span slot="badge">3</span>
-          <v-icon medium>notifications</v-icon>
-        </v-badge>
-        </v-btn>
-        <notification-list></notification-list>
-      </v-menu>
+    <v-btn icon @click="handleFullScreen()">
+      <v-icon>fullscreen</v-icon>
+    </v-btn>
+    <notification></notification>
   </v-toolbar>
 </template>
 <script>
 import Vue from 'vue';
-import NotificationList from '@/engine/views/widgets/list/NotificationList';
 import util from '@/engine/utils';
 import cm from '@/engine/ComponentManager';
 import bm from '@/engine/BoardManager';
 import AsyncComponent from '@/engine/AsyncComponent';
+import notification from '@/engine/views/Notification';
 
 //var boardComponentData = util.vueRuntimeComponent('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue');
 //var componentRegisterName = 'actionbar-newfile-1';
@@ -79,7 +72,7 @@ import AsyncComponent from '@/engine/AsyncComponent';
 export default {  
   name: 'app-toolbar',
   components: {
-    NotificationList,
+    notification,
     AsyncComponent
   },
   data: () => ({    
