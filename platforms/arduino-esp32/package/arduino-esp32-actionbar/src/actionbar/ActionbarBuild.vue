@@ -34,7 +34,7 @@
                             <v-flex xs12>
                                 <v-stepper v-model="compileStep" vertical class="elevation-0 pb-0">
                                     <v-stepper-step step="1" :complete="compileStep > 1" :rules="[()=>{ return stepResult['1'].result }]">
-                                        Find KidBright
+                                        Finding board
                                         <small v-if="compileStep > 1">{{stepResult['1'].msg}}</small>
                                     </v-stepper-step>
                                     <v-stepper-content step="1" v-if="compileStep >= 1">
@@ -59,10 +59,10 @@
                                             height="2"
                                             :active="compileStep < 4"
                                             :indeterminate="true"
-                                        ></v-progress-linear>                                     
+                                        ></v-progress-linear>
                                     </v-stepper-content>
                                 </v-stepper>
-                            </v-flex>                 
+                            </v-flex>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -94,12 +94,13 @@ export default {
         stepResult :{
             '1' : {result : true, msg : ""},
             '2' : {result : true, msg : ""},
-            '3' : {result : true, msg : ""},            
+            '3' : {result : true, msg : ""},       
         }
     };
   },
   
   mounted () {
+      
   },
 
   beforeDestroy () {
@@ -108,7 +109,7 @@ export default {
   methods: {
     run(){ //find port and mac
         console.log('---> step 1 <---');
-        this.stepResult['1'].msg = "Find KidBright ";
+        this.stepResult['1'].msg = "Finding board";
         boardCompiler.listPort().then(comp=>{
             comport = comp[0];
             this.stepResult['1'].msg += " at " + comport;

@@ -10,8 +10,7 @@
             <v-card>
                 <v-card-title>
                     <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>                    
-                    <v-spacer class="hidden-xs-only"></v-spacer>
-                     <v-btn ref="button" color="primary" block @click="$vuetify.goTo(888, {duration: 500,offset: 100,easing: 'easeInOutCubic'})">scroll</v-btn>
+                    <v-spacer class="hidden-xs-only"></v-spacer>                    
                     <v-text-field 
                         prepend-icon="search" 
                         label="Board name" 
@@ -210,7 +209,6 @@ import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import util from '@/engine/utils';
-import { constants } from 'http2';
 export default {
     components: {
         VWidget
@@ -248,6 +246,7 @@ export default {
         },
         changeBoard(boardname){        
             this.boardDialog = false;
+            this.$global.board.board_info =  bm.boards().find(obj => obj.name == boardname);
             this.$global.board.board = boardname;
         },
         isOnline()

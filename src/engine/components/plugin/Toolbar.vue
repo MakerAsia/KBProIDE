@@ -270,7 +270,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.localPlugin);
+        //console.log(this.localPlugin);
     },
     destroyed() {
 

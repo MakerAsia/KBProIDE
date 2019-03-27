@@ -7,7 +7,8 @@ const log = require('./log');
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
-var pluginDir = `${boardDirectory}/plugin`
+var platformDir = `${engine.util.platformDir}/${G.board.board_info.platform}`;
+var pluginDir = `${boardDirectory}/plugin`;
 //-------------------//
 
 const driver_type_arr = [
@@ -219,7 +220,17 @@ module.exports = {
 			vTaskDelay(500 / portTICK_RATE_MS);
 			vTaskDelete(NULL);
 }`;
-    },
+	},
+	generate : function(rawCode){
+		var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');                    
+		var config = {
+			board_mac_addr : 'Insert board MAC address',
+			sta_ssid : G.board.package['kidbright-actionbar'].wifi_ssid,
+			sta_password : G.board.package['kidbright-actionbar'].wifi_password,
+			enable_iot : G.board.package['kidbright-actionbar'].enable_iot,
+		};
+		return this.codeGenerate(rawCode,template,config);
+	},
     codeGenerate : function(rawCode,template,config){
 		//--- list plugins dependency ---//
         var categoriesInfo = this.listCategoryPlugins();

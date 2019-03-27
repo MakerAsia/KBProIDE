@@ -6,5 +6,6 @@ module.exports = {
     },
     persistence : {
         board : 'kidbright', 
+        board_info : {platform : 'esp-idf', git : ''}
     }
 }

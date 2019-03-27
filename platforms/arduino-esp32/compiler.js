@@ -5,7 +5,7 @@ var engine = Vue.prototype.$engine;
 var platformName = 'arduino-esp32';
 var motherPlatform = 'esp-idf';
 
-var motherPlatformDir = `${engine.util.platformDir}/${motherPlatformDir}`;
+var motherPlatformDir = `${engine.util.platformDir}/${motherPlatform}`;
 var platformDir = `${engine.util.platformDir}/${platformName}`;
 var platformLibDir = `${platformDir}/lib`;
 //---- idf platform ----//
@@ -29,7 +29,7 @@ const setConfig = (context) => {
 
 const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_includes_switch){
     let cflags = G.cflags.concat(boardcflags);
-    let cppOptions = G.cpp_options.concat(boardCppOptions);    
+    let cppOptions = G.cpp_options.concat(boardCppOptions);
     return idf.compileFiles(sources,cppOptions,cflags,plugins_includes_switch);
 }
 
@@ -54,8 +54,7 @@ module.exports = {
     setConfig,
     createBin,
     linkObject,
-    archiveProgram,
-    readMac,
+    archiveProgram,    
     flash,
     compileFiles
 }

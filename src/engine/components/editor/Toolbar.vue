@@ -112,6 +112,7 @@ export default {
       }
   },
   watch:{
+
       'modeDialog': function(val){
           if(val){//on opening
             this.selectingMode = this.$global.editor.mode;            

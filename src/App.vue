@@ -147,21 +147,23 @@ export default {
   methods: {
     closeTab(name){
       this.$global.ui.removeAllTab(name);
-    },
+    },    
     reloadBoardPackage(){
       var boardName = this.$global.board.board;
-      var boardPackage = bm.packages(boardName);      
+      var boardPackage = bm.packages(boardName);
+      console.log('--------- bp ---------');
+      console.log(boardPackage);
+      
       var bp = {};
       // re-assign package to board      
       Object.keys(boardPackage).forEach(packageName => {
         bp[packageName] = {};
         let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,'board.package.'+packageName);
-        bp[packageName] = boardPackageData.data;  
+        bp[packageName] = boardPackageData.data;        
       });
 
-      Object.keys(boardPackage).forEach((packageName,index,arr) => {        
-        let packageFilename = boardPackage[packageName].config.name;
-        let targetJsFile = `${util.boardDir}/${boardName}/package/${packageName}/dist/${packageFilename}.umd.js`;
+      Object.keys(boardPackage).forEach((packageName,index,arr) => {                
+        let targetJsFile = boardPackage[packageName].js;
         let targetLinkFile = `file:///${targetJsFile}`;        
         if(util.fs.existsSync(targetJsFile)){
           let script = document.createElement('script');

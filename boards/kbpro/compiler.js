@@ -1,19 +1,13 @@
-const codegen = require('./codegen');
 const fs = require('fs')
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
-
 //---- setup dir and config ----//
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
 
 var context = JSON.parse(fs.readFileSync(boardDirectory+"/context.json","utf8"))
-var config = require(boardDirectory+'/config')
-
-var platformDir = `${engine.util.platformDir}/${config.platform}`
-var pluginDir = `${boardDirectory}/plugin`
-var toolDir = `${platformDir}/tools`
-
-var platformCompiler = require(platformDir+"/compiler");
+var config = require('./config');
+var platformDir = `${engine.util.platformDir}/${config.platform}`;
+var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 
 function is_not_null(val) {
     return (!((val == null) || (typeof (val) == 'undefined')));
@@ -61,7 +55,12 @@ function listPort()
 function compile(rawCode,boardName,config,cb)
 {
     return new Promise((resolve,reject) => {
-        //--- init ---//    
+        //--- init ---//
+        if(fs.existsSync(`${boardDirectory}/codegen.js`)){
+            var codegen = require('./codegen');
+        }else{
+            var codegen = engine.util.requireFunc(`${platformDir}/codegen`);
+        }
         var app_dir = `${boardDirectory}/build/${boardName}`;
         //--- step 1 load template and create full code ---//
         var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');

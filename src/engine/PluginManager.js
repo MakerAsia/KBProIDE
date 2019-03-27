@@ -54,23 +54,25 @@ var listCategoryPlugins = function(pluginDir)
 {
     var categories = [];
     var allPlugin = {};
-    var cats = fs.readdirSync(pluginDir);
-    cats.forEach(cat => {
-        var dir = `${pluginDir}/${cat}`
-        var infoFile = `${dir}/${cat}.json`
+    if(fs.existsSync(pluginDir)){
+        var cats = fs.readdirSync(pluginDir);
+        cats.forEach(cat => {
+            var dir = `${pluginDir}/${cat}`
+            var infoFile = `${dir}/${cat}.json`
 
-        if(!fs.lstatSync(dir).isDirectory()){ return; }
-        if(!fs.existsSync(infoFile)) { return; }
+            if(!fs.lstatSync(dir).isDirectory()){ return; }
+            if(!fs.existsSync(infoFile)) { return; }
 
-        var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
-        var plugins = listPlugin(dir);
-        categories.push({
-            directory : cat,
-            plugins : plugins,
-            category : catInfoFile
+            var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
+            var plugins = listPlugin(dir);
+            categories.push({
+                directory : cat,
+                plugins : plugins,
+                category : catInfoFile
+            });
+            Object.assign(allPlugin,plugins);
         });
-        Object.assign(allPlugin,plugins);
-    });
+    }
     return {categories:categories,plugins:allPlugin};
 };
 

@@ -52,8 +52,6 @@ import util from '@/engine/utils';
 const fs = require('fs');
 // === engine ===
 import plug from '@/engine/PluginManager';
-const boardDirectory = `${util.boardDir}/${Vue.prototype.$global.board.board}`;
-const codegen = util.requireFunc(`${boardDirectory}/codegen`);
 
 var renderBlock = function(blocks,level = 1){
     let res = '';
@@ -175,7 +173,10 @@ export default {
             matchBrackets: true,
             readOnly: true,
             extraKeys: {"Alt-F": "findPersistent"},
-       }       
+       },
+       editorTabs : [
+           { name : 'main', filename : 'main.cpp' }
+       ]
      }
    },
    mounted(){        
@@ -285,14 +286,14 @@ export default {
                 }, 300);
             }else if(mode == 3){
                 //------ generate template here ------//                
-                var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
-                var config = {
-                    board_mac_addr : 'Insert board MAC address',
-                    sta_ssid : this.$global.board.package['kidbright-actionbar'].wifi_ssid,
-                    sta_password : this.$global.board.package['kidbright-actionbar'].wifi_password,
-                    enable_iot : this.$global.board.package['kidbright-actionbar'].enable_iot,
-                };
-                var {sourceCode,codeContext} = codegen.codeGenerate(this.$global.editor.rawCode,template,config);
+                const boardDirectory = `${util.boardDir}/${this.$global.board.board}`;
+                const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
+                if(fs.existsSync(`${boardDirectory}/codegen.js`)){
+                    var codegen = util.requireFunc(`${boardDirectory}/codegen`);
+                }else{
+                    var codegen = util.requireFunc(`${platformDir}/codegen`);
+                }                                
+                var {sourceCode,codeContext} = codegen.generate(this.$global.editor.rawCode);
                 this.$global.editor.sourceCode = sourceCode;
             }
             if('cm' in this.$refs){
