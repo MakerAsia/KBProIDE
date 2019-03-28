@@ -103,21 +103,24 @@ return /******/ (function(modules) { // webpackBootstrap
 __webpack_require__.r(__webpack_exports__);
 var actionbar_namespaceObject = {};
 __webpack_require__.r(actionbar_namespaceObject);
-__webpack_require__.d(actionbar_namespaceObject, "ActionbarWifi", function() { return ActionbarWifi; });
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarBuild", function() { return ActionbarBuild; });
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarSetting", function() { return ActionbarSetting; });
 
 // EXTERNAL MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 var setPublicPath = __webpack_require__("HrLf");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarWifi.vue?vue&type=template&id=417d1d92&
-var ActionbarWifivue_type_template_id_417d1d92_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.wifiDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-wifi")])],1),_c('span',[_vm._v("Setup WiFi connect")])],1),_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.wifiDialog),callback:function ($$v) {_vm.wifiDialog=$$v},expression:"wifiDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Setup WiFi connect")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"label":"SSID","hint":"WiFi SSID name to connect","counter":"","maxlength":"32","clearable":""},model:{value:(_vm.$global.board.package['kidbright-actionbar'].wifi_ssid),callback:function ($$v) {_vm.$set(_vm.$global.board.package['kidbright-actionbar'], "wifi_ssid", $$v)},expression:"$global.board.package['kidbright-actionbar'].wifi_ssid"}})],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"append-icon":_vm.showPassword ? 'visibility' : 'visibility_off',"type":_vm.showPassword ? 'text' : 'password',"label":"Password","hint":"WiFi password","maxlength":"64","clearable":""},on:{"click:append":function($event){_vm.showPassword = !_vm.showPassword}},model:{value:(_vm.$global.board.package['kidbright-actionbar'].wifi_password),callback:function ($$v) {_vm.$set(_vm.$global.board.package['kidbright-actionbar'], "wifi_password", $$v)},expression:"$global.board.package['kidbright-actionbar'].wifi_password"}})],1),_c('v-switch',{attrs:{"label":("Enable IoT : " + (_vm.$global.board.package['kidbright-actionbar'].enable_iot ? 'ON' : 'OFF'))},model:{value:(_vm.$global.board.package['kidbright-actionbar'].enable_iot),callback:function ($$v) {_vm.$set(_vm.$global.board.package['kidbright-actionbar'], "enable_iot", $$v)},expression:"$global.board.package['kidbright-actionbar'].enable_iot"}})],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.wifiDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=template&id=15249da2&
+var ActionbarBuildvue_type_template_id_15249da2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-play")])],1),_c('span',[_vm._v("Compile & Run")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile & Run")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep <= 3)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep > 3)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("check_circle_outline")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 1,"rules":[function (){ return _vm.stepResult['1'].result }]}},[_vm._v("\n                                    Finding board\n                                    "),(_vm.compileStep > 1)?_c('small',[_vm._v(_vm._s(_vm.stepResult['1'].msg))]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['1'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 2,"rules":[function (){ return _vm.stepResult['2'].result }]}},[_vm._v("\n                                    Compile the code\n                                    "),(_vm.compileStep > 2)?_c('small',[_vm._v(_vm._s(_vm.stepResult['2'].msg))]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['2'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"3","complete":_vm.compileStep > 3,"rules":[function (){ return _vm.stepResult['3'].result }]}},[_vm._v("\n                                    Upload program and Run\n                                    "),(_vm.compileStep > 3)?_c('small',[_vm._v(_vm._s(_vm.stepResult['3'].msg))]):_vm._e()]),(_vm.compileStep >= 3)?_c('v-stepper-content',{attrs:{"step":"3"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['3'].msg)+"\n                                    "),_c('v-progress-linear',{attrs:{"height":"2","active":_vm.compileStep < 4,"indeterminate":true}})],1):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 4 && _vm.failed === false},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)])],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=template&id=417d1d92&
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=template&id=15249da2&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarWifi.vue?vue&type=script&lang=js&
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
+var es6_regexp_replace = __webpack_require__("pIFo");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
+
 //
 //
 //
@@ -174,19 +177,128 @@ var staticRenderFns = []
 //
 //
 //
-/* harmony default export */ var ActionbarWifivue_type_script_lang_js_ = ({
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var engine = Vue.prototype.$engine;
+var G = Vue.prototype.$global;
+var ActionbarBuildvue_type_script_lang_js_path = "".concat(engine.util.boardDir, "/").concat(G.board.board, "/compiler");
+var boardCompiler = engine.util.requireFunc(ActionbarBuildvue_type_script_lang_js_path);
+var comport = '';
+var mac = '';
+var boardName = '';
+/* harmony default export */ var ActionbarBuildvue_type_script_lang_js_ = ({
   data: function data() {
     return {
-      showPassword: false,
-      wifiDialog: false
+      compileStep: 1,
+      compileDialog: false,
+      failed: false,
+      stepResult: {
+        '1': {
+          result: true,
+          msg: ""
+        },
+        '2': {
+          result: true,
+          msg: ""
+        },
+        '3': {
+          result: true,
+          msg: ""
+        }
+      }
     };
+  },
+  mounted: function mounted() {},
+  beforeDestroy: function beforeDestroy() {},
+  methods: {
+    run: function run() {
+      var _this = this;
+
+      //find port and mac
+      console.log('---> step 1 <---');
+      this.stepResult['1'].msg = "Finding board";
+      boardCompiler.listPort().then(function (comp) {
+        comport = comp[0];
+        _this.stepResult['1'].msg += " at " + comport;
+        return boardCompiler.readMac(comport);
+      }).then(function (boardMac) {
+        _this.stepResult['1'].msg += " MAC " + boardMac.mac;
+        mac = boardMac.mac;
+        boardName = mac.replace(/:/g, '-');
+        console.log('[STEP 1] got it boardName = ' + boardName + ' mac = ' + mac);
+        _this.compileStep = 2;
+        console.log('---> step 2 <---');
+        _this.stepResult['2'].msg = "Compile board ... ";
+        var rawCode = G.editor.rawCode;
+        var config = {
+          board_mac_addr: mac,
+          sta_ssid: _this.$global.board.package['kidbright-actionbar'].wifi_ssid,
+          sta_password: _this.$global.board.package['kidbright-actionbar'].wifi_password,
+          enable_iot: _this.$global.board.package['kidbright-actionbar'].enable_iot
+        };
+        return boardCompiler.compile(rawCode, boardName, config, null);
+      }).then(function () {
+        _this.stepResult['2'].msg += 'done!';
+        _this.compileStep = 3;
+        _this.stepResult['3'].msg = "Uploading ... ";
+        console.log('---> step 3 <---');
+        return boardCompiler.flash(comport);
+      }).then(function () {
+        _this.stepResult['3'].msg = "Upload success";
+        _this.compileStep = 4;
+      }).catch(function (err) {
+        console.log('------ process error ------');
+        console.log(err);
+        _this.failed = true;
+
+        if (_this.compileStep == 1) {
+          _this.stepResult['1'].msg = 'Cannot find KidBright : ' + err;
+          _this.stepResult['1'].result = false;
+        } else if (_this.compileStep == 2) {
+          _this.stepResult['2'].msg = 'Compile error : ' + err;
+          _this.stepResult['2'].result = false;
+        } else if (_this.compileStep == 3) {
+          _this.stepResult['3'].msg = 'Cannot upload program : ' + err;
+          _this.stepResult['3'].result = false;
+        }
+      });
+    }
+  },
+  watch: {
+    'compileDialog': function compileDialog(val) {
+      if (val) {
+        //on opening                
+        this.compileStep = 1;
+        this.failed = false;
+        this.stepResult['1'].result = true;
+        this.stepResult['2'].result = true;
+        this.stepResult['3'].result = true;
+        this.run();
+      }
+    }
   }
 });
-// CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarWifivue_type_script_lang_js_ = (ActionbarWifivue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=style&index=0&lang=css&
-var ActionbarWifivue_type_style_index_0_lang_css_ = __webpack_require__("Ol8o");
-
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
+ /* harmony default export */ var actionbar_ActionbarBuildvue_type_script_lang_js_ = (ActionbarBuildvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
@@ -2871,35 +2983,123 @@ function VDialog_defineProperty(obj, key, value) { if (key in obj) { Object.defi
     }
 });
 //# sourceMappingURL=VDialog.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_dividers.styl
-var _dividers = __webpack_require__("WNtj");
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/transitions/expand-transition.js
+function expand_transition_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VDivider/VDivider.js
-var VDivider_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-// Styles
+/* harmony default export */ var expand_transition = (function () {
+    var expandedParentClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-// Mixins
+    var sizeProperty = x ? 'width' : 'height';
+    return {
+        beforeEnter: function beforeEnter(el) {
+            el._parent = el.parentNode;
+            el._initialStyle = expand_transition_defineProperty({
+                transition: el.style.transition,
+                visibility: el.style.visibility,
+                overflow: el.style.overflow
+            }, sizeProperty, el.style[sizeProperty]);
+        },
+        enter: function enter(el) {
+            var initialStyle = el._initialStyle;
+            el.style.setProperty('transition', 'none', 'important');
+            el.style.visibility = 'hidden';
+            var size = el['offset' + upperFirst(sizeProperty)] + 'px';
+            el.style.visibility = initialStyle.visibility;
+            el.style.overflow = 'hidden';
+            el.style[sizeProperty] = 0;
+            void el.offsetHeight; // force reflow
+            el.style.transition = initialStyle.transition;
+            expandedParentClass && el._parent && el._parent.classList.add(expandedParentClass);
+            requestAnimationFrame(function () {
+                el.style[sizeProperty] = size;
+            });
+        },
 
-/* harmony default export */ var VDivider = (themeable.extend({
-    name: 'v-divider',
-    props: {
-        inset: Boolean,
-        vertical: Boolean
-    },
-    render: function render(h) {
-        return h('hr', {
-            class: VDivider_extends({
-                'v-divider': true,
-                'v-divider--inset': this.inset,
-                'v-divider--vertical': this.vertical
-            }, this.themeClasses),
-            attrs: this.$attrs,
-            on: this.$listeners
-        });
+        afterEnter: resetStyles,
+        enterCancelled: resetStyles,
+        leave: function leave(el) {
+            el._initialStyle = expand_transition_defineProperty({
+                overflow: el.style.overflow
+            }, sizeProperty, el.style[sizeProperty]);
+            el.style.overflow = 'hidden';
+            el.style[sizeProperty] = el['offset' + upperFirst(sizeProperty)] + 'px';
+            void el.offsetHeight; // force reflow
+            requestAnimationFrame(function () {
+                return el.style[sizeProperty] = 0;
+            });
+        },
+
+        afterLeave: afterLeave,
+        leaveCancelled: afterLeave
+    };
+    function afterLeave(el) {
+        expandedParentClass && el._parent && el._parent.classList.remove(expandedParentClass);
+        resetStyles(el);
     }
-}));
-//# sourceMappingURL=VDivider.js.map
+    function resetStyles(el) {
+        el.style.overflow = el._initialStyle.overflow;
+        el.style[sizeProperty] = el._initialStyle[sizeProperty];
+        delete el._initialStyle;
+    }
+});
+//# sourceMappingURL=expand-transition.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/transitions/index.js
+
+
+// Component specific transitions
+var VBottomSheetTransition = createSimpleTransition('bottom-sheet-transition');
+var VCarouselTransition = createSimpleTransition('carousel-transition');
+var VCarouselReverseTransition = createSimpleTransition('carousel-reverse-transition');
+var VTabTransition = createSimpleTransition('tab-transition');
+var VTabReverseTransition = createSimpleTransition('tab-reverse-transition');
+var VMenuTransition = createSimpleTransition('menu-transition');
+var VFabTransition = createSimpleTransition('fab-transition', 'center center', 'out-in');
+// Generic transitions
+var VDialogTransition = createSimpleTransition('dialog-transition');
+var VDialogBottomTransition = createSimpleTransition('dialog-bottom-transition');
+var VFadeTransition = createSimpleTransition('fade-transition');
+var VScaleTransition = createSimpleTransition('scale-transition');
+var VScrollXTransition = createSimpleTransition('scroll-x-transition');
+var VScrollXReverseTransition = createSimpleTransition('scroll-x-reverse-transition');
+var VScrollYTransition = createSimpleTransition('scroll-y-transition');
+var VScrollYReverseTransition = createSimpleTransition('scroll-y-reverse-transition');
+var VSlideXTransition = createSimpleTransition('slide-x-transition');
+var VSlideXReverseTransition = createSimpleTransition('slide-x-reverse-transition');
+var VSlideYTransition = createSimpleTransition('slide-y-transition');
+var VSlideYReverseTransition = createSimpleTransition('slide-y-reverse-transition');
+// JavaScript transitions
+var VExpandTransition = createJavaScriptTransition('expand-transition', expand_transition());
+var VExpandXTransition = createJavaScriptTransition('expand-x-transition', expand_transition('', true));
+var VRowExpandTransition = createJavaScriptTransition('row-expand-transition', expand_transition('datatable__expand-col--expanded'));
+/* harmony default export */ var transitions = ({
+    $_vuetify_subcomponents: {
+        VBottomSheetTransition: VBottomSheetTransition,
+        VCarouselTransition: VCarouselTransition,
+        VCarouselReverseTransition: VCarouselReverseTransition,
+        VDialogTransition: VDialogTransition,
+        VDialogBottomTransition: VDialogBottomTransition,
+        VFabTransition: VFabTransition,
+        VFadeTransition: VFadeTransition,
+        VMenuTransition: VMenuTransition,
+        VScaleTransition: VScaleTransition,
+        VScrollXTransition: VScrollXTransition,
+        VScrollXReverseTransition: VScrollXReverseTransition,
+        VScrollYTransition: VScrollYTransition,
+        VScrollYReverseTransition: VScrollYReverseTransition,
+        VSlideXTransition: VSlideXTransition,
+        VSlideXReverseTransition: VSlideXReverseTransition,
+        VSlideYTransition: VSlideYTransition,
+        VSlideYReverseTransition: VSlideYReverseTransition,
+        VTabReverseTransition: VTabReverseTransition,
+        VTabTransition: VTabTransition,
+        VExpandTransition: VExpandTransition,
+        VExpandXTransition: VExpandXTransition,
+        VRowExpandTransition: VRowExpandTransition
+    }
+});
+//# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VGrid/VFlex.js
 
 
@@ -3070,6 +3270,157 @@ var VIcon = mixins(colorable, sizeable, themeable
 
 /* harmony default export */ var VLayout = (Grid('layout'));
 //# sourceMappingURL=VLayout.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_progress-linear.styl
+var _progress_linear = __webpack_require__("tPfQ");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VProgressLinear/VProgressLinear.js
+function VProgressLinear_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+// Mixins
+
+// Helpers
+
+
+
+/* @vue/component */
+/* harmony default export */ var VProgressLinear = (mixins(colorable).extend({
+    name: 'v-progress-linear',
+    props: {
+        active: {
+            type: Boolean,
+            default: true
+        },
+        backgroundColor: {
+            type: String,
+            default: null
+        },
+        backgroundOpacity: {
+            type: [Number, String],
+            default: null
+        },
+        bufferValue: {
+            type: [Number, String],
+            default: 100
+        },
+        color: {
+            type: String,
+            default: 'primary'
+        },
+        height: {
+            type: [Number, String],
+            default: 7
+        },
+        indeterminate: Boolean,
+        query: Boolean,
+        value: {
+            type: [Number, String],
+            default: 0
+        }
+    },
+    computed: {
+        backgroundStyle: function backgroundStyle() {
+            var backgroundOpacity = this.backgroundOpacity == null ? this.backgroundColor ? 1 : 0.3 : parseFloat(this.backgroundOpacity);
+            return {
+                height: this.active ? convertToUnit(this.height) : 0,
+                opacity: backgroundOpacity,
+                width: this.normalizedBufer + '%'
+            };
+        },
+        effectiveWidth: function effectiveWidth() {
+            if (!this.normalizedBufer) {
+                return 0;
+            }
+            return +this.normalizedValue * 100 / +this.normalizedBufer;
+        },
+        normalizedBufer: function normalizedBufer() {
+            if (this.bufferValue < 0) {
+                return 0;
+            }
+            if (this.bufferValue > 100) {
+                return 100;
+            }
+            return parseFloat(this.bufferValue);
+        },
+        normalizedValue: function normalizedValue() {
+            if (this.value < 0) {
+                return 0;
+            }
+            if (this.value > 100) {
+                return 100;
+            }
+            return parseFloat(this.value);
+        },
+        styles: function styles() {
+            var styles = {};
+            if (!this.active) {
+                styles.height = 0;
+            }
+            if (!this.indeterminate && parseFloat(this.normalizedBufer) !== 100) {
+                styles.width = this.normalizedBufer + '%';
+            }
+            return styles;
+        }
+    },
+    methods: {
+        genDeterminate: function genDeterminate(h) {
+            return h('div', this.setBackgroundColor(this.color, {
+                ref: 'front',
+                staticClass: 'v-progress-linear__bar__determinate',
+                style: {
+                    width: this.effectiveWidth + '%'
+                }
+            }));
+        },
+        genBar: function genBar(h, name) {
+            return h('div', this.setBackgroundColor(this.color, {
+                staticClass: 'v-progress-linear__bar__indeterminate',
+                class: VProgressLinear_defineProperty({}, name, true)
+            }));
+        },
+        genIndeterminate: function genIndeterminate(h) {
+            return h('div', {
+                ref: 'front',
+                staticClass: 'v-progress-linear__bar__indeterminate',
+                class: {
+                    'v-progress-linear__bar__indeterminate--active': this.active
+                }
+            }, [this.genBar(h, 'long'), this.genBar(h, 'short')]);
+        }
+    },
+    render: function render(h) {
+        var fade = h(VFadeTransition, this.indeterminate ? [this.genIndeterminate(h)] : []);
+        var slide = h(VSlideXTransition, this.indeterminate ? [] : [this.genDeterminate(h)]);
+        var bar = h('div', {
+            staticClass: 'v-progress-linear__bar',
+            style: this.styles
+        }, [fade, slide]);
+        var background = h('div', this.setBackgroundColor(this.backgroundColor || this.color, {
+            staticClass: 'v-progress-linear__background',
+            style: this.backgroundStyle
+        }));
+        var content = this.$slots.default && h('div', {
+            staticClass: 'v-progress-linear__content'
+        }, this.$slots.default);
+        return h('div', {
+            staticClass: 'v-progress-linear',
+            attrs: {
+                'role': 'progressbar',
+                'aria-valuemin': 0,
+                'aria-valuemax': this.normalizedBufer,
+                'aria-valuenow': this.indeterminate ? undefined : this.normalizedValue
+            },
+            class: {
+                'v-progress-linear--query': this.query
+            },
+            style: {
+                height: convertToUnit(this.height)
+            },
+            on: this.$listeners
+        }, [background, bar, content]);
+    }
+}));
+//# sourceMappingURL=VProgressLinear.js.map
 // EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_content.styl
 var _content = __webpack_require__("8TRK");
 
@@ -3165,20 +3516,1731 @@ var VSpacer = createSimpleFunctional('spacer', 'div', 'v-spacer');
     }
 });
 //# sourceMappingURL=index.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_selection-controls.styl
-var _selection_controls = __webpack_require__("lKfc");
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_steppers.styl
+var _steppers = __webpack_require__("v/Yf");
 
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_switch.styl
-var _switch = __webpack_require__("Lim/");
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepper.js
+var VStepper_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_inputs.styl
-var _inputs = __webpack_require__("GRJH");
+// Styles
 
+// Mixins
+
+
+// Util
+
+/* harmony default export */ var VStepper = (mixins(provide('stepper'), themeable
+/* @vue/component */
+).extend({
+    name: 'v-stepper',
+    provide: function provide() {
+        return {
+            stepClick: this.stepClick,
+            isVertical: this.vertical
+        };
+    },
+
+    props: {
+        nonLinear: Boolean,
+        altLabels: Boolean,
+        vertical: Boolean,
+        value: [Number, String]
+    },
+    data: function data() {
+        return {
+            inputValue: null,
+            isBooted: false,
+            steps: [],
+            content: [],
+            isReverse: false
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return VStepper_extends({
+                'v-stepper': true,
+                'v-stepper--is-booted': this.isBooted,
+                'v-stepper--vertical': this.vertical,
+                'v-stepper--alt-labels': this.altLabels,
+                'v-stepper--non-linear': this.nonLinear
+            }, this.themeClasses);
+        }
+    },
+    watch: {
+        inputValue: function inputValue(val, prev) {
+            this.isReverse = Number(val) < Number(prev);
+            for (var index = this.steps.length; --index >= 0;) {
+                this.steps[index].toggle(this.inputValue);
+            }
+            for (var _index = this.content.length; --_index >= 0;) {
+                this.content[_index].toggle(this.inputValue, this.isReverse);
+            }
+            this.$emit('input', this.inputValue);
+            prev && (this.isBooted = true);
+        },
+        value: function value() {
+            var _this = this;
+
+            this.$nextTick(function () {
+                return _this.inputValue = _this.value;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.inputValue = this.value || this.steps[0].step || 1;
+    },
+
+    methods: {
+        register: function register(item) {
+            if (item.$options.name === 'v-stepper-step') {
+                this.steps.push(item);
+            } else if (item.$options.name === 'v-stepper-content') {
+                item.isVertical = this.vertical;
+                this.content.push(item);
+            }
+        },
+        unregister: function unregister(item) {
+            if (item.$options.name === 'v-stepper-step') {
+                this.steps = this.steps.filter(function (i) {
+                    return i !== item;
+                });
+            } else if (item.$options.name === 'v-stepper-content') {
+                item.isVertical = this.vertical;
+                this.content = this.content.filter(function (i) {
+                    return i !== item;
+                });
+            }
+        },
+        stepClick: function stepClick(step) {
+            var _this2 = this;
+
+            this.$nextTick(function () {
+                return _this2.inputValue = step;
+            });
+        }
+    },
+    render: function render(h) {
+        return h('div', {
+            'class': this.classes
+        }, this.$slots.default);
+    }
+}));
+//# sourceMappingURL=VStepper.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperContent.js
+// Components
+
+// Mixins
+
+// Helpers
+
+// Util
+
+/* harmony default export */ var VStepperContent = (mixins(inject('stepper', 'v-stepper-content', 'v-stepper')
+/* @vue/component */
+).extend({
+    name: 'v-stepper-content',
+    inject: {
+        isVerticalProvided: {
+            from: 'isVertical'
+        }
+    },
+    props: {
+        step: {
+            type: [Number, String],
+            required: true
+        }
+    },
+    data: function data() {
+        return {
+            height: 0,
+            // Must be null to allow
+            // previous comparison
+            isActive: null,
+            isReverse: false,
+            isVertical: this.isVerticalProvided
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return {
+                'v-stepper__content': true
+            };
+        },
+        computedTransition: function computedTransition() {
+            return this.isReverse ? VTabReverseTransition : VTabTransition;
+        },
+        styles: function styles() {
+            if (!this.isVertical) return {};
+            return {
+                height: convertToUnit(this.height)
+            };
+        },
+        wrapperClasses: function wrapperClasses() {
+            return {
+                'v-stepper__wrapper': true
+            };
+        }
+    },
+    watch: {
+        isActive: function isActive(current, previous) {
+            // If active and the previous state
+            // was null, is just booting up
+            if (current && previous == null) {
+                this.height = 'auto';
+                return;
+            }
+            if (!this.isVertical) return;
+            if (this.isActive) this.enter();else this.leave();
+        }
+    },
+    mounted: function mounted() {
+        this.$refs.wrapper.addEventListener('transitionend', this.onTransition, false);
+        this.stepper && this.stepper.register(this);
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.$refs.wrapper.removeEventListener('transitionend', this.onTransition, false);
+        this.stepper && this.stepper.unregister(this);
+    },
+
+    methods: {
+        onTransition: function onTransition(e) {
+            if (!this.isActive || e.propertyName !== 'height') return;
+            this.height = 'auto';
+        },
+        enter: function enter() {
+            var _this = this;
+
+            var scrollHeight = 0;
+            // Render bug with height
+            requestAnimationFrame(function () {
+                scrollHeight = _this.$refs.wrapper.scrollHeight;
+            });
+            this.height = 0;
+            // Give the collapsing element time to collapse
+            setTimeout(function () {
+                return _this.isActive && (_this.height = scrollHeight || 'auto');
+            }, 450);
+        },
+        leave: function leave() {
+            var _this2 = this;
+
+            this.height = this.$refs.wrapper.clientHeight;
+            setTimeout(function () {
+                return _this2.height = 0;
+            }, 10);
+        },
+        toggle: function toggle(step, reverse) {
+            this.isActive = step.toString() === this.step.toString();
+            this.isReverse = reverse;
+        }
+    },
+    render: function render(h) {
+        var contentData = {
+            'class': this.classes
+        };
+        var wrapperData = {
+            'class': this.wrapperClasses,
+            style: this.styles,
+            ref: 'wrapper'
+        };
+        if (!this.isVertical) {
+            contentData.directives = [{
+                name: 'show',
+                value: this.isActive
+            }];
+        }
+        var wrapper = h('div', wrapperData, [this.$slots.default]);
+        var content = h('div', contentData, [wrapper]);
+        return h(this.computedTransition, {
+            on: this.$listeners
+        }, [content]);
+    }
+}));
+//# sourceMappingURL=VStepperContent.js.map
 // CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VIcon/index.js
 
 
 /* harmony default export */ var components_VIcon = (VIcon_VIcon);
 //# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperStep.js
+// Components
+
+// Mixins
+
+
+// Directives
+
+// Util
+
+/* harmony default export */ var VStepperStep = (mixins(colorable, inject('stepper', 'v-stepper-step', 'v-stepper')
+/* @vue/component */
+).extend({
+    name: 'v-stepper-step',
+    directives: { Ripple: directives_ripple },
+    inject: ['stepClick'],
+    props: {
+        color: {
+            type: String,
+            default: 'primary'
+        },
+        complete: Boolean,
+        completeIcon: {
+            type: String,
+            default: '$vuetify.icons.complete'
+        },
+        editIcon: {
+            type: String,
+            default: '$vuetify.icons.edit'
+        },
+        errorIcon: {
+            type: String,
+            default: '$vuetify.icons.error'
+        },
+        editable: Boolean,
+        rules: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        step: [Number, String]
+    },
+    data: function data() {
+        return {
+            isActive: false,
+            isInactive: true
+        };
+    },
+
+    computed: {
+        classes: function classes() {
+            return {
+                'v-stepper__step': true,
+                'v-stepper__step--active': this.isActive,
+                'v-stepper__step--editable': this.editable,
+                'v-stepper__step--inactive': this.isInactive,
+                'v-stepper__step--error': this.hasError,
+                'v-stepper__step--complete': this.complete,
+                'error--text': this.hasError
+            };
+        },
+        hasError: function hasError() {
+            return this.rules.some(function (validate) {
+                return validate() !== true;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.stepper && this.stepper.register(this);
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.stepper && this.stepper.unregister(this);
+    },
+
+    methods: {
+        click: function click(e) {
+            e.stopPropagation();
+            this.$emit('click', e);
+            if (this.editable) {
+                this.stepClick(this.step);
+            }
+        },
+        toggle: function toggle(step) {
+            this.isActive = step.toString() === this.step.toString();
+            this.isInactive = Number(step) < Number(this.step);
+        }
+    },
+    render: function render(h) {
+        var data = {
+            'class': this.classes,
+            directives: [{
+                name: 'ripple',
+                value: this.editable
+            }],
+            on: { click: this.click }
+        };
+        var stepContent = void 0;
+        if (this.hasError) {
+            stepContent = [h(components_VIcon, {}, this.errorIcon)];
+        } else if (this.complete) {
+            if (this.editable) {
+                stepContent = [h(components_VIcon, {}, this.editIcon)];
+            } else {
+                stepContent = [h(components_VIcon, {}, this.completeIcon)];
+            }
+        } else {
+            stepContent = String(this.step);
+        }
+        var color = !this.hasError && (this.complete || this.isActive) ? this.color : false;
+        var step = h('span', this.setBackgroundColor(color, {
+            staticClass: 'v-stepper__step__step'
+        }), stepContent);
+        var label = h('div', {
+            staticClass: 'v-stepper__label'
+        }, this.$slots.default);
+        return h('div', data, [step, label]);
+    }
+}));
+//# sourceMappingURL=VStepperStep.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_tooltips.styl
+var _tooltips = __webpack_require__("YOhz");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/delayable.js
+
+/**
+ * Delayable
+ *
+ * @mixin
+ *
+ * Changes the open or close delay time for elements
+ */
+/* harmony default export */ var delayable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend().extend({
+    name: 'delayable',
+    props: {
+        openDelay: {
+            type: [Number, String],
+            default: 0
+        },
+        closeDelay: {
+            type: [Number, String],
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            openTimeout: undefined,
+            closeTimeout: undefined
+        };
+    },
+    methods: {
+        /**
+         * Clear any pending delay timers from executing
+         */
+        clearDelay: function clearDelay() {
+            clearTimeout(this.openTimeout);
+            clearTimeout(this.closeTimeout);
+        },
+
+        /**
+         * Runs callback after a specified delay
+         */
+        runDelay: function runDelay(type, cb) {
+            var _this = this;
+
+            this.clearDelay();
+            var delay = parseInt(this[type + 'Delay'], 10);
+            this[type + 'Timeout'] = setTimeout(cb || function () {
+                _this.isActive = { open: true, close: false }[type];
+            }, delay);
+        }
+    }
+}));
+//# sourceMappingURL=delayable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/menuable.js
+var menuable_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+
+
+
+
+/* eslint-disable object-property-newline */
+var dimensions = {
+    activator: {
+        top: 0, left: 0,
+        bottom: 0, right: 0,
+        width: 0, height: 0,
+        offsetTop: 0, scrollHeight: 0
+    },
+    content: {
+        top: 0, left: 0,
+        bottom: 0, right: 0,
+        width: 0, height: 0,
+        offsetTop: 0, scrollHeight: 0
+    },
+    hasWindow: false
+};
+/* eslint-enable object-property-newline */
+/**
+ * Menuable
+ *
+ * @mixin
+ *
+ * Used for fixed or absolutely positioning
+ * elements within the DOM
+ * Can calculate X and Y axis overflows
+ * As well as be manually positioned
+ */
+/* @vue/component */
+/* harmony default export */ var menuable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'menuable',
+    mixins: [positionable, stackable],
+    props: {
+        activator: {
+            default: null,
+            validator: function validator(val) {
+                return ['string', 'object'].includes(typeof val === 'undefined' ? 'undefined' : menuable_typeof(val));
+            }
+        },
+        allowOverflow: Boolean,
+        inputActivator: Boolean,
+        light: Boolean,
+        dark: Boolean,
+        maxWidth: {
+            type: [Number, String],
+            default: 'auto'
+        },
+        minWidth: [Number, String],
+        nudgeBottom: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeLeft: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeRight: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeTop: {
+            type: [Number, String],
+            default: 0
+        },
+        nudgeWidth: {
+            type: [Number, String],
+            default: 0
+        },
+        offsetOverflow: Boolean,
+        positionX: {
+            type: Number,
+            default: null
+        },
+        positionY: {
+            type: Number,
+            default: null
+        },
+        zIndex: {
+            type: [Number, String],
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            absoluteX: 0,
+            absoluteY: 0,
+            dimensions: Object.assign({}, dimensions),
+            isContentActive: false,
+            pageYOffset: 0,
+            stackClass: 'v-menu__content--active',
+            stackMinZIndex: 6
+        };
+    },
+    computed: {
+        computedLeft: function computedLeft() {
+            var a = this.dimensions.activator;
+            var c = this.dimensions.content;
+            var activatorLeft = (this.isAttached ? a.offsetLeft : a.left) || 0;
+            var minWidth = Math.max(a.width, c.width);
+            var left = 0;
+            left += this.left ? activatorLeft - (minWidth - a.width) : activatorLeft;
+            if (this.offsetX) {
+                var maxWidth = isNaN(this.maxWidth) ? a.width : Math.min(a.width, this.maxWidth);
+                left += this.left ? -maxWidth : a.width;
+            }
+            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
+            if (this.nudgeRight) left += parseInt(this.nudgeRight);
+            return left;
+        },
+        computedTop: function computedTop() {
+            var a = this.dimensions.activator;
+            var c = this.dimensions.content;
+            var top = 0;
+            if (this.top) top += a.height - c.height;
+            if (this.isAttached) top += a.offsetTop;else top += a.top + this.pageYOffset;
+            if (this.offsetY) top += this.top ? -a.height : a.height;
+            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
+            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
+            return top;
+        },
+        hasActivator: function hasActivator() {
+            return !!this.$slots.activator || !!this.$scopedSlots.activator || this.activator || this.inputActivator;
+        },
+        isAttached: function isAttached() {
+            return this.attach !== false;
+        }
+    },
+    watch: {
+        disabled: function disabled(val) {
+            val && this.callDeactivate();
+        },
+        isActive: function isActive(val) {
+            if (this.disabled) return;
+            val ? this.callActivate() : this.callDeactivate();
+        },
+
+        positionX: 'updateDimensions',
+        positionY: 'updateDimensions'
+    },
+    beforeMount: function beforeMount() {
+        this.checkForWindow();
+    },
+
+    methods: {
+        absolutePosition: function absolutePosition() {
+            return {
+                offsetTop: 0,
+                offsetLeft: 0,
+                scrollHeight: 0,
+                top: this.positionY || this.absoluteY,
+                bottom: this.positionY || this.absoluteY,
+                left: this.positionX || this.absoluteX,
+                right: this.positionX || this.absoluteX,
+                height: 0,
+                width: 0
+            };
+        },
+        activate: function activate() {},
+        calcLeft: function calcLeft(menuWidth) {
+            return (this.isAttached ? this.computedLeft : this.calcXOverflow(this.computedLeft, menuWidth)) + 'px';
+        },
+        calcTop: function calcTop() {
+            return (this.isAttached ? this.computedTop : this.calcYOverflow(this.computedTop)) + 'px';
+        },
+        calcXOverflow: function calcXOverflow(left, menuWidth) {
+            var xOverflow = left + menuWidth - this.getInnerWidth() + 12;
+            if ((!this.left || this.right) && xOverflow > 0) {
+                left = Math.max(left - xOverflow, 0);
+            } else {
+                left = Math.max(left, 12);
+            }
+            return left + this.getOffsetLeft();
+        },
+        calcYOverflow: function calcYOverflow(top) {
+            var documentHeight = this.getInnerHeight();
+            var toTop = this.pageYOffset + documentHeight;
+            var activator = this.dimensions.activator;
+            var contentHeight = this.dimensions.content.height;
+            var totalHeight = top + contentHeight;
+            var isOverflowing = toTop < totalHeight;
+            // If overflowing bottom and offset
+            // TODO: set 'bottom' position instead of 'top'
+            if (isOverflowing && this.offsetOverflow &&
+            // If we don't have enough room to offset
+            // the overflow, don't offset
+            activator.top > contentHeight) {
+                top = this.pageYOffset + (activator.top - contentHeight);
+                // If overflowing bottom
+            } else if (isOverflowing && !this.allowOverflow) {
+                top = toTop - contentHeight - 12;
+                // If overflowing top
+            } else if (top < this.pageYOffset && !this.allowOverflow) {
+                top = this.pageYOffset + 12;
+            }
+            return top < 12 ? 12 : top;
+        },
+        callActivate: function callActivate() {
+            if (!this.hasWindow) return;
+            this.activate();
+        },
+        callDeactivate: function callDeactivate() {
+            this.isContentActive = false;
+            this.deactivate();
+        },
+        checkForWindow: function checkForWindow() {
+            if (!this.hasWindow) {
+                this.hasWindow = typeof window !== 'undefined';
+            }
+        },
+        checkForPageYOffset: function checkForPageYOffset() {
+            if (this.hasWindow) {
+                this.pageYOffset = this.getOffsetTop();
+            }
+        },
+        deactivate: function deactivate() {},
+        getActivator: function getActivator(e) {
+            if (this.inputActivator) {
+                return this.$el.querySelector('.v-input__slot');
+            }
+            if (this.activator) {
+                return typeof this.activator === 'string' ? document.querySelector(this.activator) : this.activator;
+            }
+            if (this.$refs.activator) {
+                return this.$refs.activator.children.length > 0 ? this.$refs.activator.children[0] : this.$refs.activator;
+            }
+            if (e) {
+                this.activatedBy = e.currentTarget || e.target;
+                return this.activatedBy;
+            }
+            if (this.activatedBy) return this.activatedBy;
+            if (this.activatorNode) {
+                var activator = Array.isArray(this.activatorNode) ? this.activatorNode[0] : this.activatorNode;
+                var el = activator && activator.elm;
+                if (el) return el;
+            }
+            consoleError('No activator found');
+        },
+        getInnerHeight: function getInnerHeight() {
+            if (!this.hasWindow) return 0;
+            return window.innerHeight || document.documentElement.clientHeight;
+        },
+        getInnerWidth: function getInnerWidth() {
+            if (!this.hasWindow) return 0;
+            return document.documentElement.clientWidth;
+        },
+        getOffsetLeft: function getOffsetLeft() {
+            if (!this.hasWindow) return 0;
+            return window.pageXOffset || document.documentElement.scrollLeft;
+        },
+        getOffsetTop: function getOffsetTop() {
+            if (!this.hasWindow) return 0;
+            return window.pageYOffset || document.documentElement.scrollTop;
+        },
+        getRoundedBoundedClientRect: function getRoundedBoundedClientRect(el) {
+            var rect = el.getBoundingClientRect();
+            return {
+                top: Math.round(rect.top),
+                left: Math.round(rect.left),
+                bottom: Math.round(rect.bottom),
+                right: Math.round(rect.right),
+                width: Math.round(rect.width),
+                height: Math.round(rect.height)
+            };
+        },
+        measure: function measure(el) {
+            if (!el || !this.hasWindow) return null;
+            var rect = this.getRoundedBoundedClientRect(el);
+            // Account for activator margin
+            if (this.isAttached) {
+                var style = window.getComputedStyle(el);
+                rect.left = parseInt(style.marginLeft);
+                rect.top = parseInt(style.marginTop);
+            }
+            return rect;
+        },
+        sneakPeek: function sneakPeek(cb) {
+            var _this = this;
+
+            requestAnimationFrame(function () {
+                var el = _this.$refs.content;
+                if (!el || _this.isShown(el)) return cb();
+                el.style.display = 'inline-block';
+                cb();
+                el.style.display = 'none';
+            });
+        },
+        startTransition: function startTransition() {
+            var _this2 = this;
+
+            return new Promise(function (resolve) {
+                return requestAnimationFrame(function () {
+                    _this2.isContentActive = _this2.hasJustFocused = _this2.isActive;
+                    resolve();
+                });
+            });
+        },
+        isShown: function isShown(el) {
+            return el.style.display !== 'none';
+        },
+        updateDimensions: function updateDimensions() {
+            var _this3 = this;
+
+            this.checkForWindow();
+            this.checkForPageYOffset();
+            var dimensions = {};
+            // Activator should already be shown
+            if (!this.hasActivator || this.absolute) {
+                dimensions.activator = this.absolutePosition();
+            } else {
+                var activator = this.getActivator();
+                dimensions.activator = this.measure(activator);
+                dimensions.activator.offsetLeft = activator.offsetLeft;
+                if (this.isAttached) {
+                    // account for css padding causing things to not line up
+                    // this is mostly for v-autocomplete, hopefully it won't break anything
+                    dimensions.activator.offsetTop = activator.offsetTop;
+                } else {
+                    dimensions.activator.offsetTop = 0;
+                }
+            }
+            // Display and hide to get dimensions
+            this.sneakPeek(function () {
+                dimensions.content = _this3.measure(_this3.$refs.content);
+                _this3.dimensions = dimensions;
+            });
+        }
+    }
+}));
+//# sourceMappingURL=menuable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VTooltip/VTooltip.js
+function VTooltip_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+// Mixins
+
+
+
+
+
+
+// Helpers
+
+
+/* @vue/component */
+/* harmony default export */ var VTooltip = ({
+    name: 'v-tooltip',
+    mixins: [colorable, delayable, dependent, detachable, menuable, toggleable],
+    props: {
+        closeDelay: {
+            type: [Number, String],
+            default: 200
+        },
+        debounce: {
+            type: [Number, String],
+            default: 0
+        },
+        disabled: Boolean,
+        fixed: {
+            type: Boolean,
+            default: true
+        },
+        openDelay: {
+            type: [Number, String],
+            default: 200
+        },
+        tag: {
+            type: String,
+            default: 'span'
+        },
+        transition: String,
+        zIndex: {
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            calculatedMinWidth: 0,
+            closeDependents: false
+        };
+    },
+    computed: {
+        calculatedLeft: function calculatedLeft() {
+            var _dimensions = this.dimensions,
+                activator = _dimensions.activator,
+                content = _dimensions.content;
+
+            var unknown = !this.bottom && !this.left && !this.top && !this.right;
+            var activatorLeft = this.isAttached ? activator.offsetLeft : activator.left;
+            var left = 0;
+            if (this.top || this.bottom || unknown) {
+                left = activatorLeft + activator.width / 2 - content.width / 2;
+            } else if (this.left || this.right) {
+                left = activatorLeft + (this.right ? activator.width : -content.width) + (this.right ? 10 : -10);
+            }
+            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
+            if (this.nudgeRight) left += parseInt(this.nudgeRight);
+            return this.calcXOverflow(left, this.dimensions.content.width) + 'px';
+        },
+        calculatedTop: function calculatedTop() {
+            var _dimensions2 = this.dimensions,
+                activator = _dimensions2.activator,
+                content = _dimensions2.content;
+
+            var activatorTop = this.isAttached ? activator.offsetTop : activator.top;
+            var top = 0;
+            if (this.top || this.bottom) {
+                top = activatorTop + (this.bottom ? activator.height : -content.height) + (this.bottom ? 10 : -10);
+            } else if (this.left || this.right) {
+                top = activatorTop + activator.height / 2 - content.height / 2;
+            }
+            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
+            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
+            return this.calcYOverflow(top + this.pageYOffset) + 'px';
+        },
+        classes: function classes() {
+            return {
+                'v-tooltip--top': this.top,
+                'v-tooltip--right': this.right,
+                'v-tooltip--bottom': this.bottom,
+                'v-tooltip--left': this.left
+            };
+        },
+        computedTransition: function computedTransition() {
+            if (this.transition) return this.transition;
+            if (this.top) return 'slide-y-reverse-transition';
+            if (this.right) return 'slide-x-transition';
+            if (this.bottom) return 'slide-y-transition';
+            if (this.left) return 'slide-x-reverse-transition';
+            return '';
+        },
+        offsetY: function offsetY() {
+            return this.top || this.bottom;
+        },
+        offsetX: function offsetX() {
+            return this.left || this.right;
+        },
+        styles: function styles() {
+            return {
+                left: this.calculatedLeft,
+                maxWidth: convertToUnit(this.maxWidth),
+                opacity: this.isActive ? 0.9 : 0,
+                top: this.calculatedTop,
+                zIndex: this.zIndex || this.activeZIndex
+            };
+        }
+    },
+    beforeMount: function beforeMount() {
+        var _this = this;
+
+        this.$nextTick(function () {
+            _this.value && _this.callActivate();
+        });
+    },
+    mounted: function mounted() {
+        if (getSlotType(this, 'activator', true) === 'v-slot') {
+            consoleError('v-tooltip\'s activator slot must be bound, try \'<template #activator="data"><v-btn v-on="data.on>\'', this);
+        }
+    },
+
+    methods: {
+        activate: function activate() {
+            // Update coordinates and dimensions of menu
+            // and its activator
+            this.updateDimensions();
+            // Start the transition
+            requestAnimationFrame(this.startTransition);
+        },
+        genActivator: function genActivator() {
+            var _this2 = this;
+
+            var listeners = this.disabled ? {} : {
+                mouseenter: function mouseenter(e) {
+                    _this2.getActivator(e);
+                    _this2.runDelay('open');
+                },
+                mouseleave: function mouseleave(e) {
+                    _this2.getActivator(e);
+                    _this2.runDelay('close');
+                }
+            };
+            if (getSlotType(this, 'activator') === 'scoped') {
+                var activator = this.$scopedSlots.activator({ on: listeners });
+                this.activatorNode = activator;
+                return activator;
+            }
+            return this.$createElement('span', {
+                on: listeners,
+                ref: 'activator'
+            }, this.$slots.activator);
+        }
+    },
+    render: function render(h) {
+        var _class;
+
+        var tooltip = h('div', this.setBackgroundColor(this.color, {
+            staticClass: 'v-tooltip__content',
+            'class': (_class = {}, VTooltip_defineProperty(_class, this.contentClass, true), VTooltip_defineProperty(_class, 'menuable__content__active', this.isActive), _class),
+            style: this.styles,
+            attrs: this.getScopeIdAttrs(),
+            directives: [{
+                name: 'show',
+                value: this.isContentActive
+            }],
+            ref: 'content'
+        }), this.showLazyContent(this.$slots.default));
+        return h(this.tag, {
+            staticClass: 'v-tooltip',
+            'class': this.classes
+        }, [h('transition', {
+            props: {
+                name: this.computedTransition
+            }
+        }, [tooltip]), this.genActivator()]);
+    }
+});
+//# sourceMappingURL=VTooltip.js.map
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue
+
+
+
+
+
+/* normalize component */
+
+var component = normalizeComponent(
+  actionbar_ActionbarBuildvue_type_script_lang_js_,
+  ActionbarBuildvue_type_template_id_15249da2_render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ActionbarBuild = (component.exports);
+
+/* vuetify-loader */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+installComponents_default()(component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VFadeTransition: VFadeTransition,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VProgressCircular: VProgressCircular,VProgressLinear: VProgressLinear,VSpacer: VSpacer,VStepper: VStepper,VStepperContent: VStepperContent,VStepperStep: VStepperStep,VTooltip: VTooltip})
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=template&id=5bca585f&
+var ActionbarSettingvue_type_template_id_5bca585f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.settingDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-cogs")])],1),_c('span',[_vm._v("Setup board")])],1),_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.settingDialog),callback:function ($$v) {_vm.settingDialog=$$v},expression:"settingDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Setup board")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("Board setting")]),_c('div',{staticClass:"d-flex"},[_c('v-combobox',{staticClass:"mr-3",attrs:{"items":_vm.comports,"label":"Select COM port"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].comport),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "comport", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].comport"}}),_c('v-combobox',{attrs:{"items":_vm.baudrates,"label":"Serial upload baudrate"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].baudrate),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "baudrate", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].baudrate"}})],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("WiFi setting")]),_c('v-text-field',{attrs:{"label":"SSID","hint":"WiFi SSID name to connect","counter":"","maxlength":"32","clearable":""},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].wifi_ssid),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "wifi_ssid", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].wifi_ssid"}})],1),_c('v-divider'),_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"append-icon":_vm.showPassword ? 'visibility' : 'visibility_off',"type":_vm.showPassword ? 'text' : 'password',"label":"Password","hint":"WiFi password","maxlength":"64","clearable":""},on:{"click:append":function($event){_vm.showPassword = !_vm.showPassword}},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].wifi_password),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "wifi_password", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].wifi_password"}})],1)],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.settingDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)}
+var ActionbarSettingvue_type_template_id_5bca585f_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue?vue&type=template&id=5bca585f&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var ActionbarSettingvue_type_script_lang_js_engine = Vue.prototype.$engine;
+var ActionbarSettingvue_type_script_lang_js_G = Vue.prototype.$global;
+var SerialPort = ActionbarSettingvue_type_script_lang_js_engine.util.requireFunc('serialport');
+/* harmony default export */ var ActionbarSettingvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      comports: [],
+      baudrates: [115200, 256000, 230400, 512000, 921600],
+      baudrate: 921600,
+      showPassword: false,
+      settingDialog: false
+    };
+  },
+  mounted: function mounted() {//this.listPort();
+  },
+  methods: {
+    listPort: function listPort() {
+      var _this = this;
+
+      SerialPort.list().then(function (ports) {
+        if (ports.length > 0) {
+          _this.comports = ports.map(function (obj) {
+            return obj.comName;
+          });
+          /*comName : "COM5"
+          locationId : undefined
+          manufacturer : "FTDI"
+          pnpId : "FTDIBUS\VID_0403+PID_6015+DM01USZ0A\0000"
+          productId : "6015"
+          serialNumber : "DM01USZ0"
+          vendorId :"0403"*/
+
+          _this.comport = _this.comports[0];
+        }
+      }).catch(function (err) {
+        console.log('Error on list port');
+      });
+    }
+  },
+  watch: {
+    settingDialog: function settingDialog(val) {
+      if (val) {
+        //on opening
+        this.listPort();
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue?vue&type=script&lang=js&
+ /* harmony default export */ var actionbar_ActionbarSettingvue_type_script_lang_js_ = (ActionbarSettingvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./src/actionbar/ActionbarSetting.vue?vue&type=style&index=0&lang=css&
+var ActionbarSettingvue_type_style_index_0_lang_css_ = __webpack_require__("9v1z");
+
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_autocompletes.styl
+var _autocompletes = __webpack_require__("s99T");
+
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_text-fields.styl
+var _text_fields = __webpack_require__("2jeH");
+
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_select.styl
+var _select = __webpack_require__("uEcm");
+
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_chips.styl
+var _chips = __webpack_require__("v1p4");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VChip/VChip.js
+var VChip_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+// Components
+
+// Mixins
+
+
+
+/* @vue/component */
+/* harmony default export */ var VChip = (mixins(colorable, themeable, toggleable).extend({
+    name: 'v-chip',
+    props: {
+        close: Boolean,
+        disabled: Boolean,
+        label: Boolean,
+        outline: Boolean,
+        // Used for selects/tagging
+        selected: Boolean,
+        small: Boolean,
+        textColor: String,
+        value: {
+            type: Boolean,
+            default: true
+        }
+    },
+    computed: {
+        classes: function classes() {
+            return VChip_extends({
+                'v-chip--disabled': this.disabled,
+                'v-chip--selected': this.selected && !this.disabled,
+                'v-chip--label': this.label,
+                'v-chip--outline': this.outline,
+                'v-chip--small': this.small,
+                'v-chip--removable': this.close
+            }, this.themeClasses);
+        }
+    },
+    methods: {
+        genClose: function genClose(h) {
+            var _this = this;
+
+            var data = {
+                staticClass: 'v-chip__close',
+                on: {
+                    click: function click(e) {
+                        e.stopPropagation();
+                        _this.$emit('input', false);
+                    }
+                }
+            };
+            return h('div', data, [h(components_VIcon, '$vuetify.icons.delete')]);
+        },
+        genContent: function genContent(h) {
+            return h('span', {
+                staticClass: 'v-chip__content'
+            }, [this.$slots.default, this.close && this.genClose(h)]);
+        }
+    },
+    render: function render(h) {
+        var data = this.setBackgroundColor(this.color, {
+            staticClass: 'v-chip',
+            'class': this.classes,
+            attrs: { tabindex: this.disabled ? -1 : 0 },
+            directives: [{
+                name: 'show',
+                value: this.isActive
+            }],
+            on: this.$listeners
+        });
+        var color = this.textColor || this.outline && this.color;
+        return h('span', this.setTextColor(color, data), [this.genContent(h)]);
+    }
+}));
+//# sourceMappingURL=VChip.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VChip/index.js
+
+
+/* harmony default export */ var components_VChip = (VChip);
+//# sourceMappingURL=index.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_menus.styl
+var _menus = __webpack_require__("OIBb");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/mixins/menu-activator.js
+/**
+ * Menu activator
+ *
+ * @mixin
+ *
+ * Handles the click and hover activation
+ * Supports slotted and detached activators
+ */
+/* @vue/component */
+/* harmony default export */ var menu_activator = ({
+    methods: {
+        activatorClickHandler: function activatorClickHandler(e) {
+            if (this.openOnClick && !this.isActive) {
+                this.getActivator(e).focus();
+                this.isActive = true;
+                this.absoluteX = e.clientX;
+                this.absoluteY = e.clientY;
+            } else if (this.closeOnClick && this.isActive) {
+                this.getActivator(e).blur();
+                this.isActive = false;
+            }
+        },
+        mouseEnterHandler: function mouseEnterHandler() {
+            var _this = this;
+
+            this.runDelay('open', function () {
+                if (_this.hasJustFocused) return;
+                _this.hasJustFocused = true;
+                _this.isActive = true;
+            });
+        },
+        mouseLeaveHandler: function mouseLeaveHandler(e) {
+            var _this2 = this;
+
+            // Prevent accidental re-activation
+            this.runDelay('close', function () {
+                if (_this2.$refs.content.contains(e.relatedTarget)) return;
+                requestAnimationFrame(function () {
+                    _this2.isActive = false;
+                    _this2.callDeactivate();
+                });
+            });
+        },
+        addActivatorEvents: function addActivatorEvents() {
+            var activator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (!activator || this.disabled) return;
+            activator.addEventListener('click', this.activatorClickHandler);
+        },
+        removeActivatorEvents: function removeActivatorEvents() {
+            var activator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (!activator) return;
+            activator.removeEventListener('click', this.activatorClickHandler);
+        }
+    }
+});
+//# sourceMappingURL=menu-activator.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/mixins/menu-generators.js
+var menu_generators_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function menu_generators_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function menu_generators_toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+/* @vue/component */
+/* harmony default export */ var menu_generators = ({
+    methods: {
+        genActivator: function genActivator() {
+            if (!this.$slots.activator && !this.$scopedSlots.activator) return null;
+            var listeners = {};
+            if (!this.disabled) {
+                if (this.openOnHover) {
+                    listeners.mouseenter = this.mouseEnterHandler;
+                    listeners.mouseleave = this.mouseLeaveHandler;
+                } else if (this.openOnClick) {
+                    listeners.click = this.activatorClickHandler;
+                }
+            }
+            if (getSlotType(this, 'activator') === 'scoped') {
+                var activator = this.$scopedSlots.activator({ on: listeners });
+                this.activatorNode = activator;
+                return activator;
+            }
+            return this.$createElement('div', {
+                staticClass: 'v-menu__activator',
+                'class': {
+                    'v-menu__activator--active': this.hasJustFocused || this.isActive,
+                    'v-menu__activator--disabled': this.disabled
+                },
+                ref: 'activator',
+                on: listeners
+            }, this.$slots.activator);
+        },
+        genTransition: function genTransition() {
+            if (!this.transition) return this.genContent();
+            return this.$createElement('transition', {
+                props: {
+                    name: this.transition
+                }
+            }, [this.genContent()]);
+        },
+        genDirectives: function genDirectives() {
+            var _this = this;
+
+            // Do not add click outside for hover menu
+            var directives = !this.openOnHover && this.closeOnClick ? [{
+                name: 'click-outside',
+                value: function value() {
+                    return _this.isActive = false;
+                },
+                args: {
+                    closeConditional: this.closeConditional,
+                    include: function include() {
+                        return [_this.$el].concat(menu_generators_toConsumableArray(_this.getOpenDependentElements()));
+                    }
+                }
+            }] : [];
+            directives.push({
+                name: 'show',
+                value: this.isContentActive
+            });
+            return directives;
+        },
+        genContent: function genContent() {
+            var _this2 = this;
+
+            var options = {
+                attrs: this.getScopeIdAttrs(),
+                staticClass: 'v-menu__content',
+                'class': menu_generators_extends({}, this.rootThemeClasses, menu_generators_defineProperty({
+                    'v-menu__content--auto': this.auto,
+                    'menuable__content__active': this.isActive
+                }, this.contentClass.trim(), true)),
+                style: this.styles,
+                directives: this.genDirectives(),
+                ref: 'content',
+                on: {
+                    click: function click(e) {
+                        e.stopPropagation();
+                        if (e.target.getAttribute('disabled')) return;
+                        if (_this2.closeOnContentClick) _this2.isActive = false;
+                    }
+                }
+            };
+            !this.disabled && this.openOnHover && (options.on.mouseenter = this.mouseEnterHandler);
+            this.openOnHover && (options.on.mouseleave = this.mouseLeaveHandler);
+            return this.$createElement('div', options, this.showLazyContent(this.$slots.default));
+        }
+    }
+});
+//# sourceMappingURL=menu-generators.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/mixins/menu-keyable.js
+/**
+ * Menu keyable
+ *
+ * @mixin
+ *
+ * Primarily used to support VSelect
+ * Handles opening and closing of VMenu from keystrokes
+ * Will conditionally highlight VListTiles for VSelect
+ */
+// Utils
+
+/* @vue/component */
+/* harmony default export */ var menu_keyable = ({
+    props: {
+        disableKeys: Boolean
+    },
+    data: function data() {
+        return {
+            listIndex: -1,
+            tiles: []
+        };
+    },
+    watch: {
+        isActive: function isActive(val) {
+            if (!val) this.listIndex = -1;
+        },
+        listIndex: function listIndex(next, prev) {
+            if (next in this.tiles) {
+                var tile = this.tiles[next];
+                tile.classList.add('v-list__tile--highlighted');
+                this.$refs.content.scrollTop = tile.offsetTop - tile.clientHeight;
+            }
+            prev in this.tiles && this.tiles[prev].classList.remove('v-list__tile--highlighted');
+        }
+    },
+    methods: {
+        onKeyDown: function onKeyDown(e) {
+            var _this = this;
+
+            if (e.keyCode === keyCodes.esc) {
+                this.isActive = false;
+            } else if (e.keyCode === keyCodes.tab) {
+                setTimeout(function () {
+                    if (!_this.$refs.content.contains(document.activeElement)) {
+                        _this.isActive = false;
+                    }
+                });
+            } else {
+                this.changeListIndex(e);
+            }
+        },
+        changeListIndex: function changeListIndex(e) {
+            // For infinite scroll and autocomplete, re-evaluate children
+            this.getTiles();
+            if (e.keyCode === keyCodes.down && this.listIndex < this.tiles.length - 1) {
+                this.listIndex++;
+                // Allow user to set listIndex to -1 so
+                // that the list can be un-highlighted
+            } else if (e.keyCode === keyCodes.up && this.listIndex > -1) {
+                this.listIndex--;
+            } else if (e.keyCode === keyCodes.enter && this.listIndex !== -1) {
+                this.tiles[this.listIndex].click();
+            } else {
+                return;
+            }
+            // One of the conditions was met, prevent default action (#2988)
+            e.preventDefault();
+        },
+        getTiles: function getTiles() {
+            this.tiles = this.$refs.content.querySelectorAll('.v-list__tile');
+        }
+    }
+});
+//# sourceMappingURL=menu-keyable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/mixins/menu-position.js
+/**
+ * Menu position
+ *
+ * @mixin
+ *
+ * Used for calculating an automatic position (used for VSelect)
+ * Will position the VMenu content properly over the VSelect
+ */
+/* @vue/component */
+/* harmony default export */ var menu_position = ({
+    data: function data() {
+        return {
+            calculatedTopAuto: 0
+        };
+    },
+    methods: {
+        calcScrollPosition: function calcScrollPosition() {
+            var $el = this.$refs.content;
+            var activeTile = $el.querySelector('.v-list__tile--active');
+            var maxScrollTop = $el.scrollHeight - $el.offsetHeight;
+            return activeTile ? Math.min(maxScrollTop, Math.max(0, activeTile.offsetTop - $el.offsetHeight / 2 + activeTile.offsetHeight / 2)) : $el.scrollTop;
+        },
+        calcLeftAuto: function calcLeftAuto() {
+            if (this.isAttached) return 0;
+            return parseInt(this.dimensions.activator.left - this.defaultOffset * 2);
+        },
+        calcTopAuto: function calcTopAuto() {
+            var $el = this.$refs.content;
+            var activeTile = $el.querySelector('.v-list__tile--active');
+            if (!activeTile) {
+                this.selectedIndex = null;
+            }
+            if (this.offsetY || !activeTile) {
+                return this.computedTop;
+            }
+            this.selectedIndex = Array.from(this.tiles).indexOf(activeTile);
+            var tileDistanceFromMenuTop = activeTile.offsetTop - this.calcScrollPosition();
+            var firstTileOffsetTop = $el.querySelector('.v-list__tile').offsetTop;
+            return this.computedTop - tileDistanceFromMenuTop - firstTileOffsetTop;
+        }
+    }
+});
+//# sourceMappingURL=menu-position.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/directives/resize.js
+function inserted(el, binding) {
+    var callback = binding.value;
+    var options = binding.options || { passive: true };
+    window.addEventListener('resize', callback, options);
+    el._onResize = {
+        callback: callback,
+        options: options
+    };
+    if (!binding.modifiers || !binding.modifiers.quiet) {
+        callback();
+    }
+}
+function resize_unbind(el) {
+    if (!el._onResize) return;
+    var _el$_onResize = el._onResize,
+        callback = _el$_onResize.callback,
+        options = _el$_onResize.options;
+
+    window.removeEventListener('resize', callback, options);
+    delete el._onResize;
+}
+/* harmony default export */ var resize = ({
+    inserted: inserted,
+    unbind: resize_unbind
+});
+//# sourceMappingURL=resize.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/VMenu.js
+
+
+// Mixins
+
+
+
+
+
+
+
+// Component level mixins
+
+
+
+
+// Directives
+
+
+// Helpers
+
+
+
+/* @vue/component */
+/* harmony default export */ var VMenu = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'v-menu',
+    provide: function provide() {
+        return {
+            // Pass theme through to default slot
+            theme: this.theme
+        };
+    },
+
+    directives: {
+        ClickOutside: click_outside,
+        Resize: resize
+    },
+    mixins: [menu_activator, dependent, delayable, detachable, menu_generators, menu_keyable, menuable, menu_position, returnable, toggleable, themeable],
+    props: {
+        auto: Boolean,
+        closeOnClick: {
+            type: Boolean,
+            default: true
+        },
+        closeOnContentClick: {
+            type: Boolean,
+            default: true
+        },
+        disabled: Boolean,
+        fullWidth: Boolean,
+        maxHeight: { default: 'auto' },
+        openOnClick: {
+            type: Boolean,
+            default: true
+        },
+        offsetX: Boolean,
+        offsetY: Boolean,
+        openOnHover: Boolean,
+        origin: {
+            type: String,
+            default: 'top left'
+        },
+        transition: {
+            type: [Boolean, String],
+            default: 'v-menu-transition'
+        }
+    },
+    data: function data() {
+        return {
+            defaultOffset: 8,
+            hasJustFocused: false,
+            resizeTimeout: null
+        };
+    },
+
+    computed: {
+        calculatedLeft: function calculatedLeft() {
+            var menuWidth = Math.max(this.dimensions.content.width, this.dimensions.activator.width);
+            if (!this.auto) return this.calcLeft(menuWidth);
+            return this.calcXOverflow(this.calcLeftAuto(), menuWidth) + 'px';
+        },
+        calculatedMaxHeight: function calculatedMaxHeight() {
+            return this.auto ? '200px' : convertToUnit(this.maxHeight);
+        },
+        calculatedMaxWidth: function calculatedMaxWidth() {
+            return isNaN(this.maxWidth) ? this.maxWidth : this.maxWidth + 'px';
+        },
+        calculatedMinWidth: function calculatedMinWidth() {
+            if (this.minWidth) {
+                return isNaN(this.minWidth) ? this.minWidth : this.minWidth + 'px';
+            }
+            var minWidth = this.dimensions.activator.width + this.nudgeWidth + (this.auto ? 16 : 0);
+            var calculatedMaxWidth = isNaN(parseInt(this.calculatedMaxWidth)) ? minWidth : parseInt(this.calculatedMaxWidth);
+            return Math.min(calculatedMaxWidth, minWidth) + 'px';
+        },
+        calculatedTop: function calculatedTop() {
+            if (!this.auto || this.isAttached) return this.calcTop();
+            return this.calcYOverflow(this.calculatedTopAuto) + 'px';
+        },
+        styles: function styles() {
+            return {
+                maxHeight: this.calculatedMaxHeight,
+                minWidth: this.calculatedMinWidth,
+                maxWidth: this.calculatedMaxWidth,
+                top: this.calculatedTop,
+                left: this.calculatedLeft,
+                transformOrigin: this.origin,
+                zIndex: this.zIndex || this.activeZIndex
+            };
+        }
+    },
+    watch: {
+        activator: function activator(newActivator, oldActivator) {
+            this.removeActivatorEvents(oldActivator);
+            this.addActivatorEvents(newActivator);
+        },
+        disabled: function disabled(_disabled) {
+            if (!this.activator) return;
+            if (_disabled) {
+                this.removeActivatorEvents(this.activator);
+            } else {
+                this.addActivatorEvents(this.activator);
+            }
+        },
+        isContentActive: function isContentActive(val) {
+            this.hasJustFocused = val;
+        }
+    },
+    mounted: function mounted() {
+        this.isActive && this.activate();
+        if (getSlotType(this, 'activator', true) === 'v-slot') {
+            consoleError('v-tooltip\'s activator slot must be bound, try \'<template #activator="data"><v-btn v-on="data.on>\'', this);
+        }
+    },
+
+    methods: {
+        activate: function activate() {
+            var _this = this;
+
+            // This exists primarily for v-select
+            // helps determine which tiles to activate
+            this.getTiles();
+            // Update coordinates and dimensions of menu
+            // and its activator
+            this.updateDimensions();
+            // Start the transition
+            requestAnimationFrame(function () {
+                // Once transitioning, calculate scroll and top position
+                _this.startTransition().then(function () {
+                    if (_this.$refs.content) {
+                        _this.calculatedTopAuto = _this.calcTopAuto();
+                        _this.auto && (_this.$refs.content.scrollTop = _this.calcScrollPosition());
+                    }
+                });
+            });
+        },
+        closeConditional: function closeConditional() {
+            return this.isActive && this.closeOnClick;
+        },
+        onResize: function onResize() {
+            if (!this.isActive) return;
+            // Account for screen resize
+            // and orientation change
+            // eslint-disable-next-line no-unused-expressions
+            this.$refs.content.offsetWidth;
+            this.updateDimensions();
+            // When resizing to a smaller width
+            // content width is evaluated before
+            // the new activator width has been
+            // set, causing it to not size properly
+            // hacky but will revisit in the future
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(this.updateDimensions, 100);
+        }
+    },
+    render: function render(h) {
+        var data = {
+            staticClass: 'v-menu',
+            class: { 'v-menu--inline': !this.fullWidth && this.$slots.activator },
+            directives: [{
+                arg: 500,
+                name: 'resize',
+                value: this.onResize
+            }],
+            on: this.disableKeys ? undefined : {
+                keydown: this.onKeyDown
+            }
+        };
+        return h('div', data, [this.genActivator(), this.$createElement(ThemeProvider, {
+            props: {
+                root: true,
+                light: this.light,
+                dark: this.dark
+            }
+        }, [this.genTransition()])]);
+    }
+}));
+//# sourceMappingURL=VMenu.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VMenu/index.js
+
+
+/* harmony default export */ var components_VMenu = (VMenu);
+//# sourceMappingURL=index.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_selection-controls.styl
+var _selection_controls = __webpack_require__("lKfc");
+
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_inputs.styl
+var _inputs = __webpack_require__("GRJH");
+
 // EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_labels.styl
 var _labels = __webpack_require__("Bi+O");
 
@@ -3954,303 +6016,826 @@ var VInput_extends = Object.assign || function (target) { for (var i = 1; i < ar
     }
 }));
 //# sourceMappingURL=selectable.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/directives/touch.js
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VCheckbox/VCheckbox.js
+var VCheckbox_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var handleGesture = function handleGesture(wrapper) {
-    var touchstartX = wrapper.touchstartX,
-        touchendX = wrapper.touchendX,
-        touchstartY = wrapper.touchstartY,
-        touchendY = wrapper.touchendY;
+// Styles
 
-    var dirRatio = 0.5;
-    var minDistance = 16;
-    wrapper.offsetX = touchendX - touchstartX;
-    wrapper.offsetY = touchendY - touchstartY;
-    if (Math.abs(wrapper.offsetY) < dirRatio * Math.abs(wrapper.offsetX)) {
-        wrapper.left && touchendX < touchstartX - minDistance && wrapper.left(wrapper);
-        wrapper.right && touchendX > touchstartX + minDistance && wrapper.right(wrapper);
-    }
-    if (Math.abs(wrapper.offsetX) < dirRatio * Math.abs(wrapper.offsetY)) {
-        wrapper.up && touchendY < touchstartY - minDistance && wrapper.up(wrapper);
-        wrapper.down && touchendY > touchstartY + minDistance && wrapper.down(wrapper);
-    }
-};
-function _touchstart(event, wrapper) {
-    var touch = event.changedTouches[0];
-    wrapper.touchstartX = touch.clientX;
-    wrapper.touchstartY = touch.clientY;
-    wrapper.start && wrapper.start(Object.assign(event, wrapper));
-}
-function _touchend(event, wrapper) {
-    var touch = event.changedTouches[0];
-    wrapper.touchendX = touch.clientX;
-    wrapper.touchendY = touch.clientY;
-    wrapper.end && wrapper.end(Object.assign(event, wrapper));
-    handleGesture(wrapper);
-}
-function _touchmove(event, wrapper) {
-    var touch = event.changedTouches[0];
-    wrapper.touchmoveX = touch.clientX;
-    wrapper.touchmoveY = touch.clientY;
-    wrapper.move && wrapper.move(Object.assign(event, wrapper));
-}
-function createHandlers(value) {
-    var wrapper = {
-        touchstartX: 0,
-        touchstartY: 0,
-        touchendX: 0,
-        touchendY: 0,
-        touchmoveX: 0,
-        touchmoveY: 0,
-        offsetX: 0,
-        offsetY: 0,
-        left: value.left,
-        right: value.right,
-        up: value.up,
-        down: value.down,
-        start: value.start,
-        move: value.move,
-        end: value.end
-    };
-    return {
-        touchstart: function touchstart(e) {
-            return _touchstart(e, wrapper);
+// Components
+
+// import { VFadeTransition } from '../transitions'
+// Mixins
+
+/* @vue/component */
+/* harmony default export */ var VCheckbox = ({
+    name: 'v-checkbox',
+    mixins: [selectable],
+    props: {
+        indeterminate: Boolean,
+        indeterminateIcon: {
+            type: String,
+            default: '$vuetify.icons.checkboxIndeterminate'
         },
-        touchend: function touchend(e) {
-            return _touchend(e, wrapper);
+        onIcon: {
+            type: String,
+            default: '$vuetify.icons.checkboxOn'
         },
-        touchmove: function touchmove(e) {
-            return _touchmove(e, wrapper);
+        offIcon: {
+            type: String,
+            default: '$vuetify.icons.checkboxOff'
         }
-    };
-}
-function inserted(el, binding, vnode) {
-    var value = binding.value;
-    var target = value.parent ? el.parentElement : el;
-    var options = value.options || { passive: true };
-    // Needed to pass unit tests
-    if (!target) return;
-    var handlers = createHandlers(binding.value);
-    target._touchHandlers = Object(target._touchHandlers);
-    target._touchHandlers[vnode.context._uid] = handlers;
-    keys(handlers).forEach(function (eventName) {
-        target.addEventListener(eventName, handlers[eventName], options);
-    });
-}
-function touch_unbind(el, binding, vnode) {
-    var target = binding.value.parent ? el.parentElement : el;
-    if (!target || !target._touchHandlers) return;
-    var handlers = target._touchHandlers[vnode.context._uid];
-    keys(handlers).forEach(function (eventName) {
-        target.removeEventListener(eventName, handlers[eventName]);
-    });
-    delete target._touchHandlers[vnode.context._uid];
-}
-/* harmony default export */ var touch = ({
-    inserted: inserted,
-    unbind: touch_unbind
-});
-//# sourceMappingURL=touch.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/transitions/expand-transition.js
-function expand_transition_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-/* harmony default export */ var expand_transition = (function () {
-    var expandedParentClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    var sizeProperty = x ? 'width' : 'height';
-    return {
-        beforeEnter: function beforeEnter(el) {
-            el._parent = el.parentNode;
-            el._initialStyle = expand_transition_defineProperty({
-                transition: el.style.transition,
-                visibility: el.style.visibility,
-                overflow: el.style.overflow
-            }, sizeProperty, el.style[sizeProperty]);
+    },
+    data: function data(vm) {
+        return {
+            inputIndeterminate: vm.indeterminate
+        };
+    },
+    computed: {
+        classes: function classes() {
+            return {
+                'v-input--selection-controls': true,
+                'v-input--checkbox': true
+            };
         },
-        enter: function enter(el) {
-            var initialStyle = el._initialStyle;
-            el.style.setProperty('transition', 'none', 'important');
-            el.style.visibility = 'hidden';
-            var size = el['offset' + upperFirst(sizeProperty)] + 'px';
-            el.style.visibility = initialStyle.visibility;
-            el.style.overflow = 'hidden';
-            el.style[sizeProperty] = 0;
-            void el.offsetHeight; // force reflow
-            el.style.transition = initialStyle.transition;
-            expandedParentClass && el._parent && el._parent.classList.add(expandedParentClass);
-            requestAnimationFrame(function () {
-                el.style[sizeProperty] = size;
-            });
+        computedIcon: function computedIcon() {
+            if (this.inputIndeterminate) {
+                return this.indeterminateIcon;
+            } else if (this.isActive) {
+                return this.onIcon;
+            } else {
+                return this.offIcon;
+            }
+        }
+    },
+    watch: {
+        indeterminate: function indeterminate(val) {
+            this.inputIndeterminate = val;
+        }
+    },
+    methods: {
+        genCheckbox: function genCheckbox() {
+            return this.$createElement('div', {
+                staticClass: 'v-input--selection-controls__input'
+            }, [this.genInput('checkbox', VCheckbox_extends({}, this.$attrs, {
+                'aria-checked': this.inputIndeterminate ? 'mixed' : this.isActive.toString()
+            })), this.genRipple(this.setTextColor(this.computedColor)), this.$createElement(components_VIcon, this.setTextColor(this.computedColor, {
+                props: {
+                    dark: this.dark,
+                    light: this.light
+                }
+            }), this.computedIcon)]);
         },
-
-        afterEnter: resetStyles,
-        enterCancelled: resetStyles,
-        leave: function leave(el) {
-            el._initialStyle = expand_transition_defineProperty({
-                overflow: el.style.overflow
-            }, sizeProperty, el.style[sizeProperty]);
-            el.style.overflow = 'hidden';
-            el.style[sizeProperty] = el['offset' + upperFirst(sizeProperty)] + 'px';
-            void el.offsetHeight; // force reflow
-            requestAnimationFrame(function () {
-                return el.style[sizeProperty] = 0;
-            });
-        },
-
-        afterLeave: afterLeave,
-        leaveCancelled: afterLeave
-    };
-    function afterLeave(el) {
-        expandedParentClass && el._parent && el._parent.classList.remove(expandedParentClass);
-        resetStyles(el);
-    }
-    function resetStyles(el) {
-        el.style.overflow = el._initialStyle.overflow;
-        el.style[sizeProperty] = el._initialStyle[sizeProperty];
-        delete el._initialStyle;
+        genDefaultSlot: function genDefaultSlot() {
+            return [this.genCheckbox(), this.genLabel()];
+        }
     }
 });
-//# sourceMappingURL=expand-transition.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/transitions/index.js
+//# sourceMappingURL=VCheckbox.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VCheckbox/index.js
 
 
-// Component specific transitions
-var VBottomSheetTransition = createSimpleTransition('bottom-sheet-transition');
-var VCarouselTransition = createSimpleTransition('carousel-transition');
-var VCarouselReverseTransition = createSimpleTransition('carousel-reverse-transition');
-var VTabTransition = createSimpleTransition('tab-transition');
-var VTabReverseTransition = createSimpleTransition('tab-reverse-transition');
-var VMenuTransition = createSimpleTransition('menu-transition');
-var VFabTransition = createSimpleTransition('fab-transition', 'center center', 'out-in');
-// Generic transitions
-var VDialogTransition = createSimpleTransition('dialog-transition');
-var VDialogBottomTransition = createSimpleTransition('dialog-bottom-transition');
-var VFadeTransition = createSimpleTransition('fade-transition');
-var VScaleTransition = createSimpleTransition('scale-transition');
-var VScrollXTransition = createSimpleTransition('scroll-x-transition');
-var VScrollXReverseTransition = createSimpleTransition('scroll-x-reverse-transition');
-var VScrollYTransition = createSimpleTransition('scroll-y-transition');
-var VScrollYReverseTransition = createSimpleTransition('scroll-y-reverse-transition');
-var VSlideXTransition = createSimpleTransition('slide-x-transition');
-var VSlideXReverseTransition = createSimpleTransition('slide-x-reverse-transition');
-var VSlideYTransition = createSimpleTransition('slide-y-transition');
-var VSlideYReverseTransition = createSimpleTransition('slide-y-reverse-transition');
-// JavaScript transitions
-var VExpandTransition = createJavaScriptTransition('expand-transition', expand_transition());
-var VExpandXTransition = createJavaScriptTransition('expand-x-transition', expand_transition('', true));
-var VRowExpandTransition = createJavaScriptTransition('row-expand-transition', expand_transition('datatable__expand-col--expanded'));
-/* harmony default export */ var transitions = ({
+/* harmony default export */ var components_VCheckbox = (VCheckbox);
+//# sourceMappingURL=index.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_dividers.styl
+var _dividers = __webpack_require__("WNtj");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VDivider/VDivider.js
+var VDivider_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Styles
+
+// Mixins
+
+/* harmony default export */ var VDivider = (themeable.extend({
+    name: 'v-divider',
+    props: {
+        inset: Boolean,
+        vertical: Boolean
+    },
+    render: function render(h) {
+        return h('hr', {
+            class: VDivider_extends({
+                'v-divider': true,
+                'v-divider--inset': this.inset,
+                'v-divider--vertical': this.vertical
+            }, this.themeClasses),
+            attrs: this.$attrs,
+            on: this.$listeners
+        });
+    }
+}));
+//# sourceMappingURL=VDivider.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VDivider/index.js
+
+
+/* harmony default export */ var components_VDivider = (VDivider);
+//# sourceMappingURL=index.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_subheaders.styl
+var _subheaders = __webpack_require__("kL1F");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VSubheader/VSubheader.js
+var VSubheader_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Styles
+
+// Mixins
+
+
+/* harmony default export */ var VSubheader = (mixins(themeable
+/* @vue/component */
+).extend({
+    name: 'v-subheader',
+    props: {
+        inset: Boolean
+    },
+    render: function render(h) {
+        return h('div', {
+            staticClass: 'v-subheader',
+            class: VSubheader_extends({
+                'v-subheader--inset': this.inset
+            }, this.themeClasses),
+            attrs: this.$attrs,
+            on: this.$listeners
+        }, this.$slots.default);
+    }
+}));
+//# sourceMappingURL=VSubheader.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VSubheader/index.js
+
+
+/* harmony default export */ var components_VSubheader = (VSubheader);
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/VListTile.js
+var VListTile_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function VListTile_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Mixins
+
+
+
+
+// Directives
+
+// Types
+
+/* @vue/component */
+/* harmony default export */ var VListTile = (mixins(colorable, routable, toggleable, themeable).extend({
+    name: 'v-list-tile',
+    directives: {
+        Ripple: directives_ripple
+    },
+    inheritAttrs: false,
+    props: {
+        activeClass: {
+            type: String,
+            default: 'primary--text'
+        },
+        avatar: Boolean,
+        inactive: Boolean,
+        tag: String
+    },
+    data: function data() {
+        return {
+            proxyClass: 'v-list__tile--active'
+        };
+    },
+    computed: {
+        listClasses: function listClasses() {
+            return this.disabled ? { 'v-list--disabled': true } : undefined;
+        },
+        classes: function classes() {
+            return VListTile_extends({
+                'v-list__tile': true,
+                'v-list__tile--link': this.isLink && !this.inactive,
+                'v-list__tile--avatar': this.avatar,
+                'v-list__tile--disabled': this.disabled,
+                'v-list__tile--active': !this.to && this.isActive
+            }, this.themeClasses, VListTile_defineProperty({}, this.activeClass, this.isActive));
+        },
+        isLink: function isLink() {
+            var hasClick = this.$listeners && (this.$listeners.click || this.$listeners['!click']);
+            return Boolean(this.href || this.to || hasClick);
+        }
+    },
+    render: function render(h) {
+        var isRouteLink = !this.inactive && this.isLink;
+
+        var _ref = isRouteLink ? this.generateRouteLink(this.classes) : {
+            tag: this.tag || 'div',
+            data: {
+                class: this.classes
+            }
+        },
+            tag = _ref.tag,
+            data = _ref.data;
+
+        data.attrs = Object.assign({}, data.attrs, this.$attrs);
+        return h('div', this.setTextColor(!this.disabled && this.color, {
+            class: this.listClasses,
+            attrs: {
+                disabled: this.disabled,
+                role: 'listitem'
+            }
+        }), [h(tag, data, this.$slots.default)]);
+    }
+}));
+//# sourceMappingURL=VListTile.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/VListTileAction.js
+// Types
+
+/* @vue/component */
+/* harmony default export */ var VListTileAction = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'v-list-tile-action',
+    functional: true,
+    render: function render(h, _ref) {
+        var data = _ref.data,
+            _ref$children = _ref.children,
+            children = _ref$children === undefined ? [] : _ref$children;
+
+        data.staticClass = data.staticClass ? 'v-list__tile__action ' + data.staticClass : 'v-list__tile__action';
+        var filteredChild = children.filter(function (VNode) {
+            return VNode.isComment === false && VNode.text !== ' ';
+        });
+        if (filteredChild.length > 1) data.staticClass += ' v-list__tile__action--stack';
+        return h('div', data, children);
+    }
+}));
+//# sourceMappingURL=VListTileAction.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_lists.styl
+var _lists = __webpack_require__("0Ms0");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/VList.js
+var VList_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Styles
+
+// Mixins
+
+
+// Types
+
+/* harmony default export */ var VList = (mixins(provide('list'), themeable
+/* @vue/component */
+).extend({
+    name: 'v-list',
+    provide: function provide() {
+        return {
+            listClick: this.listClick
+        };
+    },
+
+    props: {
+        dense: Boolean,
+        expand: Boolean,
+        subheader: Boolean,
+        threeLine: Boolean,
+        twoLine: Boolean
+    },
+    data: function data() {
+        return {
+            groups: []
+        };
+    },
+    computed: {
+        classes: function classes() {
+            return VList_extends({
+                'v-list--dense': this.dense,
+                'v-list--subheader': this.subheader,
+                'v-list--two-line': this.twoLine,
+                'v-list--three-line': this.threeLine
+            }, this.themeClasses);
+        }
+    },
+    methods: {
+        register: function register(content) {
+            this.groups.push(content);
+        },
+        unregister: function unregister(content) {
+            var index = this.groups.findIndex(function (g) {
+                return g._uid === content._uid;
+            });
+            if (index > -1) this.groups.splice(index, 1);
+        },
+        listClick: function listClick(uid) {
+            if (this.expand) return;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var group = _step.value;
+
+                    group.toggle(uid);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+        }
+    },
+    render: function render(h) {
+        var data = {
+            staticClass: 'v-list',
+            class: this.classes,
+            attrs: {
+                role: 'list'
+            }
+        };
+        return h('div', data, [this.$slots.default]);
+    }
+}));
+//# sourceMappingURL=VList.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/VListGroup.js
+var VListGroup_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function VListGroup_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Components
+
+// Mixins
+
+
+
+// Transitions
+
+// Utils
+
+/* harmony default export */ var VListGroup = (mixins(bootable, inject('list', 'v-list-group', 'v-list'), toggleable
+/* @vue/component */
+).extend({
+    name: 'v-list-group',
+    inject: ['listClick'],
+    props: {
+        activeClass: {
+            type: String,
+            default: 'primary--text'
+        },
+        appendIcon: {
+            type: String,
+            default: '$vuetify.icons.expand'
+        },
+        disabled: Boolean,
+        group: String,
+        noAction: Boolean,
+        prependIcon: String,
+        subGroup: Boolean
+    },
+    data: function data() {
+        return {
+            groups: []
+        };
+    },
+    computed: {
+        groupClasses: function groupClasses() {
+            return {
+                'v-list__group--active': this.isActive,
+                'v-list__group--disabled': this.disabled
+            };
+        },
+        headerClasses: function headerClasses() {
+            return {
+                'v-list__group__header--active': this.isActive,
+                'v-list__group__header--sub-group': this.subGroup
+            };
+        },
+        itemsClasses: function itemsClasses() {
+            return {
+                'v-list__group__items--no-action': this.noAction
+            };
+        }
+    },
+    watch: {
+        isActive: function isActive(val) {
+            if (!this.subGroup && val) {
+                this.listClick(this._uid);
+            }
+        },
+        $route: function $route(to) {
+            var isActive = this.matchRoute(to.path);
+            if (this.group) {
+                if (isActive && this.isActive !== isActive) {
+                    this.listClick(this._uid);
+                }
+                this.isActive = isActive;
+            }
+        }
+    },
+    mounted: function mounted() {
+        this.list.register(this);
+        if (this.group && this.$route && this.value == null) {
+            this.isActive = this.matchRoute(this.$route.path);
+        }
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.list.unregister(this._uid);
+    },
+
+    methods: {
+        click: function click(e) {
+            if (this.disabled) return;
+            this.$emit('click', e);
+            this.isActive = !this.isActive;
+        },
+        genIcon: function genIcon(icon) {
+            return this.$createElement(components_VIcon, icon);
+        },
+        genAppendIcon: function genAppendIcon() {
+            var icon = !this.subGroup ? this.appendIcon : false;
+            if (!icon && !this.$slots.appendIcon) return null;
+            return this.$createElement('div', {
+                staticClass: 'v-list__group__header__append-icon'
+            }, [this.$slots.appendIcon || this.genIcon(icon)]);
+        },
+        genGroup: function genGroup() {
+            return this.$createElement('div', {
+                staticClass: 'v-list__group__header',
+                class: this.headerClasses,
+                on: VListGroup_extends({}, this.$listeners, {
+                    click: this.click
+                }),
+                ref: 'item'
+            }, [this.genPrependIcon(), this.$slots.activator, this.genAppendIcon()]);
+        },
+        genItems: function genItems() {
+            return this.$createElement('div', {
+                staticClass: 'v-list__group__items',
+                class: this.itemsClasses,
+                directives: [{
+                    name: 'show',
+                    value: this.isActive
+                }],
+                ref: 'group'
+            }, this.showLazyContent(this.$slots.default));
+        },
+        genPrependIcon: function genPrependIcon() {
+            var icon = this.prependIcon ? this.prependIcon : this.subGroup ? '$vuetify.icons.subgroup' : false;
+            if (!icon && !this.$slots.prependIcon) return null;
+            return this.$createElement('div', {
+                staticClass: 'v-list__group__header__prepend-icon',
+                'class': VListGroup_defineProperty({}, this.activeClass, this.isActive)
+            }, [this.$slots.prependIcon || this.genIcon(icon)]);
+        },
+        toggle: function toggle(uid) {
+            this.isActive = this._uid === uid;
+        },
+        matchRoute: function matchRoute(to) {
+            if (!this.group) return false;
+            return to.match(this.group) !== null;
+        }
+    },
+    render: function render(h) {
+        return h('div', {
+            staticClass: 'v-list__group',
+            class: this.groupClasses
+        }, [this.genGroup(), h(VExpandTransition, [this.genItems()])]);
+    }
+}));
+//# sourceMappingURL=VListGroup.js.map
+// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_avatars.styl
+var _avatars = __webpack_require__("T6Tt");
+
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VAvatar/VAvatar.js
+var VAvatar_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+// Mixins
+
+
+
+/* @vue/component */
+/* harmony default export */ var VAvatar = (mixins(colorable).extend({
+    name: 'v-avatar',
+    functional: true,
+    props: {
+        // TODO: inherit these
+        color: String,
+        size: {
+            type: [Number, String],
+            default: 48
+        },
+        tile: Boolean
+    },
+    render: function render(h, _ref) {
+        var data = _ref.data,
+            props = _ref.props,
+            children = _ref.children;
+
+        data.staticClass = ('v-avatar ' + (data.staticClass || '')).trim();
+        if (props.tile) data.staticClass += ' v-avatar--tile';
+        var size = convertToUnit(props.size);
+        data.style = VAvatar_extends({
+            height: size,
+            width: size
+        }, data.style);
+        return h('div', colorable.options.methods.setBackgroundColor(props.color, data), children);
+    }
+}));
+//# sourceMappingURL=VAvatar.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VAvatar/index.js
+
+
+/* harmony default export */ var components_VAvatar = (VAvatar);
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/VListTileAvatar.js
+// Components
+
+// Types
+
+/* @vue/component */
+/* harmony default export */ var VListTileAvatar = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'v-list-tile-avatar',
+    functional: true,
+    props: {
+        color: String,
+        size: {
+            type: [Number, String],
+            default: 40
+        },
+        tile: Boolean
+    },
+    render: function render(h, _ref) {
+        var data = _ref.data,
+            children = _ref.children,
+            props = _ref.props;
+
+        data.staticClass = ('v-list__tile__avatar ' + (data.staticClass || '')).trim();
+        var avatar = h(components_VAvatar, {
+            props: {
+                color: props.color,
+                size: props.size,
+                tile: props.tile
+            }
+        }, [children]);
+        return h('div', data, [avatar]);
+    }
+}));
+//# sourceMappingURL=VListTileAvatar.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VList/index.js
+
+
+
+
+
+
+
+var VListTileActionText = createSimpleFunctional('v-list__tile__action-text', 'span');
+var VListTileContent = createSimpleFunctional('v-list__tile__content', 'div');
+var VListTileTitle = createSimpleFunctional('v-list__tile__title', 'div');
+var VListTileSubTitle = createSimpleFunctional('v-list__tile__sub-title', 'div');
+/* harmony default export */ var components_VList = ({
     $_vuetify_subcomponents: {
-        VBottomSheetTransition: VBottomSheetTransition,
-        VCarouselTransition: VCarouselTransition,
-        VCarouselReverseTransition: VCarouselReverseTransition,
-        VDialogTransition: VDialogTransition,
-        VDialogBottomTransition: VDialogBottomTransition,
-        VFabTransition: VFabTransition,
-        VFadeTransition: VFadeTransition,
-        VMenuTransition: VMenuTransition,
-        VScaleTransition: VScaleTransition,
-        VScrollXTransition: VScrollXTransition,
-        VScrollXReverseTransition: VScrollXReverseTransition,
-        VScrollYTransition: VScrollYTransition,
-        VScrollYReverseTransition: VScrollYReverseTransition,
-        VSlideXTransition: VSlideXTransition,
-        VSlideXReverseTransition: VSlideXReverseTransition,
-        VSlideYTransition: VSlideYTransition,
-        VSlideYReverseTransition: VSlideYReverseTransition,
-        VTabReverseTransition: VTabReverseTransition,
-        VTabTransition: VTabTransition,
-        VExpandTransition: VExpandTransition,
-        VExpandXTransition: VExpandXTransition,
-        VRowExpandTransition: VRowExpandTransition
+        VList: VList,
+        VListGroup: VListGroup,
+        VListTile: VListTile,
+        VListTileAction: VListTileAction,
+        VListTileActionText: VListTileActionText,
+        VListTileAvatar: VListTileAvatar,
+        VListTileContent: VListTileContent,
+        VListTileSubTitle: VListTileSubTitle,
+        VListTileTitle: VListTileTitle
     }
 });
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VSwitch/VSwitch.js
-var VSwitch_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VSelect/VSelectList.js
+
+// Components
+
 
 
 
 // Mixins
 
-// Directives
-
-// Components
-
 
 // Helpers
 
 /* @vue/component */
-/* harmony default export */ var VSwitch = ({
-    name: 'v-switch',
-    directives: { Touch: touch },
-    mixins: [selectable],
+/* harmony default export */ var VSelectList = ({
+    name: 'v-select-list',
+    mixins: [colorable, themeable],
     props: {
-        loading: {
-            type: [Boolean, String],
-            default: false
+        action: Boolean,
+        dense: Boolean,
+        hideSelected: Boolean,
+        items: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        itemAvatar: {
+            type: [String, Array, Function],
+            default: 'avatar'
+        },
+        itemDisabled: {
+            type: [String, Array, Function],
+            default: 'disabled'
+        },
+        itemText: {
+            type: [String, Array, Function],
+            default: 'text'
+        },
+        itemValue: {
+            type: [String, Array, Function],
+            default: 'value'
+        },
+        noDataText: String,
+        noFilter: Boolean,
+        searchInput: {
+            default: null
+        },
+        selectedItems: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
         }
     },
     computed: {
-        classes: function classes() {
-            return {
-                'v-input--selection-controls v-input--switch': true
-            };
-        },
-        switchData: function switchData() {
-            return this.setTextColor(this.loading ? undefined : this.computedColor, {
-                class: this.themeClasses
+        parsedItems: function parsedItems() {
+            var _this = this;
+
+            return this.selectedItems.map(function (item) {
+                return _this.getValue(item);
             });
+        },
+        tileActiveClass: function tileActiveClass() {
+            return Object.keys(this.setTextColor(this.color).class || {}).join(' ');
+        },
+        staticNoDataTile: function staticNoDataTile() {
+            var tile = {
+                on: {
+                    mousedown: function mousedown(e) {
+                        return e.preventDefault();
+                    } // Prevent onBlur from being called
+                }
+            };
+            return this.$createElement(VListTile, tile, [this.genTileContent(this.noDataText)]);
         }
     },
     methods: {
-        genDefaultSlot: function genDefaultSlot() {
-            return [this.genSwitch(), this.genLabel()];
-        },
-        genSwitch: function genSwitch() {
-            return this.$createElement('div', {
-                staticClass: 'v-input--selection-controls__input'
-            }, [this.genInput('checkbox', this.$attrs), this.genRipple(this.setTextColor(this.computedColor, {
-                directives: [{
-                    name: 'touch',
-                    value: {
-                        left: this.onSwipeLeft,
-                        right: this.onSwipeRight
+        genAction: function genAction(item, inputValue) {
+            var _this2 = this;
+
+            var data = {
+                on: {
+                    click: function click(e) {
+                        e.stopPropagation();
+                        _this2.$emit('select', item);
                     }
-                }]
-            })), this.$createElement('div', VSwitch_extends({
-                staticClass: 'v-input--switch__track'
-            }, this.switchData)), this.$createElement('div', VSwitch_extends({
-                staticClass: 'v-input--switch__thumb'
-            }, this.switchData), [this.genProgress()])]);
-        },
-        genProgress: function genProgress() {
-            return this.$createElement(VFabTransition, {}, [this.loading === false ? null : this.$slots.progress || this.$createElement(VProgressCircular, {
+                }
+            };
+            return this.$createElement(VListTileAction, data, [this.$createElement(components_VCheckbox, {
                 props: {
-                    color: this.loading === true || this.loading === '' ? this.color || 'primary' : this.loading,
-                    size: 16,
-                    width: 2,
-                    indeterminate: true
+                    color: this.color,
+                    inputValue: inputValue
                 }
             })]);
         },
-        onSwipeLeft: function onSwipeLeft() {
-            if (this.isActive) this.onChange();
+        genDivider: function genDivider(props) {
+            return this.$createElement(components_VDivider, { props: props });
         },
-        onSwipeRight: function onSwipeRight() {
-            if (!this.isActive) this.onChange();
+        genFilteredText: function genFilteredText(text) {
+            text = (text || '').toString();
+            if (!this.searchInput || this.noFilter) return escapeHTML(text);
+
+            var _getMaskedCharacters = this.getMaskedCharacters(text),
+                start = _getMaskedCharacters.start,
+                middle = _getMaskedCharacters.middle,
+                end = _getMaskedCharacters.end;
+
+            return '' + escapeHTML(start) + this.genHighlight(middle) + escapeHTML(end);
         },
-        onKeydown: function onKeydown(e) {
-            if (e.keyCode === keyCodes.left && this.isActive || e.keyCode === keyCodes.right && !this.isActive) this.onChange();
+        genHeader: function genHeader(props) {
+            return this.$createElement(components_VSubheader, { props: props }, props.header);
+        },
+        genHighlight: function genHighlight(text) {
+            return '<span class="v-list__tile__mask">' + escapeHTML(text) + '</span>';
+        },
+        getMaskedCharacters: function getMaskedCharacters(text) {
+            var searchInput = (this.searchInput || '').toString().toLocaleLowerCase();
+            var index = text.toLocaleLowerCase().indexOf(searchInput);
+            if (index < 0) return { start: '', middle: text, end: '' };
+            var start = text.slice(0, index);
+            var middle = text.slice(index, index + searchInput.length);
+            var end = text.slice(index + searchInput.length);
+            return { start: start, middle: middle, end: end };
+        },
+        genTile: function genTile(item) {
+            var disabled = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            var _this3 = this;
+
+            var avatar = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+            var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : this.hasItem(item);
+
+            if (item === Object(item)) {
+                avatar = this.getAvatar(item);
+                disabled = disabled !== null ? disabled : this.getDisabled(item);
+            }
+            var tile = {
+                on: {
+                    mousedown: function mousedown(e) {
+                        // Prevent onBlur from being called
+                        e.preventDefault();
+                    },
+                    click: function click() {
+                        return disabled || _this3.$emit('select', item);
+                    }
+                },
+                props: {
+                    activeClass: this.tileActiveClass,
+                    avatar: avatar,
+                    disabled: disabled,
+                    ripple: true,
+                    value: value
+                }
+            };
+            if (!this.$scopedSlots.item) {
+                return this.$createElement(VListTile, tile, [this.action && !this.hideSelected && this.items.length > 0 ? this.genAction(item, value) : null, this.genTileContent(item)]);
+            }
+            var parent = this;
+            var scopedSlot = this.$scopedSlots.item({ parent: parent, item: item, tile: tile });
+            return this.needsTile(scopedSlot) ? this.$createElement(VListTile, tile, scopedSlot) : scopedSlot;
+        },
+        genTileContent: function genTileContent(item) {
+            var innerHTML = this.genFilteredText(this.getText(item));
+            return this.$createElement(VListTileContent, [this.$createElement(VListTileTitle, {
+                domProps: { innerHTML: innerHTML }
+            })]);
+        },
+        hasItem: function hasItem(item) {
+            return this.parsedItems.indexOf(this.getValue(item)) > -1;
+        },
+        needsTile: function needsTile(slot) {
+            return slot.length !== 1 || slot[0].componentOptions == null || slot[0].componentOptions.Ctor.options.name !== 'v-list-tile';
+        },
+        getAvatar: function getAvatar(item) {
+            return Boolean(getPropertyFromItem(item, this.itemAvatar, false));
+        },
+        getDisabled: function getDisabled(item) {
+            return Boolean(getPropertyFromItem(item, this.itemDisabled, false));
+        },
+        getText: function getText(item) {
+            return String(getPropertyFromItem(item, this.itemText, item));
+        },
+        getValue: function getValue(item) {
+            return getPropertyFromItem(item, this.itemValue, this.getText(item));
         }
+    },
+    render: function render() {
+        var children = [];
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = this.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var item = _step.value;
+
+                if (this.hideSelected && this.hasItem(item)) continue;
+                if (item == null) children.push(this.genTile(item));else if (item.header) children.push(this.genHeader(item));else if (item.divider) children.push(this.genDivider(item));else children.push(this.genTile(item));
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
+        children.length || children.push(this.$slots['no-data'] || this.staticNoDataTile);
+        this.$slots['prepend-item'] && children.unshift(this.$slots['prepend-item']);
+        this.$slots['append-item'] && children.push(this.$slots['append-item']);
+        return this.$createElement('div', {
+            staticClass: 'v-select-list v-card',
+            'class': this.themeClasses
+        }, [this.$createElement(VList, {
+            props: {
+                dense: this.dense
+            }
+        }, children)]);
     }
 });
-//# sourceMappingURL=VSwitch.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_text-fields.styl
-var _text_fields = __webpack_require__("2jeH");
-
+//# sourceMappingURL=VSelectList.js.map
 // EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_counters.styl
 var _counters = __webpack_require__("ixKF");
 
@@ -4527,157 +7112,6 @@ var mask_unmaskText = function unmaskText(text) {
     }
 });
 //# sourceMappingURL=maskable.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_progress-linear.styl
-var _progress_linear = __webpack_require__("tPfQ");
-
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VProgressLinear/VProgressLinear.js
-function VProgressLinear_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-// Mixins
-
-// Helpers
-
-
-
-/* @vue/component */
-/* harmony default export */ var VProgressLinear = (mixins(colorable).extend({
-    name: 'v-progress-linear',
-    props: {
-        active: {
-            type: Boolean,
-            default: true
-        },
-        backgroundColor: {
-            type: String,
-            default: null
-        },
-        backgroundOpacity: {
-            type: [Number, String],
-            default: null
-        },
-        bufferValue: {
-            type: [Number, String],
-            default: 100
-        },
-        color: {
-            type: String,
-            default: 'primary'
-        },
-        height: {
-            type: [Number, String],
-            default: 7
-        },
-        indeterminate: Boolean,
-        query: Boolean,
-        value: {
-            type: [Number, String],
-            default: 0
-        }
-    },
-    computed: {
-        backgroundStyle: function backgroundStyle() {
-            var backgroundOpacity = this.backgroundOpacity == null ? this.backgroundColor ? 1 : 0.3 : parseFloat(this.backgroundOpacity);
-            return {
-                height: this.active ? convertToUnit(this.height) : 0,
-                opacity: backgroundOpacity,
-                width: this.normalizedBufer + '%'
-            };
-        },
-        effectiveWidth: function effectiveWidth() {
-            if (!this.normalizedBufer) {
-                return 0;
-            }
-            return +this.normalizedValue * 100 / +this.normalizedBufer;
-        },
-        normalizedBufer: function normalizedBufer() {
-            if (this.bufferValue < 0) {
-                return 0;
-            }
-            if (this.bufferValue > 100) {
-                return 100;
-            }
-            return parseFloat(this.bufferValue);
-        },
-        normalizedValue: function normalizedValue() {
-            if (this.value < 0) {
-                return 0;
-            }
-            if (this.value > 100) {
-                return 100;
-            }
-            return parseFloat(this.value);
-        },
-        styles: function styles() {
-            var styles = {};
-            if (!this.active) {
-                styles.height = 0;
-            }
-            if (!this.indeterminate && parseFloat(this.normalizedBufer) !== 100) {
-                styles.width = this.normalizedBufer + '%';
-            }
-            return styles;
-        }
-    },
-    methods: {
-        genDeterminate: function genDeterminate(h) {
-            return h('div', this.setBackgroundColor(this.color, {
-                ref: 'front',
-                staticClass: 'v-progress-linear__bar__determinate',
-                style: {
-                    width: this.effectiveWidth + '%'
-                }
-            }));
-        },
-        genBar: function genBar(h, name) {
-            return h('div', this.setBackgroundColor(this.color, {
-                staticClass: 'v-progress-linear__bar__indeterminate',
-                class: VProgressLinear_defineProperty({}, name, true)
-            }));
-        },
-        genIndeterminate: function genIndeterminate(h) {
-            return h('div', {
-                ref: 'front',
-                staticClass: 'v-progress-linear__bar__indeterminate',
-                class: {
-                    'v-progress-linear__bar__indeterminate--active': this.active
-                }
-            }, [this.genBar(h, 'long'), this.genBar(h, 'short')]);
-        }
-    },
-    render: function render(h) {
-        var fade = h(VFadeTransition, this.indeterminate ? [this.genIndeterminate(h)] : []);
-        var slide = h(VSlideXTransition, this.indeterminate ? [] : [this.genDeterminate(h)]);
-        var bar = h('div', {
-            staticClass: 'v-progress-linear__bar',
-            style: this.styles
-        }, [fade, slide]);
-        var background = h('div', this.setBackgroundColor(this.backgroundColor || this.color, {
-            staticClass: 'v-progress-linear__background',
-            style: this.backgroundStyle
-        }));
-        var content = this.$slots.default && h('div', {
-            staticClass: 'v-progress-linear__content'
-        }, this.$slots.default);
-        return h('div', {
-            staticClass: 'v-progress-linear',
-            attrs: {
-                'role': 'progressbar',
-                'aria-valuemin': 0,
-                'aria-valuemax': this.normalizedBufer,
-                'aria-valuenow': this.indeterminate ? undefined : this.normalizedValue
-            },
-            class: {
-                'v-progress-linear--query': this.query
-            },
-            style: {
-                height: convertToUnit(this.height)
-            },
-            on: this.$listeners
-        }, [background, bar, content]);
-    }
-}));
-//# sourceMappingURL=VProgressLinear.js.map
 // CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VProgressLinear/index.js
 
 
@@ -5082,6 +7516,1165 @@ var dirtyTypes = ['color', 'file', 'time', 'date', 'datetime-local', 'week', 'mo
     }
 }));
 //# sourceMappingURL=VTextField.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/filterable.js
+
+/* @vue/component */
+/* harmony default export */ var filterable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
+    name: 'filterable',
+    props: {
+        noDataText: {
+            type: String,
+            default: '$vuetify.noDataText'
+        }
+    }
+}));
+//# sourceMappingURL=filterable.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VSelect/VSelect.js
+var VSelect_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function VSelect_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Styles
+
+
+// Components
+
+
+
+// Extensions
+
+// Mixins
+
+
+// Directives
+
+// Helpers
+
+
+var defaultMenuProps = {
+    closeOnClick: false,
+    closeOnContentClick: false,
+    openOnClick: false,
+    maxHeight: 300
+};
+/* @vue/component */
+/* harmony default export */ var VSelect = (VTextField.extend({
+    name: 'v-select',
+    directives: {
+        ClickOutside: click_outside
+    },
+    mixins: [comparable, filterable],
+    props: {
+        appendIcon: {
+            type: String,
+            default: '$vuetify.icons.dropdown'
+        },
+        appendIconCb: Function,
+        attach: {
+            type: null,
+            default: false
+        },
+        browserAutocomplete: {
+            type: String,
+            default: 'on'
+        },
+        cacheItems: Boolean,
+        chips: Boolean,
+        clearable: Boolean,
+        deletableChips: Boolean,
+        dense: Boolean,
+        hideSelected: Boolean,
+        items: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        itemAvatar: {
+            type: [String, Array, Function],
+            default: 'avatar'
+        },
+        itemDisabled: {
+            type: [String, Array, Function],
+            default: 'disabled'
+        },
+        itemText: {
+            type: [String, Array, Function],
+            default: 'text'
+        },
+        itemValue: {
+            type: [String, Array, Function],
+            default: 'value'
+        },
+        menuProps: {
+            type: [String, Array, Object],
+            default: function _default() {
+                return defaultMenuProps;
+            }
+        },
+        multiple: Boolean,
+        openOnClear: Boolean,
+        returnObject: Boolean,
+        searchInput: {
+            default: null
+        },
+        smallChips: Boolean
+    },
+    data: function data(vm) {
+        return {
+            attrsInput: { role: 'combobox' },
+            cachedItems: vm.cacheItems ? vm.items : [],
+            content: null,
+            isBooted: false,
+            isMenuActive: false,
+            lastItem: 20,
+            // As long as a value is defined, show it
+            // Otherwise, check if multiple
+            // to determine which default to provide
+            lazyValue: vm.value !== undefined ? vm.value : vm.multiple ? [] : undefined,
+            selectedIndex: -1,
+            selectedItems: [],
+            keyboardLookupPrefix: '',
+            keyboardLookupLastTime: 0
+        };
+    },
+    computed: {
+        /* All items that the select has */
+        allItems: function allItems() {
+            return this.filterDuplicates(this.cachedItems.concat(this.items));
+        },
+        classes: function classes() {
+            return Object.assign({}, VTextField.options.computed.classes.call(this), {
+                'v-select': true,
+                'v-select--chips': this.hasChips,
+                'v-select--chips--small': this.smallChips,
+                'v-select--is-menu-active': this.isMenuActive
+            });
+        },
+
+        /* Used by other components to overwrite */
+        computedItems: function computedItems() {
+            return this.allItems;
+        },
+        counterValue: function counterValue() {
+            return this.multiple ? this.selectedItems.length : (this.getText(this.selectedItems[0]) || '').toString().length;
+        },
+        directives: function directives() {
+            return this.isFocused ? [{
+                name: 'click-outside',
+                value: this.blur,
+                args: {
+                    closeConditional: this.closeConditional
+                }
+            }] : undefined;
+        },
+        dynamicHeight: function dynamicHeight() {
+            return 'auto';
+        },
+        hasChips: function hasChips() {
+            return this.chips || this.smallChips;
+        },
+        hasSlot: function hasSlot() {
+            return Boolean(this.hasChips || this.$scopedSlots.selection);
+        },
+        isDirty: function isDirty() {
+            return this.selectedItems.length > 0;
+        },
+        listData: function listData() {
+            var scopeId = this.$vnode && this.$vnode.context.$options._scopeId;
+            return {
+                attrs: scopeId ? VSelect_defineProperty({}, scopeId, true) : null,
+                props: {
+                    action: this.multiple && !this.isHidingSelected,
+                    color: this.color,
+                    dense: this.dense,
+                    hideSelected: this.hideSelected,
+                    items: this.virtualizedItems,
+                    noDataText: this.$vuetify.t(this.noDataText),
+                    selectedItems: this.selectedItems,
+                    itemAvatar: this.itemAvatar,
+                    itemDisabled: this.itemDisabled,
+                    itemValue: this.itemValue,
+                    itemText: this.itemText
+                },
+                on: {
+                    select: this.selectItem
+                },
+                scopedSlots: {
+                    item: this.$scopedSlots.item
+                }
+            };
+        },
+        staticList: function staticList() {
+            if (this.$slots['no-data'] || this.$slots['prepend-item'] || this.$slots['append-item']) {
+                consoleError('assert: staticList should not be called if slots are used');
+            }
+            return this.$createElement(VSelectList, this.listData);
+        },
+        virtualizedItems: function virtualizedItems() {
+            return this.$_menuProps.auto ? this.computedItems : this.computedItems.slice(0, this.lastItem);
+        },
+        menuCanShow: function menuCanShow() {
+            return true;
+        },
+        $_menuProps: function $_menuProps() {
+            var normalisedProps = void 0;
+            normalisedProps = typeof this.menuProps === 'string' ? this.menuProps.split(',') : this.menuProps;
+            if (Array.isArray(normalisedProps)) {
+                normalisedProps = normalisedProps.reduce(function (acc, p) {
+                    acc[p.trim()] = true;
+                    return acc;
+                }, {});
+            }
+            return VSelect_extends({}, defaultMenuProps, {
+                value: this.menuCanShow && this.isMenuActive,
+                nudgeBottom: this.nudgeBottom ? this.nudgeBottom : normalisedProps.offsetY ? 1 : 0
+            }, normalisedProps);
+        }
+    },
+    watch: {
+        internalValue: function internalValue(val) {
+            this.initialValue = val;
+            this.setSelectedItems();
+        },
+        isBooted: function isBooted() {
+            var _this = this;
+
+            this.$nextTick(function () {
+                if (_this.content && _this.content.addEventListener) {
+                    _this.content.addEventListener('scroll', _this.onScroll, false);
+                }
+            });
+        },
+        isMenuActive: function isMenuActive(val) {
+            if (!val) return;
+            this.isBooted = true;
+        },
+
+        items: {
+            immediate: true,
+            handler: function handler(val) {
+                if (this.cacheItems) {
+                    this.cachedItems = this.filterDuplicates(this.cachedItems.concat(val));
+                }
+                this.setSelectedItems();
+            }
+        }
+    },
+    mounted: function mounted() {
+        this.content = this.$refs.menu && this.$refs.menu.$refs.content;
+    },
+
+    methods: {
+        /** @public */
+        blur: function blur(e) {
+            this.isMenuActive = false;
+            this.isFocused = false;
+            this.$refs.input && this.$refs.input.blur();
+            this.selectedIndex = -1;
+            this.onBlur(e);
+        },
+
+        /** @public */
+        activateMenu: function activateMenu() {
+            this.isMenuActive = true;
+        },
+        clearableCallback: function clearableCallback() {
+            var _this2 = this;
+
+            this.setValue(this.multiple ? [] : undefined);
+            this.$nextTick(function () {
+                return _this2.$refs.input.focus();
+            });
+            if (this.openOnClear) this.isMenuActive = true;
+        },
+        closeConditional: function closeConditional(e) {
+            return (
+                // Click originates from outside the menu content
+                !!this.content && !this.content.contains(e.target) &&
+                // Click originates from outside the element
+                !!this.$el && !this.$el.contains(e.target) && e.target !== this.$el
+            );
+        },
+        filterDuplicates: function filterDuplicates(arr) {
+            var uniqueValues = new Map();
+            for (var index = 0; index < arr.length; ++index) {
+                var item = arr[index];
+                var val = this.getValue(item);
+                // TODO: comparator
+                !uniqueValues.has(val) && uniqueValues.set(val, item);
+            }
+            return Array.from(uniqueValues.values());
+        },
+        findExistingIndex: function findExistingIndex(item) {
+            var _this3 = this;
+
+            var itemValue = this.getValue(item);
+            return (this.internalValue || []).findIndex(function (i) {
+                return _this3.valueComparator(_this3.getValue(i), itemValue);
+            });
+        },
+        genChipSelection: function genChipSelection(item, index) {
+            var _this4 = this;
+
+            var isDisabled = this.disabled || this.readonly || this.getDisabled(item);
+            return this.$createElement(components_VChip, {
+                staticClass: 'v-chip--select-multi',
+                attrs: { tabindex: -1 },
+                props: {
+                    close: this.deletableChips && !isDisabled,
+                    disabled: isDisabled,
+                    selected: index === this.selectedIndex,
+                    small: this.smallChips
+                },
+                on: {
+                    click: function click(e) {
+                        if (isDisabled) return;
+                        e.stopPropagation();
+                        _this4.selectedIndex = index;
+                    },
+                    input: function input() {
+                        return _this4.onChipInput(item);
+                    }
+                },
+                key: this.getValue(item)
+            }, this.getText(item));
+        },
+        genCommaSelection: function genCommaSelection(item, index, last) {
+            // Item may be an object
+            // TODO: Remove JSON.stringify
+            var key = JSON.stringify(this.getValue(item));
+            var color = index === this.selectedIndex && this.color;
+            var isDisabled = this.disabled || this.getDisabled(item);
+            return this.$createElement('div', this.setTextColor(color, {
+                staticClass: 'v-select__selection v-select__selection--comma',
+                'class': {
+                    'v-select__selection--disabled': isDisabled
+                },
+                key: key
+            }), '' + this.getText(item) + (last ? '' : ', '));
+        },
+        genDefaultSlot: function genDefaultSlot() {
+            var selections = this.genSelections();
+            var input = this.genInput();
+            // If the return is an empty array
+            // push the input
+            if (Array.isArray(selections)) {
+                selections.push(input);
+                // Otherwise push it into children
+            } else {
+                selections.children = selections.children || [];
+                selections.children.push(input);
+            }
+            return [this.$createElement('div', {
+                staticClass: 'v-select__slot',
+                directives: this.directives
+            }, [this.genLabel(), this.prefix ? this.genAffix('prefix') : null, selections, this.suffix ? this.genAffix('suffix') : null, this.genClearIcon(), this.genIconSlot()]), this.genMenu(), this.genProgress()];
+        },
+        genInput: function genInput() {
+            var input = VTextField.options.methods.genInput.call(this);
+            input.data.domProps.value = null;
+            input.data.attrs.readonly = true;
+            input.data.attrs['aria-readonly'] = String(this.readonly);
+            input.data.on.keypress = this.onKeyPress;
+            return input;
+        },
+        genList: function genList() {
+            // If there's no slots, we can use a cached VNode to improve performance
+            if (this.$slots['no-data'] || this.$slots['prepend-item'] || this.$slots['append-item']) {
+                return this.genListWithSlot();
+            } else {
+                return this.staticList;
+            }
+        },
+        genListWithSlot: function genListWithSlot() {
+            var _this5 = this;
+
+            var slots = ['prepend-item', 'no-data', 'append-item'].filter(function (slotName) {
+                return _this5.$slots[slotName];
+            }).map(function (slotName) {
+                return _this5.$createElement('template', {
+                    slot: slotName
+                }, _this5.$slots[slotName]);
+            });
+            // Requires destructuring due to Vue
+            // modifying the `on` property when passed
+            // as a referenced object
+            return this.$createElement(VSelectList, VSelect_extends({}, this.listData), slots);
+        },
+        genMenu: function genMenu() {
+            var _this6 = this;
+
+            var props = this.$_menuProps;
+            props.activator = this.$refs['input-slot'];
+            // Deprecate using menu props directly
+            // TODO: remove (2.0)
+            var inheritedProps = Object.keys(components_VMenu.options.props);
+            var deprecatedProps = Object.keys(this.$attrs).reduce(function (acc, attr) {
+                if (inheritedProps.includes(camelize(attr))) acc.push(attr);
+                return acc;
+            }, []);
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = deprecatedProps[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var prop = _step.value;
+
+                    props[camelize(prop)] = this.$attrs[prop];
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            if (false) { var onlyBools, separator, _props, replacement, multiple; }
+            // Attach to root el so that
+            // menu covers prepend/append icons
+            if (
+            // TODO: make this a computed property or helper or something
+            this.attach === '' || // If used as a boolean prop (<v-menu attach>)
+            this.attach === true || // If bound to a boolean (<v-menu :attach="true">)
+            this.attach === 'attach' // If bound as boolean prop in pug (v-menu(attach))
+            ) {
+                    props.attach = this.$el;
+                } else {
+                props.attach = this.attach;
+            }
+            return this.$createElement(components_VMenu, {
+                props: props,
+                on: {
+                    input: function input(val) {
+                        _this6.isMenuActive = val;
+                        _this6.isFocused = val;
+                    }
+                },
+                ref: 'menu'
+            }, [this.genList()]);
+        },
+        genSelections: function genSelections() {
+            var length = this.selectedItems.length;
+            var children = new Array(length);
+            var genSelection = void 0;
+            if (this.$scopedSlots.selection) {
+                genSelection = this.genSlotSelection;
+            } else if (this.hasChips) {
+                genSelection = this.genChipSelection;
+            } else {
+                genSelection = this.genCommaSelection;
+            }
+            while (length--) {
+                children[length] = genSelection(this.selectedItems[length], length, length === children.length - 1);
+            }
+            return this.$createElement('div', {
+                staticClass: 'v-select__selections'
+            }, children);
+        },
+        genSlotSelection: function genSlotSelection(item, index) {
+            return this.$scopedSlots.selection({
+                parent: this,
+                item: item,
+                index: index,
+                selected: index === this.selectedIndex,
+                disabled: this.disabled || this.readonly
+            });
+        },
+        getMenuIndex: function getMenuIndex() {
+            return this.$refs.menu ? this.$refs.menu.listIndex : -1;
+        },
+        getDisabled: function getDisabled(item) {
+            return getPropertyFromItem(item, this.itemDisabled, false);
+        },
+        getText: function getText(item) {
+            return getPropertyFromItem(item, this.itemText, item);
+        },
+        getValue: function getValue(item) {
+            return getPropertyFromItem(item, this.itemValue, this.getText(item));
+        },
+        onBlur: function onBlur(e) {
+            this.$emit('blur', e);
+        },
+        onChipInput: function onChipInput(item) {
+            if (this.multiple) this.selectItem(item);else this.setValue(null);
+            // If all items have been deleted,
+            // open `v-menu`
+            if (this.selectedItems.length === 0) {
+                this.isMenuActive = true;
+            }
+            this.selectedIndex = -1;
+        },
+        onClick: function onClick() {
+            if (this.isDisabled) return;
+            this.isMenuActive = true;
+            if (!this.isFocused) {
+                this.isFocused = true;
+                this.$emit('focus');
+            }
+        },
+        onEnterDown: function onEnterDown() {
+            this.onBlur();
+        },
+        onEscDown: function onEscDown(e) {
+            e.preventDefault();
+            if (this.isMenuActive) {
+                e.stopPropagation();
+                this.isMenuActive = false;
+            }
+        },
+        onKeyPress: function onKeyPress(e) {
+            var _this7 = this;
+
+            if (this.multiple) return;
+            var KEYBOARD_LOOKUP_THRESHOLD = 1000; // milliseconds
+            var now = performance.now();
+            if (now - this.keyboardLookupLastTime > KEYBOARD_LOOKUP_THRESHOLD) {
+                this.keyboardLookupPrefix = '';
+            }
+            this.keyboardLookupPrefix += e.key.toLowerCase();
+            this.keyboardLookupLastTime = now;
+            var item = this.allItems.find(function (item) {
+                return _this7.getText(item).toLowerCase().startsWith(_this7.keyboardLookupPrefix);
+            });
+            if (item !== undefined) {
+                this.setValue(this.returnObject ? item : this.getValue(item));
+            }
+        },
+        onKeyDown: function onKeyDown(e) {
+            var keyCode = e.keyCode;
+            // If enter, space, up, or down is pressed, open menu
+            if (!this.readonly && !this.isMenuActive && [keyCodes.enter, keyCodes.space, keyCodes.up, keyCodes.down].includes(keyCode)) this.activateMenu();
+            if (this.isMenuActive && this.$refs.menu) this.$refs.menu.changeListIndex(e);
+            // This should do something different
+            if (keyCode === keyCodes.enter) return this.onEnterDown(e);
+            // If escape deactivate the menu
+            if (keyCode === keyCodes.esc) return this.onEscDown(e);
+            // If tab - select item or close menu
+            if (keyCode === keyCodes.tab) return this.onTabDown(e);
+        },
+        onMouseUp: function onMouseUp(e) {
+            var _this8 = this;
+
+            if (this.hasMouseDown) {
+                var appendInner = this.$refs['append-inner'];
+                // If append inner is present
+                // and the target is itself
+                // or inside, toggle menu
+                if (this.isMenuActive && appendInner && (appendInner === e.target || appendInner.contains(e.target))) {
+                    this.$nextTick(function () {
+                        return _this8.isMenuActive = !_this8.isMenuActive;
+                    });
+                    // If user is clicking in the container
+                    // and field is enclosed, activate it
+                } else if (this.isEnclosed && !this.isDisabled) {
+                    this.isMenuActive = true;
+                }
+            }
+            VTextField.options.methods.onMouseUp.call(this, e);
+        },
+        onScroll: function onScroll() {
+            var _this9 = this;
+
+            if (!this.isMenuActive) {
+                requestAnimationFrame(function () {
+                    return _this9.content.scrollTop = 0;
+                });
+            } else {
+                if (this.lastItem >= this.computedItems.length) return;
+                var showMoreItems = this.content.scrollHeight - (this.content.scrollTop + this.content.clientHeight) < 200;
+                if (showMoreItems) {
+                    this.lastItem += 20;
+                }
+            }
+        },
+        onTabDown: function onTabDown(e) {
+            var menuIndex = this.getMenuIndex();
+            var listTile = this.$refs.menu.tiles[menuIndex];
+            // An item that is selected by
+            // menu-index should toggled
+            if (listTile && listTile.className.indexOf('v-list__tile--highlighted') > -1 && this.isMenuActive && menuIndex > -1) {
+                e.preventDefault();
+                e.stopPropagation();
+                listTile.click();
+            } else {
+                // If we make it here,
+                // the user has no selected indexes
+                // and is probably tabbing out
+                this.blur(e);
+            }
+        },
+        selectItem: function selectItem(item) {
+            var _this10 = this;
+
+            if (!this.multiple) {
+                this.setValue(this.returnObject ? item : this.getValue(item));
+                this.isMenuActive = false;
+            } else {
+                var internalValue = (this.internalValue || []).slice();
+                var i = this.findExistingIndex(item);
+                i !== -1 ? internalValue.splice(i, 1) : internalValue.push(item);
+                this.setValue(internalValue.map(function (i) {
+                    return _this10.returnObject ? i : _this10.getValue(i);
+                }));
+                // When selecting multiple
+                // adjust menu after each
+                // selection
+                this.$nextTick(function () {
+                    _this10.$refs.menu && _this10.$refs.menu.updateDimensions();
+                });
+            }
+        },
+        setMenuIndex: function setMenuIndex(index) {
+            this.$refs.menu && (this.$refs.menu.listIndex = index);
+        },
+        setSelectedItems: function setSelectedItems() {
+            var _this11 = this;
+
+            var selectedItems = [];
+            var values = !this.multiple || !Array.isArray(this.internalValue) ? [this.internalValue] : this.internalValue;
+
+            var _loop = function _loop(value) {
+                var index = _this11.allItems.findIndex(function (v) {
+                    return _this11.valueComparator(_this11.getValue(v), _this11.getValue(value));
+                });
+                if (index > -1) {
+                    selectedItems.push(_this11.allItems[index]);
+                }
+            };
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = values[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var value = _step2.value;
+
+                    _loop(value);
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this.selectedItems = selectedItems;
+        },
+        setValue: function setValue(value) {
+            var oldValue = this.internalValue;
+            this.internalValue = value;
+            value !== oldValue && this.$emit('change', value);
+        }
+    }
+}));
+//# sourceMappingURL=VSelect.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VAutocomplete/VAutocomplete.js
+var VAutocomplete_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Styles
+
+// Extensions
+
+
+// Utils
+
+var VAutocomplete_defaultMenuProps = VAutocomplete_extends({}, defaultMenuProps, {
+    offsetY: true,
+    offsetOverflow: true,
+    transition: false
+});
+/* @vue/component */
+/* harmony default export */ var VAutocomplete = (VSelect.extend({
+    name: 'v-autocomplete',
+    props: {
+        allowOverflow: {
+            type: Boolean,
+            default: true
+        },
+        browserAutocomplete: {
+            type: String,
+            default: 'off'
+        },
+        filter: {
+            type: Function,
+            default: function _default(item, queryText, itemText) {
+                return itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
+            }
+        },
+        hideNoData: Boolean,
+        noFilter: Boolean,
+        searchInput: {
+            default: undefined
+        },
+        menuProps: {
+            type: VSelect.options.props.menuProps.type,
+            default: function _default() {
+                return VAutocomplete_defaultMenuProps;
+            }
+        },
+        autoSelectFirst: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data: function data(vm) {
+        return {
+            attrsInput: null,
+            lazySearch: vm.searchInput
+        };
+    },
+    computed: {
+        classes: function classes() {
+            return Object.assign({}, VSelect.options.computed.classes.call(this), {
+                'v-autocomplete': true,
+                'v-autocomplete--is-selecting-index': this.selectedIndex > -1
+            });
+        },
+        computedItems: function computedItems() {
+            return this.filteredItems;
+        },
+        selectedValues: function selectedValues() {
+            var _this = this;
+
+            return this.selectedItems.map(function (item) {
+                return _this.getValue(item);
+            });
+        },
+        hasDisplayedItems: function hasDisplayedItems() {
+            var _this2 = this;
+
+            return this.hideSelected ? this.filteredItems.some(function (item) {
+                return !_this2.hasItem(item);
+            }) : this.filteredItems.length > 0;
+        },
+
+        /**
+         * The range of the current input text
+         *
+         * @return {Number}
+         */
+        currentRange: function currentRange() {
+            if (this.selectedItem == null) return 0;
+            return this.getText(this.selectedItem).toString().length;
+        },
+        filteredItems: function filteredItems() {
+            var _this3 = this;
+
+            if (!this.isSearching || this.noFilter || this.internalSearch == null) return this.allItems;
+            return this.allItems.filter(function (item) {
+                return _this3.filter(item, _this3.internalSearch.toString(), _this3.getText(item).toString());
+            });
+        },
+
+        internalSearch: {
+            get: function get() {
+                return this.lazySearch;
+            },
+            set: function set(val) {
+                this.lazySearch = val;
+                this.$emit('update:searchInput', val);
+            }
+        },
+        isAnyValueAllowed: function isAnyValueAllowed() {
+            return false;
+        },
+        isDirty: function isDirty() {
+            return this.searchIsDirty || this.selectedItems.length > 0;
+        },
+        isSearching: function isSearching() {
+            if (this.multiple) return this.searchIsDirty;
+            return this.searchIsDirty && this.internalSearch !== this.getText(this.selectedItem);
+        },
+        menuCanShow: function menuCanShow() {
+            if (!this.isFocused) return false;
+            return this.hasDisplayedItems || !this.hideNoData;
+        },
+        $_menuProps: function $_menuProps() {
+            var props = VSelect.options.computed.$_menuProps.call(this);
+            props.contentClass = ('v-autocomplete__content ' + (props.contentClass || '')).trim();
+            return VAutocomplete_extends({}, VAutocomplete_defaultMenuProps, props);
+        },
+        searchIsDirty: function searchIsDirty() {
+            return this.internalSearch != null && this.internalSearch !== '';
+        },
+        selectedItem: function selectedItem() {
+            var _this4 = this;
+
+            if (this.multiple) return null;
+            return this.selectedItems.find(function (i) {
+                return _this4.valueComparator(_this4.getValue(i), _this4.getValue(_this4.internalValue));
+            });
+        },
+        listData: function listData() {
+            var data = VSelect.options.computed.listData.call(this);
+            Object.assign(data.props, {
+                items: this.virtualizedItems,
+                noFilter: this.noFilter || !this.isSearching || !this.filteredItems.length,
+                searchInput: this.internalSearch
+            });
+            return data;
+        }
+    },
+    watch: {
+        filteredItems: function filteredItems(val) {
+            this.onFilteredItemsChanged(val);
+        },
+        internalValue: function internalValue() {
+            this.setSearch();
+        },
+        isFocused: function isFocused(val) {
+            if (val) {
+                this.$refs.input && this.$refs.input.select();
+            } else {
+                this.updateSelf();
+            }
+        },
+        isMenuActive: function isMenuActive(val) {
+            if (val || !this.hasSlot) return;
+            this.lazySearch = null;
+        },
+        items: function items(val, oldVal) {
+            // If we are focused, the menu
+            // is not active, hide no data is enabled,
+            // and items change
+            // User is probably async loading
+            // items, try to activate the menu
+            if (!(oldVal && oldVal.length) && this.hideNoData && this.isFocused && !this.isMenuActive && val.length) this.activateMenu();
+        },
+        searchInput: function searchInput(val) {
+            this.lazySearch = val;
+        },
+        internalSearch: function internalSearch(val) {
+            this.onInternalSearchChanged(val);
+        },
+        itemText: function itemText() {
+            this.updateSelf();
+        }
+    },
+    created: function created() {
+        this.setSearch();
+    },
+
+    methods: {
+        onFilteredItemsChanged: function onFilteredItemsChanged(val) {
+            var _this5 = this;
+
+            this.setMenuIndex(-1);
+            this.$nextTick(function () {
+                _this5.setMenuIndex(val.length > 0 && (val.length === 1 || _this5.autoSelectFirst) ? 0 : -1);
+            });
+        },
+        onInternalSearchChanged: function onInternalSearchChanged(val) {
+            this.updateMenuDimensions();
+        },
+        updateMenuDimensions: function updateMenuDimensions() {
+            if (this.isMenuActive && this.$refs.menu) {
+                this.$refs.menu.updateDimensions();
+            }
+        },
+        changeSelectedIndex: function changeSelectedIndex(keyCode) {
+            // Do not allow changing of selectedIndex
+            // when search is dirty
+            if (this.searchIsDirty) return;
+            if (![keyCodes.backspace, keyCodes.left, keyCodes.right, keyCodes.delete].includes(keyCode)) return;
+            var indexes = this.selectedItems.length - 1;
+            if (keyCode === keyCodes.left) {
+                this.selectedIndex = this.selectedIndex === -1 ? indexes : this.selectedIndex - 1;
+            } else if (keyCode === keyCodes.right) {
+                this.selectedIndex = this.selectedIndex >= indexes ? -1 : this.selectedIndex + 1;
+            } else if (this.selectedIndex === -1) {
+                this.selectedIndex = indexes;
+                return;
+            }
+            var currentItem = this.selectedItems[this.selectedIndex];
+            if ([keyCodes.backspace, keyCodes.delete].includes(keyCode) && !this.getDisabled(currentItem)) {
+                var newIndex = this.selectedIndex === indexes ? this.selectedIndex - 1 : this.selectedItems[this.selectedIndex + 1] ? this.selectedIndex : -1;
+                if (newIndex === -1) {
+                    this.setValue(this.multiple ? [] : undefined);
+                } else {
+                    this.selectItem(currentItem);
+                }
+                this.selectedIndex = newIndex;
+            }
+        },
+        clearableCallback: function clearableCallback() {
+            this.internalSearch = undefined;
+            VSelect.options.methods.clearableCallback.call(this);
+        },
+        genInput: function genInput() {
+            var input = VTextField.options.methods.genInput.call(this);
+            input.data.attrs.role = 'combobox';
+            input.data.domProps.value = this.internalSearch;
+            return input;
+        },
+        genSelections: function genSelections() {
+            return this.hasSlot || this.multiple ? VSelect.options.methods.genSelections.call(this) : [];
+        },
+        onClick: function onClick() {
+            if (this.isDisabled) return;
+            this.selectedIndex > -1 ? this.selectedIndex = -1 : this.onFocus();
+            this.activateMenu();
+        },
+        onEnterDown: function onEnterDown() {
+            // Avoid invoking this method
+            // will cause updateSelf to
+            // be called emptying search
+        },
+        onInput: function onInput(e) {
+            if (this.selectedIndex > -1) return;
+            // If typing and menu is not currently active
+            if (e.target.value) {
+                this.activateMenu();
+                if (!this.isAnyValueAllowed) this.setMenuIndex(0);
+            }
+            this.mask && this.resetSelections(e.target);
+            this.internalSearch = e.target.value;
+            this.badInput = e.target.validity && e.target.validity.badInput;
+        },
+        onKeyDown: function onKeyDown(e) {
+            var keyCode = e.keyCode;
+            VSelect.options.methods.onKeyDown.call(this, e);
+            // The ordering is important here
+            // allows new value to be updated
+            // and then moves the index to the
+            // proper location
+            this.changeSelectedIndex(keyCode);
+        },
+        onTabDown: function onTabDown(e) {
+            VSelect.options.methods.onTabDown.call(this, e);
+            this.updateSelf();
+        },
+        setSelectedItems: function setSelectedItems() {
+            VSelect.options.methods.setSelectedItems.call(this);
+            // #4273 Don't replace if searching
+            // #4403 Don't replace if focused
+            if (!this.isFocused) this.setSearch();
+        },
+        setSearch: function setSearch() {
+            var _this6 = this;
+
+            // Wait for nextTick so selectedItem
+            // has had time to update
+            this.$nextTick(function () {
+                _this6.internalSearch = _this6.multiple && _this6.internalSearch && _this6.isMenuActive ? _this6.internalSearch : !_this6.selectedItems.length || _this6.multiple || _this6.hasSlot ? null : _this6.getText(_this6.selectedItem);
+            });
+        },
+        updateSelf: function updateSelf() {
+            this.updateAutocomplete();
+        },
+        updateAutocomplete: function updateAutocomplete() {
+            if (!this.searchIsDirty && !this.internalValue) return;
+            if (!this.valueComparator(this.internalSearch, this.getValue(this.internalValue))) {
+                this.setSearch();
+            }
+        },
+        hasItem: function hasItem(item) {
+            return this.selectedValues.indexOf(this.getValue(item)) > -1;
+        }
+    }
+}));
+//# sourceMappingURL=VAutocomplete.js.map
+// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VCombobox/VCombobox.js
+// Styles
+
+// Extensions
+
+
+// Utils
+
+/* @vue/component */
+/* harmony default export */ var VCombobox = ({
+    name: 'v-combobox',
+    extends: VAutocomplete,
+    props: {
+        delimiters: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        returnObject: {
+            type: Boolean,
+            default: true
+        }
+    },
+    data: function data() {
+        return {
+            editingIndex: -1
+        };
+    },
+    computed: {
+        counterValue: function counterValue() {
+            return this.multiple ? this.selectedItems.length : (this.internalSearch || '').toString().length;
+        },
+        hasSlot: function hasSlot() {
+            return VSelect.options.computed.hasSlot.call(this) || this.multiple;
+        },
+        isAnyValueAllowed: function isAnyValueAllowed() {
+            return true;
+        },
+        menuCanShow: function menuCanShow() {
+            if (!this.isFocused) return false;
+            return this.hasDisplayedItems || !!this.$slots['no-data'] && !this.hideNoData;
+        }
+    },
+    methods: {
+        onFilteredItemsChanged: function onFilteredItemsChanged() {
+            // nop
+        },
+        onInternalSearchChanged: function onInternalSearchChanged(val) {
+            if (val && this.multiple && this.delimiters.length) {
+                var delimiter = this.delimiters.find(function (d) {
+                    return val.endsWith(d);
+                });
+                if (delimiter != null) {
+                    this.internalSearch = val.slice(0, val.length - delimiter.length);
+                    this.updateTags();
+                }
+            }
+            this.updateMenuDimensions();
+        },
+        genChipSelection: function genChipSelection(item, index) {
+            var _this = this;
+
+            var chip = VSelect.options.methods.genChipSelection.call(this, item, index);
+            // Allow user to update an existing value
+            if (this.multiple) {
+                chip.componentOptions.listeners.dblclick = function () {
+                    _this.editingIndex = index;
+                    _this.internalSearch = _this.getText(item);
+                    _this.selectedIndex = -1;
+                };
+            }
+            return chip;
+        },
+        onChipInput: function onChipInput(item) {
+            VSelect.options.methods.onChipInput.call(this, item);
+            this.editingIndex = -1;
+        },
+
+        // Requires a manual definition
+        // to overwrite removal in v-autocomplete
+        onEnterDown: function onEnterDown(e) {
+            e.preventDefault();
+            VSelect.options.methods.onEnterDown.call(this);
+            // If has menu index, let v-select-list handle
+            if (this.getMenuIndex() > -1) return;
+            this.updateSelf();
+        },
+        onKeyDown: function onKeyDown(e) {
+            var keyCode = e.keyCode;
+            VSelect.options.methods.onKeyDown.call(this, e);
+            // If user is at selection index of 0
+            // create a new tag
+            if (this.multiple && keyCode === keyCodes.left && this.$refs.input.selectionStart === 0) {
+                this.updateSelf();
+            }
+            // The ordering is important here
+            // allows new value to be updated
+            // and then moves the index to the
+            // proper location
+            this.changeSelectedIndex(keyCode);
+        },
+        onTabDown: function onTabDown(e) {
+            // When adding tags, if searching and
+            // there is not a filtered options,
+            // add the value to the tags list
+            if (this.multiple && this.internalSearch && this.getMenuIndex() === -1) {
+                e.preventDefault();
+                e.stopPropagation();
+                return this.updateTags();
+            }
+            VAutocomplete.options.methods.onTabDown.call(this, e);
+        },
+        selectItem: function selectItem(item) {
+            // Currently only supports items:<string[]>
+            if (this.editingIndex > -1) {
+                this.updateEditing();
+            } else {
+                VSelect.options.methods.selectItem.call(this, item);
+            }
+        },
+        setSelectedItems: function setSelectedItems() {
+            if (this.internalValue == null || this.internalValue === '') {
+                this.selectedItems = [];
+            } else {
+                this.selectedItems = this.multiple ? this.internalValue : [this.internalValue];
+            }
+        },
+        setValue: function setValue() {
+            var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.internalSearch;
+
+            VSelect.options.methods.setValue.call(this, value);
+        },
+        updateEditing: function updateEditing() {
+            var value = this.internalValue.slice();
+            value[this.editingIndex] = this.internalSearch;
+            this.setValue(value);
+            this.editingIndex = -1;
+        },
+        updateCombobox: function updateCombobox() {
+            var isUsingSlot = Boolean(this.$scopedSlots.selection) || this.hasChips;
+            // If search is not dirty and is
+            // using slot, do nothing
+            if (isUsingSlot && !this.searchIsDirty) return;
+            // The internal search is not matching
+            // the internal value, update the input
+            if (this.internalSearch !== this.getText(this.internalValue)) this.setValue();
+            // Reset search if using slot
+            // to avoid a double input
+            if (isUsingSlot) this.internalSearch = undefined;
+        },
+        updateSelf: function updateSelf() {
+            this.multiple ? this.updateTags() : this.updateCombobox();
+        },
+        updateTags: function updateTags() {
+            var menuIndex = this.getMenuIndex();
+            // If the user is not searching
+            // and no menu item is selected
+            // do nothing
+            if (menuIndex < 0 && !this.searchIsDirty) return;
+            if (this.editingIndex > -1) {
+                return this.updateEditing();
+            }
+            var index = this.selectedItems.indexOf(this.internalSearch);
+            // If it already exists, do nothing
+            // this might need to change to bring
+            // the duplicated item to the last entered
+            if (index > -1) {
+                var internalValue = this.internalValue.slice();
+                internalValue.splice(index, 1);
+                this.setValue(internalValue);
+            }
+            // If menu index is greater than 1
+            // the selection is handled elsewhere
+            // TODO: find out where
+            if (menuIndex > -1) return this.internalSearch = null;
+            this.selectItem(this.internalSearch);
+            this.internalSearch = null;
+        }
+    }
+});
+//# sourceMappingURL=VCombobox.js.map
 // EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_textarea.styl
 var _textarea = __webpack_require__("fmPu");
 
@@ -5256,1230 +8849,19 @@ var wrapper = {
 
 /* harmony default export */ var components_VTextField = (wrapper);
 //# sourceMappingURL=index.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_tooltips.styl
-var _tooltips = __webpack_require__("YOhz");
-
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/delayable.js
-
-/**
- * Delayable
- *
- * @mixin
- *
- * Changes the open or close delay time for elements
- */
-/* harmony default export */ var delayable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend().extend({
-    name: 'delayable',
-    props: {
-        openDelay: {
-            type: [Number, String],
-            default: 0
-        },
-        closeDelay: {
-            type: [Number, String],
-            default: 0
-        }
-    },
-    data: function data() {
-        return {
-            openTimeout: undefined,
-            closeTimeout: undefined
-        };
-    },
-    methods: {
-        /**
-         * Clear any pending delay timers from executing
-         */
-        clearDelay: function clearDelay() {
-            clearTimeout(this.openTimeout);
-            clearTimeout(this.closeTimeout);
-        },
-
-        /**
-         * Runs callback after a specified delay
-         */
-        runDelay: function runDelay(type, cb) {
-            var _this = this;
-
-            this.clearDelay();
-            var delay = parseInt(this[type + 'Delay'], 10);
-            this[type + 'Timeout'] = setTimeout(cb || function () {
-                _this.isActive = { open: true, close: false }[type];
-            }, delay);
-        }
-    }
-}));
-//# sourceMappingURL=delayable.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/mixins/menuable.js
-var menuable_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-
-
-
-
-/* eslint-disable object-property-newline */
-var dimensions = {
-    activator: {
-        top: 0, left: 0,
-        bottom: 0, right: 0,
-        width: 0, height: 0,
-        offsetTop: 0, scrollHeight: 0
-    },
-    content: {
-        top: 0, left: 0,
-        bottom: 0, right: 0,
-        width: 0, height: 0,
-        offsetTop: 0, scrollHeight: 0
-    },
-    hasWindow: false
-};
-/* eslint-enable object-property-newline */
-/**
- * Menuable
- *
- * @mixin
- *
- * Used for fixed or absolutely positioning
- * elements within the DOM
- * Can calculate X and Y axis overflows
- * As well as be manually positioned
- */
-/* @vue/component */
-/* harmony default export */ var menuable = (external_commonjs_vue_commonjs2_vue_root_Vue_default.a.extend({
-    name: 'menuable',
-    mixins: [positionable, stackable],
-    props: {
-        activator: {
-            default: null,
-            validator: function validator(val) {
-                return ['string', 'object'].includes(typeof val === 'undefined' ? 'undefined' : menuable_typeof(val));
-            }
-        },
-        allowOverflow: Boolean,
-        inputActivator: Boolean,
-        light: Boolean,
-        dark: Boolean,
-        maxWidth: {
-            type: [Number, String],
-            default: 'auto'
-        },
-        minWidth: [Number, String],
-        nudgeBottom: {
-            type: [Number, String],
-            default: 0
-        },
-        nudgeLeft: {
-            type: [Number, String],
-            default: 0
-        },
-        nudgeRight: {
-            type: [Number, String],
-            default: 0
-        },
-        nudgeTop: {
-            type: [Number, String],
-            default: 0
-        },
-        nudgeWidth: {
-            type: [Number, String],
-            default: 0
-        },
-        offsetOverflow: Boolean,
-        positionX: {
-            type: Number,
-            default: null
-        },
-        positionY: {
-            type: Number,
-            default: null
-        },
-        zIndex: {
-            type: [Number, String],
-            default: null
-        }
-    },
-    data: function data() {
-        return {
-            absoluteX: 0,
-            absoluteY: 0,
-            dimensions: Object.assign({}, dimensions),
-            isContentActive: false,
-            pageYOffset: 0,
-            stackClass: 'v-menu__content--active',
-            stackMinZIndex: 6
-        };
-    },
-    computed: {
-        computedLeft: function computedLeft() {
-            var a = this.dimensions.activator;
-            var c = this.dimensions.content;
-            var activatorLeft = (this.isAttached ? a.offsetLeft : a.left) || 0;
-            var minWidth = Math.max(a.width, c.width);
-            var left = 0;
-            left += this.left ? activatorLeft - (minWidth - a.width) : activatorLeft;
-            if (this.offsetX) {
-                var maxWidth = isNaN(this.maxWidth) ? a.width : Math.min(a.width, this.maxWidth);
-                left += this.left ? -maxWidth : a.width;
-            }
-            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
-            if (this.nudgeRight) left += parseInt(this.nudgeRight);
-            return left;
-        },
-        computedTop: function computedTop() {
-            var a = this.dimensions.activator;
-            var c = this.dimensions.content;
-            var top = 0;
-            if (this.top) top += a.height - c.height;
-            if (this.isAttached) top += a.offsetTop;else top += a.top + this.pageYOffset;
-            if (this.offsetY) top += this.top ? -a.height : a.height;
-            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
-            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
-            return top;
-        },
-        hasActivator: function hasActivator() {
-            return !!this.$slots.activator || !!this.$scopedSlots.activator || this.activator || this.inputActivator;
-        },
-        isAttached: function isAttached() {
-            return this.attach !== false;
-        }
-    },
-    watch: {
-        disabled: function disabled(val) {
-            val && this.callDeactivate();
-        },
-        isActive: function isActive(val) {
-            if (this.disabled) return;
-            val ? this.callActivate() : this.callDeactivate();
-        },
-
-        positionX: 'updateDimensions',
-        positionY: 'updateDimensions'
-    },
-    beforeMount: function beforeMount() {
-        this.checkForWindow();
-    },
-
-    methods: {
-        absolutePosition: function absolutePosition() {
-            return {
-                offsetTop: 0,
-                offsetLeft: 0,
-                scrollHeight: 0,
-                top: this.positionY || this.absoluteY,
-                bottom: this.positionY || this.absoluteY,
-                left: this.positionX || this.absoluteX,
-                right: this.positionX || this.absoluteX,
-                height: 0,
-                width: 0
-            };
-        },
-        activate: function activate() {},
-        calcLeft: function calcLeft(menuWidth) {
-            return (this.isAttached ? this.computedLeft : this.calcXOverflow(this.computedLeft, menuWidth)) + 'px';
-        },
-        calcTop: function calcTop() {
-            return (this.isAttached ? this.computedTop : this.calcYOverflow(this.computedTop)) + 'px';
-        },
-        calcXOverflow: function calcXOverflow(left, menuWidth) {
-            var xOverflow = left + menuWidth - this.getInnerWidth() + 12;
-            if ((!this.left || this.right) && xOverflow > 0) {
-                left = Math.max(left - xOverflow, 0);
-            } else {
-                left = Math.max(left, 12);
-            }
-            return left + this.getOffsetLeft();
-        },
-        calcYOverflow: function calcYOverflow(top) {
-            var documentHeight = this.getInnerHeight();
-            var toTop = this.pageYOffset + documentHeight;
-            var activator = this.dimensions.activator;
-            var contentHeight = this.dimensions.content.height;
-            var totalHeight = top + contentHeight;
-            var isOverflowing = toTop < totalHeight;
-            // If overflowing bottom and offset
-            // TODO: set 'bottom' position instead of 'top'
-            if (isOverflowing && this.offsetOverflow &&
-            // If we don't have enough room to offset
-            // the overflow, don't offset
-            activator.top > contentHeight) {
-                top = this.pageYOffset + (activator.top - contentHeight);
-                // If overflowing bottom
-            } else if (isOverflowing && !this.allowOverflow) {
-                top = toTop - contentHeight - 12;
-                // If overflowing top
-            } else if (top < this.pageYOffset && !this.allowOverflow) {
-                top = this.pageYOffset + 12;
-            }
-            return top < 12 ? 12 : top;
-        },
-        callActivate: function callActivate() {
-            if (!this.hasWindow) return;
-            this.activate();
-        },
-        callDeactivate: function callDeactivate() {
-            this.isContentActive = false;
-            this.deactivate();
-        },
-        checkForWindow: function checkForWindow() {
-            if (!this.hasWindow) {
-                this.hasWindow = typeof window !== 'undefined';
-            }
-        },
-        checkForPageYOffset: function checkForPageYOffset() {
-            if (this.hasWindow) {
-                this.pageYOffset = this.getOffsetTop();
-            }
-        },
-        deactivate: function deactivate() {},
-        getActivator: function getActivator(e) {
-            if (this.inputActivator) {
-                return this.$el.querySelector('.v-input__slot');
-            }
-            if (this.activator) {
-                return typeof this.activator === 'string' ? document.querySelector(this.activator) : this.activator;
-            }
-            if (this.$refs.activator) {
-                return this.$refs.activator.children.length > 0 ? this.$refs.activator.children[0] : this.$refs.activator;
-            }
-            if (e) {
-                this.activatedBy = e.currentTarget || e.target;
-                return this.activatedBy;
-            }
-            if (this.activatedBy) return this.activatedBy;
-            if (this.activatorNode) {
-                var activator = Array.isArray(this.activatorNode) ? this.activatorNode[0] : this.activatorNode;
-                var el = activator && activator.elm;
-                if (el) return el;
-            }
-            consoleError('No activator found');
-        },
-        getInnerHeight: function getInnerHeight() {
-            if (!this.hasWindow) return 0;
-            return window.innerHeight || document.documentElement.clientHeight;
-        },
-        getInnerWidth: function getInnerWidth() {
-            if (!this.hasWindow) return 0;
-            return document.documentElement.clientWidth;
-        },
-        getOffsetLeft: function getOffsetLeft() {
-            if (!this.hasWindow) return 0;
-            return window.pageXOffset || document.documentElement.scrollLeft;
-        },
-        getOffsetTop: function getOffsetTop() {
-            if (!this.hasWindow) return 0;
-            return window.pageYOffset || document.documentElement.scrollTop;
-        },
-        getRoundedBoundedClientRect: function getRoundedBoundedClientRect(el) {
-            var rect = el.getBoundingClientRect();
-            return {
-                top: Math.round(rect.top),
-                left: Math.round(rect.left),
-                bottom: Math.round(rect.bottom),
-                right: Math.round(rect.right),
-                width: Math.round(rect.width),
-                height: Math.round(rect.height)
-            };
-        },
-        measure: function measure(el) {
-            if (!el || !this.hasWindow) return null;
-            var rect = this.getRoundedBoundedClientRect(el);
-            // Account for activator margin
-            if (this.isAttached) {
-                var style = window.getComputedStyle(el);
-                rect.left = parseInt(style.marginLeft);
-                rect.top = parseInt(style.marginTop);
-            }
-            return rect;
-        },
-        sneakPeek: function sneakPeek(cb) {
-            var _this = this;
-
-            requestAnimationFrame(function () {
-                var el = _this.$refs.content;
-                if (!el || _this.isShown(el)) return cb();
-                el.style.display = 'inline-block';
-                cb();
-                el.style.display = 'none';
-            });
-        },
-        startTransition: function startTransition() {
-            var _this2 = this;
-
-            return new Promise(function (resolve) {
-                return requestAnimationFrame(function () {
-                    _this2.isContentActive = _this2.hasJustFocused = _this2.isActive;
-                    resolve();
-                });
-            });
-        },
-        isShown: function isShown(el) {
-            return el.style.display !== 'none';
-        },
-        updateDimensions: function updateDimensions() {
-            var _this3 = this;
-
-            this.checkForWindow();
-            this.checkForPageYOffset();
-            var dimensions = {};
-            // Activator should already be shown
-            if (!this.hasActivator || this.absolute) {
-                dimensions.activator = this.absolutePosition();
-            } else {
-                var activator = this.getActivator();
-                dimensions.activator = this.measure(activator);
-                dimensions.activator.offsetLeft = activator.offsetLeft;
-                if (this.isAttached) {
-                    // account for css padding causing things to not line up
-                    // this is mostly for v-autocomplete, hopefully it won't break anything
-                    dimensions.activator.offsetTop = activator.offsetTop;
-                } else {
-                    dimensions.activator.offsetTop = 0;
-                }
-            }
-            // Display and hide to get dimensions
-            this.sneakPeek(function () {
-                dimensions.content = _this3.measure(_this3.$refs.content);
-                _this3.dimensions = dimensions;
-            });
-        }
-    }
-}));
-//# sourceMappingURL=menuable.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VTooltip/VTooltip.js
-function VTooltip_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-// Mixins
-
-
-
-
-
-
-// Helpers
-
-
-/* @vue/component */
-/* harmony default export */ var VTooltip = ({
-    name: 'v-tooltip',
-    mixins: [colorable, delayable, dependent, detachable, menuable, toggleable],
-    props: {
-        closeDelay: {
-            type: [Number, String],
-            default: 200
-        },
-        debounce: {
-            type: [Number, String],
-            default: 0
-        },
-        disabled: Boolean,
-        fixed: {
-            type: Boolean,
-            default: true
-        },
-        openDelay: {
-            type: [Number, String],
-            default: 200
-        },
-        tag: {
-            type: String,
-            default: 'span'
-        },
-        transition: String,
-        zIndex: {
-            default: null
-        }
-    },
-    data: function data() {
-        return {
-            calculatedMinWidth: 0,
-            closeDependents: false
-        };
-    },
-    computed: {
-        calculatedLeft: function calculatedLeft() {
-            var _dimensions = this.dimensions,
-                activator = _dimensions.activator,
-                content = _dimensions.content;
-
-            var unknown = !this.bottom && !this.left && !this.top && !this.right;
-            var activatorLeft = this.isAttached ? activator.offsetLeft : activator.left;
-            var left = 0;
-            if (this.top || this.bottom || unknown) {
-                left = activatorLeft + activator.width / 2 - content.width / 2;
-            } else if (this.left || this.right) {
-                left = activatorLeft + (this.right ? activator.width : -content.width) + (this.right ? 10 : -10);
-            }
-            if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
-            if (this.nudgeRight) left += parseInt(this.nudgeRight);
-            return this.calcXOverflow(left, this.dimensions.content.width) + 'px';
-        },
-        calculatedTop: function calculatedTop() {
-            var _dimensions2 = this.dimensions,
-                activator = _dimensions2.activator,
-                content = _dimensions2.content;
-
-            var activatorTop = this.isAttached ? activator.offsetTop : activator.top;
-            var top = 0;
-            if (this.top || this.bottom) {
-                top = activatorTop + (this.bottom ? activator.height : -content.height) + (this.bottom ? 10 : -10);
-            } else if (this.left || this.right) {
-                top = activatorTop + activator.height / 2 - content.height / 2;
-            }
-            if (this.nudgeTop) top -= parseInt(this.nudgeTop);
-            if (this.nudgeBottom) top += parseInt(this.nudgeBottom);
-            return this.calcYOverflow(top + this.pageYOffset) + 'px';
-        },
-        classes: function classes() {
-            return {
-                'v-tooltip--top': this.top,
-                'v-tooltip--right': this.right,
-                'v-tooltip--bottom': this.bottom,
-                'v-tooltip--left': this.left
-            };
-        },
-        computedTransition: function computedTransition() {
-            if (this.transition) return this.transition;
-            if (this.top) return 'slide-y-reverse-transition';
-            if (this.right) return 'slide-x-transition';
-            if (this.bottom) return 'slide-y-transition';
-            if (this.left) return 'slide-x-reverse-transition';
-            return '';
-        },
-        offsetY: function offsetY() {
-            return this.top || this.bottom;
-        },
-        offsetX: function offsetX() {
-            return this.left || this.right;
-        },
-        styles: function styles() {
-            return {
-                left: this.calculatedLeft,
-                maxWidth: convertToUnit(this.maxWidth),
-                opacity: this.isActive ? 0.9 : 0,
-                top: this.calculatedTop,
-                zIndex: this.zIndex || this.activeZIndex
-            };
-        }
-    },
-    beforeMount: function beforeMount() {
-        var _this = this;
-
-        this.$nextTick(function () {
-            _this.value && _this.callActivate();
-        });
-    },
-    mounted: function mounted() {
-        if (getSlotType(this, 'activator', true) === 'v-slot') {
-            consoleError('v-tooltip\'s activator slot must be bound, try \'<template #activator="data"><v-btn v-on="data.on>\'', this);
-        }
-    },
-
-    methods: {
-        activate: function activate() {
-            // Update coordinates and dimensions of menu
-            // and its activator
-            this.updateDimensions();
-            // Start the transition
-            requestAnimationFrame(this.startTransition);
-        },
-        genActivator: function genActivator() {
-            var _this2 = this;
-
-            var listeners = this.disabled ? {} : {
-                mouseenter: function mouseenter(e) {
-                    _this2.getActivator(e);
-                    _this2.runDelay('open');
-                },
-                mouseleave: function mouseleave(e) {
-                    _this2.getActivator(e);
-                    _this2.runDelay('close');
-                }
-            };
-            if (getSlotType(this, 'activator') === 'scoped') {
-                var activator = this.$scopedSlots.activator({ on: listeners });
-                this.activatorNode = activator;
-                return activator;
-            }
-            return this.$createElement('span', {
-                on: listeners,
-                ref: 'activator'
-            }, this.$slots.activator);
-        }
-    },
-    render: function render(h) {
-        var _class;
-
-        var tooltip = h('div', this.setBackgroundColor(this.color, {
-            staticClass: 'v-tooltip__content',
-            'class': (_class = {}, VTooltip_defineProperty(_class, this.contentClass, true), VTooltip_defineProperty(_class, 'menuable__content__active', this.isActive), _class),
-            style: this.styles,
-            attrs: this.getScopeIdAttrs(),
-            directives: [{
-                name: 'show',
-                value: this.isContentActive
-            }],
-            ref: 'content'
-        }), this.showLazyContent(this.$slots.default));
-        return h(this.tag, {
-            staticClass: 'v-tooltip',
-            'class': this.classes
-        }, [h('transition', {
-            props: {
-                name: this.computedTransition
-            }
-        }, [tooltip]), this.genActivator()]);
-    }
-});
-//# sourceMappingURL=VTooltip.js.map
-// CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue
-
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  actionbar_ActionbarWifivue_type_script_lang_js_,
-  ActionbarWifivue_type_template_id_417d1d92_render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ActionbarWifi = (component.exports);
-
-/* vuetify-loader */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-installComponents_default()(component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VDivider: VDivider,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VSpacer: VSpacer,VSwitch: VSwitch,VTextField: wrapper,VTooltip: VTooltip})
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=template&id=4a863a74&
-var ActionbarBuildvue_type_template_id_4a863a74_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-play")])],1),_c('span',[_vm._v("Compile & Run")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile & Run")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep <= 3)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep > 3)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("check_circle_outline")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 1,"rules":[function (){ return _vm.stepResult['1'].result }]}},[_vm._v("\n                                    Finding board\n                                    "),(_vm.compileStep > 1)?_c('small',[_vm._v(_vm._s(_vm.stepResult['1'].msg))]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['1'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 2,"rules":[function (){ return _vm.stepResult['2'].result }]}},[_vm._v("\n                                    Compile the code\n                                    "),(_vm.compileStep > 2)?_c('small',[_vm._v(_vm._s(_vm.stepResult['2'].msg))]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['2'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"3","complete":_vm.compileStep > 3,"rules":[function (){ return _vm.stepResult['3'].result }]}},[_vm._v("\n                                    Upload program and Run\n                                    "),(_vm.compileStep > 3)?_c('small',[_vm._v(_vm._s(_vm.stepResult['3'].msg))]):_vm._e()]),(_vm.compileStep >= 3)?_c('v-stepper-content',{attrs:{"step":"3"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['3'].msg)+"\n                                    "),_c('v-progress-linear',{attrs:{"height":"2","active":_vm.compileStep < 4,"indeterminate":true}})],1):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 4 && _vm.failed === false},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)])],1)}
-var ActionbarBuildvue_type_template_id_4a863a74_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=template&id=4a863a74&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
-var es6_regexp_replace = __webpack_require__("pIFo");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var engine = Vue.prototype.$engine;
-var G = Vue.prototype.$global;
-var ActionbarBuildvue_type_script_lang_js_path = "".concat(engine.util.boardDir, "/").concat(G.board.board, "/compiler");
-var boardCompiler = engine.util.requireFunc(ActionbarBuildvue_type_script_lang_js_path);
-var comport = '';
-var mac = '';
-var boardName = '';
-/* harmony default export */ var ActionbarBuildvue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      compileStep: 1,
-      compileDialog: false,
-      failed: false,
-      stepResult: {
-        '1': {
-          result: true,
-          msg: ""
-        },
-        '2': {
-          result: true,
-          msg: ""
-        },
-        '3': {
-          result: true,
-          msg: ""
-        }
-      }
-    };
-  },
-  mounted: function mounted() {},
-  beforeDestroy: function beforeDestroy() {},
-  methods: {
-    run: function run() {
-      var _this = this;
-
-      //find port and mac
-      console.log('---> step 1 <---');
-      this.stepResult['1'].msg = "Finding board";
-      boardCompiler.listPort().then(function (comp) {
-        comport = comp[0];
-        _this.stepResult['1'].msg += " at " + comport;
-        return boardCompiler.readMac(comport);
-      }).then(function (boardMac) {
-        _this.stepResult['1'].msg += " MAC " + boardMac.mac;
-        mac = boardMac.mac;
-        boardName = mac.replace(/:/g, '-');
-        console.log('[STEP 1] got it boardName = ' + boardName + ' mac = ' + mac);
-        _this.compileStep = 2;
-        console.log('---> step 2 <---');
-        _this.stepResult['2'].msg = "Compile board ... ";
-        var rawCode = G.editor.rawCode;
-        var config = {
-          board_mac_addr: mac,
-          sta_ssid: _this.$global.board.package['kidbright-actionbar'].wifi_ssid,
-          sta_password: _this.$global.board.package['kidbright-actionbar'].wifi_password,
-          enable_iot: _this.$global.board.package['kidbright-actionbar'].enable_iot
-        };
-        return boardCompiler.compile(rawCode, boardName, config, null);
-      }).then(function () {
-        _this.stepResult['2'].msg += 'done!';
-        _this.compileStep = 3;
-        _this.stepResult['3'].msg = "Uploading ... ";
-        console.log('---> step 3 <---');
-        return boardCompiler.flash(comport);
-      }).then(function () {
-        _this.stepResult['3'].msg = "Upload success";
-        _this.compileStep = 4;
-      }).catch(function (err) {
-        console.log('------ process error ------');
-        console.log(err);
-        _this.failed = true;
-
-        if (_this.compileStep == 1) {
-          _this.stepResult['1'].msg = 'Cannot find KidBright : ' + err;
-          _this.stepResult['1'].result = false;
-        } else if (_this.compileStep == 2) {
-          _this.stepResult['2'].msg = 'Compile error : ' + err;
-          _this.stepResult['2'].result = false;
-        } else if (_this.compileStep == 3) {
-          _this.stepResult['3'].msg = 'Cannot upload program : ' + err;
-          _this.stepResult['3'].result = false;
-        }
-      });
-    }
-  },
-  watch: {
-    'compileDialog': function compileDialog(val) {
-      if (val) {
-        //on opening                
-        this.compileStep = 1;
-        this.failed = false;
-        this.stepResult['1'].result = true;
-        this.stepResult['2'].result = true;
-        this.stepResult['3'].result = true;
-        this.run();
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarBuildvue_type_script_lang_js_ = (ActionbarBuildvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_steppers.styl
-var _steppers = __webpack_require__("v/Yf");
-
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepper.js
-var VStepper_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-// Styles
-
-// Mixins
-
-
-// Util
-
-/* harmony default export */ var VStepper = (mixins(provide('stepper'), themeable
-/* @vue/component */
-).extend({
-    name: 'v-stepper',
-    provide: function provide() {
-        return {
-            stepClick: this.stepClick,
-            isVertical: this.vertical
-        };
-    },
-
-    props: {
-        nonLinear: Boolean,
-        altLabels: Boolean,
-        vertical: Boolean,
-        value: [Number, String]
-    },
-    data: function data() {
-        return {
-            inputValue: null,
-            isBooted: false,
-            steps: [],
-            content: [],
-            isReverse: false
-        };
-    },
-
-    computed: {
-        classes: function classes() {
-            return VStepper_extends({
-                'v-stepper': true,
-                'v-stepper--is-booted': this.isBooted,
-                'v-stepper--vertical': this.vertical,
-                'v-stepper--alt-labels': this.altLabels,
-                'v-stepper--non-linear': this.nonLinear
-            }, this.themeClasses);
-        }
-    },
-    watch: {
-        inputValue: function inputValue(val, prev) {
-            this.isReverse = Number(val) < Number(prev);
-            for (var index = this.steps.length; --index >= 0;) {
-                this.steps[index].toggle(this.inputValue);
-            }
-            for (var _index = this.content.length; --_index >= 0;) {
-                this.content[_index].toggle(this.inputValue, this.isReverse);
-            }
-            this.$emit('input', this.inputValue);
-            prev && (this.isBooted = true);
-        },
-        value: function value() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                return _this.inputValue = _this.value;
-            });
-        }
-    },
-    mounted: function mounted() {
-        this.inputValue = this.value || this.steps[0].step || 1;
-    },
-
-    methods: {
-        register: function register(item) {
-            if (item.$options.name === 'v-stepper-step') {
-                this.steps.push(item);
-            } else if (item.$options.name === 'v-stepper-content') {
-                item.isVertical = this.vertical;
-                this.content.push(item);
-            }
-        },
-        unregister: function unregister(item) {
-            if (item.$options.name === 'v-stepper-step') {
-                this.steps = this.steps.filter(function (i) {
-                    return i !== item;
-                });
-            } else if (item.$options.name === 'v-stepper-content') {
-                item.isVertical = this.vertical;
-                this.content = this.content.filter(function (i) {
-                    return i !== item;
-                });
-            }
-        },
-        stepClick: function stepClick(step) {
-            var _this2 = this;
-
-            this.$nextTick(function () {
-                return _this2.inputValue = step;
-            });
-        }
-    },
-    render: function render(h) {
-        return h('div', {
-            'class': this.classes
-        }, this.$slots.default);
-    }
-}));
-//# sourceMappingURL=VStepper.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperContent.js
-// Components
-
-// Mixins
-
-// Helpers
-
-// Util
-
-/* harmony default export */ var VStepperContent = (mixins(inject('stepper', 'v-stepper-content', 'v-stepper')
-/* @vue/component */
-).extend({
-    name: 'v-stepper-content',
-    inject: {
-        isVerticalProvided: {
-            from: 'isVertical'
-        }
-    },
-    props: {
-        step: {
-            type: [Number, String],
-            required: true
-        }
-    },
-    data: function data() {
-        return {
-            height: 0,
-            // Must be null to allow
-            // previous comparison
-            isActive: null,
-            isReverse: false,
-            isVertical: this.isVerticalProvided
-        };
-    },
-
-    computed: {
-        classes: function classes() {
-            return {
-                'v-stepper__content': true
-            };
-        },
-        computedTransition: function computedTransition() {
-            return this.isReverse ? VTabReverseTransition : VTabTransition;
-        },
-        styles: function styles() {
-            if (!this.isVertical) return {};
-            return {
-                height: convertToUnit(this.height)
-            };
-        },
-        wrapperClasses: function wrapperClasses() {
-            return {
-                'v-stepper__wrapper': true
-            };
-        }
-    },
-    watch: {
-        isActive: function isActive(current, previous) {
-            // If active and the previous state
-            // was null, is just booting up
-            if (current && previous == null) {
-                this.height = 'auto';
-                return;
-            }
-            if (!this.isVertical) return;
-            if (this.isActive) this.enter();else this.leave();
-        }
-    },
-    mounted: function mounted() {
-        this.$refs.wrapper.addEventListener('transitionend', this.onTransition, false);
-        this.stepper && this.stepper.register(this);
-    },
-    beforeDestroy: function beforeDestroy() {
-        this.$refs.wrapper.removeEventListener('transitionend', this.onTransition, false);
-        this.stepper && this.stepper.unregister(this);
-    },
-
-    methods: {
-        onTransition: function onTransition(e) {
-            if (!this.isActive || e.propertyName !== 'height') return;
-            this.height = 'auto';
-        },
-        enter: function enter() {
-            var _this = this;
-
-            var scrollHeight = 0;
-            // Render bug with height
-            requestAnimationFrame(function () {
-                scrollHeight = _this.$refs.wrapper.scrollHeight;
-            });
-            this.height = 0;
-            // Give the collapsing element time to collapse
-            setTimeout(function () {
-                return _this.isActive && (_this.height = scrollHeight || 'auto');
-            }, 450);
-        },
-        leave: function leave() {
-            var _this2 = this;
-
-            this.height = this.$refs.wrapper.clientHeight;
-            setTimeout(function () {
-                return _this2.height = 0;
-            }, 10);
-        },
-        toggle: function toggle(step, reverse) {
-            this.isActive = step.toString() === this.step.toString();
-            this.isReverse = reverse;
-        }
-    },
-    render: function render(h) {
-        var contentData = {
-            'class': this.classes
-        };
-        var wrapperData = {
-            'class': this.wrapperClasses,
-            style: this.styles,
-            ref: 'wrapper'
-        };
-        if (!this.isVertical) {
-            contentData.directives = [{
-                name: 'show',
-                value: this.isActive
-            }];
-        }
-        var wrapper = h('div', wrapperData, [this.$slots.default]);
-        var content = h('div', contentData, [wrapper]);
-        return h(this.computedTransition, {
-            on: this.$listeners
-        }, [content]);
-    }
-}));
-//# sourceMappingURL=VStepperContent.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VStepper/VStepperStep.js
-// Components
-
-// Mixins
-
-
-// Directives
-
-// Util
-
-/* harmony default export */ var VStepperStep = (mixins(colorable, inject('stepper', 'v-stepper-step', 'v-stepper')
-/* @vue/component */
-).extend({
-    name: 'v-stepper-step',
-    directives: { Ripple: directives_ripple },
-    inject: ['stepClick'],
-    props: {
-        color: {
-            type: String,
-            default: 'primary'
-        },
-        complete: Boolean,
-        completeIcon: {
-            type: String,
-            default: '$vuetify.icons.complete'
-        },
-        editIcon: {
-            type: String,
-            default: '$vuetify.icons.edit'
-        },
-        errorIcon: {
-            type: String,
-            default: '$vuetify.icons.error'
-        },
-        editable: Boolean,
-        rules: {
-            type: Array,
-            default: function _default() {
-                return [];
-            }
-        },
-        step: [Number, String]
-    },
-    data: function data() {
-        return {
-            isActive: false,
-            isInactive: true
-        };
-    },
-
-    computed: {
-        classes: function classes() {
-            return {
-                'v-stepper__step': true,
-                'v-stepper__step--active': this.isActive,
-                'v-stepper__step--editable': this.editable,
-                'v-stepper__step--inactive': this.isInactive,
-                'v-stepper__step--error': this.hasError,
-                'v-stepper__step--complete': this.complete,
-                'error--text': this.hasError
-            };
-        },
-        hasError: function hasError() {
-            return this.rules.some(function (validate) {
-                return validate() !== true;
-            });
-        }
-    },
-    mounted: function mounted() {
-        this.stepper && this.stepper.register(this);
-    },
-    beforeDestroy: function beforeDestroy() {
-        this.stepper && this.stepper.unregister(this);
-    },
-
-    methods: {
-        click: function click(e) {
-            e.stopPropagation();
-            this.$emit('click', e);
-            if (this.editable) {
-                this.stepClick(this.step);
-            }
-        },
-        toggle: function toggle(step) {
-            this.isActive = step.toString() === this.step.toString();
-            this.isInactive = Number(step) < Number(this.step);
-        }
-    },
-    render: function render(h) {
-        var data = {
-            'class': this.classes,
-            directives: [{
-                name: 'ripple',
-                value: this.editable
-            }],
-            on: { click: this.click }
-        };
-        var stepContent = void 0;
-        if (this.hasError) {
-            stepContent = [h(components_VIcon, {}, this.errorIcon)];
-        } else if (this.complete) {
-            if (this.editable) {
-                stepContent = [h(components_VIcon, {}, this.editIcon)];
-            } else {
-                stepContent = [h(components_VIcon, {}, this.completeIcon)];
-            }
-        } else {
-            stepContent = String(this.step);
-        }
-        var color = !this.hasError && (this.complete || this.isActive) ? this.color : false;
-        var step = h('span', this.setBackgroundColor(color, {
-            staticClass: 'v-stepper__step__step'
-        }), stepContent);
-        var label = h('div', {
-            staticClass: 'v-stepper__label'
-        }, this.$slots.default);
-        return h('div', data, [step, label]);
-    }
-}));
-//# sourceMappingURL=VStepperStep.js.map
-// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue
-
-
-
-
-
-/* normalize component */
-
-var ActionbarBuild_component = normalizeComponent(
-  actionbar_ActionbarBuildvue_type_script_lang_js_,
-  ActionbarBuildvue_type_template_id_4a863a74_render,
-  ActionbarBuildvue_type_template_id_4a863a74_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ActionbarBuild = (ActionbarBuild_component.exports);
-
-/* vuetify-loader */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-installComponents_default()(ActionbarBuild_component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VFadeTransition: VFadeTransition,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VProgressCircular: VProgressCircular,VProgressLinear: VProgressLinear,VSpacer: VSpacer,VStepper: VStepper,VStepperContent: VStepperContent,VStepperStep: VStepperStep,VTooltip: VTooltip})
-
 // CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue
-var ActionbarSetting_render, ActionbarSetting_staticRenderFns
-var script = {}
+
+
+
+
 
 
 /* normalize component */
 
 var ActionbarSetting_component = normalizeComponent(
-  script,
-  ActionbarSetting_render,
-  ActionbarSetting_staticRenderFns,
+  actionbar_ActionbarSettingvue_type_script_lang_js_,
+  ActionbarSettingvue_type_template_id_5bca585f_render,
+  ActionbarSettingvue_type_template_id_5bca585f_staticRenderFns,
   false,
   null,
   null,
@@ -6488,8 +8870,28 @@ var ActionbarSetting_component = normalizeComponent(
 )
 
 /* harmony default export */ var ActionbarSetting = (ActionbarSetting_component.exports);
-// CONCATENATED MODULE: ./src/actionbar/index.js
 
+/* vuetify-loader */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+installComponents_default()(ActionbarSetting_component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VCombobox: VCombobox,VContainer: VContainer,VDialog: VDialog,VDivider: VDivider,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VSpacer: VSpacer,VSubheader: VSubheader,VTextField: wrapper,VTooltip: VTooltip})
+
+// CONCATENATED MODULE: ./src/actionbar/index.js
 
 
 // CONCATENATED MODULE: ./src/lib.js
@@ -6518,6 +8920,13 @@ module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
+
+/***/ }),
+
+/***/ "0Ms0":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -6556,7 +8965,25 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "9v1z":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarSetting_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("C7Xe");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarSetting_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarSetting_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarSetting_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "Bi+O":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "C7Xe":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
@@ -6713,13 +9140,6 @@ module.exports = false;
 
 /***/ }),
 
-/***/ "Lim/":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "Mukb":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6735,14 +9155,10 @@ module.exports = __webpack_require__("nh4g") ? function (object, key, value) {
 
 /***/ }),
 
-/***/ "Ol8o":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "OIBb":
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarWifi_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("j2QW");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarWifi_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarWifi_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarWifi_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -6765,6 +9181,13 @@ module.exports = function (bitmap, value) {
   };
 };
 
+
+/***/ }),
+
+/***/ "T6Tt":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -6958,7 +9381,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_i7_w__;
 
 /***/ }),
 
-/***/ "j2QW":
+/***/ "kL1F":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
@@ -7009,6 +9432,13 @@ __webpack_require__("IU+Z")('replace', 2, function (defined, REPLACE, $replace) 
 
 /***/ }),
 
+/***/ "s99T":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "tPfQ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7016,7 +9446,21 @@ __webpack_require__("IU+Z")('replace', 2, function (defined, REPLACE, $replace) 
 
 /***/ }),
 
+/***/ "uEcm":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "v/Yf":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "v1p4":
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

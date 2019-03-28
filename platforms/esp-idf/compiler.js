@@ -92,13 +92,16 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
 }
 
 const setConfig = (context) => {
-    let localContext = JSON.parse(fs.readFileSync(`${platformDir}/context.json`,'utf8'))
-    G = Object.assign({}, localContext)    
-    G.board_name = context.board_name   //require boardname
-    G.app_dir = context.app_dir         //require app_dir
-    G.process_dir = context.process_dir //require working dir
-
-    G.cflags = G.cflags.map(f => f.replace('-Ilib',`-I"${platformDir}/lib`)+'"')
+    let localContext = JSON.parse(fs.readFileSync(`${platformDir}/context.json`,'utf8'));    
+    G = Object.assign({}, localContext);
+    G.board_name = context.board_name;   //require boardname
+    G.app_dir = context.app_dir;         //require app_dir
+    G.process_dir = context.process_dir; //require working dir
+    
+    if(!G.cpp_options){
+        G.cpp_options = [];
+    }
+    G.cflags = G.cflags.map(f => f.replace('-Ilib',`-I"${platformDir}/lib`)+'"');
     G.ldflags = G.ldflags.map(f => f.startsWith("-Llib") ? (f.replace('-Llib',`-L"${platformDir}/lib`)+'"') : f);
     G.ldflags = G.ldflags.map(f => f.startsWith("lib/") ? ('"' + f.replace("lib/",`${platformDir}/lib/`)+'"') : f);
 

@@ -13,45 +13,6 @@ function is_not_null(val) {
     return (!((val == null) || (typeof (val) == 'undefined')));
 }
 
-function listPort()
-{
-    return new Promise(function(resolve,reject){
-        try {
-            require('serialport').list(function (err, ports) {
-                if (err) reject(err);
-                if(ports.length == 0) reject("No COM PORT found");
-
-                var port_list_str = 'none';
-                var port_list = [];
-                for (var i in ports) {
-                    if (is_not_null(ports[i].comName) && is_not_null(ports[i].productId) && is_not_null(ports[i].vendorId)) {
-                        var uid = ports[i].vendorId + ':' + ports[i].productId;
-                        if (context.port_vid_pid.indexOf(uid.toLowerCase()) >= 0) {
-                            port_list.push(ports[i].comName);
-                            if (i == 0) {
-                                port_list_str = ports[i].comName;
-                            }
-                            else {
-                                port_list_str += ', ' + ports[i].comName;
-                            }
-                        }
-                    }
-                }                
-                console.log('serial port enumerated (' + port_list_str + ')');
-                if(port_list.length == 0){
-                    reject('no COM port found');
-                }else{
-                    resolve(port_list);
-                }
-            });
-        } catch (err) {
-            console.log('port read error : ' + err);
-            reject(err);
-        }
-    });
-}
-
-
 function compile(rawCode,boardName,config,cb)
 {
     return new Promise((resolve,reject) => {
@@ -63,14 +24,30 @@ function compile(rawCode,boardName,config,cb)
         }
         var app_dir = `${boardDirectory}/build/${boardName}`;
         //--- step 1 load template and create full code ---//
-        var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
-        var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,config);
+        if(config.isSourceCode){
+            var sourceCode = rawCode;
+            var codeContext = config.codeContext;
+        }else{
+            if(fs.existsSync(`${boardDirectory}/template.c`)){
+                var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
+            }else{
+                var template = fs.readFileSync(`${platformDir}/template.c`,'utf8');
+            }            
+            var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,config);
+        }
+        
         !fs.existsSync(app_dir) && fs.mkdirSync(app_dir,{recursive : true}); //create app_dir if not existing
         fs.writeFileSync(`${app_dir}/user_app.cpp`,sourceCode,'utf8');
         //--- step 3 load variable and flags ---//
-        var cflags = context.cflags.map(f => f.replace('-Ilib',`-I"${boardDirectory}/lib`)+'"');
-        var ldflags = context.ldflags.map(f => f.startsWith('-Llib') ? (f.replace('-Llib',`-L"${boardDirectory}/lib`)+'"') : f);
-        ldflags = ldflags.map(f => f.startsWith("lib/") ? ('"'+f.replace("lib/",`${boardDirectory}/lib/`)+'"') : f);
+        var cflags = [];
+        var ldflags = [];
+        if(context.cflags){
+            var cflags = context.cflags.map(f => f.replace(/\{board\}/g,boardDirectory));
+        }
+        if(context.ldflags){
+            var ldflags = context.ldflags.map(f => f.startsWith('-Llib') ? (f.replace('-Llib',`-L"${boardDirectory}/lib`)+'"') : f);
+            ldflags = ldflags.map(f => f.startsWith("lib/") ? ('"'+f.replace("lib/",`${boardDirectory}/lib/`)+'"') : f);
+        }        
         //--- step 4 compile
         var contextBoard = {
             board_name : boardName,
@@ -102,7 +79,6 @@ var exp = {};
 Object.assign(exp,platformCompiler);
 Object.assign(exp,
     {
-        listPort,
         compile
     }
 );

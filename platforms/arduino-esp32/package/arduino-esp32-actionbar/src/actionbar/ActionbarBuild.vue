@@ -17,7 +17,7 @@
                         
                         <v-card-text>
                             <v-container>
-                                <v-layout align-center column>           
+                                <v-layout align-center column>
                                     <v-flex xs12>
                                         <v-progress-circular v-if="compileStep <= 3"
                                             :size="80"
@@ -81,10 +81,6 @@ const G = Vue.prototype.$global;
 var path = `${engine.util.boardDir}/${G.board.board}/compiler`;
 var boardCompiler = engine.util.requireFunc(path);
 
-var comport = '';
-var mac = '';
-var boardName = '';
-
 export default {
   data () {
     return {
@@ -110,11 +106,16 @@ export default {
     run(){ //find port and mac
         console.log('---> step 1 <---');
         this.stepResult['1'].msg = "Finding board";
-        boardCompiler.listPort().then(comp=>{
-            comport = comp[0];
-            this.stepResult['1'].msg += " at " + comport;
-            return boardCompiler.readMac(comport)
-        }).then(boardMac=>{
+        let comport = G.board.package['arduino-esp32-actionbar'].comport;
+        if(!comport){
+            console.log('------ process error ------');
+            console.log(err);
+            this.failed = true;
+            this.stepResult['1'].msg = 'Cannot find COMPORT : ' + comport;
+            this.stepResult['1'].result = false;
+            return;
+        }
+        boardCompiler.readMac(comport).then(boardMac=>{
             this.stepResult['1'].msg += " MAC " + boardMac.mac;            
             mac = boardMac.mac;
             boardName = mac.replace(/:/g,'-');
@@ -123,12 +124,11 @@ export default {
             console.log('---> step 2 <---');
             
             this.stepResult['2'].msg = "Compile board ... ";
-            var rawCode = G.editor.rawCode;
+            var rawCode = G.editor.sourcecode;
             var config = {
-                board_mac_addr : mac,            
-                sta_ssid : this.$global.board.package['kidbright-actionbar'].wifi_ssid,
-                sta_password : this.$global.board.package['kidbright-actionbar'].wifi_password,
-                enable_iot : this.$global.board.package['kidbright-actionbar'].enable_iot,
+                board_mac_addr : mac,
+                sta_ssid : this.$global.board.package['arduino-esp32-actionbar'].wifi_ssid,
+                sta_password : this.$global.board.package['arduino-esp32-actionbar'].wifi_password,                
             };
             return boardCompiler.compile(rawCode,boardName,config,null);
         }).then(()=>{

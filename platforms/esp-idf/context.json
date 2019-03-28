@@ -8,6 +8,11 @@
         "-fno-exceptions", "-DESP_PLATFORM", "-D", "IDF_VER='\"\"'", "-MMD", "-MP", "-Wno-unused-variable", "-Wno-unused-value",
         "-DESP32=1", "-DWITH_POSIX", "-DMBEDTLS_CONFIG_FILE='\"mbedtls/esp_config.h\"'", "-DHAVE_CONFIG_H"
     ],
+    "gcc_options" : [
+        "-std=gnu99 -Os -g3 -fstack-protector -ffunction-sections -fdata-sections -fstrict-volatile-bitfields", 
+        "-mlongcalls -nostdlib -Wpointer-arith -Wno-error=unused-function -Wno-error=unused-but-set-variable", 
+        "-Wno-error=unused-variable -Wno-error=deprecated-declarations -Wno-unused-parameter -Wno-sign-compare -Wno-old-style-declaration -MMD"
+    ],
     "cflags" : [
         "-Ilib/include","-Ilib/app_trace/include","-Ilib/app_update/include","-Ilib/bootloader_support/include","-Ilib/bt/include",
         "-Ilib/bt/bluedroid/api/include/api","-Ilib/coap/port/include","-Ilib/coap/port/include/coap","-Ilib/coap/libcoap/include",
