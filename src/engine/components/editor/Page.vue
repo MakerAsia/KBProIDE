@@ -1,29 +1,60 @@
 <template>
-    <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
-        <!-- editor -->
-        <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '0px' })]">
-            <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
-            <xml id="toolbox" ref=toolbox style="display: none">
-                <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
-                    <block type="basic_led16x8"></block>
-                </category>
-            </xml>
-        </div>
-        <!-- end --> 
-        <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
-        <!-- source code -->
-        <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
-            <code-mirror ref="cm" v-if="$global.editor.mode < 3"
-                v-model="$global.editor.rawCode"
-                :options="editor_options">
-            </code-mirror>
-            <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
-                v-model="$global.editor.sourceCode"
-                :options="editor_options">
-            </code-mirror>
-        </div>
-        <!-- end -->
-    </multipane>
+    
+        <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
+            <!-- editor -->
+            <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '0px' })]">
+                <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
+                <xml id="toolbox" ref=toolbox style="display: none">
+                    <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
+                        <block type="basic_led16x8"></block>
+                    </category>
+                </xml>
+
+                <v-dialog v-model="variableDialog" persistent max-width="600px">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">Rename Variable</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-flex xs12>
+                                <v-text-field 
+                                    v-model="variable_name"
+                                    label="Variable name" 
+                                    required 
+                                    clearable 
+                                    counter 
+                                    maxlength="32" 
+                                    :rules="[variable_name_validator]"></v-text-field>
+                                </v-flex>
+                            </v-container>            
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click="variableDialog = false">Close</v-btn>
+                            <v-btn color="blue darken-1" flat ref="renameBtnOk" :disabled="!validated">Save</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
+            </div>
+            <!-- end --> 
+            <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
+            <!-- source code -->
+            <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
+                <code-mirror ref="cm" v-if="$global.editor.mode < 3"
+                    v-model="$global.editor.rawCode"
+                    :options="editor_options">
+                </code-mirror>
+                <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
+                    v-model="$global.editor.sourceCode"
+                    :options="editor_options">
+                </code-mirror>
+            </div>
+            <!-- end -->
+        </multipane>    
+        
+    
 </template>
 <script>
 // === UI Management ===
@@ -103,10 +134,10 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
                 blockStr += `<block type="${typeName}"></block>`;
             });
         })        
-        let thName = cat.category.name.th;
-        let enName = cat.category.name.en;
+        //let thName = cat.category.title;
+        let name = cat.category.title;
         let color = cat.category.color;
-        catStr += `<category name="${enName}" colour="${color}">${blockStr}</category>`;
+        catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
 }
@@ -163,9 +194,9 @@ export default {
     },
     data(){
      return {
-       workspace: null,
-       toolbox: null,
-       editor_options: {
+        workspace: null,
+        toolbox: null,
+        editor_options: {
             mode: 'text/x-c++src',
             theme: 'mdn-like',
             lineNumbers: true,
@@ -173,13 +204,25 @@ export default {
             matchBrackets: true,
             readOnly: true,
             extraKeys: {"Alt-F": "findPersistent"},
-       },
-       editorTabs : [
+        },
+        editorTabs : [
            { name : 'main', filename : 'main.cpp' }
-       ]
+        ],
+        variableDialog : false,
+        variable_name : '',
+        validated : false,
+        variable_name_validator : value => {
+            const pattern = /(?:^(uint16\s*|uint32\s*|uint8\s*|auto\s*|const\s*|unsigned\s*|signed\s*|register\s*|volatile\s*|static\s*|void\s*|short\s*|long\s*|char\s*|int\s*|float\s*|double\s*|_Bool\s*|complex\s*|return\s*)+$)|(?:\s+\*?\*?\s*)|(^[0-9])|([^_A-Za-z0-9]+)/;            
+            this.validated = !pattern.test(value);
+            if(value == null || value == ""){
+                this.validated = false;
+            }
+            return this.validated || 'Invalid variable name';
+        },
+
      }
    },
-   mounted(){        
+   mounted(){
         myself = this;
         Blockly.Msg = Object.assign(en, Blockly.Msg);
         Blockly.Msg = Blockly.Msg();
@@ -213,6 +256,20 @@ export default {
         this.workspace.addChangeListener(this.updatecode);
         Blockly.svgResize(this.workspace);
         this.workspace.scrollCenter();
+        // override prompt function, fixed electron dialog problem
+        Blockly.prompt = function(message, defaultValue, callback) {            
+            myself.variable_name = defaultValue;
+            myself.$refs.renameBtnOk.$on('click',function(){
+                var new_val = myself.variable_name;
+                if ((new_val) && (new_val != '')) {
+                    callback(new_val);
+                } else {
+                    callback(null);
+                }
+                myself.variableDialog = false;
+            });
+            myself.variableDialog = true;
+        };
 
         console.log('blocly mounted');
         /*if (this.getCookie('lang') == null) {
@@ -279,6 +336,7 @@ export default {
                 if(this.$global.editor.blockCode != ''){
                     var text = this.$global.editor.blockCode;
                     var xml = Blockly.Xml.textToDom(text);
+                    this.workspace.clear();
                     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
                 }        
                 setTimeout(() => {
