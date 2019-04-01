@@ -248,6 +248,7 @@ export default {
             this.boardDialog = false;
             this.$global.board.board_info =  bm.boards().find(obj => obj.name == boardname);
             this.$global.board.board = boardname;
+            Vue.prototype.$global.$emit('board-change',this.$global.board.board_info);
         },
         isOnline()
         {

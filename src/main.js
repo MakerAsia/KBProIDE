@@ -91,8 +91,7 @@ Object.keys(boardPackage).forEach(packageName => {
 
 addWatcher('board.board',function(val){ //listen board name change we need to reload everything
   console.log('board changed to : ' + val);
-  localStorage['board.board'] = JSON.stringify(val);
-  Vue.prototype.$global.$emit('board-change',val);  
+  localStorage['board.board'] = JSON.stringify(val);  
 },false);
 
 //console.log(process.platform);

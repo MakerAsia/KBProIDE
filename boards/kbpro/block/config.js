@@ -16,6 +16,12 @@ module.exports = {
             ]
         },
         {
+            name : 'Variables',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            custom : 'VARIABLE'
+        },
+        /*{
             name : 'Math',
             color : '230',
             icon : '/static/icons/SVG/c2.svg',
@@ -140,6 +146,6 @@ module.exports = {
             blocks : [
                 'advance_task'                
             ]
-        }
+        }*/
     ]
 }

@@ -27,7 +27,7 @@
                                     maxlength="32" 
                                     :rules="[variable_name_validator]"></v-text-field>
                                 </v-flex>
-                            </v-container>            
+                            </v-container>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -57,6 +57,7 @@
     
 </template>
 <script>
+var path = require('path');
 // === UI Management ===
 import { Multipane, MultipaneResizer } from 'vue-multipane';
 // === Blockly ===
@@ -87,9 +88,14 @@ import plug from '@/engine/PluginManager';
 var renderBlock = function(blocks,level = 1){
     let res = '';
     blocks.forEach(element=>{        
-        if(level == 1){            
-            let insideBlock = renderBlock(element.blocks,level+1);
-            res += `<category name="${element.name}" colour="${element.color}" icon="${element.icon}">${insideBlock}</category>`;
+        if(level == 1){
+            if(element.blocks){
+                var insideBlock = renderBlock(element.blocks,level+1);
+            }else{
+                var insideBlock = "";
+            }
+            var custom = element.custom? `custom="${element.custom}" `:"";
+            res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         }else{            
             if(typeof(element) === 'string'){ //block element
                 res += `<block type="${element}"></block>`;
@@ -144,42 +150,44 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
 
 var loadBlock = function(boardName,target){
     //look for board first
-    var blockFile = util.boardDir+'/'+boardName+'/block/config.js';
+    var blockFile = `${util.boardDir}/${boardName}/block/config.js`;    
     if(!util.fs.existsSync(blockFile)){
         return null;
     }
     var blocks = util.requireFunc(blockFile);
-
     return blocks;
 };
-var initBlockly = function(boardName){
-    var blockyDir = util.boardDir+'/'+boardName+'/block';
-    var blocklyFile = util.fs.readdirSync(blockyDir);
-    
+var initBlockly = function(boardInfo){
+    var boardName = boardInfo.name;
+    var platformName = boardInfo.platform;
+    var blockyDir = `${util.boardDir}/${boardName}/block`;
+    var platformBlockDir = `${util.platformDir}/${platformName}/block`;
+    //lookup platform first
+    var platformBlockFile =  util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
+    var blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
+    var blocks = platformBlockFile.concat(blocklyFile);
     if(blocklyFile.length > 0){
-        blocklyFile.sort(function(a, b){  
+        blocklyFile.sort(function(a, b){
             return a.length - b.length;
         });
         blocklyFile.forEach(element => {
             if(element.includes('config.js')){ //skip config.js file
                 return;
-            }            
+            }
             try {
-                if(element.startsWith('block') && element.endsWith('.js')){
-                    util.requireFunc(blockyDir+'/'+element)(Blockly);
-                    let generatorFile = element.replace("block","generator");
-                    util.requireFunc(blockyDir+'/'+generatorFile)(Blockly);
+                let name = path.basename(element);
+                if(name.startsWith('block') && name.endsWith('js')){
+                    util.requireFunc(element)(Blockly);
+                    let generatorFile = name.replace("block","generator");
+                    util.requireFunc(`${path.dirname(element)}/${generatorFile}`)(Blockly);
                 }
-                
             } catch (error) {
                 console.log('load blockly error');
                 console.log(error);
-            }            
+            }
         });
     }
 };
-
-
 
 /*var reloadBlockly = function(toolbox,workspace,updatecode){
     
@@ -271,11 +279,8 @@ export default {
             myself.variableDialog = true;
         };
 
-        console.log('blocly mounted');
-        /*if (this.getCookie('lang') == null) {
-            console.log('set default lang to en');
-		    this.setCookie('lang', 'en', 365);
-        }*/
+        console.log('blocly mounted');        
+
         //---- global event
         this.$global.$on('theme-change',this.onThemeChange);
         this.$global.$on('panel-resize',this.onResizePanel);
@@ -294,7 +299,7 @@ export default {
         document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         
         //---- render block
-        this.onBoardChange(this.$global.board.board);
+        this.onBoardChange(this.$global.board.board_info);
         //---- render editor theme
         this.onEditorThemeChange(this.$global.editor.theme);
         //---- render editor fontsize
@@ -350,7 +355,7 @@ export default {
                     var codegen = util.requireFunc(`${boardDirectory}/codegen`);
                 }else{
                     var codegen = util.requireFunc(`${platformDir}/codegen`);
-                }                                
+                }
                 var {sourceCode,codeContext} = codegen.generate(this.$global.editor.rawCode);
                 this.$global.editor.sourceCode = sourceCode;
             }
@@ -362,8 +367,9 @@ export default {
             }
 
         },
-        onBoardChange: function(boardName){
-            initBlockly(boardName);            
+        onBoardChange: function(boardInfo){            
+            initBlockly(boardInfo);
+            let boardName = boardInfo.name;
             let blocks = loadBlock(boardName);
             let stringBlock = '';
             if('base_blocks' in blocks){ //render block base from platform
@@ -410,22 +416,6 @@ export default {
                 }
             }
         },
-
-        getCookie(c_name) {
-            if (document.cookie.length > 0) {
-                var c_start = document.cookie.indexOf(c_name + '=');
-                if (c_start != -1) {
-                    c_start = c_start + c_name.length + 1;
-                    var c_end = document.cookie.indexOf(';', c_start);
-                    if (c_end == -1) {
-                        c_end = document.cookie.length;
-                    }
-                    return unescape(document.cookie.substring(c_start, c_end));
-                }
-            }
-            return null;
-        },
-
         setCookie(cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
