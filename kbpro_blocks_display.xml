@@ -751,10 +751,10 @@
       </block>
     </value>
   </block><block type="factory_base" id="ckZPxPO4fX~12_y4XozR" deletable="false" movable="false" x="10" y="10">
-    <mutation connections="NONE"></mutation>
+    <mutation connections="LEFT"></mutation>
     <field name="NAME">i2c128x64_display_height</field>
     <field name="INLINE">AUTO</field>
-    <field name="CONNECTIONS">NONE</field>
+    <field name="CONNECTIONS">LEFT</field>
     <statement name="INPUTS">
       <block type="input_dummy" id="g_qY|w#yqFUMTy1,Sy#o">
         <field name="ALIGN">LEFT</field>
@@ -774,6 +774,10 @@
       <block type="text" id="Qk%.Ew6M3EP1O(5bkndB" deletable="false" movable="false">
         <field name="TEXT"></field>
       </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="L|)Z}yA#0cmt)OkOF8k["></shadow>
+      <block type="type_number" id="``Yr3H?{LrIv0n:F|;9z"></block>
     </value>
     <value name="COLOUR">
       <block type="colour_hue" id="jF!{{lqZ@@Tew*ZAZBLq">
