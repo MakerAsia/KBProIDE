@@ -1,18 +1,153 @@
 module.exports = {
     base_blocks : [ // use "blocks : [ " in normally situation but this need to override base block from esp-idf platforms
         {
-            name : 'Basic',
+            name : 'Display',
             color : '230',
             icon : '/static/icons/SVG/c1.svg',
             blocks : [
-                'basic_led16x8',
-                'basic_led16x8_clr',
-                'basic_led16x8_2chars',
-                'basic_led16x8_scroll',
-                'basic_led16x8_scroll_when_ready',
-                'basic_delay',
-                'basic_forever',
+                'i2c128x64_display_image',
+                'i2c128x64_display_clear',
+                'i2c128x64_display_display',
+                'i2c128x64_display_print',
+                'i2c128x64_display_draw_line',
+                'i2c128x64_display_draw_rect',
+                'i2c128x64_display_draw_circle',
+                'i2c128x64_display_draw_roundrect',
+                'i2c128x64_display_draw_pixel',
+                'i2c128x64_display_invert',
+                'i2c128x64_display_width',
+                'i2c128x64_display_height',
+                'i2c128x64_display_st_scroll_r',
+                'i2c128x64_display_sp_scroll_r',
+                'i2c128x64_display_st_scroll_l',
+                'i2c128x64_display_sp_scroll_l',
                 'basic_string'
+            ]
+        },
+        {
+            name : 'Sensor',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'button_1_status',
+                'button_2_status',
+                'bme280_read_temp',
+                'bme280_read_humid',
+                'bme280_read_pressure',
+                'bh1680_read_light',
+                'bh1745_read_red',
+                'bh1745_read_green',
+                'bh1745_read_blue',
+                'bmx055_read_acc_x',
+                'bmx055_read_acc_y',
+                'bmx055_read_acc_z',
+                'bmx055_read_gyro_roll',
+                'bmx055_read_gyro_pitch',
+                'bmx055_read_gyro_yaw',
+                'bmx055_read_compass',
+            ]
+        },
+        {
+            name : 'I/O',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'io_board_read',
+                'io_board_write',
+                'io_setpin',
+                'io_digital_read',
+                'io_digital_write',
+                'io_analog_read',
+                'io_analog_write',
+                'io_pulsein',
+                'io_shift_in',
+                'io_shift_out'
+            ]
+        },        
+        {
+            name : 'Time',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'basic_delay',
+                'wait_btn_press',
+                'time_sync',
+                'time_get_year',
+                'time_get_month',
+                'time_get_day',
+                'time_get_hour',
+                'time_get_minute',
+                'time_get_second',
+                'time_millis',
+                'time_micros'
+            ]
+        },        
+        {
+            name : 'Music',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'speaker_play_note',
+                'speaker_rest',
+                'speaker_scale',
+                'speaker_set_volume',
+                'speaker_get_volume'
+            ]
+        },
+        {
+            name : 'Math',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'math_number',
+                'math_arithmetic',
+                'math_variables_set',
+                'math_variables_get',
+                'math_pow',
+                'math_sqrt',
+                'math_single',
+                'math_trig',
+                'math_round',
+                'math_min',
+                'math_max',
+                'math_map',
+                'math_random_int',
+                'math_number_property'
+            ]
+        },
+        {
+            name : 'Music',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'speaker_play_note',
+                'speaker_rest',
+                'speaker_scale',
+                'speaker_set_volume',
+                'speaker_get_volume'
+            ]
+        },
+        {
+            name : 'Logic',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'controls_if',
+                'logic_compare',
+                'logic_operation',
+                'logic_negate',
+                'logic_boolean',
+            ]
+        },
+        {
+            name : 'Loops',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            blocks : [
+                'basic_forever',
+                'controls_whileUntil',
+                'controls_for',
+                'controls_flow_statements',
             ]
         },
         {
@@ -21,131 +156,103 @@ module.exports = {
             icon : '/static/icons/SVG/c1.svg',
             custom : 'VARIABLE'
         },
-        /*{
-            name : 'Math',
-            color : '230',
-            icon : '/static/icons/SVG/c2.svg',
-            blocks : [
-                'math_number',
-                'math_arithmetic',
-                'math_variables_set',
-                'math_variables_get',
-                'math_pow',
-                'math_single',
-                'math_trig',
-                'math_round',
-                'convert_ra_de',
-                'math_random_int',
-                'math_number_property'
-            ]
-        },
         {
-            name : 'Logic',
-            color : '210',
-            icon : '/static/icons/SVG/c3.svg',
+            name : 'Advanced',
+            color : '195',
+            icon : '/static/icons/SVG/c11.svg',
             blocks : [
-                'controls_if',
                 {
-                    name : 'controls_if' , 
+                    type : 'category',
+                    name : 'Functions',
+                    icon : '/static/icons/SVG/13.svg',
+                    custom : 'PROCEDURE'
+                },
+                {
+                    type : 'category',
+                    name : 'Tasks',
+                    icon : '/static/icons/SVG/13.svg',
                     blocks : [
-                        {
-                            mutation : { else : '1'}
-                        }
+                        'create task',
+                        'start task',
+                        'stop task'
                     ]
                 },
-                'logic_compare',
-                'logic_operation',
-                'logic_negate',
-                'logic_boolean',
-                'logic_led16x8_scroll_ready',
-                'logic_sw1_pressed',
-                'logic_sw1_released',
-                'logic_sw2_pressed',
-                'logic_sw2_released'
+                {
+                    type : 'category',
+                    name : 'Arrays',
+                    icon : '/static/icons/SVG/13.svg',
+                    blocks : [
+                        'array_set_to',
+                        'array_set_string_to',
+                        'array_length',
+                        'array_get_value_at',
+                        'array_set_value_at',
+                        'array_push',
+                        'array_pop',
+                        'array_index_of',
+                        'array_prepand',
+                        'array_pop_front',
+                        'array_insert_at',
+                        'array_remove_at',
+                        'array_reverse'
+                    ]
+                },
+                {
+                    type : 'category',
+                    name : 'Text',
+                    icon : '/static/icons/SVG/13.svg',
+                    blocks : [
+                        'basic_string',
+                        'string_length',
+                        'string_join',
+                        'string_compare',
+                        'string_substring',
+                        'string_parse_int',
+                        'string_char_at',
+                        'string_sprintf'
+                    ]
+                },
+                {
+                    type : 'category',
+                    name : 'WiFi',
+                    icon : '/static/icons/SVG/13.svg',
+                    blocks : [
+                        'wifi_connect',
+                        'wifi_http_get',
+                        'wifi_http_post',
+                        'wifi_start_server',
+                        'wifi_server_on',
+                        'wifi_get_ip_addr',
+                        'wifi_stop'
+                    ]
+                },
+                {
+                    type : 'category',
+                    name : 'Bluetooth',
+                    icon : '/static/icons/SVG/13.svg',
+                    blocks : [
+                        'bt_start',
+                        'bt_get_password',
+                        'bt_send_string',
+                        'bt_on_receive'
+                    ]
+                },
+                {
+                    type : 'category',
+                    name : 'Serial',
+                    icon : '/static/icons/SVG/13.svg',
+                    blocks : [
+                        'serial_init',
+                        'serial_available',
+                        'serial_write_line',
+                        'serial_write_number',
+                        'serial_write_value',
+                        'serial_write_string',
+                        'serial_read_line',
+                        'serial_read_until'
+                    ]
+                }
             ]
-        },
-        {
-            name : 'Loop',
-            color : '120',
-            icon : '/static/icons/SVG/c4.svg',
-            blocks : [
-                'controls_whileUntil',
-                'loop_break',
-                'loop_continue',
-            ]
-        },
-        {
-            name : 'Wait',
-            color : '160',
-            icon : '/static/icons/SVG/c5.svg',
-            blocks : [
-                'wait_led_matrix_ready',
-                'wait_sw1_pressed',
-                'wait_sw1_released',
-                'wait_sw2_pressed',
-                'wait_sw2_released',
-            ]
-        },
-        {
-            name : 'Music',
-            color : '330',
-            icon : '/static/icons/SVG/c6.svg',
-            blocks : [
-                'music_note',
-                'music_rest',
-                'music_scale',
-                'music_set_volume',
-                'music_get_volume'
-            ]
-        },
-        {
-            name : 'Sensor',
-            color : '58',
-            icon : '/static/icons/SVG/c7.svg',
-            blocks : [
-                'sensor_ldr',
-                'sensor_lm73',
-                'sensor_switch1',
-                'sensor_switch2'
-            ]
-        },
-        {
-            name : 'Clock',
-            color : '19',
-            icon : '/static/icons/SVG/c8.svg',
-            blocks : [
-                'rtc_get',
-                'rtc_get_date',
-                'rtc_get_time',
-                'rtc_get_day',
-                'rtc_get_month',
-                'rtc_get_year',
-                'rtc_get_hour',
-                'rtc_get_minute',
-                'rtc_get_second',
-            ]
-        },
-        {
-            name : 'I/O',
-            color : '19',
-            icon : '/static/icons/SVG/c9.svg',
-            blocks : [
-                'output_write',
-                'output_toggle',
-                'output_read',
-                'usbsw_write',
-                'usbsw_toggle',
-                'usbsw_read',
-                'input_read'                
-            ]
-        },
-        {
-            name : 'Advance',
-            color : '290',
-            icon : '/static/icons/SVG/c10.svg',
-            blocks : [
-                'advance_task'                
-            ]
-        }*/
+        }
     ]
 }

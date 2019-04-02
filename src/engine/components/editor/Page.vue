@@ -87,6 +87,9 @@ import plug from '@/engine/PluginManager';
 
 var renderBlock = function(blocks,level = 1){
     let res = '';
+    if(blocks == undefined){        
+        return res;
+    }
     blocks.forEach(element=>{        
         if(level == 1){
             if(element.blocks){
@@ -101,7 +104,8 @@ var renderBlock = function(blocks,level = 1){
                 res += `<block type="${element}"></block>`;
             }else if(typeof(element) === 'object' && 'type' in element && element.type == 'category'){
                 let insideBlock = renderBlock(element.blocks,level+1);
-                res += `<category name="${element.name}" icon="${element.icon}">${insideBlock}</category>`;
+                var custom = element.custom? `custom="${element.custom}" `:"";
+                res += `<category name="${element.name}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
             }else if(typeof(element) === 'object' && 'mutation' in element){
                 let objKey = [];
                 Object.keys(element.mutation).forEach(key=>{
