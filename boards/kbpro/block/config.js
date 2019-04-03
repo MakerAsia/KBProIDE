@@ -217,10 +217,10 @@ module.exports = {
                     name : 'Bluetooth',
                     icon : '/static/icons/SVG/13.svg',
                     blocks : [
-                        'bt_start',
-                        'bt_get_password',
+                        'bt_start',                        
                         'bt_send_string',
-                        'bt_on_receive'
+                        'bt_on_receive',
+                        'bt_read_data'
                     ]
                 },
                 {
@@ -228,12 +228,11 @@ module.exports = {
                     name : 'Serial',
                     icon : '/static/icons/SVG/13.svg',
                     blocks : [
-                        'serial_init',
+                        'serial_usb_init',
+                        'serial_hardware_init',
                         'serial_available',
-                        'serial_write_line',
-                        'serial_write_number',
-                        'serial_write_value',
-                        'serial_write_string',
+                        'serial_write_newline',
+                        'serial_write_data',
                         'serial_read_line',
                         'serial_read_until'
                     ]
