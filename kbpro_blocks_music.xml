@@ -1,0 +1,204 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="!RYt+8`V6|sb%16Em(#`" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">speaker_play_note</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="1xCi`7Q6$5b);6$6n]Ww">
+        <field name="INPUTNAME">note</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="!{P=ac8b+S5gEZGz,8ty">
+            <field name="TEXT">play music note</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="x*vF,w}6_)8_knSecjE*"></shadow>
+          <block type="type_other" id="cZ+7O,y._7EV|.6MeA:P">
+            <field name="TYPE">MUSIC_NOTE</field>
+          </block>
+        </value>
+        <next>
+          <block type="input_dummy" id="j1sUqQyNeA#]$05NK04H">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="?LM(S8zP/]*KapQ7824D">
+                <field name="TEXT">tempo (bpm)</field>
+                <next>
+                  <block type="field_number" id="*Ku9+%}-7ZS}yfm1-%Cy">
+                    <field name="VALUE">70</field>
+                    <field name="FIELDNAME">tempo</field>
+                    <field name="MIN">30</field>
+                    <field name="MAX">300</field>
+                    <field name="PRECISION">0</field>
+                    <next>
+                      <block type="field_static" id="CiW,!X@^+@_w-%M?%Yiv">
+                        <field name="TEXT">instrument</field>
+                        <next>
+                          <block type="field_dropdown" id="P:`jmv?h9WP^a3rrI};M">
+                            <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                            <field name="FIELDNAME">instrument</field>
+                            <field name="USER0">Piano</field>
+                            <field name="CPU0">1</field>
+                            <field name="USER1">Harpsichord</field>
+                            <field name="CPU1">2</field>
+                            <field name="USER2">Organ</field>
+                            <field name="CPU2">3</field>
+                            <field name="USER3">Saxophone</field>
+                            <field name="CPU3">4</field>
+                            <field name="USER4">None</field>
+                            <field name="CPU4">0</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="C-!Z9RCF{jWw4:-4.skI" deletable="false" movable="false">
+        <field name="TEXT">play music</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="3~U4Z`1g_aC^4#kfmO$H" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="`+V/@WcocUI1GLbVV]Jc"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="osEN!j1VaXCQeVkRnF6|"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="HBbCniz$yAQ-Mu=Ab#uA">
+        <mutation colour="#a55b93"></mutation>
+        <field name="HUE">315</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="V.aYqt7Vqe1%Z*P!gh,$" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">speaker_music_note</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="7o3+L,,kiE{[^W%DS9:o">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_input" id="0(9E[0Du!+m;:Mf){(Bf">
+            <field name="TEXT">C3,D3,E3</field>
+            <field name="FIELDNAME">notes</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="KqoN3Xc!#]$+{hr/osSB" deletable="false" movable="false">
+        <field name="TEXT">create music notes from B0-DS8</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="a$?w6bUxd8P`-`K7Z)+L" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="*Q*41=Tz.h$C2BIOd9.a"></shadow>
+      <block type="type_other" id="ceg}n:)Gz))BOESMLkbl">
+        <field name="TYPE">MUSIC_NOTE</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="!ys3TA2y1k@i9oY48$J4">
+        <mutation colour="#a55b93"></mutation>
+        <field name="HUE">315</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="e./B]kl,-Z`tSo=z6^i)" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">speaker_set_volume</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="=9M:=?6S}V7*EA|Xbvar">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="{!g]1d;}1E*=q4WuCFgz">
+            <field name="TEXT">set volume (0-10)</field>
+            <next>
+              <block type="field_number" id="-#J{[yKh?Gs`yv2AGSLE">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">volume</field>
+                <field name="MIN">0</field>
+                <field name="MAX">10</field>
+                <field name="PRECISION">0</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="4fjr}xaXfi@jz3g1Hx-:" deletable="false" movable="false">
+        <field name="TEXT">set speaker volume 0 = silence 10=max</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=",YpU@ja:?t!@|C}oRef_" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="OyD5c!Gs/q-PVolGyNl`"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="JWyTYJ3BlYW;X]K;dS2}"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="%b1=|P:#fZmOtD,9F[j#">
+        <mutation colour="#a55b93"></mutation>
+        <field name="HUE">315</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="RL9m}qG0g+XjLaa_SP7b" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">speaker_get_volume</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="_BO{%SbYZ:VUU(M|x.q{">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="Vz~=Ekdz=;uNx9*GFSy!">
+            <field name="TEXT">get volume</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="-Z|pvx]QwsEJS|=wY)`P" deletable="false" movable="false">
+        <field name="TEXT">get speaker volume</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="7X;v3Z*TjvyZ*nOv/wF9" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="w%lU-lO`WyRt+*F}8H)j"></shadow>
+      <block type="type_number" id="7X;0)RLQ+U~s#=?vw:k*"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="|s|YOw~#_|{.[:L4@tjS">
+        <mutation colour="#a55b93"></mutation>
+        <field name="HUE">315</field>
+      </block>
+    </value>
+  </block></xml>

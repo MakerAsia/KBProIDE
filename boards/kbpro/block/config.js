@@ -68,12 +68,13 @@ module.exports = {
             color : '230',
             icon : '/static/icons/SVG/c1.svg',
             blocks : [
-                'basic_delay',
-                'wait_btn_press',
+                'time_delay',
+                'time_wait_btn_press',
                 'time_sync',
                 'time_get_year',
                 'time_get_month',
                 'time_get_day',
+                'time_get_day_of_week',
                 'time_get_hour',
                 'time_get_minute',
                 'time_get_second',
@@ -86,12 +87,17 @@ module.exports = {
             color : '230',
             icon : '/static/icons/SVG/c1.svg',
             blocks : [
+                'speaker_music_note',
                 'speaker_play_note',
-                'speaker_rest',
-                'speaker_scale',
                 'speaker_set_volume',
                 'speaker_get_volume'
             ]
+        },
+        {
+            name : 'Variables',
+            color : '230',
+            icon : '/static/icons/SVG/c1.svg',
+            custom : 'VARIABLE'
         },
         {
             name : 'Math',
@@ -112,18 +118,6 @@ module.exports = {
                 'math_map',
                 'math_random_int',
                 'math_number_property'
-            ]
-        },
-        {
-            name : 'Music',
-            color : '230',
-            icon : '/static/icons/SVG/c1.svg',
-            blocks : [
-                'speaker_play_note',
-                'speaker_rest',
-                'speaker_scale',
-                'speaker_set_volume',
-                'speaker_get_volume'
             ]
         },
         {
@@ -148,12 +142,6 @@ module.exports = {
                 'controls_for',
                 'controls_flow_statements',
             ]
-        },
-        {
-            name : 'Variables',
-            color : '230',
-            icon : '/static/icons/SVG/c1.svg',
-            custom : 'VARIABLE'
         },
         {
             name : 'Advanced',
@@ -221,8 +209,7 @@ module.exports = {
                         'wifi_http_post',
                         'wifi_start_server',
                         'wifi_server_on',
-                        'wifi_get_ip_addr',
-                        'wifi_stop'
+                        'wifi_get_ip_addr'
                     ]
                 },
                 {
