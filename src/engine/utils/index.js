@@ -149,6 +149,40 @@ var loadCofigComponents = function(obj,compName){
   }
   return {data : componentData, persistence : persistenceData, method: methods};
 };
+var rmdirf = function(path) {
+  var files = [];
+  if( fs.existsSync(path) ) {
+      files = fs.readdirSync(path);
+      files.forEach(function(file,index){
+          var curPath = path + "/" + file;
+          if(fs.lstatSync(curPath).isDirectory()) { // recurse
+            rmdirf(curPath);
+          } else { // delete file
+            fs.unlinkSync(curPath);
+          }
+      });
+      fs.rmdirSync(path);
+  }
+};
+var walk = function(dir) {
+  var results = [];
+  if(!fs.existsSync(dir)){
+    return results;
+  }
+  var list = fs.readdirSync(dir);
+  list.forEach(function(file) {
+      file = dir + '/' + file;
+      var stat = fs.statSync(file);
+      if (stat && stat.isDirectory()) { 
+          /* Recurse into a subdirectory */
+          results = results.concat(walk(file));
+      } else { 
+          /* Is a file */
+          results.push(file);
+      }
+  });
+  return results;
+}
 
 export default {
   camel,
@@ -161,6 +195,8 @@ export default {
   requireFunc,
   humanFileSize,
   loadCofigComponents,
+  walk,
+  rmdirf,
   filterFileName : function(obj,filterName){    
     var res = {};
     Object.keys(obj).forEach(key=>{

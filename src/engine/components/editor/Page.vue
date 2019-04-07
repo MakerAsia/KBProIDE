@@ -11,32 +11,11 @@
                 </xml>
 
                 <v-dialog v-model="variableDialog" persistent max-width="600px">
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">Rename Variable</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container grid-list-md>
-                                <v-flex xs12>
-                                <v-text-field 
-                                    v-model="variable_name"
-                                    label="Variable name" 
-                                    required 
-                                    clearable 
-                                    counter 
-                                    maxlength="32" 
-                                    :rules="[variable_name_validator]"></v-text-field>
-                                </v-flex>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" flat @click="variableDialog = false">Close</v-btn>
-                            <v-btn color="blue darken-1" flat ref="renameBtnOk" :disabled="!validated">Save</v-btn>
-                        </v-card-actions>
-                    </v-card>
+                    <variable-naming-dialog ref="variableName" @close="()=>{variableDialog = false}"></variable-naming-dialog>
                 </v-dialog>
-
+                <v-dialog v-model="musicDialog" max-width="785px">
+                    <piano-dialog ref="musicNotes" @close="()=>{musicDialog = false}"></piano-dialog>
+                </v-dialog>
             </div>
             <!-- end --> 
             <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
@@ -84,6 +63,9 @@ import util from '@/engine/utils';
 const fs = require('fs');
 // === engine ===
 import plug from '@/engine/PluginManager';
+// === dialog ===
+import VariableNamingDialog from '@/engine/views/dialog/VariableNamingDialog';
+import PianoDialog from '@/engine/views/dialog/PianoDialog';
 
 var renderBlock = function(blocks,level = 1){
     let res = '';
@@ -97,11 +79,16 @@ var renderBlock = function(blocks,level = 1){
             }else{
                 var insideBlock = "";
             }
+            if(element.xml){
+                var insideBlock = element.xml;
+            }
             var custom = element.custom? `custom="${element.custom}" `:"";
             res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         }else{            
             if(typeof(element) === 'string'){ //block element
                 res += `<block type="${element}"></block>`;
+            }else if(typeof(element) == 'object' && element.xml){
+                res += element.xml;
             }else if(typeof(element) === 'object' && 'type' in element && element.type == 'category'){
                 let insideBlock = renderBlock(element.blocks,level+1);
                 var custom = element.custom? `custom="${element.custom}" `:"";
@@ -202,7 +189,9 @@ export default {
     components: {
         Multipane,
         MultipaneResizer,
-        CodeMirror
+        CodeMirror,
+        VariableNamingDialog,
+        PianoDialog
     },
     data(){
      return {
@@ -221,17 +210,7 @@ export default {
            { name : 'main', filename : 'main.cpp' }
         ],
         variableDialog : false,
-        variable_name : '',
-        validated : false,
-        variable_name_validator : value => {
-            const pattern = /(?:^(uint16\s*|uint32\s*|uint8\s*|auto\s*|const\s*|unsigned\s*|signed\s*|register\s*|volatile\s*|static\s*|void\s*|short\s*|long\s*|char\s*|int\s*|float\s*|double\s*|_Bool\s*|complex\s*|return\s*)+$)|(?:\s+\*?\*?\s*)|(^[0-9])|([^_A-Za-z0-9]+)/;            
-            this.validated = !pattern.test(value);
-            if(value == null || value == ""){
-                this.validated = false;
-            }
-            return this.validated || 'Invalid variable name';
-        },
-
+        musicDialog : false,
      }
    },
    mounted(){
@@ -270,9 +249,10 @@ export default {
         this.workspace.scrollCenter();
         // override prompt function, fixed electron dialog problem
         Blockly.prompt = function(message, defaultValue, callback) {            
-            myself.variable_name = defaultValue;
-            myself.$refs.renameBtnOk.$on('click',function(){
-                var new_val = myself.variable_name;
+            myself.$refs.variableName.variable_name = defaultValue;
+            myself.$refs.variableName.message = message;
+            myself.$refs.variableName.$on('var_result',function(name){
+                var new_val = name;
                 if ((new_val) && (new_val != '')) {
                     callback(new_val);
                 } else {
@@ -281,6 +261,17 @@ export default {
                 myself.variableDialog = false;
             });
             myself.variableDialog = true;
+        };
+
+        Blockly.music = function(notes,cb){
+            if(notes){
+                myself.$refs.musicNotes.select = notes.split(',');
+            }
+            myself.$refs.musicNotes.$on('result',function(n){
+                myself.musicDialog = false;
+                cb(n);
+            });
+            myself.musicDialog = true;
         };
 
         console.log('blocly mounted');        
@@ -310,7 +301,9 @@ export default {
         this.onEditorFontsizeChange(this.$global.editor.fontSize);
         //---- render editor mode change
         this.onEditorModeChange(this.$global.editor.mode);
-        //---- load code ----//                
+        //---- load code ----//
+        this.$global.editor.Blockly = Blockly;
+        this.$global.editor.workspace = this.workspace;
     },
     methods:{
         getCm(){

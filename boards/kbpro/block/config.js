@@ -3,27 +3,206 @@ module.exports = {
         {
             name : 'Display',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_picture_96px_1.png',
             blocks : [
-                'i2c128x64_display_image',
+                {
+                    xml : `<block type="variables_set">
+                                <field name="VAR">img1</field>
+                                <value name="VALUE">
+                                    <block type="i2c128x64_create_image" inline="false"></block>
+                                </value>
+                            </block>`
+                },{
+                    xml : 
+                    `<block type="i2c128x64_display_image">
+                        <value name="img">
+                            <block type="variables_get">
+                                <field name="VAR">img1</field>
+                            </block>
+                        </value>
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="width">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="height">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'i2c128x64_display_clear',
                 'i2c128x64_display_display',
-                'i2c128x64_display_print',
-                'i2c128x64_display_draw_line',
-                'i2c128x64_display_draw_rect',
-                'i2c128x64_display_draw_circle',
-                'i2c128x64_display_draw_progress_bar',
-                'i2c128x64_display_draw_pixel',
-                'i2c128x64_display_string_width',
-                'i2c128x64_display_width',                
-                'i2c128x64_display_height',                
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_print">
+                        <value name="text">
+                            <shadow type="basic_string">
+                                <field name="VALUE">Hello world!</field>
+                            </shadow>
+                        </value>
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_draw_line">
+                        <value name="x0">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="y0">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="x1">
+                            <shadow type="math_number">
+                                <field name="NUM">100</field>
+                            </shadow>
+                        </value>
+                        <value name="y1">
+                            <shadow type="math_number">
+                                <field name="NUM">50</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_draw_rect">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="width">
+                            <shadow type="math_number">
+                                <field name="NUM">50</field>
+                            </shadow>
+                        </value>
+                        <value name="height">
+                            <shadow type="math_number">
+                                <field name="NUM">30</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_draw_circle">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">64</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">32</field>
+                            </shadow>
+                        </value>
+                        <value name="r">
+                            <shadow type="math_number">
+                                <field name="NUM">20</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_draw_progress_bar">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">32</field>
+                            </shadow>
+                        </value>
+                        <value name="width">
+                            <shadow type="math_number">
+                                <field name="NUM">120</field>
+                            </shadow>
+                        </value>
+                        <value name="height">
+                            <shadow type="math_number">
+                                <field name="NUM">30</field>
+                            </shadow>
+                        </value>
+                        <value name="progress">
+                            <shadow type="math_number">
+                                <field name="NUM">50</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                { 
+                    xml : 
+                    `<block type="i2c128x64_display_draw_pixel">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">64</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">32</field>
+                            </shadow>
+                        </value>    
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="i2c128x64_display_string_width">
+                        <value name="text">
+                            <shadow type="basic_string">
+                                <field name="VALUE">Hello world!</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                'i2c128x64_display_width',
+                'i2c128x64_display_height',
                 'basic_string'
             ]
         },
         {
             name : 'Sensor',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_thermometer_96px.png',
             blocks : [
                 'button_1_status',
                 'button_2_status',
@@ -41,34 +220,127 @@ module.exports = {
                 'bmx055_read_gyro_x',
                 'bmx055_read_gyro_y',
                 'bmx055_read_gyro_z',
-                'bmx055_read_compass',
+                'bmx055_read_mag_x',
+                'bmx055_read_mag_y',
+                'bmx055_read_mag_z'
             ]
         },
         {
             name : 'GPIO',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_electronics_96px.png',
             blocks : [
                 'io_board_read',
                 'io_board_write',
-                'io_board_write_value',
-                'io_setpin',
-                'io_digital_read',
-                'io_digital_write',
-                'io_analog_read',
-                'io_analog_write',
-                'io_pwm_write',
-                'io_pulse_in',
+                {
+                    xml : 
+                    `<block type="io_board_write_value">
+                        <value name="value">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="io_setpin">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">25</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="io_digital_read">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">32</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="io_digital_write">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">33</field>
+                            </shadow>
+                        </value>
+                        <value name="value">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },                
+                {
+                    xml : 
+                    `<block type="io_analog_read">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">36</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },     
+                /*'io_analog_write',*/
+                {
+                    xml : 
+                    `<block type="io_pwm_write">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">36</field>
+                            </shadow>
+                        </value>
+                        <value name="value">
+                            <shadow type="math_number">
+                                <field name="NUM">128</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="io_pulse_in">
+                        <value name="pin">
+                            <shadow type="math_number">
+                                <field name="NUM">36</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'io_shift_in',
-                'io_shift_out'
+                {
+                    xml : 
+                    `<block type="io_shift_out">
+                        <value name="data">
+                            <shadow type="math_number">
+                                <field name="NUM">127</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                }
             ]
         },        
         {
             name : 'Time',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_Story_Time_96px.png',
             blocks : [
-                'time_delay',
+                {
+                    xml : 
+                    `<block type="time_delay">
+                        <value name="delay">
+                            <shadow type="math_number">
+                                <field name="NUM">500</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'time_wait_btn_press',
                 'time_sync',
                 'time_get_year',
@@ -85,10 +357,39 @@ module.exports = {
         {
             name : 'Music',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_musical_notes_96px.png',
             blocks : [
+                /*{
+                    xml : `<block type="variables_set">
+                                <field name="VAR">music1</field>
+                                <value name="VALUE">
+                                    <block type="speaker_music_note">
+                                        <field name="notes">C3,D3,E3</field>
+                                    </block>
+                                </value>
+                            </block>`
+                },
+                {
+                    xml : 
+                    `<block type="speaker_play_note">
+                        <value name="note">                    
+                            <block type="variables_get">
+                                <field name="VAR">music1</field>
+                            </block>
+                        </value>
+                    </block>`
+                },*/
                 'speaker_music_note',
-                'speaker_play_note',
+                {
+                    xml : 
+                    `<block type="speaker_play_note">
+                        <value name="note">                    
+                            <block type="speaker_music_note">
+                                <field name="notes">C4,B4,E4</field>
+                            </block>
+                        </value>
+                    </block>`
+                },
                 'speaker_set_volume',
                 'speaker_get_volume'
             ]
@@ -96,34 +397,107 @@ module.exports = {
         {
             name : 'Variables',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_variable_96px.png',
             custom : 'VARIABLE'
         },
         {
             name : 'Math',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/calculator.png',
             blocks : [
                 'math_number',
-                'math_arithmetic',
-                'math_variables_set',
+                {
+                    xml : 
+                    `<block type="math_arithmetic">
+                        <value name="A">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                        <value name="B">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="math_variables_set">
+                        <value name="VALUE">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'math_variables_get',
-                'math_pow',
-                'math_sqrt',
-                'math_single',
-                'math_trig',
-                'math_round',
-                'math_min',
+                {
+                    xml : 
+                    `<block type="math_pow">
+                        <value name="NUM1">
+                            <shadow type="math_number">
+                                <field name="NUM">2</field>
+                            </shadow>
+                        </value>
+                        <value name="NUM2">
+                            <shadow type="math_number">
+                                <field name="NUM">3</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },                
+                /*'math_sqrt',*/
+                {
+                    xml : 
+                    `<block type="math_single">
+                        <value name="NUM">
+                            <shadow type="math_number">
+                                <field name="NUM">9</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="math_trig">
+                        <value name="NUM">
+                            <shadow type="math_number">
+                                <field name="NUM">90</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                {
+                    xml : 
+                    `<block type="math_round">
+                        <value name="NUM">
+                            <shadow type="math_number">
+                                <field name="NUM">1.2</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
+                /*'math_min',
                 'math_max',
-                'math_map',
+                'math_map',*/
                 'math_random_int',
-                'math_number_property'
+                {
+                    xml : 
+                    `<block type="math_number_property">
+                        <value name="NUMBER_TO_CHECK">
+                            <shadow type="math_number">
+                                <field name="NUM">5</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                }
             ]
         },
         {
             name : 'Logic',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_serial_tasks_96px.png',
             blocks : [
                 'controls_if',
                 'logic_compare',
@@ -135,92 +509,160 @@ module.exports = {
         {
             name : 'Loops',
             color : '230',
-            icon : '/static/icons/SVG/c1.svg',
+            icon : '/static/icons/icons8_repeat_96px.png',
             blocks : [
                 'basic_forever',
                 'controls_whileUntil',
-                'controls_for',
+                {
+                    xml : 
+                    `<block type="controls_for">
+                        <value name="FROM">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                        <value name="TO">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="BY">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'controls_flow_statements',
             ]
         },
         {
             name : 'Advanced',
             color : '195',
-            icon : '/static/icons/SVG/c11.svg',
+            icon : '/static/icons/icons8_hacker_128px.png',
             blocks : [
                 {
                     type : 'category',
                     name : 'Functions',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_module_96px.png',
                     custom : 'PROCEDURE'
                 },
-                {
+                /*{
                     type : 'category',
                     name : 'Tasks',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_exercise_96px.png',
                     blocks : [
                         'create task',
                         'start task',
                         'stop task'
                     ]
-                },
-                {
+                },*/
+                /*{
                     type : 'category',
                     name : 'Arrays',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_stack_96px.png',
                     blocks : [
-                        'array_set_to',
-                        'array_set_string_to',
-                        'array_length',
-                        'array_get_value_at',
-                        'array_set_value_at',
-                        'array_push',
-                        'array_pop',
-                        'array_index_of',
-                        'array_prepand',
-                        'array_pop_front',
-                        'array_insert_at',
-                        'array_remove_at',
-                        'array_reverse'
+                        'lists_create_empty',
+                        'lists_repeat',
+                        'lists_reverse',
+                        'lists_isEmpty',
+                        'lists_length',
+                        'lists_create_with',
+                        'lists_indexOf',
+                        'lists_getIndex',
+                        'lists_setIndex',
+                        'lists_getSublist',
+                        'lists_sort',
+                        'lists_split',
                     ]
-                },
+                },*/
                 {
                     type : 'category',
                     name : 'Text',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_text_color_96px.png',
                     blocks : [
                         'basic_string',
-                        'string_length',
-                        'string_join',
-                        'string_compare',
-                        'string_substring',
-                        'string_parse_int',
-                        'string_char_at',
-                        'string_sprintf'
+                        'text_length',
+                        'text_join',
+                        'text_append',
+                        'text_isEmpty',
+                        'text_indexOf',
+                        'text_charAt',
+                        'text_getSubstring',
+                        'text_changeCase',
+                        'text_trim',
+                        'text_replace',
+                        'text_reverse',
+                        //'text_compare',
+                        //'text_parse_int'
                     ]
                 },
                 {
                     type : 'category',
                     name : 'WiFi',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_wifi_router_96px.png',
                     blocks : [
-                        'wifi_connect',
-                        'wifi_http_get',
-                        'wifi_http_post',
+                        'wifi_connect',                        
+                        /*{
+                            xml : 
+                                `<block type="wifi_http_get">
+                                    <value name="url">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                </block>`
+                        },
+                        {
+                            xml : 
+                                `<block type="wifi_http_post">
+                                    <value name="url">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                    <value name="data">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                </block>`
+                        },*/                   
                         'wifi_start_server',
                         'wifi_server_on',
+                        {
+                            xml : 
+                                `<block type="wifi_server_send">
+                                    <value name="text">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                </block>`
+                        },
+                        
                         'wifi_get_ip_addr'
                     ]
                 },
                 {
                     type : 'category',
                     name : 'Bluetooth',
-                    icon : '/static/icons/SVG/13.svg',
+                    icon : '/static/icons/icons8_bluetooth_2_96px.png',
                     blocks : [
-                        'bt_start',                        
-                        'bt_send_string',
+                        'bt_start',
+                        {
+                            xml : 
+                                `<block type="bt_send_string">
+                                    <value name="text">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                </block>`
+                        },
                         'bt_on_receive',
-                        'bt_read_data'
+                        'bt_read_data',
+                        'bt_read_line'
                     ]
                 },
                 {
@@ -231,10 +673,20 @@ module.exports = {
                         'serial_usb_init',
                         'serial_hardware_init',
                         'serial_available',
-                        'serial_write_newline',
-                        'serial_write_data',
+                        {
+                            xml : 
+                                `<block type="serial_write_data">
+                                    <value name="text">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>
+                                </block>`
+                        },
+                        'serial_write_newline',                        
                         'serial_read_line',
-                        'serial_read_until'
+                        'serial_read_until',
+                        'basic_string'
                     ]
                 }
             ]

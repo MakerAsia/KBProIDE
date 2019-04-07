@@ -1,7 +1,44 @@
 module.exports = function(Blockly){
 'use strict';
-
+if(!Blockly.dbNameType){
+    Blockly.dbNameType = {};
+}
 Blockly.JavaScript['taskNumber'] = 0;
+
+Blockly.JavaScript.init = function(workspace) {    
+    Blockly.JavaScript.definitions_ = Object.create(null);
+    Blockly.JavaScript.functionNames_ = Object.create(null);
+    
+    if (!Blockly.JavaScript.variableDB_) {
+        Blockly.JavaScript.variableDB_ =
+            new Blockly.Names(Blockly.JavaScript.RESERVED_WORDS_);
+    } else {
+        Blockly.JavaScript.variableDB_.reset();
+    }
+    Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap());
+    var defvars = [];
+    // Add developer variables (not created or named by the user).
+    var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
+    for (var i = 0; i < devVarList.length; i++) {
+        defvars.push(Blockly.JavaScript.variableDB_.getName(devVarList[i],
+            Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+    }
+    // Add user variables, but only ones that are being used.
+    var variables = Blockly.Variables.allUsedVarModels(workspace);
+    for (var i = 0; i < variables.length; i++) {
+        defvars.push(Blockly.JavaScript.variableDB_.getName(variables[i].getId(),
+            Blockly.Variables.NAME_TYPE));
+	}	
+    // Declare all of the variables.
+    if (defvars.length) {
+		var declareVar = [];
+		for(var i =0;i<defvars.length;i++){
+			let vType = (defvars[i] in Blockly.dbNameType) ? Blockly.dbNameType[defvars[i]].type : "int";
+			declareVar.push("VARIABLE."+vType + " " + defvars[i] + ";");
+		}
+		Blockly.JavaScript.definitions_['variables'] =	declareVar.join("\n");
+    }
+};
 
 Blockly.JavaScript.resetTaskNumber = function(block) {
 	Blockly.JavaScript['taskNumber'] = 0;
@@ -71,12 +108,12 @@ Blockly.JavaScript['basic_string'] = function(block) {
 // =============================================================================
 // math
 // =============================================================================
-Blockly.JavaScript['math_number'] = function(block) {
+/*Blockly.JavaScript['math_number'] = function(block) {
 	return [
 		'(double)' + block.getFieldValue('VALUE'),
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
-};
+};*/
 
 Blockly.JavaScript['math_arithmetic'] = function(block) {
 	// Basic arithmetic operators, and power.

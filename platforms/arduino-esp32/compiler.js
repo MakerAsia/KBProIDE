@@ -80,11 +80,12 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
                     console.log(`compiling... ${path.basename(file)} ok.`);
                     // console.log(`${stdout}`);
                 } else {
+                    //reject(stderr);
                     console.log(`compiling... ${path.basename(file)} ok. (with warnings)`);
                     // console.log(`${stderr}`);
                 }
             } catch (e) {
-                console.log(`compiling... ${file} failed.`)
+                console.log(`compiling... ${file} failed. with ${e}`)
                 reject(`compiling... ${file} failed.`)
             }
             if (idx === arr.length - 1) {
@@ -94,10 +95,10 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
     });
 }
 
-function linkObject(ldflags) {
+function linkObject(ldflags,extarnal_libflags) {
     log.i(`linking... ${G.ELF_FILE}`);
     let flags = G.ldflags.concat(ldflags);
-    let libflags = G.ldlibflag.join(" ");
+    let libflags = (extarnal_libflags)? G.ldlibflag.concat(extarnal_libflags).join(" ") : G.ldlibflag.join(" ");    
     flags = G.ldflags.join(" ") + ' ' + ldflags.join(" ")
     var cmd = `"${G.COMPILER_GCC}" ${flags} -Wl,--start-group ${libflags} -L"${G.app_dir}" -lmain -lgcov -Wl,--end-group -Wl,-EL -o "${G.ELF_FILE}"`;
     return execPromise(ospath(cmd), {cwd: G.process_dir})

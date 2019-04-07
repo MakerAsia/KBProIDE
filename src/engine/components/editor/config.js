@@ -12,6 +12,8 @@ export default {
         theme : 'mdn-like'
     },
     data:{
+        Blockly : null,
+        workspace : null,
         test : true
     }
 }

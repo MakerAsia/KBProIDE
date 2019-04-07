@@ -1,8 +1,12 @@
-const fs = require('fs')
+const fs = require('fs');
+const path = require('path');
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
 //---- setup dir and config ----//
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
+var pluginDir = `${boardDirectory}/plugin`;
+var boardIncludeDir = `${boardDirectory}/include`;
+var platfromIncludeDir = `${boardDirectory}/include`;
 
 var context = JSON.parse(fs.readFileSync(boardDirectory+"/context.json","utf8"))
 var config = require('./config');
@@ -12,6 +16,11 @@ var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 function is_not_null(val) {
     return (!((val == null) || (typeof (val) == 'undefined')));
 }
+function promiseTimeout (time) {
+    return new Promise(function(resolve,reject){
+      setTimeout(function(){resolve(time);},time);
+    });
+};
 
 function compile(rawCode,boardName,config,cb)
 {
@@ -23,49 +32,61 @@ function compile(rawCode,boardName,config,cb)
             var codegen = engine.util.requireFunc(`${platformDir}/codegen`);
         }
         var app_dir = `${boardDirectory}/build/${boardName}`;
+        let inc_src = engine.util.walk(boardIncludeDir).filter(file => path.extname(file) == ".cpp" || path.extname(file) == ".c");
+        inc_src = inc_src.concat(engine.util.walk(platfromIncludeDir).filter(file => path.extname(file) == ".cpp" || path.extname(file) == ".c"));
+        let inc_switch = [];
         //--- step 1 load template and create full code ---//
         if(config.isSourceCode){
-            var sourceCode = rawCode;
-            var codeContext = config.codeContext;
+            var sourceCode = rawCode;            
         }else{
-            if(fs.existsSync(`${boardDirectory}/template.c`)){
-                var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
-            }else{
-                var template = fs.readFileSync(`${platformDir}/template.c`,'utf8');
-            }            
-            var {sourceCode,codeContext} = codegen.codeGenerate(rawCode,template,config);
+            var {sourceCode,codeContext} = codegen.generate(rawCode);
         }
-        
-        !fs.existsSync(app_dir) && fs.mkdirSync(app_dir,{recursive : true}); //create app_dir if not existing
-        fs.writeFileSync(`${app_dir}/user_app.cpp`,sourceCode,'utf8');
+        //------ clear build folder and create new one --------//
+        if(fs.existsSync(app_dir)){
+            engine.util.rmdirf(app_dir);
+        }
+        fs.mkdirSync(app_dir,{recursive : true});
+        //-----------------------------------------------------//
+        fs.writeFileSync(`${app_dir}/user_app.cpp`,sourceCode,'utf8');        
         //--- step 3 load variable and flags ---//
         var cflags = [];
         var ldflags = [];
+        var libflags = [];
         if(context.cflags){
-            var cflags = context.cflags.map(f => f.replace(/\{board\}/g,boardDirectory));
+            cflags = context.cflags.map(f => f.replace(/\{board\}/g,boardDirectory));
         }
         if(context.ldflags){
-            var ldflags = context.ldflags.map(f => f.startsWith('-Llib') ? (f.replace('-Llib',`-L"${boardDirectory}/lib`)+'"') : f);
-            ldflags = ldflags.map(f => f.startsWith("lib/") ? ('"'+f.replace("lib/",`${boardDirectory}/lib/`)+'"') : f);
-        }        
+            ldflags = context.ldflags.map(f => f.replace(/\{board\}/g,boardDirectory));
+        }
+        if(context.libflags){
+            libflags = context.libflags.map(f => f.replace(/\{board\}/g,boardDirectory));
+        }
         //--- step 4 compile
         var contextBoard = {
             board_name : boardName,
             app_dir : app_dir,
             process_dir : boardDirectory,
         };
-        var sourceFiles = codeContext.plugins_sources;
-        sourceFiles.push(`${app_dir}/user_app.cpp`);
-        var includeSwitch = codeContext.plugins_includes_switch;
-        platformCompiler.setConfig(contextBoard);
-        //(sources, boardCppOptions, boardcflags, plugins_includes_switch)    
+        var sourceFiles = inc_src;
+        var includeSwitch = inc_switch;
+        sourceFiles.push(`${app_dir}/user_app.cpp`);        
+        platformCompiler.setConfig(contextBoard);        
+        //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
         platformCompiler.compileFiles(sourceFiles,[], cflags, includeSwitch)
         .then(()=>{
+            return promiseTimeout(1000);
+        }).then(()=>{
             return platformCompiler.archiveProgram(sourceFiles);
         }).then(()=>{
-            return platformCompiler.linkObject(ldflags);
+            return promiseTimeout(1000);
         }).then(()=>{
-            return platformCompiler.createBin();            
+            return platformCompiler.linkObject(ldflags,libflags);
+        }).then(()=>{
+            return promiseTimeout(1000);
+        }).then(()=>{
+            return platformCompiler.createBin(); 
+        }).then(()=>{
+            return promiseTimeout(1000);
         }).then(()=>{
             resolve();
         }).catch(msg=>{

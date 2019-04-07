@@ -183,7 +183,7 @@ Blockly.Blocks["basic_string"] = {
 // =============================================================================
 var math_colour = Blockly.Msg.MATH_HUE;
 // var math_colour = "#7F94F8";
-Blockly.Blocks["math_number"] = {
+/*Blockly.Blocks["math_number"] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(new Blockly.FieldNumber(0, -9999999, 9999999, 0.01), 'VALUE');
@@ -194,7 +194,7 @@ Blockly.Blocks["math_number"] = {
 		this.setTooltip(Blockly.Msg.MATH_NUMBER_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
 	}
-};
+};*/
 
 Blockly.Blocks['math_arithmetic'] = {
 	init: function() {

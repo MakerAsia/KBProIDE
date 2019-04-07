@@ -32,32 +32,7 @@
                                         label="Serial upload baudrate"
                                     ></v-combobox>
                                 </div>
-                            </v-flex>
-                          
-                            <v-flex xs12>
-                                <v-subheader class="pa-0 mb-2">WiFi setting</v-subheader>
-                                <v-text-field
-                                    v-model="$global.board.package['arduino-esp32-actionbar'].wifi_ssid"
-                                    label="SSID"
-                                    hint="WiFi SSID name to connect"
-                                    counter
-                                    maxlength="32"
-                                    clearable
-                                ></v-text-field>
-                            </v-flex>
-                            <v-divider></v-divider>
-                            <v-flex xs12>
-                                <v-text-field
-                                    v-model="$global.board.package['arduino-esp32-actionbar'].wifi_password"
-                                    :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-                                    :type="showPassword ? 'text' : 'password'"
-                                    label="Password"
-                                    hint="WiFi password"
-                                    maxlength="64"
-                                    @click:append="showPassword = !showPassword"
-                                    clearable
-                                ></v-text-field>
-                            </v-flex>
+                            </v-flex>                          
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -84,7 +59,7 @@ export default{
         }
     },
     mounted(){
-        //this.listPort();
+        this.listPort();
     },
     methods:{
         listPort(){

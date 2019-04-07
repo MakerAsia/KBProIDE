@@ -1,3 +1,5 @@
+module.exports = function(Blockly){
+  'use strict';
 Blockly.Blocks['bt_start'] = {
   init: function() {
     this.appendDummyInput()
@@ -7,8 +9,8 @@ Blockly.Blocks['bt_start'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(225);
- this.setTooltip("start Bluetooth");
- this.setHelpUrl("");
+    this.setTooltip("start Bluetooth");
+    this.setHelpUrl("");
   }
 };
 
@@ -17,6 +19,9 @@ Blockly.Blocks['bt_send_string'] = {
     this.appendValueInput("text")
         .setCheck("String")
         .appendField("Bluetooth send text");
+    this.appendDummyInput()
+        .appendField("with new line")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "newline");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -51,3 +56,17 @@ Blockly.Blocks['bt_read_data'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['bt_read_line'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("read line from Bluetooth data");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour(225);
+ this.setTooltip("read string line from Bluetooth received data");
+ this.setHelpUrl("");
+  }
+};
+
+}

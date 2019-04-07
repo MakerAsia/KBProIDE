@@ -81,6 +81,10 @@ const G = Vue.prototype.$global;
 var path = `${engine.util.boardDir}/${G.board.board}/compiler`;
 var boardCompiler = engine.util.requireFunc(path);
 
+var comport = '';
+var mac = '';
+var boardName = '';
+
 export default {
   data () {
     return {
@@ -106,13 +110,12 @@ export default {
     run(){ //find port and mac
         console.log('---> step 1 <---');
         this.stepResult['1'].msg = "Finding board";
-        let comport = G.board.package['arduino-esp32-actionbar'].comport;
+        comport = G.board.package['arduino-esp32-actionbar'].comport;
         if(!comport){
-            console.log('------ process error ------');
-            console.log(err);
-            this.failed = true;
+            console.log('------ process error ------');                      
             this.stepResult['1'].msg = 'Cannot find COMPORT : ' + comport;
             this.stepResult['1'].result = false;
+            this.failed = true;
             return;
         }
         boardCompiler.readMac(comport).then(boardMac=>{
@@ -124,11 +127,16 @@ export default {
             console.log('---> step 2 <---');
             
             this.stepResult['2'].msg = "Compile board ... ";
-            var rawCode = G.editor.sourcecode;
+            //------ just update it prevent unupdated data -------//
+            G.editor.rawCode = G.editor.Blockly.JavaScript.workspaceToCode(G.editor.workspace);
+            var xml = G.editor.Blockly.Xml.domToText(G.editor.Blockly.Xml.workspaceToDom(G.editor.Blockly.mainWorkspace));
+            G.editor.blockCode = xml;
+            //----------------------------------------------------//
+            var rawCode = (G.editor.mode >= 3)? G.editor.sourceCode : G.editor.rawCode;
+            var isSourceCode = (G.editor.mode >= 3)? true : false;
             var config = {
                 board_mac_addr : mac,
-                sta_ssid : this.$global.board.package['arduino-esp32-actionbar'].wifi_ssid,
-                sta_password : this.$global.board.package['arduino-esp32-actionbar'].wifi_password,                
+                isSourceCode : isSourceCode                              
             };
             return boardCompiler.compile(rawCode,boardName,config,null);
         }).then(()=>{

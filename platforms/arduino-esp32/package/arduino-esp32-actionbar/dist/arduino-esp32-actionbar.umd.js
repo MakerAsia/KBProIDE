@@ -109,12 +109,12 @@ __webpack_require__.d(actionbar_namespaceObject, "ActionbarSetting", function() 
 // EXTERNAL MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 var setPublicPath = __webpack_require__("HrLf");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=template&id=15249da2&
-var ActionbarBuildvue_type_template_id_15249da2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-play")])],1),_c('span',[_vm._v("Compile & Run")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile & Run")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep <= 3)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep > 3)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("check_circle_outline")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 1,"rules":[function (){ return _vm.stepResult['1'].result }]}},[_vm._v("\n                                    Finding board\n                                    "),(_vm.compileStep > 1)?_c('small',[_vm._v(_vm._s(_vm.stepResult['1'].msg))]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['1'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 2,"rules":[function (){ return _vm.stepResult['2'].result }]}},[_vm._v("\n                                    Compile the code\n                                    "),(_vm.compileStep > 2)?_c('small',[_vm._v(_vm._s(_vm.stepResult['2'].msg))]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['2'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"3","complete":_vm.compileStep > 3,"rules":[function (){ return _vm.stepResult['3'].result }]}},[_vm._v("\n                                    Upload program and Run\n                                    "),(_vm.compileStep > 3)?_c('small',[_vm._v(_vm._s(_vm.stepResult['3'].msg))]):_vm._e()]),(_vm.compileStep >= 3)?_c('v-stepper-content',{attrs:{"step":"3"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['3'].msg)+"\n                                    "),_c('v-progress-linear',{attrs:{"height":"2","active":_vm.compileStep < 4,"indeterminate":true}})],1):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 4 && _vm.failed === false},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)])],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarBuild.vue?vue&type=template&id=65100168&
+var ActionbarBuildvue_type_template_id_65100168_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-play")])],1),_c('span',[_vm._v("Compile & Run")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile & Run")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep <= 3)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep > 3)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("check_circle_outline")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 1,"rules":[function (){ return _vm.stepResult['1'].result }]}},[_vm._v("\n                                    Finding board\n                                    "),(_vm.compileStep > 1)?_c('small',[_vm._v(_vm._s(_vm.stepResult['1'].msg))]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['1'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 2,"rules":[function (){ return _vm.stepResult['2'].result }]}},[_vm._v("\n                                    Compile the code\n                                    "),(_vm.compileStep > 2)?_c('small',[_vm._v(_vm._s(_vm.stepResult['2'].msg))]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['2'].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"3","complete":_vm.compileStep > 3,"rules":[function (){ return _vm.stepResult['3'].result }]}},[_vm._v("\n                                    Upload program and Run\n                                    "),(_vm.compileStep > 3)?_c('small',[_vm._v(_vm._s(_vm.stepResult['3'].msg))]):_vm._e()]),(_vm.compileStep >= 3)?_c('v-stepper-content',{attrs:{"step":"3"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult['3'].msg)+"\n                                    "),_c('v-progress-linear',{attrs:{"height":"2","active":_vm.compileStep < 4,"indeterminate":true}})],1):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 4 && _vm.failed === false},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)])],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=template&id=15249da2&
+// CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=template&id=65100168&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
 var es6_regexp_replace = __webpack_require__("pIFo");
@@ -236,24 +236,34 @@ var boardName = '';
       //find port and mac
       console.log('---> step 1 <---');
       this.stepResult['1'].msg = "Finding board";
-      boardCompiler.listPort().then(function (comp) {
-        comport = comp[0];
-        _this.stepResult['1'].msg += " at " + comport;
-        return boardCompiler.readMac(comport);
-      }).then(function (boardMac) {
+      comport = G.board.package['arduino-esp32-actionbar'].comport;
+
+      if (!comport) {
+        console.log('------ process error ------');
+        this.stepResult['1'].msg = 'Cannot find COMPORT : ' + comport;
+        this.stepResult['1'].result = false;
+        this.failed = true;
+        return;
+      }
+
+      boardCompiler.readMac(comport).then(function (boardMac) {
         _this.stepResult['1'].msg += " MAC " + boardMac.mac;
         mac = boardMac.mac;
         boardName = mac.replace(/:/g, '-');
         console.log('[STEP 1] got it boardName = ' + boardName + ' mac = ' + mac);
         _this.compileStep = 2;
         console.log('---> step 2 <---');
-        _this.stepResult['2'].msg = "Compile board ... ";
-        var rawCode = G.editor.rawCode;
+        _this.stepResult['2'].msg = "Compile board ... "; //------ just update it prevent unupdated data -------//
+
+        G.editor.rawCode = G.editor.Blockly.JavaScript.workspaceToCode(G.editor.workspace);
+        var xml = G.editor.Blockly.Xml.domToText(G.editor.Blockly.Xml.workspaceToDom(G.editor.Blockly.mainWorkspace));
+        G.editor.blockCode = xml; //----------------------------------------------------//
+
+        var rawCode = G.editor.mode >= 3 ? G.editor.sourceCode : G.editor.rawCode;
+        var isSourceCode = G.editor.mode >= 3 ? true : false;
         var config = {
           board_mac_addr: mac,
-          sta_ssid: _this.$global.board.package['kidbright-actionbar'].wifi_ssid,
-          sta_password: _this.$global.board.package['kidbright-actionbar'].wifi_password,
-          enable_iot: _this.$global.board.package['kidbright-actionbar'].enable_iot
+          isSourceCode: isSourceCode
         };
         return boardCompiler.compile(rawCode, boardName, config, null);
       }).then(function () {
@@ -4470,7 +4480,7 @@ function VTooltip_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 var component = normalizeComponent(
   actionbar_ActionbarBuildvue_type_script_lang_js_,
-  ActionbarBuildvue_type_template_id_15249da2_render,
+  ActionbarBuildvue_type_template_id_65100168_render,
   staticRenderFns,
   false,
   null,
@@ -4503,39 +4513,14 @@ var component = normalizeComponent(
 
 installComponents_default()(component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VFadeTransition: VFadeTransition,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VProgressCircular: VProgressCircular,VProgressLinear: VProgressLinear,VSpacer: VSpacer,VStepper: VStepper,VStepperContent: VStepperContent,VStepperStep: VStepperStep,VTooltip: VTooltip})
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=template&id=5bca585f&
-var ActionbarSettingvue_type_template_id_5bca585f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.settingDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-cogs")])],1),_c('span',[_vm._v("Setup board")])],1),_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.settingDialog),callback:function ($$v) {_vm.settingDialog=$$v},expression:"settingDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Setup board")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("Board setting")]),_c('div',{staticClass:"d-flex"},[_c('v-combobox',{staticClass:"mr-3",attrs:{"items":_vm.comports,"label":"Select COM port"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].comport),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "comport", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].comport"}}),_c('v-combobox',{attrs:{"items":_vm.baudrates,"label":"Serial upload baudrate"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].baudrate),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "baudrate", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].baudrate"}})],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("WiFi setting")]),_c('v-text-field',{attrs:{"label":"SSID","hint":"WiFi SSID name to connect","counter":"","maxlength":"32","clearable":""},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].wifi_ssid),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "wifi_ssid", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].wifi_ssid"}})],1),_c('v-divider'),_c('v-flex',{attrs:{"xs12":""}},[_c('v-text-field',{attrs:{"append-icon":_vm.showPassword ? 'visibility' : 'visibility_off',"type":_vm.showPassword ? 'text' : 'password',"label":"Password","hint":"WiFi password","maxlength":"64","clearable":""},on:{"click:append":function($event){_vm.showPassword = !_vm.showPassword}},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].wifi_password),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "wifi_password", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].wifi_password"}})],1)],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.settingDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)}
-var ActionbarSettingvue_type_template_id_5bca585f_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"H://Bloccoly//KBProIDE//platforms//arduino-esp32//package//arduino-esp32-actionbar//node_modules//.cache//vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=template&id=434e2926&
+var ActionbarSettingvue_type_template_id_434e2926_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.settingDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-cogs")])],1),_c('span',[_vm._v("Setup board")])],1),_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.settingDialog),callback:function ($$v) {_vm.settingDialog=$$v},expression:"settingDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Setup board")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("Board setting")]),_c('div',{staticClass:"d-flex"},[_c('v-combobox',{staticClass:"mr-3",attrs:{"items":_vm.comports,"label":"Select COM port"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].comport),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "comport", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].comport"}}),_c('v-combobox',{attrs:{"items":_vm.baudrates,"label":"Serial upload baudrate"},model:{value:(_vm.$global.board.package['arduino-esp32-actionbar'].baudrate),callback:function ($$v) {_vm.$set(_vm.$global.board.package['arduino-esp32-actionbar'], "baudrate", $$v)},expression:"$global.board.package['arduino-esp32-actionbar'].baudrate"}})],1)],1)],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.settingDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)}
+var ActionbarSettingvue_type_template_id_434e2926_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue?vue&type=template&id=5bca585f&
+// CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue?vue&type=template&id=434e2926&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/vuetify-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4595,7 +4580,8 @@ var SerialPort = ActionbarSettingvue_type_script_lang_js_engine.util.requireFunc
       settingDialog: false
     };
   },
-  mounted: function mounted() {//this.listPort();
+  mounted: function mounted() {
+    this.listPort();
   },
   methods: {
     listPort: function listPort() {
@@ -8675,180 +8661,6 @@ var VAutocomplete_defaultMenuProps = VAutocomplete_extends({}, defaultMenuProps,
     }
 });
 //# sourceMappingURL=VCombobox.js.map
-// EXTERNAL MODULE: ./node_modules/vuetify/src/stylus/components/_textarea.styl
-var _textarea = __webpack_require__("fmPu");
-
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VTextarea/VTextarea.js
-var VTextarea_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-// Styles
-
-// Extensions
-
-
-/* @vue/component */
-/* harmony default export */ var VTextarea = ({
-    name: 'v-textarea',
-    extends: VTextField,
-    props: {
-        autoGrow: Boolean,
-        noResize: Boolean,
-        outline: Boolean,
-        rowHeight: {
-            type: [Number, String],
-            default: 24,
-            validator: function validator(v) {
-                return !isNaN(parseFloat(v));
-            }
-        },
-        rows: {
-            type: [Number, String],
-            default: 5,
-            validator: function validator(v) {
-                return !isNaN(parseInt(v, 10));
-            }
-        }
-    },
-    computed: {
-        classes: function classes() {
-            return VTextarea_extends({
-                'v-textarea': true,
-                'v-textarea--auto-grow': this.autoGrow,
-                'v-textarea--no-resize': this.noResizeHandle
-            }, VTextField.options.computed.classes.call(this, null));
-        },
-        dynamicHeight: function dynamicHeight() {
-            return this.autoGrow ? this.inputHeight : 'auto';
-        },
-        isEnclosed: function isEnclosed() {
-            return this.textarea || VTextField.options.computed.isEnclosed.call(this);
-        },
-        noResizeHandle: function noResizeHandle() {
-            return this.noResize || this.autoGrow;
-        }
-    },
-    watch: {
-        lazyValue: function lazyValue() {
-            !this.internalChange && this.autoGrow && this.$nextTick(this.calculateInputHeight);
-        }
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        setTimeout(function () {
-            _this.autoGrow && _this.calculateInputHeight();
-        }, 0);
-        // TODO: remove (2.0)
-        if (this.autoGrow && this.noResize) {
-            consoleInfo('"no-resize" is now implied when using "auto-grow", and can be removed', this);
-        }
-    },
-
-    methods: {
-        calculateInputHeight: function calculateInputHeight() {
-            var input = this.$refs.input;
-            if (input) {
-                input.style.height = 0;
-                var height = input.scrollHeight;
-                var minHeight = parseInt(this.rows, 10) * parseFloat(this.rowHeight);
-                // This has to be done ASAP, waiting for Vue
-                // to update the DOM causes ugly layout jumping
-                input.style.height = Math.max(minHeight, height) + 'px';
-            }
-        },
-        genInput: function genInput() {
-            var input = VTextField.options.methods.genInput.call(this);
-            input.tag = 'textarea';
-            delete input.data.attrs.type;
-            input.data.attrs.rows = this.rows;
-            return input;
-        },
-        onInput: function onInput(e) {
-            VTextField.options.methods.onInput.call(this, e);
-            this.autoGrow && this.calculateInputHeight();
-        },
-        onKeyDown: function onKeyDown(e) {
-            // Prevents closing of a
-            // dialog when pressing
-            // enter
-            if (this.isFocused && e.keyCode === 13) {
-                e.stopPropagation();
-            }
-            this.internalChange = true;
-            this.$emit('keydown', e);
-        }
-    }
-});
-//# sourceMappingURL=VTextarea.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/util/rebuildFunctionalSlots.js
-function rebuildFunctionalSlots(slots, h) {
-    var children = [];
-    for (var slot in slots) {
-        if (slots.hasOwnProperty(slot)) {
-            children.push(h('template', { slot: slot }, slots[slot]));
-        }
-    }
-    return children;
-}
-//# sourceMappingURL=rebuildFunctionalSlots.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/util/dedupeModelListeners.js
-/**
- * Removes duplicate `@input` listeners when
- * using v-model with functional components
- *
- * @see https://github.com/vuetifyjs/vuetify/issues/4460
- */
-function dedupeModelListeners(data) {
-    if (data.model && data.on && data.on.input) {
-        if (Array.isArray(data.on.input)) {
-            var i = data.on.input.indexOf(data.model.callback);
-            if (i > -1) data.on.input.splice(i, 1);
-        } else {
-            delete data.on.input;
-        }
-    }
-}
-//# sourceMappingURL=dedupeModelListeners.js.map
-// CONCATENATED MODULE: ./node_modules/vuetify/lib/components/VTextField/index.js
-
-
-
-
-
-// TODO: remove this in v2.0
-/* @vue/component */
-var wrapper = {
-    functional: true,
-    $_wrapperFor: VTextField,
-    props: {
-        textarea: Boolean,
-        multiLine: Boolean
-    },
-    render: function render(h, _ref) {
-        var props = _ref.props,
-            data = _ref.data,
-            slots = _ref.slots,
-            parent = _ref.parent;
-
-        dedupeModelListeners(data);
-        var children = rebuildFunctionalSlots(slots(), h);
-        if (props.textarea) {
-            deprecate('<v-text-field textarea>', '<v-textarea outline>', wrapper, parent);
-        }
-        if (props.multiLine) {
-            deprecate('<v-text-field multi-line>', '<v-textarea>', wrapper, parent);
-        }
-        if (props.textarea || props.multiLine) {
-            data.attrs.outline = props.textarea;
-            return h(VTextarea, data, children);
-        } else {
-            return h(VTextField, data, children);
-        }
-    }
-};
-
-/* harmony default export */ var components_VTextField = (wrapper);
-//# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./src/actionbar/ActionbarSetting.vue
 
 
@@ -8860,8 +8672,8 @@ var wrapper = {
 
 var ActionbarSetting_component = normalizeComponent(
   actionbar_ActionbarSettingvue_type_script_lang_js_,
-  ActionbarSettingvue_type_template_id_5bca585f_render,
-  ActionbarSettingvue_type_template_id_5bca585f_staticRenderFns,
+  ActionbarSettingvue_type_template_id_434e2926_render,
+  ActionbarSettingvue_type_template_id_434e2926_staticRenderFns,
   false,
   null,
   null,
@@ -8888,8 +8700,7 @@ var ActionbarSetting_component = normalizeComponent(
 
 
 
-
-installComponents_default()(ActionbarSetting_component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VCombobox: VCombobox,VContainer: VContainer,VDialog: VDialog,VDivider: VDivider,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VSpacer: VSpacer,VSubheader: VSubheader,VTextField: wrapper,VTooltip: VTooltip})
+installComponents_default()(ActionbarSetting_component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VCombobox: VCombobox,VContainer: VContainer,VDialog: VDialog,VDivider: VDivider,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VSpacer: VSpacer,VSubheader: VSubheader,VTooltip: VTooltip})
 
 // CONCATENATED MODULE: ./src/actionbar/index.js
 
@@ -9325,13 +9136,6 @@ module.exports = function (exec) {
   }
 };
 
-
-/***/ }),
-
-/***/ "fmPu":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
