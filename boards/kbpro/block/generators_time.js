@@ -14,17 +14,17 @@ Blockly.JavaScript['time_wait_btn_press'] = function(block) {
 };
 
 Blockly.JavaScript['time_sync'] = function(block) {  
-  var code = `kbprotime.sync();\n`;
+  var code = `#SETUP  kbprotime.sync();\n#END`;
   return code;
 };
 
 Blockly.JavaScript['time_get_year'] = function(block) {
-  var code = 'kbprotime.getYear()';
+  var code = '(kbprotime.getYear()+1900)';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['time_get_month'] = function(block) {
-  var code = 'kbprotime.getMonth()';
+  var code = '(kbprotime.getMonth()+1)';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 

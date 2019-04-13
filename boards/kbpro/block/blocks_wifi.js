@@ -127,4 +127,29 @@ Blockly.Blocks['wifi_get_ip_addr'] = {
   }
 };
 
+Blockly.Blocks['wifi_get_ap_ip_addr'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get SoftAP IP address");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour(270);
+ this.setTooltip("get access point IP address");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['wifi_get_arg'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("http GET parameter ")
+        .appendField(new Blockly.FieldTextInput("test"), "arg_name");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour(270);
+ this.setTooltip("get value from HTTP GET parameter");
+ this.setHelpUrl("");
+  }
+};
+
 }

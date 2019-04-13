@@ -3,7 +3,7 @@ module.exports = function(Blockly){
 
 Blockly.JavaScript['bt_start'] = function(block) {
   var text_name = block.getFieldValue('name');
-  var code = `SerialBT.begin("${text_name}");\n`;
+  var code = `#SETUPSerialBT.begin("${text_name}");\n#END`;
   return code;
 };
 

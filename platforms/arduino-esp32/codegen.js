@@ -11,50 +11,49 @@ var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
 var platformDir = `${engine.util.platformDir}/${G.board.board_info.platform}`;
 
 //-------------------//
-
+var findString = function(regexS,rawCode,index = 1)
+{
+    let res = [];
+    let m;
+    while ((m = regexS.exec(rawCode)) !== null) {
+        if (m.index === regexS.lastIndex) {
+            regexS.lastIndex++;
+        }
+        if(m){
+            let code = m[index];
+            if(!res.includes(code)){
+                res.push(code);
+            }
+        }
+    }
+    return res;
+};
 module.exports = {
     createCodeContext : function(rawCode,config,plugins)
     {
-        //---- find setup code ----//
-        let setup_code = [];
-        let setupRegex = /.*?SETUP\.(.*?\(?.*?\)?;)/gm;
-        let replaceRegex1 = /SETUP\..*?\(?.*?\)?;/gm;        
-        let m;
-        while ((m = setupRegex.exec(rawCode)) !== null) {
-            if (m.index === setupRegex.lastIndex) {
-                setupRegex.lastIndex++;
-            }
-            if(m.length == 2){
-                let code = m[1];
-                if(!setup_code.includes(code)){
-                    setup_code.push(code);
-                }
-            }
-        }        
-        var source_code = rawCode.replace(replaceRegex1,"");
-        //---- variable -----//
-        let variables = [];
-        let varRegex = /.*?VARIABLE\.(.*?;)/gm;
-        let varReplaceRegex = /VARIABLE\..*?;/gm;
-        let vr;
-        while ((vr = varRegex.exec(source_code)) !== null) {
-            if (vr.index === varRegex.lastIndex) {
-                varRegex.lastIndex++;
-            }
-            if(vr.length == 2){
-                let code = vr[1];
-                if(!variables.includes(code)){
-                    variables.push(code);
-                }
-            }
-        }
+        var source_code = rawCode;
+        //---- variable -----//        
+        let varRegex = /#VARIABLE(.*?)#END/gms;
+        let varReplaceRegex = /#VARIABLE.*?#END/gms;
+        let variables = findString(varRegex,source_code);        
         source_code = source_code.replace(varReplaceRegex,"");
-        //---- clean empty line ----//
+        //---- function -----//        
+        let functionsRegex = /#FUNCTION(.*?)#END/gms;
+        let functionReplaceRegex = /#FUNCTION.*?#END/gms;
+        let functions = findString(functionsRegex,source_code);        
+        source_code = source_code.replace(functionReplaceRegex,"");
+        //---- find setup code ----//
+        let setupRegex = /#SETUP(.*?)#END/gms;
+        let replaceRegex1 = /#SETUP.*?#END/gms;        
+        let setup_code = findString(setupRegex,source_code);        
+        source_code = source_code.replace(replaceRegex1,"");        
+        //---- clean empty line ----//        
         let replaceRegex2 = /^\s*[\r\n]/gm;        
         source_code = source_code.replace(replaceRegex2,"");
         //----- list include cpp file------//        
         //console.log(inc_src);
-        return {
+        return {            
+            FUNCTION : functions.join('\n'),
             VARIABLE : variables.join('\n'),
             SETUP_CODE : setup_code.join('\n'),
             LOOP_CODE : source_code

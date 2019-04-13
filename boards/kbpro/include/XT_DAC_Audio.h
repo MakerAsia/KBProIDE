@@ -6,18 +6,15 @@
 // No responsibility is taken for this. Stick with the version that works for you, if you need newer commands from later versions
 // you will have to alter your original code to work with the new if required.
 
+#include "MusicDefinitions.h";
 
-#pragma once
-#include "MusicDefinitions.h"
-
-#define BUFFER_SIZE_DEFAULT 4000 			    // Size of buffer to store data to send to DAC. 3 bytes minimum!
-												// 4000 bytes (Default) should allow for very slow main loops
+#define BUFFER_SIZE 600						    // Size of buffer to store data to send to DAC. 3 bytes minimum!
+												// 600 bytes (Default) should allow for very slow main loops
 												// that repeat only about every 100Hz, If your main loop is much faster
 												// than this and the VAST majority will be you can safely reduce this size
 												// without any issues down to an absolute minimum of 3 bytes
 												// If you experience sound slowing down then you need to increase
-												// Buffer memory. Which can be done in your code when you create the
-												// DacAudio object
+												// Buffer memory.
 												// If your main loop is very very slow but you want to keep buffer
 												// memory low then consider calling the DAC_Audio_Class FillBuffer
 												// routine more than once in you main loop. Although to be affective
@@ -26,119 +23,53 @@
 												// Use the routine MaxBufferUsage in your main loop to output the max
 												// buffer memory (via serial monitor) that your loop is using, you can
 												// then set you buffer memory very precisely
-#define BytesPerSec	50000						// The rate at which bytes are sent to the DAC, note that the max
-												// sample rate however is 44100Khz, this higher sampling rate allows
-												// for samples to be increased in pitch. If a 44100 rate then the max
-												// would be 3 x the pitch.
 												
 
 uint8_t SetVolume(uint8_t Volume);				// returns the sound byte value adjusted for the volume passed
 
-class XT_Envelope_Class;						// forward ref for this class
-
-
-class XT_Filter_Class
-{
-	// base class for a filter, a filter is a device that manipulates the wave form
-	// after it has been produced. Various are available inheriting from this class
-	public:
-	virtual uint8_t FilterWave(uint8_t TheByte);
-};
-
-class XT_FilterNoise_Class : public XT_Filter_Class
-{
-	// adds noise to a wave form, use min and max range to set lower and upper_bound
-	// maximums for the noise. The value is added or removed from the passed in value
-	public:
-	int8_t Min=-2;		// These defaults have a range of 4 from -2 to +2
-	int8_t Max=2;
-	
-	XT_FilterNoise_Class(int8_t Min,int8_t Max);
-	XT_FilterNoise_Class(int8_t AmountOfNoise);
-	
-	uint8_t FilterWave(uint8_t TheByte);
-	
-};
 
 class XT_PlayListItem_Class
 {
-	private:
-	
 	protected:	
+	//virtual uint32_t CalcPlayTime();
 	
 	public:
 	// These are the linked list items for the sounds to play through the DAC:
-	// Will be of use when multiple sounds can play at once using mixing
-	XT_PlayListItem_Class *PreviousItem=0;		
+	XT_PlayListItem_Class *PreviousItem=0;		// used in linked list of wavs
 	XT_PlayListItem_Class *NextItem=0;	
-	XT_Filter_Class *Filter;
-	
 	bool Playing=false;							// true if currently being played else false
-	bool NewSound;								// When first set to play this will be true, once this
-												// sound has started sending bytes to the buffer it will be false
-												// Helps when setting NextFillPos (below) to initial value
 	uint32_t PlayingTime;						// Total playing time of this item in 1000's of a second
 	uint32_t TimeElapsed;						// Total playing time elapsed so far in 1000's of a second
 	uint32_t TimeLeft;							// Total playing time left so far in 1000's of a second
 	
-	uint32_t NextFillPos;						// Next fill position in buffer to fill, because we have
-												// a large buffer, all sounds need their individual fill positions
-												// because you could be playing one sound which has filled perhaps
-												// 2 seconds worth of buffer (but not yet played those 2 s)
-												// and then mix in another. In this situation the bytes from the new
-												// sound must be mixed at the current playing point. If you did 
-												// not do this then your new sound would not start until about
-												// 2 seconds later and not when you intended.
-												
-	char Name[32];								// Name of this sound - optional, used mostly in debugging
 	uint8_t LastValue;							// Last value returned from NextByte function below
 	uint8_t Volume;								// volume 0 min, 127 max
-	
-	bool RepeatForever;							// if true repeats forever, if true value for repeat below ignored
-	uint16_t Repeat;							// Number of times to repeat, 1 to 65535
-	uint16_t RepeatIdx;							// internal use only, do not use, should put this in protected or
-												// private really and have an access function, do in future
-													
-	
 	virtual uint8_t NextByte();				 	// to be overridden by any descendants
 	virtual void Init();						// initialize any default values
-	
-	XT_PlayListItem_Class();
 };
-
 
 
 // The Main Wave class for sound samples
 class XT_Wav_Class : public XT_PlayListItem_Class
 {
-	private:
 	protected:
+	//uint32_t CalcPlayTime();
 	
 	public:      
 	uint16_t SampleRate;  
-	uint32_t DataSize=0;                        // The last integer part of count
-	uint32_t DataStart;							// offset of the actual data.
-	uint32_t DataIdx;
-	const unsigned char *Data;  
+	uint32_t DataSize=0;                         // The last integer part of count
+	uint32_t DataIdx=44;
+	unsigned char *Data;  
 	float IncreaseBy=0;                         // The amount to increase the counter by per call to "onTimer"
 	float Count=0;                              // The counter counting up, we check this to see if we need to send
-												// a new byte to the buffer
 	int32_t LastIntCount=-1;                    // The last integer part of count
-	float SpeedUpCount=0;						// The decimal part of the amount to increment the dataptr by for the
-												// next byte to send to the DAC. As we cannot move through data in
-												// partial amounts then we keep track of the decimal and when it 
-												// "clicks over" to a new integer we increment the dataptr an extra
-												// "1" place.
-	float Speed=1;								// 1 is normal, less than 1 slower, more than 1 faster, i.e. 2
-												// is twice as fast, 0.5 half as fast., use the getter and setter
-												// functions to access. default is 1, normal speed
 	
 	// constructors
-	XT_Wav_Class(const unsigned char *WavData);
+	XT_Wav_Class(unsigned char *WavData);
 	
 	// functions
-	uint8_t NextByte()override;
-	void Init()override;						// initialize any default values
+	uint8_t NextByte();
+	void Init();						 		// initialize any default values
 };
 
 
@@ -154,17 +85,15 @@ class XT_EnvelopePart_Class
 	uint16_t Duration;									// How long this part plays for in 1000's of a second
 	
 	public:
-	int8_t StartVolume=-1;								// if 0-127 then this is volume to start this part at
 	uint8_t TargetVolume;								// volume to reach in this part 0-127
 	uint32_t RawDuration;								// duration ins 50,000's of a second
-	bool Completed;
 
 	XT_EnvelopePart_Class *PreviousPart=0;				
 	XT_EnvelopePart_Class *NextPart=0;					
 	
 	// functions
 	void SetDuration(uint16_t Duration);
-	uint16_t GetDuration();									
+	uint16_t GetDuration();
 	
 };
 
@@ -173,29 +102,21 @@ class XT_Envelope_Class
 {
 	// Envelope definition contains basically a linked list of Envelope parts
 	// Using the envelope class you can have basic ADSR envelopes or more complex (or even simpler) ones
-	// You can also have multiple envelopes per sound, so as one completes the next in list will start
-	// This easily enables repeats of one envelope followed by a different one
 	
 	public:
 	XT_EnvelopePart_Class *FirstPart=0;          	// start of linked list of envelope parts
 	XT_EnvelopePart_Class *LastPart=0;          	// start of linked list of envelope parts
 	XT_EnvelopePart_Class *CurrentEnvelopePart=0;	// Current active envelope part
 	
-	XT_Envelope_Class *NextEnvelope=0;				// Next envelope of any
-	uint8_t Repeats=0;								// number of repeats
-	uint8_t RepeatCounter;							// current repeat count used in code
 	uint32_t DurationCounter;						// counts down until 0 for next envelope part
-	float VolumeIncrement=0;						// amount to increase volume by per sample
+	float VolumeIncrement=0;;							// amount to increase volume by per sample
 	float CurrentVolume=0;
 	bool EnvelopeCompleted;							// Envelope completed
 	
 	XT_Envelope_Class();
-	~XT_Envelope_Class();
 	void Init();
-	XT_EnvelopePart_Class* AddPart(uint16_t Duration,uint16_t TargetVolume);  // 0 to Max 127
-	XT_EnvelopePart_Class* AddPart(uint16_t Duration,uint16_t StartVolume,uint16_t TargetVolume);  // 0 to Max 127
+	XT_EnvelopePart_Class* AddPart(uint16_t Duration,uint16_t TargetVolume);
 	void InitEnvelopePart(XT_EnvelopePart_Class* EPart,uint8_t LastVolume);	
-	uint8_t NextByte(uint8_t ByteToPlay);
 };
 
 
@@ -303,10 +224,8 @@ class XT_Instrument_Class : public XT_PlayListItem_Class
 		int8_t Note=-1;								// as listed in MusicDefinitions.h
 		uint32_t SoundDuration;						// Sound Duration, how long sound is heard
 		uint32_t Duration;							// Duration before marked as completed
-		uint16_t Frequency=0;						// only used if you set an exact frequency, leave as 0 to use note
-		XT_Envelope_Class* FirstEnvelope=0;			// First envelope associated with this Instrument 
-		XT_Envelope_Class *CurrentEnvelope=0;		// Current envelope in force
-		XT_Wave_Class* WaveForm=0;					// i.e. square, sawtooth, sine, triangle
+		XT_Envelope_Class* Envelope=0;				// Any envelope associated with this Instrument 
+		XT_Wave_Class* WaveForm=0;						// i.e. square, sawtooth, sine, triangle
 		
 		// Constructors
 		XT_Instrument_Class();
@@ -314,14 +233,10 @@ class XT_Instrument_Class : public XT_PlayListItem_Class
 		XT_Instrument_Class(int16_t InstrumentID, uint8_t Volume);
 		
 		// functions
-		uint8_t NextByte() override;
-		void Init() override;						 		// initialize any default values
-		void SetNote(int8_t Note);
-		void SetFrequency(uint16_t Freq);			// only if not using note property
-		void SetDuration(uint32_t Length);			// in millis
+		uint8_t NextByte();
+		void Init();						 		// initialize any default values
 		void SetWaveForm(uint8_t WaveFormType);
 		void SetInstrument(uint16_t Instrument);
-		XT_Envelope_Class *AddEnvelope();
 		
 	
 };
@@ -346,6 +261,7 @@ class XT_MusicScore_Class:public XT_PlayListItem_Class
 															// calculated from the tempo value below
 		uint32_t ChangeNoteCounter;							// countdown counter for the above
 		uint16_t ScoreIdx;									// Index position of next note to play
+		uint16_t RepeatIdx;									// number of plays countdown counter
 	public:
 		XT_Instrument_Class* Instrument;					// The instrument to use
 		uint16_t Tempo;										// In Beats Per Min (as used in music)
@@ -367,51 +283,41 @@ class XT_MusicScore_Class:public XT_PlayListItem_Class
 															// of the data to signify the end. Again use 
 															// defines in Pitches.h
 		
+		uint16_t Repeat;									// Number of times to play, 1 to 65535 or set to
+															// 0 for infinite. If you want to stop playing
+															// before the repeats have completed then just
+															// set the "completed" property to true;
 															
 		// constructors		 				
 		XT_MusicScore_Class(int8_t* Score);
 		XT_MusicScore_Class(int8_t* Score,uint16_t Tempo);
 		XT_MusicScore_Class(int8_t* Score,uint16_t Tempo,XT_Instrument_Class* Instrument);
-		XT_MusicScore_Class(int8_t* Score,uint16_t Tempo,uint16_t InstrumentID);
+		XT_MusicScore_Class(int8_t* Score,uint16_t Tempo,XT_Instrument_Class* Instrument,uint16_t Repeat);
+		XT_MusicScore_Class(int8_t* Score,uint16_t Tempo,uint16_t InstrumentID,uint16_t Repeat);
 		
 		// override functions
-		uint8_t NextByte()override;
-		void Init()override;				
+		uint8_t NextByte();
+		void Init();				
 		void SetInstrument(uint16_t InstrumentID);
 	
 };
 
-
-
-
-
-// Sequence definitions
-
-class XT_SequenceItem_Class
-{
-	// An item that contains information about what to play and links to the next item
-	// in the list of things to play
-	public:
-	XT_PlayListItem_Class *PlayItem;		// The item to play
-	XT_SequenceItem_Class *NextItem=0;		// Next item to play
-};
-
-
-class XT_Sequence_Class:public XT_PlayListItem_Class
+class XT_MultiPlay_Class:public XT_PlayListItem_Class
 {
 	// allows you to queue up many playlist items one after the other with minimum effort
 	
 	private:
-		XT_SequenceItem_Class *CurrentItem=0;			// current item playing from within the list
-		XT_SequenceItem_Class *FirstItem=0;          	// first play list item to play in linked list
-		XT_SequenceItem_Class *LastItem=0;          	// last play list item to play in linked list
+		XT_PlayListItem_Class *CurrentItem=0;			// current item playing from within the list
+		XT_PlayListItem_Class *FirstItem=0;          	// first play list item to play in linked list
+		XT_PlayListItem_Class *LastItem=0;          	// last play list item to play in linked list
 	// the class itself is a playlist item
 	public:	
 		uint8_t NextByte();
 		void Init();		
 		void AddPlayItem(XT_PlayListItem_Class *PlayItem);
-		void RemoveAllPlayItems();							// remove all play items
 };
+
+
 
 
 
@@ -421,10 +327,12 @@ class XT_Sequence_Class:public XT_PlayListItem_Class
 class XT_DAC_Audio_Class
 {
   
+	private:
+		XT_PlayListItem_Class *FirstPlayListItem=0;          	// first play list item to play in linked list
+		XT_PlayListItem_Class *LastPlayListItem=0;          	// last play list item to play in linked list
 	public:
 
 		XT_DAC_Audio_Class(uint8_t TheDacPin, uint8_t TimerNo);
-		XT_DAC_Audio_Class(uint8_t TheDacPin, uint8_t TimerNo,uint16_t PassedBufferSize);
 
 		void FillBuffer();										// Fills the buffer of values to send to the DAC, put in your
 																// main loop, see BUFFER_SIZE comments at top of code.
@@ -432,13 +340,11 @@ class XT_DAC_Audio_Class
 		void Play(XT_PlayListItem_Class *Sound);
 		void Play(XT_PlayListItem_Class *Sound,bool Mix);
 		void StopAllSounds();
-		bool AlreadyPlaying(XT_PlayListItem_Class *Item);
-		void RemoveFromPlayList(XT_PlayListItem_Class *ItemToRemove);
-		int BufferUsage();
+		void RemoveFromPlayList(volatile XT_PlayListItem_Class *ItemToRemove);
+		void AverageBufferUsage();
 		
-		// debug		
-		void PrintPlayList();
 	
 
 };
 
+                                                          

@@ -3,7 +3,7 @@ module.exports = function(Blockly){
 
 Blockly.JavaScript['io_board_read'] = function(block) {
   var dropdown_pin = block.getFieldValue('pin');
-  var code = `SETUP.pinMode(${dropdown_pin},INPUT);digitalRead(${dropdown_pin})`;
+  var code = `#SETUP  pinMode(${dropdown_pin},INPUT); #END  digitalRead(${dropdown_pin})`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -11,7 +11,7 @@ Blockly.JavaScript['io_board_write'] = function(block) {
   var dropdown_pin = block.getFieldValue('pin');
   var dropdown_value = block.getFieldValue('value');
   var code = `
-    SETUP.pinMode(${dropdown_pin},OUTPUT);
+    #SETUP  pinMode(${dropdown_pin},OUTPUT);#END
     digitalWrite(${dropdown_pin},${dropdown_value});
   `;
   return code;
@@ -21,7 +21,7 @@ Blockly.JavaScript['io_board_write_value'] = function(block) {
   var dropdown_pin = block.getFieldValue('pin');
   var value_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);  
   var code = `
-    SETUP.pinMode(${dropdown_pin},OUTPUT);
+    #SETUP  pinMode(${dropdown_pin},OUTPUT);#END
     digitalWrite(${dropdown_pin},${value_value});
   `;
   return code;
@@ -64,8 +64,8 @@ Blockly.JavaScript['io_pwm_write'] = function(block) {
   var value_pin = Blockly.JavaScript.valueToCode(block, 'pin', Blockly.JavaScript.ORDER_ATOMIC);
   var value_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);  
   var code = `
-    SETUP.ledcSetup(0, 5000, 8);
-    SETUP.ledcAttachPin(${value_pin}, 0);
+    #SETUP  ledcSetup(0, 5000, 8);#END
+    #SETUP  ledcAttachPin(${value_pin}, 0);#END
     ledcWrite(0, ${value_value});
   `;
   return code;

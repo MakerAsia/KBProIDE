@@ -188,10 +188,13 @@ H:\Bloccoly\KBProIDE\node_modules\electron\dist\..\..\..\boards\kbpro\build\b4-e
  h:\bloccoly\kbproide\boards\kbpro\include\OLEDDisplayFonts.h \
  h:\bloccoly\kbproide\platforms\arduino-esp32\lib\libraries_include\wire.h \
  h:\bloccoly\kbproide\platforms\arduino-esp32\lib\include\esp32-hal.h \
- h:\bloccoly\kbproide\boards\kbpro\include\bmp280.h \
+ h:\bloccoly\kbproide\boards\kbpro\include\bme280.h \
  h:\bloccoly\kbproide\boards\kbpro\include\bmx055.h \
  h:\bloccoly\kbproide\boards\kbpro\include\bh1745nuc.h \
  h:\bloccoly\kbproide\boards\kbpro\include\kbprotime.h \
  h:\bloccoly\kbproide\platforms\arduino-esp32\lib\libraries_include\bluetoothserial.h \
  h:\bloccoly\kbproide\platforms\arduino-esp32\sdk\include\bt\esp_spp_api.h \
- h:\bloccoly\kbproide\platforms\arduino-esp32\sdk\include\bt\esp_bt_defs.h
+ h:\bloccoly\kbproide\platforms\arduino-esp32\sdk\include\bt\esp_bt_defs.h \
+ h:\bloccoly\kbproide\boards\kbpro\include\musicdefinitions.h \
+ h:\bloccoly\kbproide\boards\kbpro\include\xt_dac_audio.h \
+ h:\bloccoly\kbproide\boards\kbpro\include\MusicDefinitions.h

@@ -11,7 +11,30 @@
                 </xml>
 
                 <v-dialog v-model="variableDialog" persistent max-width="600px">
-                    <variable-naming-dialog ref="variableName" @close="()=>{variableDialog = false}"></variable-naming-dialog>
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">{{variableMessage}}</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-flex xs12>
+                                <v-text-field 
+                                    v-model="variable_name"
+                                    label="Variable name" 
+                                    required 
+                                    clearable 
+                                    counter
+                                    maxlength="32"
+                                    :rules="[variable_name_validator]"></v-text-field>
+                                </v-flex>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click="variableDialog = false">Close</v-btn>
+                            <v-btn color="blue darken-1" flat :disabled="!validated" ref="variableOK" @click="variableDialog = false">Save</v-btn>
+                        </v-card-actions>
+                    </v-card>
                 </v-dialog>
                 <v-dialog v-model="musicDialog" max-width="785px">
                     <piano-dialog ref="musicNotes" @close="()=>{musicDialog = false}"></piano-dialog>
@@ -210,6 +233,17 @@ export default {
            { name : 'main', filename : 'main.cpp' }
         ],
         variableDialog : false,
+        variable_name : this.name,
+        variableMessage : 'Variable Name',
+        validated : false,
+        variable_name_validator : value => {
+            const pattern = /(?:^(uint16\s*|uint32\s*|uint8\s*|auto\s*|const\s*|unsigned\s*|signed\s*|register\s*|volatile\s*|static\s*|void\s*|short\s*|long\s*|char\s*|int\s*|float\s*|double\s*|_Bool\s*|complex\s*|return\s*)+$)|(?:\s+\*?\*?\s*)|(^[0-9])|([^_A-Za-z0-9]+)/;            
+            this.validated = !pattern.test(value);
+            if(value == null || value == ""){
+                this.validated = false;
+            }
+            return this.validated || 'Invalid variable name';
+        },
         musicDialog : false,
      }
    },
@@ -248,17 +282,19 @@ export default {
         Blockly.svgResize(this.workspace);
         this.workspace.scrollCenter();
         // override prompt function, fixed electron dialog problem
-        Blockly.prompt = function(message, defaultValue, callback) {            
-            myself.$refs.variableName.variable_name = defaultValue;
-            myself.$refs.variableName.message = message;
-            myself.$refs.variableName.$on('var_result',function(name){
-                var new_val = name;
-                if ((new_val) && (new_val != '')) {
+        Blockly.prompt = function(message, defaultValue, callback) {
+            myself.variable_name = defaultValue;                   
+            myself.variableMessage = message;            
+            myself.$refs.variableOK.$on('click',function(){
+                var new_val = myself.variable_name;
+                if ((new_val) && (new_val != '') && myself.validated) {
                     callback(new_val);
                 } else {
                     callback(null);
                 }
+                myself.$refs.variableOK.$off('click');
                 myself.variableDialog = false;
+
             });
             myself.variableDialog = true;
         };
@@ -466,6 +502,9 @@ export default {
 }  /* minus header and footer */
 .blocklyToolboxDiv{
     overflow: scroll;
+}
+.blocklyHtmlInput{
+    background-color:white !important;
 }
 </style>
 

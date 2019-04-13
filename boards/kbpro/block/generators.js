@@ -34,7 +34,7 @@ Blockly.JavaScript.init = function(workspace) {
 		var declareVar = [];
 		for(var i =0;i<defvars.length;i++){
 			let vType = (defvars[i] in Blockly.dbNameType) ? Blockly.dbNameType[defvars[i]].type : "int";
-			declareVar.push("VARIABLE."+vType + " " + defvars[i] + ";");
+			declareVar.push("#VARIABLE"+vType + " " + defvars[i] + ";#END");
 		}
 		Blockly.JavaScript.definitions_['variables'] =	declareVar.join("\n");
     }
@@ -47,48 +47,6 @@ Blockly.JavaScript.resetTaskNumber = function(block) {
 // =============================================================================
 // basic
 // =============================================================================
-Blockly.JavaScript['basic_led16x8'] = function(block) {
-	var buf = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-	for (var x = 0; x < 16; x++) {
-		var byte = 0;
-		for (var y = 0; y < 8; y++) {
-			var val = block.getFieldValue('POS_X' + x + '_Y' + y);
-			if (val == 'TRUE') {
-				byte |= (0x01 << y);
-			};
-		}
-		buf[x] = byte;
-	}
-
-	var str = '';
-	for (var i = 0; i < 16; i++) {
-		str += '\\x' + buf[i].toString(16);;
-	}
-
-	return 'ht16k33.show((uint8_t *)"' + str + '");\n';
-};
-
-Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
-	return 'ht16k33.show((uint8_t *)"\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0");\n';
-};
-
-Blockly.JavaScript['basic_led16x8_2chars'] = function(block) {
-	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-	return 'ht16k33.scroll(' + argument0 + ', false);\n';
-};
-
-Blockly.JavaScript['basic_led16x8_scroll'] = function(block) {
-	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-	return 'ht16k33.scroll(' + argument0 + ', true);\n';
-};
-
-Blockly.JavaScript['basic_led16x8_scroll_when_ready'] = function(block) {
-	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-	return 'if (ht16k33.idle()) { ht16k33.scroll(' + argument0 + ', true); }\n';
-};
 
 Blockly.JavaScript['basic_delay'] = function(block) {
 	return 'vTaskDelay(' + parseInt(1000 * parseFloat(block.getFieldValue('VALUE'))) + ' / portTICK_RATE_MS);\n';
@@ -257,26 +215,6 @@ Blockly.JavaScript['logic_boolean'] = function(block) {
 	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['logic_led16x8_scroll_ready'] = function(block) {
-	return ['ht16k33.idle()', Blockly.JavaScript.ORDER_ATOMIC];
-}
-
-Blockly.JavaScript['logic_sw1_pressed'] = function(block) {
-	return ['get_B1stateClicked() || button12.is_sw1_pressed()', Blockly.JavaScript.ORDER_ATOMIC];
-}
-
-Blockly.JavaScript['logic_sw1_released'] = function(block) {
-	return ['(get_B1state() == 0 ) || button12.is_sw1_released()', Blockly.JavaScript.ORDER_ATOMIC];
-}
-
-Blockly.JavaScript['logic_sw2_pressed'] = function(block) {
-	return ['get_B2stateClicked() || button12.is_sw2_pressed()', Blockly.JavaScript.ORDER_ATOMIC];
-}
-
-Blockly.JavaScript['logic_sw2_released'] = function(block) {
-	return ['(get_B2state() == 0 ) || button12.is_sw2_released()', Blockly.JavaScript.ORDER_ATOMIC];
-}
-
 // =============================================================================
 // loop
 // =============================================================================
@@ -316,198 +254,17 @@ Blockly.JavaScript['wait_led_matrix_ready'] = function(block) {
 	return 'ht16k33.wait_idle();\n';
 };
 
-Blockly.JavaScript['wait_sw1_pressed'] = function(block) {
-	var code = 'while(1){if ((get_B1state() == 1 ) || (get_B1state() == 2 ) || button12.is_sw1_pressed()){if(get_B1state() == 2){set_B1release();} break;}}\n';
-	// button12.wait_sw1_pressed();\n
-	return code;
-};
-
-Blockly.JavaScript['wait_sw1_released'] = function(block) {
-	var code = 'while(1){if ((get_B1state() == 0 ) || button12.is_sw1_released()){break;}}\n';
-	// return 'button12.wait_sw1_released();\n';
-	return code;
-};
-
-Blockly.JavaScript['wait_sw2_pressed'] = function(block) {
-	var code = 'while(1){if ((get_B2state() == 1 ) || (get_B2state() == 2 ) || button12.is_sw2_pressed()){if(get_B2state() == 2){set_B2release();} break;}}\n';
-	// return 'button12.wait_sw2_pressed();\n';
-	return code;
-};
-
-Blockly.JavaScript['wait_sw2_released'] = function(block) {
-	var code = 'while(1){if ((get_B2state() == 0 ) || button12.is_sw2_released()){break;}}\n';
-	// return 'button12.wait_sw2_released();\n';
-	return code;
-};
-
 // =============================================================================
 // music
 // =============================================================================
-Blockly.JavaScript['music_note'] = function(block) {
-	var ret =
-		'sound.note(' + block.getFieldValue('NOTE') + ');\n' +
-		'sound.rest(' + block.getFieldValue('DURATION') + ');\n' +
-		'sound.off();\n';
-
-	return ret;
-};
-
-Blockly.JavaScript['music_rest'] = function(block) {
-	return 'sound.rest(' + block.getFieldValue('DURATION') + ');\n';
-};
-
-Blockly.JavaScript['music_scale'] = function(block) {
-	var ret =
-		'sound.note(' + block.getFieldValue('NOTE') + ');\n' +
-		'sound.rest(' + block.getFieldValue('DURATION') + ');\n' +
-		'sound.off();\n';
-
-	return ret;
-};
-
-Blockly.JavaScript['music_set_volume'] = function(block) {
-	return 'sound.set_volume(' + block.getFieldValue('VALUE') + ');\n';
-};
-
-Blockly.JavaScript['music_get_volume'] = function(block) {
-	return [
-		'sound.get_volume()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-
-Blockly.JavaScript['music_set_tempo'] = function(block) {
-	return 'sound.set_bpm(' + block.getFieldValue('VALUE') + ');\n';
-};
 
 // =============================================================================
 // sensor
 // =============================================================================
-Blockly.JavaScript['sensor_lm73'] = function(block) {
- return [
-  'lm73.get()',
-  Blockly.JavaScript.ORDER_ATOMIC
- ];
-};
-
-Blockly.JavaScript['sensor_ldr'] = function(block) {
-	return [
-		'ldr.get()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-
-Blockly.JavaScript['sensor_switch1'] = function(block) {
-	return [ '((int)get_B1stateClicked() || button12.sw1_get())',
-		// 'button12.sw1_get()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-
-Blockly.JavaScript['sensor_switch2'] = function(block) {
-	return [ '((int)get_B2stateClicked() || button12.sw2_get())',
-		// 'button12.sw2_get()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-
-// =============================================================================
-// rtc
-// =============================================================================
-Blockly.JavaScript['rtc_get'] = function(block) {
-	return [
-		'mcp7940n.get_datetime()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_date'] = function(block) {
-	return [
-		'mcp7940n.get_date()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_time'] = function(block) {
-	return [
-		'mcp7940n.get_time()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_day'] = function(block) {
-	return [
-		'mcp7940n.get(0)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_month'] = function(block) {
-	return [
-		'mcp7940n.get(1)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_year'] = function(block) {
-	return [
-		'mcp7940n.get(2)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_hour'] = function(block) {
-	return [
-		'mcp7940n.get(3)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_minute'] = function(block) {
-	return [
-		'mcp7940n.get(4)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_get_second'] = function(block) {
-	return [
-		'mcp7940n.get(5)',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['rtc_cal'] = function(block) {
-	return 'mcp7940n.cal(' + block.getFieldValue('VALUE') + ');\n';
-};
-Blockly.JavaScript['rtc_cal_coarse'] = function(block) {
-	return 'mcp7940n.cal_coarse(' + block.getFieldValue('VALUE') + ');\n';
-};
 
 // =============================================================================
 // I/O
 // =============================================================================
-Blockly.JavaScript['output_write'] = function(block) {
-	return 'ports.output' + block.getFieldValue('OUTPUT') + '_write(' + block.getFieldValue('STATUS') + ');\n';
-};
-Blockly.JavaScript['output_toggle'] = function(block) {
-	return 'ports.output' + block.getFieldValue('OUTPUT') + '_toggle();\n';
-};
-Blockly.JavaScript['output_read'] = function(block) {
-	return [
-		'ports.output' + block.getFieldValue('OUTPUT') + '_read()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['usbsw_write'] = function(block) {
-	return 'ports.usbsw_write(' + block.getFieldValue('STATUS') + ');\n';
-};
-Blockly.JavaScript['usbsw_toggle'] = function(block) {
-	return 'ports.usbsw_toggle();\n';
-};
-Blockly.JavaScript['usbsw_read'] = function(block) {
-	return [
-		'ports.usbsw_read()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
-Blockly.JavaScript['input_read'] = function(block) {
-	return [
-		'ports.input' + block.getFieldValue('INPUT') + '_read()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
-};
 
 // =============================================================================
 // advance

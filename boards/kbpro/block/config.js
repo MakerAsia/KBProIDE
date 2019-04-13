@@ -209,6 +209,7 @@ module.exports = {
                 'bme280_read_temp',
                 'bme280_read_humid',
                 'bme280_read_pressure',
+                'bme280_read_altitude',
                 'bh1680_read_light_1',
                 'bh1680_read_light_2',
                 'bh1745_read_red',
@@ -602,7 +603,8 @@ module.exports = {
                     name : 'WiFi',
                     icon : '/static/icons/icons8_wifi_router_96px.png',
                     blocks : [
-                        'wifi_connect',                        
+                        'wifi_connect',    
+                        'wifi_ap',
                         /*{
                             xml : 
                                 `<block type="wifi_http_get">
@@ -641,7 +643,9 @@ module.exports = {
                                 </block>`
                         },
                         
-                        'wifi_get_ip_addr'
+                        'wifi_get_ip_addr',
+                        'wifi_get_ap_ip_addr',
+                        'wifi_get_arg'
                     ]
                 },
                 {
