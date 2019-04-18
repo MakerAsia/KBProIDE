@@ -45,9 +45,14 @@ module.exports = {
         //---- find setup code ----//
         let setupRegex = /#SETUP(.*?)#END/gms;
         let replaceRegex1 = /#SETUP.*?#END/gms;        
-        let setup_code = findString(setupRegex,source_code);        
-        source_code = source_code.replace(replaceRegex1,"");        
-        //---- clean empty line ----//        
+        let setup_code = findString(setupRegex,source_code);
+        source_code = source_code.replace(replaceRegex1,"");
+        //---- find user block setup code ----//
+        let blocksetupRegex = /#BLOCKSETUP(.*?)#END/gms;
+        let blockreplaceRegex1 = /#BLOCKSETUP.*?#END/gms;
+        let blocksetup_code = findString(blocksetupRegex,source_code);
+        source_code = source_code.replace(blockreplaceRegex1,"");        
+        //---- clean empty line ----//
         let replaceRegex2 = /^\s*[\r\n]/gm;        
         source_code = source_code.replace(replaceRegex2,"");
         //----- list include cpp file------//        
@@ -56,6 +61,7 @@ module.exports = {
             FUNCTION : functions.join('\n'),
             VARIABLE : variables.join('\n'),
             SETUP_CODE : setup_code.join('\n'),
+            BLOCK_SETUP : blocksetup_code,
             LOOP_CODE : source_code
         }
     },

@@ -3,7 +3,7 @@ module.exports = {
     configureWebpack: {
         externals: {
             vue: 'Vue',
-            vuetify: 'Vuetify'
+            //vuetify: 'Vuetify'
         },
         /*entry: './resources/js/app.js',
         output: {

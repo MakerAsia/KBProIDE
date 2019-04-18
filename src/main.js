@@ -15,9 +15,8 @@ import compiler from '@/engine/Compiler';
 import util from '@/engine/utils';
 import updater from '@/engine/UpdateManager';
 
-import SmoothScrollbar from 'vue-smooth-scrollbar'
+import SmoothScrollbar from 'vue-smooth-scrollbar';
 Vue.use(SmoothScrollbar);
-
 //---- firebase database ----//
 import firebase from 'firebase';
 require('firebase/firestore');

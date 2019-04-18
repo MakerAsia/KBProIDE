@@ -3,7 +3,6 @@ module.exports = function(Blockly){
 if(!Blockly.dbNameType){
     Blockly.dbNameType = {};
 }
-Blockly.JavaScript['taskNumber'] = 0;
 
 Blockly.JavaScript.init = function(workspace) {    
     Blockly.JavaScript.definitions_ = Object.create(null);
@@ -35,14 +34,30 @@ Blockly.JavaScript.init = function(workspace) {
 		for(var i =0;i<defvars.length;i++){
 			let vType = (defvars[i] in Blockly.dbNameType) ? Blockly.dbNameType[defvars[i]].type : "int";
 			declareVar.push("#VARIABLE"+vType + " " + defvars[i] + ";#END");
+
+			Blockly.dbNameType[defvars[i]] = {
+				name : defvars[i], type : vType
+			};
 		}
 		Blockly.JavaScript.definitions_['variables'] =	declareVar.join("\n");
     }
 };
 
-Blockly.JavaScript.resetTaskNumber = function(block) {
-	Blockly.JavaScript['taskNumber'] = 0;
+Blockly.JavaScript['arduino_init'] = function(block) {
+	var statements_code = Blockly.JavaScript.statementToCode(block, 'code');
+	var code = `
+#SETUP
+  ${statements_code}
+#END
+`;
+	return code;
 };
+  
+Blockly.JavaScript['arduino_loop'] = function(block) {
+	var statements_code = Blockly.JavaScript.statementToCode(block, 'code');	
+	return statements_code;
+};
+
 
 // =============================================================================
 // basic
@@ -54,13 +69,6 @@ Blockly.JavaScript['basic_delay'] = function(block) {
 
 Blockly.JavaScript['basic_forever'] = function(block) {
 	return 'while(1) {\n' + Blockly.JavaScript.statementToCode(block, 'HANDLER') + '}\n';
-};
-
-Blockly.JavaScript['basic_string'] = function(block) {
-	return [
-		'(char *)"' + block.getFieldValue('VALUE') + '"',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
 };
 
 // =============================================================================
@@ -216,43 +224,8 @@ Blockly.JavaScript['logic_boolean'] = function(block) {
 };
 
 // =============================================================================
-// loop
-// =============================================================================
-Blockly.JavaScript['controls_whileUntil'] = function(block) {
-	// Do while/until loop.
-	var until = block.getFieldValue('MODE') == 'UNTIL';
-	var argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', until ? Blockly.JavaScript.ORDER_LOGICAL_NOT : Blockly.JavaScript.ORDER_NONE) || 'false';
-	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
-
-//testbug
-//console.log('controls_whileUntil');
-
-	branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-
-//testbug
-//console.log('addLoopTrap');
-
-	if (until) {
-		argument0 = '!' + argument0;
-	}
-
-	return 'while (' + argument0 + ') {\n' + branch + '}\n';
-};
-
-Blockly.JavaScript['loop_break'] = function(block) {
-	return 'break;\n';
-};
-
-Blockly.JavaScript['loop_continue'] = function(block) {
-	return 'continue;\n';
-};
-
-// =============================================================================
 // wait
 // =============================================================================
-Blockly.JavaScript['wait_led_matrix_ready'] = function(block) {
-	return 'ht16k33.wait_idle();\n';
-};
 
 // =============================================================================
 // music

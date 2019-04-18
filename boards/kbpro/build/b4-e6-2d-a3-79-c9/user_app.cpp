@@ -23,8 +23,16 @@ KBProTime kbprotime;
 BluetoothSerial SerialBT;
 XT_DAC_Audio_Class DacAudio(26,3);
 
-String btString;
+String res;
+ String build_string();
 
+
+String build_string(){
+          res = (String("button A =")+String(digitalRead(14)));
+
+          return res;
+
+}
 
 
 void setup()
@@ -40,18 +48,17 @@ void setup()
   bh1745.getAddr_BH1745NUC(BH1745NUC_DEFAULT_ADDRESS);
   bh1745.Initialize();
   bh1745.begin();
-  SerialBT.begin("KB-Pro");
+  
+    Serial.begin(115200);
+
 
 }
 void loop()
 {
-  while(SerialBT.available()){
-      btString = (SerialBT.readStringUntil('\n'));
-  display.clear();
-  display.setFont(ArialMT_Plain_10);
-  display.drawString(0,0,((String((char *)"DATA : ") + String(btString))));
-  display.display();
-  SerialBT.println(((String((char *)"PONG : ") + String(btString))));
-  }
+  /**
+ * Describe this function...
+ */
+  delay(500);
+  Serial.println((build_string()));
 
 }

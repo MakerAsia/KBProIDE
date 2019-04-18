@@ -1,7 +1,11 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
+//import Vuetify from 'vuetify/lib'
+import Vuetify from 'vuetify'
 import 'vuetify/src/stylus/app.styl'
 import '../../theme/default.styl'
+
+import VuetifyDialog from 'vuetify-dialog'
+
 Vue.use(Vuetify, {
   theme: {
     primary: '#ee44aa',
@@ -15,3 +19,6 @@ Vue.use(Vuetify, {
   customProperties: true,
   iconfont: 'fa6',
 })
+
+
+Vue.use(VuetifyDialog);

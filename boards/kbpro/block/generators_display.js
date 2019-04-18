@@ -137,7 +137,7 @@ display.setColor(WHITE);
 
 Blockly.JavaScript['i2c128x64_display_string_width'] = function(block) {
   var value_text = Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_ATOMIC);  
-  var code = `display.getStringWidth(${value_name},${value_text.length})`;  
+  var code = `display.getStringWidth(${value_text},${value_text.length})`;  
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 

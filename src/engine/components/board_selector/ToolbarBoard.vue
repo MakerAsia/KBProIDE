@@ -314,6 +314,7 @@ export default {
     watch : {
         boardDialog : function(val){
             if(val){//on opening
+                this.selectingBoard = this.$global.board.board;
                 this.listOnlineBoard();
             }
         }

@@ -14,6 +14,6 @@ export default {
     data:{
         Blockly : null,
         workspace : null,
-        test : true
+        saved : false,
     }
 }

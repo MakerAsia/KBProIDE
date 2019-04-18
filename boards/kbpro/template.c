@@ -41,6 +41,7 @@ void setup()
   bh1745.Initialize();
   bh1745.begin();
   ${SETUP_CODE}
+  ${BLOCK_SETUP}
 }
 void loop()
 {

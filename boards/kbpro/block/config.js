@@ -1,4 +1,8 @@
 module.exports = {
+    initial_blocks : `<xml>
+                            <block type="arduino_init" deletable="false" x="-100" y="0">
+                            </block><block type="arduino_loop" deletable="false" x="100" y="0"></block>
+                      </xml>`,
     base_blocks : [ // use "blocks : [ " in normally situation but this need to override base block from esp-idf platforms
         {
             name : 'Display',
@@ -593,7 +597,6 @@ module.exports = {
                         'text_changeCase',
                         'text_trim',
                         'text_replace',
-                        'text_reverse',
                         //'text_compare',
                         //'text_parse_int'
                     ]

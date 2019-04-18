@@ -3,12 +3,38 @@
         <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
             <!-- editor -->
             <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '0px' })]">
-                <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
-                <xml id="toolbox" ref=toolbox style="display: none">
-                    <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
-                        <block type="basic_led16x8"></block>
-                    </category>
-                </xml>
+                <v-tabs 
+                    color="primary" 
+                    v-model="blockTab" 
+                    dark 
+                    slider-color="yellow" 
+                    :class="blockTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
+                >
+                        <draggable v-model="blockTabs" class="v-tabs__container" :options="{group: 'tab-group'}">
+                            <!-- tab header -->
+                            <v-tab v-for="(tab, index) in blockTabs" 
+                                :key="index" 
+                                :href="`#blocktab-${tab.name}`"                                 
+                                :style="blockTabs.length <= 1? { display :'none'} : { display: 'block' }"
+                            >
+                                {{ tab.title }}
+                                <v-btn icon small class="close-tab-btn-control">
+                                    <v-icon dark>fa-close</v-icon>
+                                </v-btn>
+                            </v-tab>
+                            <!-- end -->
+                        </draggable>
+                        <!-- tab body -->
+                        <v-tab-item v-for="(tab, index) in blockTabs" :key="`blocktab-${tab.name}`" :value="`blocktab-${tab.name}`" >
+                            <div :id="`blocklyDiv-${tab.name}`" :key="index" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
+                            <xml :id="`toolbox-${tab.name}`" ref=toolbox style="display: none">
+                                <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
+                                    <block type="basic_led16x8"></block>
+                                </category>
+                            </xml>
+                        </v-tab-item>
+                        <!-- end -->
+                </v-tabs>
 
                 <v-dialog v-model="variableDialog" persistent max-width="600px">
                     <v-card>
@@ -218,6 +244,9 @@ export default {
     },
     data(){
      return {
+        blockTab : null,
+        blockTabs : [],
+
         workspace: null,
         toolbox: null,
         editor_options: {
@@ -255,32 +284,23 @@ export default {
         Blockly.utils.getMessageArray_ = function () {
             return Blockly.Msg
         }
-
-        this.toolbox = document.getElementById('toolbox');
-        this.workspace = Blockly.inject('blocklyDiv', {
-            grid: {
-                spacing: 25,
-                length: 3,
-                colour: '#ccc',
-                snap: true
-            },
-            media: './static/blockly/media/',
-            //rtl: rtl,
-            toolbox: this.toolbox,
-            zoom: {
-                controls: true,
-                wheel: true,
-                startScale: 1,
-                maxScale: 2,
-                minScale: 0.3,
-                scaleSpeed: 1.2,
-                //scrollbars: false
-            },
+        
+        /*let createdBlock = this.createBlockly(this.blockTabs[0].name);
+        this.blockTabs[0].workspace = createdBlock.workspace;
+        this.blockTabs[0].toolbox = createdBlock.toolbox;
+        this.workspace = this.blockTabs[0].workspace;
+        this.toolbox = this.blockTabs[0].toolbox;
+        */
+        this.onNewTab({
+            type : 'block',
+            data : {
+                name : '1',
+                title : 'Untitled *',
+            }            
+        }).then(()=>{
+            
         });
 
-        this.workspace.addChangeListener(this.updatecode);
-        Blockly.svgResize(this.workspace);
-        this.workspace.scrollCenter();
         // override prompt function, fixed electron dialog problem
         Blockly.prompt = function(message, defaultValue, callback) {
             myself.variable_name = defaultValue;                   
@@ -309,7 +329,10 @@ export default {
             });
             myself.musicDialog = true;
         };
-
+        //---- theme config ---///
+        if(this.$vuetify.theme.primary == null){
+            this.$vuetify.theme.primary = '#009688';
+        }
         console.log('blocly mounted');        
 
         //---- global event
@@ -319,29 +342,35 @@ export default {
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
         this.$global.$on('editor-fontsize-change',this.onEditorFontsizeChange);
-
-        if(this.$vuetify.theme.primary == null){
-            this.$vuetify.theme.primary = '#009688';
-        }
+        this.$global.$on('editor-newtab',this.onNewTab);
         
-        let theme = this.$vuetify.theme.primary;
-
-        var lighter = util.ui.colorLuminance(theme,0.2);
-        document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
-        
-        //---- render block
-        this.onBoardChange(this.$global.board.board_info);
-        //---- render editor theme
-        this.onEditorThemeChange(this.$global.editor.theme);
-        //---- render editor fontsize
-        this.onEditorFontsizeChange(this.$global.editor.fontSize);
-        //---- render editor mode change
-        this.onEditorModeChange(this.$global.editor.mode);
-        //---- load code ----//
         this.$global.editor.Blockly = Blockly;
-        this.$global.editor.workspace = this.workspace;
     },
     methods:{
+        createBlockly(id){
+            var toolbox = document.getElementById('toolbox-'+id);
+            var workspace = Blockly.inject('blocklyDiv-'+id, {
+                grid: {
+                    spacing: 25,
+                    length: 3,
+                    colour: '#ccc',
+                    snap: true
+                },
+                media: './static/blockly/media/',
+                //rtl: rtl,
+                toolbox: toolbox,
+                zoom: {
+                    controls: true,
+                    wheel: true,
+                    startScale: 1,
+                    maxScale: 2,
+                    minScale: 0.3,
+                    scaleSpeed: 1.2,
+                    //scrollbars: false
+                },
+            });
+            return {workspace : workspace, toolbox : toolbox};
+        },
         getCm(){
             try{
                 if('cm' in myself.$refs){
@@ -352,6 +381,48 @@ export default {
                 return false;
             }catch(e){
                 return false;
+            }
+        },
+        onNewTab(data){            
+            if(data.type == 'block'){
+                let id = data.data.name;           
+                this.blockTabs.push(data.data);
+                this.blockTab = 'blocktab-'+id;
+                return new Promise((resolve,reject)=>{
+                    Vue.nextTick().then(()=>{
+                        let blockObj = this.blockTabs[this.blockTabs.length - 1];
+                        let createdBlock = this.createBlockly(id);
+                        myself.blockTabs[myself.blockTabs.length - 1].workspace = createdBlock.workspace;
+                        myself.workspace = createdBlock.workspace;
+                        myself.blockTabs[myself.blockTabs.length - 1].toolbox = createdBlock.toolbox;
+                        myself.toolbox = createdBlock.toolbox;
+                        myself.blockTabs[myself.blockTabs.length - 1].blockCode = data.blockCode;
+                        //---- board ----//
+                        myself.blockTabs[myself.blockTabs.length - 1].board = myself.$global.board.board_info;
+                        //---- render block
+                        this.onBoardChange(this.$global.board.board_info);
+                        //---- render color
+                        let theme = this.$vuetify.theme.primary;
+                        let lighter = util.ui.colorLuminance(theme,0.2);
+                        let elem = document.body.getElementsByClassName('blocklyToolboxDiv');
+                        elem[elem.length - 1].style.backgroundColor = lighter;
+                        
+                        myself.workspace.addChangeListener(myself.updatecode);
+                        Blockly.svgResize(myself.workspace);
+                        myself.workspace.scrollCenter();
+                        //---- load code ----//            
+                        myself.$global.editor.workspace = myself.workspace;            
+                        //---- render editor theme
+                        myself.onEditorThemeChange(myself.$global.editor.theme);
+                        //---- render editor fontsize
+                        myself.onEditorFontsizeChange(myself.$global.editor.fontSize);
+                        //---- render editor mode change
+                        myself.onEditorModeChange(myself.$global.editor.mode);
+                        resolve();
+                    }).catch(e=>{ reject(e); });
+                });
+            }else if(data.type == 'code'){
+                //TODO : edit here;
             }
         },
         onEditorFontsizeChange(value){
@@ -370,13 +441,20 @@ export default {
             }
         },
         onEditorModeChange(mode){
-            if(mode < 3){         
-                if(this.$global.editor.blockCode != ''){
-                    var text = this.$global.editor.blockCode;
-                    var xml = Blockly.Xml.textToDom(text);
-                    this.workspace.clear();
-                    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-                }        
+            if(mode < 3){
+                var xml = '';
+                if(this.$global.editor.blockCode != '' &&
+                   this.$global.editor.blockCode != '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables></xml>'){
+                        var text = this.$global.editor.blockCode;
+                        xml = Blockly.Xml.textToDom(text);                    
+                }else{
+                    var blocks = loadBlock(this.$global.board.board);
+                    if(blocks.initial_blocks){
+                        xml = Blockly.Xml.textToDom(blocks.initial_blocks);     
+                    }
+                }
+                this.workspace.clear();
+                Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
                 setTimeout(() => {
                     Blockly.svgResize(this.workspace);
                 }, 300);
@@ -418,7 +496,12 @@ export default {
 
 
             this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
-            this.workspace.updateToolbox(this.toolbox);                 
+            this.workspace.updateToolbox(this.toolbox);
+
+            let found = this.blockTabs.find(obj=> 'blocktab-'+obj.name == this.blockTab);
+            if(found){
+                found.board = this.$global.board.board_info;
+            }            
         },
 
         onThemeChange(theme){            
@@ -426,15 +509,15 @@ export default {
             document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         },
 
-        onResizePanel(pane,container,size){            
-            Blockly.svgResize(this.workspace);
-            console.log('editor resized');
-            //console.log(this.$root.editor.MODE);
+        onResizePanel(pane,container,size){      
+            if(this.workspace){
+                Blockly.svgResize(this.workspace);
+                console.log('editor resized');
+            }
         },
 
         updatecode(e){
-            if(e.type != Blockly.Events.UI){
-                Blockly.JavaScript.resetTaskNumber();
+            if(e.type != Blockly.Events.UI){                
                 this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(this.workspace);
                 var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
                 this.$global.editor.blockCode = xml;
@@ -455,11 +538,62 @@ export default {
             var expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         }
+    },
+    watch : {
+        blockTab : function(val){
+            let found = this.blockTabs.find(obj=> 'blocktab-'+obj.name == val);
+            if(found){
+                this.workspace = found.workspace;
+                this.toolbox = found.toolbox;
+                if(found.board){
+                    if(this.$global.board.board_info.name != found.board.name){
+                        this.$global.board.board_info =  found.board;
+                        this.$global.board.board = found.board.name;
+                        this.$global.$emit('board-change',this.$global.board.board_info);
+                    }
+                }
+                /*Vue.nextTick(()=>{
+                    this.onResizePanel(null,null,null);
+                });*/
+                setTimeout(()=>{
+                    this.onResizePanel(null,null,null);                
+                },500);
+            }
+            
+        }
     }
 }
 </script>
 
 <style>
+.v-tabs{
+    /*height: 100vh;*/
+}
+.v-tabs__container{
+    height: unset;
+}
+.v-icon.v-icon.v-icon--link{
+    display : grid!important;
+}
+.v-tabs__div{
+    height: 30px;
+    font-size: 12px !important;
+}
+.v-tabs__slider {
+    height: 3px !important;
+}
+.v-tabs-multitab .v-window-item{
+    height: calc(100vh - 64px - 55px) !important;
+}
+.v-tabs-multitab > .v-tabs__bar{
+    display : block;
+}
+.v-tabs-singletab .v-window-item{
+    height: calc(100vh - 64px - 24px) !important;
+}
+.v-tabs-singletab > .v-tabs__bar{
+    display : none;
+}
 .vertical-panes-editor {
   width: 100%;
   height: 100%; /* minus header and footer */
