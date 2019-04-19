@@ -9,8 +9,7 @@
                     dark 
                     slider-color="yellow" 
                     :class="blockTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
-                >
-                        <draggable v-model="blockTabs" class="v-tabs__container" :options="{group: 'tab-group'}">
+                >                        
                             <!-- tab header -->
                             <v-tab v-for="(tab, index) in blockTabs" 
                                 :key="index" 
@@ -23,7 +22,7 @@
                                 </v-btn>
                             </v-tab>
                             <!-- end -->
-                        </draggable>
+                                             
                         <!-- tab body -->
                         <v-tab-item v-for="(tab, index) in blockTabs" :key="`blocktab-${tab.name}`" :value="`blocktab-${tab.name}`" >
                             <div :id="`blocklyDiv-${tab.name}`" :key="index" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 

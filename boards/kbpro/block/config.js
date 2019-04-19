@@ -586,17 +586,89 @@ module.exports = {
                     name : 'Text',
                     icon : '/static/icons/icons8_text_color_96px.png',
                     blocks : [
-                        'basic_string',
-                        'text_length',
-                        'text_join',
-                        'text_append',
-                        'text_isEmpty',
-                        'text_indexOf',
-                        'text_charAt',
-                        'text_getSubstring',
-                        'text_changeCase',
-                        'text_trim',
-                        'text_replace',
+                        'basic_string',                        
+                        { xml : 
+                            `<block type="text_length">
+                                <value name="VALUE">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        'text_join',                        
+                        { xml : 
+                            `<block type="text_append">
+                                <value name="TEXT">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                                `<block type="text_isEmpty">
+                                    <value name="VALUE">
+                                        <shadow type="basic_string">
+                                            <field name="VALUE">Hello world!</field>
+                                        </shadow>
+                                    </value>                                    
+                                </block>`
+                        },
+                        { xml : 
+                            `<block type="text_indexOf">
+                                <value name="VALUE">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                            `<block type="text_charAt">
+                                <value name="VALUE">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                            `<block type="text_getSubstring">
+                                <value name="STRING">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                            `<block type="text_changeCase">
+                                <value name="TEXT">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                            `<block type="text_trim">
+                                <value name="TEXT">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
+                        { xml : 
+                            `<block type="text_replace">
+                                <value name="TEXT">
+                                    <shadow type="basic_string">
+                                        <field name="VALUE">Hello world!</field>
+                                    </shadow>
+                                </value>                                    
+                            </block>`
+                        },
                         //'text_compare',
                         //'text_parse_int'
                     ]
