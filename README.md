@@ -1,14 +1,15 @@
 
 # KBProIDE
 
-## Install
-use vue cli 3 & electron
+## Windows Install
+use node v10.15.0 (but v8 also work too) and need Anaconda python2
+first run CMD as Administrator and install build tool first 
+- (cmd as Administrator) npm install --global --production windows-build-tools
 - npm uninstall -g vue-cli & npm install -g @vue/cli
-- npm install -g electron
-- npm install -g electron-builder
 - npm install
-- vue add electron-builder (maybe ref : https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/)
-- (maybe install eletron again 'npm install electron')
+- npm run electron:rebuild
+- npm run electron:rebuild-serial
+
 ## Run
 - npm run electron:serve
 
