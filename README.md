@@ -3,7 +3,6 @@
 
 ## Install
 use vue cli 3 & electron
-- maybe install build tool first https://www.microsoft.com/en-us/download/details.aspx?id=40760
 - npm uninstall -g vue-cli & npm install -g @vue/cli
 - npm install -g electron
 - npm install -g electron-builder
