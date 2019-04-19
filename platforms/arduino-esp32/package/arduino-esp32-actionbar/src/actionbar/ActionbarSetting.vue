@@ -73,7 +73,8 @@ export default{
                     productId : "6015"
                     serialNumber : "DM01USZ0"
                     vendorId :"0403"*/
-                    this.comport = this.comports[0];
+                    //this.comport = this.comports[0];
+                    this.$global.board.package['arduino-esp32-actionbar'].comport = this.comports[0]; 
                 }
             }).catch((err)=>{
                 console.log('Error on list port');
