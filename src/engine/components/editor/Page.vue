@@ -329,7 +329,7 @@ export default {
             myself.musicDialog = true;
         };
         //---- theme config ---///
-        if(this.$vuetify.theme.primary == null){
+        if(this.$vuetify.theme.primary == ""){
             this.$vuetify.theme.primary = '#009688';
         }
         console.log('blocly mounted');        
