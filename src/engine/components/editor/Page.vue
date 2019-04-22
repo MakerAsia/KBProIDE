@@ -9,7 +9,7 @@
                     dark 
                     slider-color="yellow" 
                     :class="blockTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
-                >                        
+                >
                             <!-- tab header -->
                             <v-tab v-for="(tab, index) in blockTabs" 
                                 :key="index" 
