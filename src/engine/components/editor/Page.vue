@@ -69,14 +69,40 @@
             <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
             <!-- source code -->
             <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
-                <code-mirror ref="cm" v-if="$global.editor.mode < 3"
-                    v-model="$global.editor.rawCode"
-                    :options="editor_options">
-                </code-mirror>
-                <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
-                    v-model="$global.editor.sourceCode"
-                    :options="editor_options">
-                </code-mirror>
+                <v-tabs 
+                    color="primary" 
+                    v-model="editorTab" 
+                    dark 
+                    slider-color="yellow" 
+                    :class="editorTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
+                >
+                    <!-- tab header -->
+                    <v-tab v-for="(tab, index) in editorTabs" 
+                        :key="index"
+                        :href="`#editortab-${tab.name}`"                                 
+                        :style="editorTabs.length <= 1? { display :'none'} : { display: 'block' }"
+                    >
+                        {{ tab.title }}
+                        <v-btn icon small class="close-tab-btn-control">
+                            <v-icon dark>fa-close</v-icon>
+                        </v-btn>
+                    </v-tab>
+                    <!-- end -->
+                    <!-- tab body -->
+                    <v-tab-item v-for="(tab, index) in editorTabs" :key="`editortab-${tab.name}`" :value="`editortab-${tab.name}`" >
+                        <code-mirror ref="cm" v-if="$global.editor.mode < 3"
+                            :key="index"
+                            v-model="$global.editor.rawCode"
+                            :options="editor_options">
+                        </code-mirror>
+                        <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
+                            :key="index"
+                            v-model="$global.editor.sourceCode"
+                            :options="editor_options">
+                        </code-mirror>
+                    </v-tab-item>
+                    <!-- end -->
+                </v-tabs>
             </div>
             <!-- end -->
         </multipane>    
@@ -245,6 +271,8 @@ export default {
      return {
         blockTab : null,
         blockTabs : [],
+        editorTab : null,
+        editorTabs : [],
 
         workspace: null,
         toolbox: null,
@@ -257,9 +285,6 @@ export default {
             readOnly: true,
             extraKeys: {"Alt-F": "findPersistent"},
         },
-        editorTabs : [
-           { name : 'main', filename : 'main.cpp' }
-        ],
         variableDialog : false,
         variable_name : this.name,
         variableMessage : 'Variable Name',
@@ -290,8 +315,7 @@ export default {
         this.workspace = this.blockTabs[0].workspace;
         this.toolbox = this.blockTabs[0].toolbox;
         */
-        this.onNewTab({
-            type : 'block',
+        this.onNewTab({ //add blockly tab
             data : {
                 name : '1',
                 title : 'Untitled *',
@@ -299,7 +323,14 @@ export default {
         }).then(()=>{
             
         });
-
+        this.onNewTab({ //add code mirror tab
+            data : {
+                name : '1',
+                title : 'Untitled *',
+            }            
+        },3).then(()=>{
+            
+        });
         // override prompt function, fixed electron dialog problem
         Blockly.prompt = function(message, defaultValue, callback) {
             myself.variable_name = defaultValue;                   
@@ -335,9 +366,10 @@ export default {
         console.log('blocly mounted');        
 
         //---- global event
+        
         this.$global.$on('theme-change',this.onThemeChange);
         this.$global.$on('panel-resize',this.onResizePanel);
-        this.$global.$on('board-change',this.onBoardChange);        
+        this.$global.$on('board-change',this.onBoardChange);
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
         this.$global.$on('editor-fontsize-change',this.onEditorFontsizeChange);
@@ -382,8 +414,23 @@ export default {
                 return false;
             }
         },
-        onNewTab(data){            
-            if(data.type == 'block'){
+        reindent() {
+            this.$nextTick(()=>{
+                var cm = this.getCm();
+                if(cm){
+                    var lines = cm.lineCount();
+                    for (var i = 0; i < lines; i++) {
+                        cm.indentLine(i,"smart");
+                    };
+                    cm.refresh();
+                }
+            });
+        },
+        onNewTab(data,type){
+            if(type == undefined){
+                type = this.$global.editor.mode;
+            }            
+            if(type < 3){
                 let id = data.data.name;           
                 this.blockTabs.push(data.data);
                 this.blockTab = 'blocktab-'+id;
@@ -420,8 +467,13 @@ export default {
                         resolve();
                     }).catch(e=>{ reject(e); });
                 });
-            }else if(data.type == 'code'){
-                //TODO : edit here;
+            }else{
+                let id = data.data.name;           
+                this.editorTabs.push(data.data);
+                this.editorTab = 'editortab-'+id;
+                return new Promise((resolve,reject)=>{
+                    resolve();
+                });
             }
         },
         onEditorFontsizeChange(value){
@@ -468,11 +520,15 @@ export default {
                 }
                 var {sourceCode,codeContext} = codegen.generate(this.$global.editor.rawCode);
                 this.$global.editor.sourceCode = sourceCode;
+                this.reindent();
             }
             if('cm' in this.$refs){
                 if(this.$refs.cm != undefined){ //enable editing code
-                    let code = this.$refs.cm.getCodeMirror();
-                    code.setOption("readOnly", mode < 3);
+                    if(this.$refs.cm.length > 0){
+                        this.$refs.cm.map(obj => obj.getCodeMirror().setOption("readOnly", mode < 3));
+                        //let code = this.$refs.cm.getCodeMirror();
+                        //code.setOption("readOnly", mode < 3);
+                    }
                 }
             }
 
@@ -503,9 +559,11 @@ export default {
             }            
         },
 
-        onThemeChange(theme){            
-            var lighter = util.ui.colorLuminance(theme,0.2);            
-            document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
+        onThemeChange(theme){
+            if(this.$global.editor.mode < 3){
+                var lighter = util.ui.colorLuminance(theme,0.2);            
+                document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
+            }
         },
 
         onResizePanel(pane,container,size){      

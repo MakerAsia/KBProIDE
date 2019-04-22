@@ -46,7 +46,7 @@ Blockly.JavaScript.init = function(workspace) {
 Blockly.JavaScript['arduino_init'] = function(block) {
 	var statements_code = Blockly.JavaScript.statementToCode(block, 'code');
 	var code = `
-#SETUP
+#BLOCKSETUP
   ${statements_code}
 #END
 `;

@@ -108,7 +108,9 @@ export default {
           console.log('editor change mode to : '+mode);    
           this.modeDialog = false;
           this.$global.editor.mode = mode;
-          this.$global.$emit('editor-mode-change', mode);          
+          this.$nextTick(function () { //wait for element changed before fire event
+            this.$global.$emit('editor-mode-change', mode);
+          });
       }
   },
   watch:{

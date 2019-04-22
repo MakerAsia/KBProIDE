@@ -184,6 +184,12 @@ var walk = function(dir) {
   return results;
 }
 
+function promiseTimeout (time) {
+  return new Promise(function(resolve,reject){
+    setTimeout(function(){resolve(time);},time);
+  });
+};
+
 export default {
   camel,
   camelActual,
@@ -197,6 +203,7 @@ export default {
   loadCofigComponents,
   walk,
   rmdirf,
+  promiseTimeout,
   filterFileName : function(obj,filterName){    
     var res = {};
     Object.keys(obj).forEach(key=>{

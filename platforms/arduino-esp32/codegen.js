@@ -42,6 +42,11 @@ module.exports = {
         let functionReplaceRegex = /#FUNCTION.*?#END/gms;
         let functions = findString(functionsRegex,source_code);        
         source_code = source_code.replace(functionReplaceRegex,"");
+        //---- find loop extension code ----//
+        let loopExtRegex = /#LOOP_EXT_CODE(.*?)#END/gms;
+        let loopExtRegex1 = /#LOOP_EXT_CODE.*?#END/gms;
+        let loop_ext_code = findString(loopExtRegex,source_code);
+        source_code = source_code.replace(loopExtRegex1,"");
         //---- find setup code ----//
         let setupRegex = /#SETUP(.*?)#END/gms;
         let replaceRegex1 = /#SETUP.*?#END/gms;        
@@ -51,18 +56,18 @@ module.exports = {
         let blocksetupRegex = /#BLOCKSETUP(.*?)#END/gms;
         let blockreplaceRegex1 = /#BLOCKSETUP.*?#END/gms;
         let blocksetup_code = findString(blocksetupRegex,source_code);
-        source_code = source_code.replace(blockreplaceRegex1,"");        
+        source_code = source_code.replace(blockreplaceRegex1,"");
         //---- clean empty line ----//
         let replaceRegex2 = /^\s*[\r\n]/gm;        
         source_code = source_code.replace(replaceRegex2,"");
         //----- list include cpp file------//        
-        //console.log(inc_src);
         return {            
             FUNCTION : functions.join('\n'),
             VARIABLE : variables.join('\n'),
             SETUP_CODE : setup_code.join('\n'),
-            BLOCK_SETUP : blocksetup_code,
-            LOOP_CODE : source_code
+            BLOCKSETUP : blocksetup_code,
+            LOOP_CODE : source_code,
+            LOOP_EXT_CODE : loop_ext_code
         }
     },
 	generate : function(rawCode){

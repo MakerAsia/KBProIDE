@@ -4,8 +4,10 @@ module.exports = function(Blockly){
 Blockly.JavaScript['wifi_connect'] = function(block) {
   var text_ssid = block.getFieldValue('ssid');
   var text_password = block.getFieldValue('password');
-  var code = `#SETUP  WiFi.begin("${text_ssid}","${text_password}");
-    while(WiFi.status() != WL_CONNECTED) delay(500);#END`;
+  var code = `WiFi.begin("${text_ssid}","${text_password}");
+    while(WiFi.status() != WL_CONNECTED){ 
+      delay(500); 
+    }\n`;
   return code;
 };
 
@@ -34,7 +36,7 @@ Blockly.JavaScript['wifi_start_server'] = function(block) {
   var text_port = block.getFieldValue('port');
   var code = `#VARIABLE  WebServer server(80);#END
   #SETUP  server.begin();#END
-  server.handleClient();\n`;
+  #LOOP_EXT_CODE server.handleClient();\n #END`;
   return code;
 };
 

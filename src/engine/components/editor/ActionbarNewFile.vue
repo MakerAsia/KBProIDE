@@ -16,7 +16,6 @@ export default {
     methods : {
         newFile : async function(){
             this.$global.$emit('editor-newtab',{
-                type : 'block',
                 data : {
                     name : '2',
                     title : 'tesss'

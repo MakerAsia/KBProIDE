@@ -16,11 +16,6 @@ var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 function is_not_null(val) {
     return (!((val == null) || (typeof (val) == 'undefined')));
 }
-function promiseTimeout (time) {
-    return new Promise(function(resolve,reject){
-      setTimeout(function(){resolve(time);},time);
-    });
-};
 
 function compile(rawCode,boardName,config,cb)
 {
@@ -37,7 +32,7 @@ function compile(rawCode,boardName,config,cb)
         let inc_switch = [];
         //--- step 1 load template and create full code ---//
         if(config.isSourceCode){
-            var sourceCode = rawCode;            
+            var sourceCode = rawCode;
         }else{
             var {sourceCode,codeContext} = codegen.generate(rawCode);
         }
@@ -72,21 +67,22 @@ function compile(rawCode,boardName,config,cb)
         sourceFiles.push(`${app_dir}/user_app.cpp`);        
         platformCompiler.setConfig(contextBoard);        
         //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
-        platformCompiler.compileFiles(sourceFiles,[], cflags, includeSwitch)
-        .then(()=>{
-            return promiseTimeout(1000);
+        engine.util.promiseTimeout(1000).then(()=>{
+            return platformCompiler.compileFiles(sourceFiles,[], cflags, includeSwitch); 
+        }).then(()=>{
+            return engine.util.promiseTimeout(1000);
         }).then(()=>{
             return platformCompiler.archiveProgram(sourceFiles);
         }).then(()=>{
-            return promiseTimeout(1000);
+            return engine.util.promiseTimeout(1000);
         }).then(()=>{
             return platformCompiler.linkObject(ldflags,libflags);
         }).then(()=>{
-            return promiseTimeout(1000);
+            return engine.util.promiseTimeout(1000);
         }).then(()=>{
             return platformCompiler.createBin(); 
         }).then(()=>{
-            return promiseTimeout(1000);
+            return engine.util.promiseTimeout(1000);
         }).then(()=>{
             resolve();
         }).catch(msg=>{
