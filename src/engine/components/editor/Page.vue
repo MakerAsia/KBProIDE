@@ -326,7 +326,6 @@ export default {
         this.$global.editor.Blockly = Blockly;
         this.$global.editor.workspace = this.workspace;
         this.$global.editor.CodeMirror = this.getCm();
-        this.$global.editor.CodeMirror.on('cursorActivity',this.updateSourceCode);
     },
     methods:{
         getCm(){
@@ -426,7 +425,7 @@ export default {
                 this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(this.workspace);
                 var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
                 this.$global.editor.blockCode = xml;
-            }else{
+            }/*else{
                 if(e.element == 'selected'){
                     if(e.newValue != null){ //selected block
                         var block = this.workspace.getBlockById(e.newValue);
@@ -435,12 +434,7 @@ export default {
                         console.log("deselected block");
                     }
                 }
-            }
-        },
-        updateSourceCode(e){
-            let pos = e.getCursor();
-            let text = `Ln ${pos.line}, Col ${pos.ch}`;
-            console.log(text);
+            }*/
         },
         setCookie(cname, cvalue, exdays) {
             var d = new Date();

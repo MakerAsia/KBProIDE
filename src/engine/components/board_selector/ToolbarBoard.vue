@@ -257,7 +257,9 @@ export default {
             if(res === true){
                 this.$global.board.board_info =  bm.boards().find(obj => obj.name == boardname);
                 this.$global.board.board = boardname;
-                Vue.prototype.$global.$emit('board-change',this.$global.board.board_info);    
+                this.$global.editor.blockCode = '';
+                this.$global.$emit('board-change',this.$global.board.board_info);
+                this.$global.$emit('editor-mode-change',this.$global.editor.mode);
             }
         },
         isOnline()
