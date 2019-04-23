@@ -61,7 +61,7 @@
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.1",
-    "electron": "^3.1.6",
+    "electron": "^4.1.4",
     "electron-builder": "^20.38.5",
     "electron-rebuild": "^1.8.4",
     "eslint": "^5.8.0",
