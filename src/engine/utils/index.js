@@ -1,20 +1,25 @@
 import file from './file';
 import ui from './ui';
+
+const path = require('path');
 const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
 const os = require('os');
 import unzip from './unzip';
 
-var baseRootPlatform = "";
+var baseDir = "";
 if(process.env.NODE_ENV == 'development'){
   if(process.platform == 'win32'){
-    baseRootPlatform = '/../../..';
+    baseDir = rootDir + '/../../..';
   }else if(process.platform == 'darwin'){
-    baseRootPlatform = '/../../../../..';
+    baseDir = rootDir + '/../../../../..';
   }else if(process.platform == 'linux'){ //TODO : didnot defined yet
-
+    baseDir = rootDir + '/../../../../..';
   }
+}else{
+  baseDir = rootDir;
 }
+baseDir = path.resolve(baseDir);
 
 var humanFileSize = function (bytes, si = true) {
   var thresh = si ? 1000 : 1024;
@@ -31,7 +36,8 @@ var humanFileSize = function (bytes, si = true) {
   } while(Math.abs(bytes) >= thresh && u < units.length - 1);
   return bytes.toFixed(1)+' '+units[u];
 }
-const baseDir = rootDir + baseRootPlatform;
+
+
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 const vueLoader = function(file)
 { //this section from https://www.npmjs.com/package/vue-file-compiler

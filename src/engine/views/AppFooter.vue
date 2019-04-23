@@ -4,7 +4,7 @@
             <v-flex xs4>
                 <v-card>
                     <v-card-text class="px-0">
-
+                        
                     </v-card-text>
                 </v-card>
             </v-flex>
@@ -18,7 +18,7 @@
             <v-flex xs4>
                 <v-card>
                     <v-card-text class="px-0 text-xs-right">
-                        
+                        {{editorStatus}}
                     </v-card-text>
                 </v-card>
             </v-flex>
@@ -26,13 +26,27 @@
     </v-footer>
 </template>
 <script>
+import { stat } from 'fs';
 export default {
     name: 'app-footer',
     data: () => ({
-        
+        editorStatus : '',
+        infoStatus : '',
+        status : ''
     }),
-    created(){
-        console.log('sdfsdfsdf')
+    mounted(){
+
     },
+    methods : {
+        updateEditorStatus : function(text){
+            editorStatus = text;
+        },
+        updateInfoStatus : function(text){
+            infoStatus = text;
+        },
+        updateStatus : function(text){
+            status = text;
+        }
+    }
 }
 </script>
