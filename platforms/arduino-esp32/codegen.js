@@ -75,7 +75,7 @@ module.exports = {
             var template = fs.readFileSync(`${boardDirectory}/template.c`,'utf8');
         }else{
             var template = fs.readFileSync(`${platformDir}/template.c`,'utf8');
-        }        
+        }
         var codeContext = this.createCodeContext(rawCode,null,null);
         const entries = Object.entries(codeContext)
         const result = entries.reduce( (output, entry) => {

@@ -3,37 +3,12 @@
         <multipane class="vertical-panes-editor" layout="vertical" @paneResizeStop="onResizePanel" fill-height>
             <!-- editor -->
             <div class="pane" :style="[this.$global.editor.mode == 1 ? { width:'100%', height :'100%'} : (this.$global.editor.mode == 2 ? { minWidth: '500px', width: '75%' } : { width: '0px' })]">
-                <v-tabs 
-                    color="primary" 
-                    v-model="blockTab" 
-                    dark 
-                    slider-color="yellow" 
-                    :class="blockTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
-                >
-                            <!-- tab header -->
-                            <v-tab v-for="(tab, index) in blockTabs" 
-                                :key="index" 
-                                :href="`#blocktab-${tab.name}`"                                 
-                                :style="blockTabs.length <= 1? { display :'none'} : { display: 'block' }"
-                            >
-                                {{ tab.title }}
-                                <v-btn icon small class="close-tab-btn-control">
-                                    <v-icon dark>fa-close</v-icon>
-                                </v-btn>
-                            </v-tab>
-                            <!-- end -->
-                                             
-                        <!-- tab body -->
-                        <v-tab-item v-for="(tab, index) in blockTabs" :key="`blocktab-${tab.name}`" :value="`blocktab-${tab.name}`" >
-                            <div :id="`blocklyDiv-${tab.name}`" :key="index" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
-                            <xml :id="`toolbox-${tab.name}`" ref=toolbox style="display: none">
-                                <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
-                                    <block type="basic_led16x8"></block>
-                                </category>
-                            </xml>
-                        </v-tab-item>
-                        <!-- end -->
-                </v-tabs>
+                <div id="blocklyDiv" style="position:absolute; width:100%; height:100%;" color="onThemeChange"></div> 
+                <xml id="toolbox" ref=toolbox style="display: none">
+                    <category name="Basic" colour="160" icon="/static/icons/SVG/c1.svg">
+                        <block type="basic_led16x8"></block>
+                    </category>
+                </xml>
 
                 <v-dialog v-model="variableDialog" persistent max-width="600px">
                     <v-card>
@@ -69,40 +44,14 @@
             <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
             <!-- source code -->
             <div class="pane" :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
-                <v-tabs 
-                    color="primary" 
-                    v-model="editorTab" 
-                    dark 
-                    slider-color="yellow" 
-                    :class="editorTabs.length <= 1? 'v-tabs-singletab' : 'v-tabs-multitab'" 
-                >
-                    <!-- tab header -->
-                    <v-tab v-for="(tab, index) in editorTabs" 
-                        :key="index"
-                        :href="`#editortab-${tab.name}`"                                 
-                        :style="editorTabs.length <= 1? { display :'none'} : { display: 'block' }"
-                    >
-                        {{ tab.title }}
-                        <v-btn icon small class="close-tab-btn-control">
-                            <v-icon dark>fa-close</v-icon>
-                        </v-btn>
-                    </v-tab>
-                    <!-- end -->
-                    <!-- tab body -->
-                    <v-tab-item v-for="(tab, index) in editorTabs" :key="`editortab-${tab.name}`" :value="`editortab-${tab.name}`" >
-                        <code-mirror ref="cm" v-if="$global.editor.mode < 3"
-                            :key="index"
-                            v-model="$global.editor.rawCode"
-                            :options="editor_options">
-                        </code-mirror>
-                        <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
-                            :key="index"
-                            v-model="$global.editor.sourceCode"
-                            :options="editor_options">
-                        </code-mirror>
-                    </v-tab-item>
-                    <!-- end -->
-                </v-tabs>
+                <code-mirror ref="cm" v-if="$global.editor.mode < 3"
+                    v-model="$global.editor.rawCode"
+                    :options="editor_options">
+                </code-mirror>
+                <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
+                    v-model="$global.editor.sourceCode"
+                    :options="editor_options">
+                </code-mirror>
             </div>
             <!-- end -->
         </multipane>    
@@ -140,7 +89,7 @@ import plug from '@/engine/PluginManager';
 // === dialog ===
 import VariableNamingDialog from '@/engine/views/dialog/VariableNamingDialog';
 import PianoDialog from '@/engine/views/dialog/PianoDialog';
-
+import { connect } from 'net';
 var renderBlock = function(blocks,level = 1){
     let res = '';
     if(blocks == undefined){        
@@ -181,7 +130,6 @@ var renderBlock = function(blocks,level = 1){
     });
     return res;
 };
-
 var loadAndRenderPluginsBlock = function(Blockly,boardName)
 {
     var pluginName = 'Plugins';
@@ -212,7 +160,6 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
 }
-
 var loadBlock = function(boardName,target){
     //look for board first
     var blockFile = `${util.boardDir}/${boardName}/block/config.js`;    
@@ -253,7 +200,6 @@ var initBlockly = function(boardInfo){
         });
     }
 };
-
 /*var reloadBlockly = function(toolbox,workspace,updatecode){
     
 }*/
@@ -269,11 +215,6 @@ export default {
     },
     data(){
      return {
-        blockTab : null,
-        blockTabs : [],
-        editorTab : null,
-        editorTabs : [],
-
         workspace: null,
         toolbox: null,
         editor_options: {
@@ -304,33 +245,33 @@ export default {
         myself = this;
         Blockly.Msg = Object.assign(en, Blockly.Msg);
         Blockly.Msg = Blockly.Msg();
-
         Blockly.utils.getMessageArray_ = function () {
             return Blockly.Msg
         }
-        
-        /*let createdBlock = this.createBlockly(this.blockTabs[0].name);
-        this.blockTabs[0].workspace = createdBlock.workspace;
-        this.blockTabs[0].toolbox = createdBlock.toolbox;
-        this.workspace = this.blockTabs[0].workspace;
-        this.toolbox = this.blockTabs[0].toolbox;
-        */
-        this.onNewTab({ //add blockly tab
-            data : {
-                name : '1',
-                title : 'Untitled *',
-            }            
-        }).then(()=>{
-            
+        this.toolbox = document.getElementById('toolbox');
+        this.workspace = Blockly.inject('blocklyDiv', {
+            grid: {
+                spacing: 25,
+                length: 3,
+                colour: '#ccc',
+                snap: true
+            },
+            media: './static/blockly/media/',
+            //rtl: rtl,
+            toolbox: this.toolbox,
+            zoom: {
+                controls: true,
+                wheel: true,
+                startScale: 1,
+                maxScale: 2,
+                minScale: 0.3,
+                scaleSpeed: 1.2,
+                //scrollbars: false
+            },
         });
-        this.onNewTab({ //add code mirror tab
-            data : {
-                name : '1',
-                title : 'Untitled *',
-            }            
-        },3).then(()=>{
-            
-        });
+        this.workspace.addChangeListener(this.updatecode);
+        Blockly.svgResize(this.workspace);
+        this.workspace.scrollCenter();
         // override prompt function, fixed electron dialog problem
         Blockly.prompt = function(message, defaultValue, callback) {
             myself.variable_name = defaultValue;                   
@@ -344,11 +285,9 @@ export default {
                 }
                 myself.$refs.variableOK.$off('click');
                 myself.variableDialog = false;
-
             });
             myself.variableDialog = true;
         };
-
         Blockly.music = function(notes,cb){
             if(notes){
                 myself.$refs.musicNotes.select = notes.split(',');
@@ -359,49 +298,37 @@ export default {
             });
             myself.musicDialog = true;
         };
-        //---- theme config ---///
-        if(this.$vuetify.theme.primary == ""){
-            this.$vuetify.theme.primary = '#009688';
-        }
         console.log('blocly mounted');        
-
         //---- global event
-        
         this.$global.$on('theme-change',this.onThemeChange);
         this.$global.$on('panel-resize',this.onResizePanel);
-        this.$global.$on('board-change',this.onBoardChange);
+        this.$global.$on('board-change',this.onBoardChange);        
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
         this.$global.$on('editor-fontsize-change',this.onEditorFontsizeChange);
-        this.$global.$on('editor-newtab',this.onNewTab);
+        if(this.$vuetify.theme.primary == ""){
+            this.$vuetify.theme.primary = '#009688';
+        }
         
+        let theme = this.$vuetify.theme.primary;
+        var lighter = util.ui.colorLuminance(theme,0.2);
+        document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
+        
+        //---- render block
+        this.onBoardChange(this.$global.board.board_info);
+        //---- render editor theme
+        this.onEditorThemeChange(this.$global.editor.theme);
+        //---- render editor fontsize
+        this.onEditorFontsizeChange(this.$global.editor.fontSize);
+        //---- render editor mode change
+        this.onEditorModeChange(this.$global.editor.mode);
+        //---- load code ----//
         this.$global.editor.Blockly = Blockly;
+        this.$global.editor.workspace = this.workspace;
+        this.$global.editor.CodeMirror = this.getCm();
+        this.$global.editor.CodeMirror.on('cursorActivity',this.updateSourceCode);
     },
     methods:{
-        createBlockly(id){
-            var toolbox = document.getElementById('toolbox-'+id);
-            var workspace = Blockly.inject('blocklyDiv-'+id, {
-                grid: {
-                    spacing: 25,
-                    length: 3,
-                    colour: '#ccc',
-                    snap: true
-                },
-                media: './static/blockly/media/',
-                //rtl: rtl,
-                toolbox: toolbox,
-                zoom: {
-                    controls: true,
-                    wheel: true,
-                    startScale: 1,
-                    maxScale: 2,
-                    minScale: 0.3,
-                    scaleSpeed: 1.2,
-                    //scrollbars: false
-                },
-            });
-            return {workspace : workspace, toolbox : toolbox};
-        },
         getCm(){
             try{
                 if('cm' in myself.$refs){
@@ -412,68 +339,6 @@ export default {
                 return false;
             }catch(e){
                 return false;
-            }
-        },
-        reindent() {
-            this.$nextTick(()=>{
-                var cm = this.getCm();
-                if(cm){
-                    var lines = cm.lineCount();
-                    for (var i = 0; i < lines; i++) {
-                        cm.indentLine(i,"smart");
-                    };
-                    cm.refresh();
-                }
-            });
-        },
-        onNewTab(data,type){
-            if(type == undefined){
-                type = this.$global.editor.mode;
-            }            
-            if(type < 3){
-                let id = data.data.name;           
-                this.blockTabs.push(data.data);
-                this.blockTab = 'blocktab-'+id;
-                return new Promise((resolve,reject)=>{
-                    Vue.nextTick().then(()=>{
-                        let blockObj = this.blockTabs[this.blockTabs.length - 1];
-                        let createdBlock = this.createBlockly(id);
-                        myself.blockTabs[myself.blockTabs.length - 1].workspace = createdBlock.workspace;
-                        myself.workspace = createdBlock.workspace;
-                        myself.blockTabs[myself.blockTabs.length - 1].toolbox = createdBlock.toolbox;
-                        myself.toolbox = createdBlock.toolbox;
-                        myself.blockTabs[myself.blockTabs.length - 1].blockCode = data.blockCode;
-                        //---- board ----//
-                        myself.blockTabs[myself.blockTabs.length - 1].board = myself.$global.board.board_info;
-                        //---- render block
-                        this.onBoardChange(this.$global.board.board_info);
-                        //---- render color
-                        let theme = this.$vuetify.theme.primary;
-                        let lighter = util.ui.colorLuminance(theme,0.2);
-                        let elem = document.body.getElementsByClassName('blocklyToolboxDiv');
-                        elem[elem.length - 1].style.backgroundColor = lighter;
-                        
-                        myself.workspace.addChangeListener(myself.updatecode);
-                        Blockly.svgResize(myself.workspace);
-                        myself.workspace.scrollCenter();
-                        //---- load code ----//            
-                        myself.$global.editor.workspace = myself.workspace;            
-                        //---- render editor theme
-                        myself.onEditorThemeChange(myself.$global.editor.theme);
-                        //---- render editor fontsize
-                        myself.onEditorFontsizeChange(myself.$global.editor.fontSize);
-                        //---- render editor mode change
-                        myself.onEditorModeChange(myself.$global.editor.mode);
-                        resolve();
-                    }).catch(e=>{ reject(e); });
-                });
-            }else{
-                let id = data.data.name;           
-                this.editorTabs.push(data.data);
-                this.editorTab = 'editortab-'+id;
-                return new Promise((resolve,reject)=>{
-                    resolve();
-                });
             }
         },
         onEditorFontsizeChange(value){
@@ -491,7 +356,7 @@ export default {
                 cm.setOption("theme", value);
             }
         },
-        onEditorModeChange(mode){
+        onEditorModeChange(mode,convert = true){
             if(mode < 3){
                 var xml = '';
                 if(this.$global.editor.blockCode != '' &&
@@ -518,20 +383,16 @@ export default {
                 }else{
                     var codegen = util.requireFunc(`${platformDir}/codegen`);
                 }
-                var {sourceCode,codeContext} = codegen.generate(this.$global.editor.rawCode);
+                //passing empty string if won't convert
+                var {sourceCode,codeContext} = codegen.generate(convert?this.$global.editor.rawCode : ""); 
                 this.$global.editor.sourceCode = sourceCode;
-                this.reindent();
             }
             if('cm' in this.$refs){
                 if(this.$refs.cm != undefined){ //enable editing code
-                    if(this.$refs.cm.length > 0){
-                        this.$refs.cm.map(obj => obj.getCodeMirror().setOption("readOnly", mode < 3));
-                        //let code = this.$refs.cm.getCodeMirror();
-                        //code.setOption("readOnly", mode < 3);
-                    }
+                    let code = this.$refs.cm.getCodeMirror();
+                    code.setOption("readOnly", mode < 3);
                 }
             }
-
         },
         onBoardChange: function(boardInfo){            
             initBlockly(boardInfo);
@@ -541,40 +402,27 @@ export default {
             if('base_blocks' in blocks){ //render block base from platform
                 stringBlock += renderBlock(blocks.base_blocks);
             }
-
             if('blocks' in blocks){ //render extended block
                 stringBlock += renderBlock(blocks.blocks);
             }
             // render plugin blocks            
             stringBlock += loadAndRenderPluginsBlock(Blockly,boardName);
             // TODO : render platform block
-
-
             this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
             this.workspace.updateToolbox(this.toolbox);
-
-            let found = this.blockTabs.find(obj=> 'blocktab-'+obj.name == this.blockTab);
-            if(found){
-                found.board = this.$global.board.board_info;
-            }            
         },
-
-        onThemeChange(theme){
-            if(this.$global.editor.mode < 3){
-                var lighter = util.ui.colorLuminance(theme,0.2);            
-                document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
-            }
+        onThemeChange(theme){            
+            var lighter = util.ui.colorLuminance(theme,0.2);            
+            document.body.getElementsByClassName('blocklyToolboxDiv')[0].style.backgroundColor = lighter;
         },
-
-        onResizePanel(pane,container,size){      
-            if(this.workspace){
-                Blockly.svgResize(this.workspace);
-                console.log('editor resized');
-            }
+        onResizePanel(pane,container,size){            
+            Blockly.svgResize(this.workspace);
+            console.log('editor resized');
+            //console.log(this.$root.editor.MODE);
         },
-
         updatecode(e){
-            if(e.type != Blockly.Events.UI){                
+            if(e.type != Blockly.Events.UI){
+                //Blockly.JavaScript.resetTaskNumber();
                 this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(this.workspace);
                 var xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
                 this.$global.editor.blockCode = xml;
@@ -589,68 +437,22 @@ export default {
                 }
             }
         },
+        updateSourceCode(e){
+            let pos = e.getCursor();
+            let text = `Ln ${pos.line}, Col ${pos.ch}`;
+            console.log(text);
+        },
         setCookie(cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
             var expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         }
-    },
-    watch : {
-        blockTab : function(val){
-            let found = this.blockTabs.find(obj=> 'blocktab-'+obj.name == val);
-            if(found){
-                this.workspace = found.workspace;
-                this.toolbox = found.toolbox;
-                if(found.board){
-                    if(this.$global.board.board_info.name != found.board.name){
-                        this.$global.board.board_info =  found.board;
-                        this.$global.board.board = found.board.name;
-                        this.$global.$emit('board-change',this.$global.board.board_info);
-                    }
-                }
-                /*Vue.nextTick(()=>{
-                    this.onResizePanel(null,null,null);
-                });*/
-                setTimeout(()=>{
-                    this.onResizePanel(null,null,null);                
-                },500);
-            }
-            
-        }
     }
 }
 </script>
 
 <style>
-.v-tabs{
-    /*height: 100vh;*/
-}
-.v-tabs__container{
-    height: unset;
-}
-.v-icon.v-icon.v-icon--link{
-    display : grid!important;
-}
-.v-tabs__div{
-    height: 30px;
-    font-size: 12px !important;
-}
-.v-tabs__slider {
-    height: 3px !important;
-}
-.v-tabs-multitab .v-window-item{
-    height: calc(100vh - 64px - 55px) !important;
-}
-.v-tabs-multitab > .v-tabs__bar{
-    display : block;
-}
-.v-tabs-singletab .v-window-item{
-    height: calc(100vh - 64px - 24px) !important;
-}
-.v-tabs-singletab > .v-tabs__bar{
-    display : none;
-}
 .vertical-panes-editor {
   width: 100%;
   height: 100%; /* minus header and footer */
@@ -709,4 +511,3 @@ export default {
                     <block type="text_print"></block>         
                 </category>    
             </xml>-->
-    

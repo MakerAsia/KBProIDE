@@ -14,6 +14,7 @@ export default {
     data:{
         Blockly : null,
         workspace : null,
-        saved : false,
+        CodeMirror : null,
+        //saved : false,
     }
 }

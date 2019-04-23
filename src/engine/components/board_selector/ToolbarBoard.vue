@@ -244,11 +244,21 @@ export default {
         openLink(url){
             shell.openExternal(url);
         },
-        changeBoard(boardname){        
+        changeBoard : async function(boardname){        
             this.boardDialog = false;
-            this.$global.board.board_info =  bm.boards().find(obj => obj.name == boardname);
-            this.$global.board.board = boardname;
-            Vue.prototype.$global.$emit('board-change',this.$global.board.board_info);
+            const res = await this.$dialog.confirm({
+                text: 'Changing board will clear your workspace. please confirm.',
+                title: 'Warning',
+                actions : [
+                    { text : 'Cancel', key : false },
+                    { text : 'Clear' , key : true},
+                ]
+            });
+            if(res === true){
+                this.$global.board.board_info =  bm.boards().find(obj => obj.name == boardname);
+                this.$global.board.board = boardname;
+                Vue.prototype.$global.$emit('board-change',this.$global.board.board_info);    
+            }
         },
         isOnline()
         {

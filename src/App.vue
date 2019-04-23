@@ -66,9 +66,7 @@
               </div>
           </multipane>
           </div>
-          <v-footer height="23" min-height="10" class="grey lighten-3 pl-2">
-            ~ <strong>&nbsp; Satchan &nbsp;</strong> forever ~
-          </v-footer>
+          <app-footer></app-footer>
         </v-content>
         <!-- left drawer -->
         <v-navigation-drawer class="setting-drawer" temporary left hide-overlay fixed v-model="$global.ui.leftDrawerComponent">
@@ -108,6 +106,7 @@ import Vue from "vue";
 import AppDrawer from '@/engine/views/AppDrawer';
 import AppToolbar from '@/engine/views/AppToolbar';
 import PageHeader from '@/engine/views/PageHeader';
+import AppFooter from '@/engine/views/AppFooter';
 import { Multipane, MultipaneResizer } from 'vue-multipane';
 import draggable from 'vuedraggable'
 //========= load manager ==========//
@@ -124,7 +123,8 @@ export default {
     Multipane,
     draggable,
     MultipaneResizer,
-    AsyncComponent
+    AsyncComponent,
+    AppFooter
   },
   data: () => ({        
     expanded: true,

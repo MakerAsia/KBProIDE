@@ -104,17 +104,37 @@ export default {
   computed: {
   },  
   methods: {
-      changeEditorMode(mode){
-          console.log('editor change mode to : '+mode);    
-          this.modeDialog = false;
-          this.$global.editor.mode = mode;
-          this.$nextTick(function () { //wait for element changed before fire event
-            this.$global.$emit('editor-mode-change', mode);
-          });
+      changeEditorMode : async function(mode){
+            console.log('editor change mode to : '+mode);    
+            this.modeDialog = false;
+            if(mode >= 3){ // we ask a convert
+                const res = await this.$dialog.confirm({
+                    text: 'Do you want to clear and convert block to source code?',
+                    title: 'Warning',
+                    actions : [
+                        { text : 'Cancel', key : false },
+                        { text : 'Create new' , key : true},
+                        { text : 'Clear & Convert' ,key : 'convert'}
+                    ]
+                });
+                if(res === true || res === 'convert'){
+                    this.$global.editor.mode = mode;
+                    this.$global.editor.sourceCode = "";
+                    //this.$global.$emit('editor-mode-change',this.$global.editor.mode,res === 'convert');
+                    this.$nextTick(function () { //wait for element changed before fire event
+                        this.$global.$emit('editor-mode-change', mode,res === 'convert');
+                    });
+                }
+            }else{
+                this.$global.editor.mode = mode;
+                this.$nextTick(function () { //wait for element changed before fire event
+                    this.$global.$emit('editor-mode-change', mode);
+                });
+            }
+            
       }
   },
   watch:{
-
       'modeDialog': function(val){
           if(val){//on opening
             this.selectingMode = this.$global.editor.mode;            
