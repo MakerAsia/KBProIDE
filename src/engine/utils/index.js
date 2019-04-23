@@ -5,6 +5,8 @@ const path = require('path');
 const fs = require('fs');
 const rootDir = require('electron-root-path').rootPath;
 const os = require('os');
+const base64 = require('base64-js');
+
 import unzip from './unzip';
 
 var baseDir = "";
@@ -196,6 +198,20 @@ function promiseTimeout (time) {
   });
 };
 
+//from kbide 
+// https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings#answer-30106551
+function b64EncodeUnicode(str) {
+	return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+		return String.fromCharCode(parseInt(p1, 16))
+	}))
+}
+
+function b64DecodeUnicode(str) {
+	return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+	}).join(''))
+}
+
 export default {
   camel,
   camelActual,
@@ -210,6 +226,8 @@ export default {
   walk,
   rmdirf,
   promiseTimeout,
+  b64EncodeUnicode,
+  b64DecodeUnicode,
   filterFileName : function(obj,filterName){    
     var res = {};
     Object.keys(obj).forEach(key=>{

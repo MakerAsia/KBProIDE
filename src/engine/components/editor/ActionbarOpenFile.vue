@@ -11,65 +11,67 @@
 
 <script>
 import { resolve } from 'url';
+import util from '@/engine/utils';
 const {dialog} = require('electron').remote;
 const fs = require('fs');
-const base64 = require('base64-js');
-//from kbide 
-// https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings#answer-30106551
-function b64EncodeUnicode(str) {
-	return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-		return String.fromCharCode(parseInt(p1, 16))
-	}))
-}
-
-function b64DecodeUnicode(str) {
-	return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
-		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-	}).join(''))
-}
 
 //const WIN = new BrowserWindow({width: 800, height: 600});
 export default {
     data(){
         return {
-            openDialog : false,
-            insertBlockMode : 'replace', //'insert' or 'replace'
+            openDialog : false
         }
     },
     methods : {
         openFilePopUp : async function(){
             let mode = this.$global.editor.mode;
             let isSaved = this.$global.editor.saved;
-            if(!isSaved){
+            if(mode < 3){
                 let userDec = await this.$dialog.confirm({
-                    title : 'Save you code first?',
-                    text : "It look like you haven't save workspace yet, openning new file will overwrite your code",
-                    actions : {
-                        'false' : 'Cancel',
-                        'true' : 'Overwrite'
-                    }
+                    title : 'Warning',
+                    text : "Open new file will overwrite workspace, what do you want to do?",
+                    actions : [
+                        { text : 'Cancel', key : false },
+                        { text : 'Clear & Open' , key : true}
+                    ]
                 });
-                if(userDec){
+                if(userDec === true){
                     let blyOption = {
                         title : 'Open Blockly File',
                         filters : [ 
                             { name : 'Blockly file' , extensions : ['bly','txt'] }
                         ]
                     }
+                    let filePaths = dialog.showOpenDialog(null,blyOption);
+                    if(filePaths){
+                        let file = filePaths[0];
+                        var text = fs.readFileSync(file,'utf8');
+                        text = util.b64DecodeUnicode(text);
+                        this.$global.editor.blockCode = text;
+                        this.$global.$emit('editor-mode-change',this.$global.editor.mode);
+                    }
+                }
+            }else{
+                let userDec = await this.$dialog.confirm({
+                    title : 'Save you code first?',
+                    text : "Open new file will overwrite your code, what do you want to do?",
+                    actions : [
+                        { text : 'Cancel', key : false },
+                        { text : 'Clear & Open' ,key : true}
+                    ]
+                });
+                if(userDec == true){
                     let codeOption = {
                         title : 'Open Code File',
                         filters : [ 
                             { name : 'Source code file' , extensions : ['c','cpp'] }
                         ]
                     }
-                    let filePath = dialog.showOpenDialog(null,(mode>2) ? codeOption : blyOption);
-                    if(filePath){
-                        if(mode > 2){ //source code 
-                            this.$global.editor.sourceCode = fs.readFileSync(filePath,'utf8');
-                            this.$global.editor.saved = false;
-                        }else{
-                            this.$global.editor.rawCode =  fs.readFileSync(filePath,'utf8')
-                        }
+                    var filePaths = dialog.showOpenDialog(null, codeOption);
+                    if(filePaths){
+                        var file = filePaths[0];
+                        this.$global.editor.sourceCode = fs.readFileSync(file,'utf8');
+                        //this.$global.$emit('editor-mode-change',this.$global.editor.mode);
                     }
                 }
             }

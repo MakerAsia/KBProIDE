@@ -374,7 +374,7 @@ export default {
                 setTimeout(() => {
                     Blockly.svgResize(this.workspace);
                 }, 300);
-            }else if(mode == 3){
+            }else{
                 //------ generate template here ------//                
                 const boardDirectory = `${util.boardDir}/${this.$global.board.board}`;
                 const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;

@@ -1,6 +1,6 @@
 <template>
     <v-tooltip bottom>
-        <v-btn color="primary darken-2" slot="activator" icon @click.native="$global.ui.rightDrawer('./components/setting/RightDrawer')">
+        <v-btn color="primary darken-2" slot="activator" icon @click.native="saveFilePopUp">
             <v-icon dark>fa-floppy-o</v-icon>
         </v-btn>
         <span>Save file</span>
@@ -10,35 +10,43 @@
 <script>
 const {dialog} = require('electron').remote;
 const fs = require('fs');
-const base64 = require('base64-js');
-//from kbide 
-// https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings#answer-30106551
-function b64EncodeUnicode(str) {
-	return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-		return String.fromCharCode(parseInt(p1, 16))
-	}))
-}
-
-function b64DecodeUnicode(str) {
-	return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
-		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-	}).join(''))
-}
-
-//const WIN = new BrowserWindow({width: 800, height: 600});
+import util from '@/engine/utils';
 export default {
     data(){
         return {
-            saveDialog : false,
-            pathSeted : false, //'insert' or 'replace'
+            saveDialog : false
         }
     },
     methods : {
         saveFilePopUp : async function(){
             let mode = this.$global.editor.mode;
-            let isSaved = this.$global.editor.saved;
-            if(!isSaved){
-                
+            if(mode < 3){
+                let blyOption = {
+                    title : 'Save block File',
+                    filters : [ 
+                        { name : 'Blockly file' , extensions : ['bly','txt'] }
+                    ]
+                }
+                let res = dialog.showSaveDialog(null,blyOption);
+                if(res){
+                    let Blockly = this.$global.editor.Blockly; 
+                    let bCode = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+                    let writeRes = fs.writeFileSync(res,util.b64EncodeUnicode(bCode),'utf8');
+                    this.$global.ui.snackbar('Save file success');
+                }
+            }else{
+                let codeOption = {
+                    title : 'Save Code File',
+                    filters : [ 
+                        { name : 'Source code file' , extensions : ['cpp','c'] }
+                    ]
+                }
+                let res = dialog.showSaveDialog(null,codeOption);
+                if(res){
+                    let source = this.$global.editor.sourceCode;
+                    let writeRes = fs.writeFileSync(res,source,'utf8');
+                    this.$global.ui.snackbar('Save file success');
+                }
             }
         },
     }
