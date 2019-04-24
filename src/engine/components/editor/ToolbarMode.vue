@@ -16,34 +16,43 @@
                     <v-item-group>              
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <v-flex xs12 md4 v-for="(mode,index) in modes" :key="index">                                
-                                    <v-hover>                              
-                                        <v-card light slot-scope="{ hover }" :class="`elevation-${hover ? 12 : (selectingMode == index+1? 8 : 2)}`" @click.native="selectingMode = mode.mode" height="200">
-                                            <transition name="fade">
-                                                <div class="sneaker" v-if="selectingMode == index+1" transition="fade-transition">                
-                                                    <v-layout row justify-space-between class="ma-0 grey lighten-2">
-                                                        <v-flex xs2>
-                                                        </v-flex>
-                                                        <v-flex xs2 class="text-sm-right">
-                                                            <v-icon color="green">check_circle</v-icon>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </div>
-                                            </transition>
-                                            <v-card-text>
-                                                <div class="layout ma-0 align-center column pt-4">
-                                                    <v-avatar color="primary" :size="mode.icon.size">
-                                                        <img :src="mode.icon.src" alt="Kid Level">                                            
-                                                    </v-avatar>
-                                                    <div class="flex text-sm-center">
-                                                    <div class="subheading">{{mode.name}}</div>
-                                                    <span class="caption">{{mode.desc}}</span>
-                                                    </div>
-                                                </div>
-                                            </v-card-text>
-                                        </v-card> 
-                                    </v-hover>                             
-                                </v-flex>
+                                <template v-for="(mode,index) in modes">
+                                    <template v-if="$global.setting.devMode == false && (index+1) == 2">
+                                    </template>
+                                    <template v-else>
+                                        <v-flex xs12 :class="`md${$global.setting.devMode? '4' : '6'}`" :key="index">
+                                            <v-hover>                              
+                                                <v-card light slot-scope="{ hover }" 
+                                                        :class="`elevation-${hover ? 12 : (selectingMode == index+1? 8 : 2)}`" 
+                                                        @click.native="selectingMode = mode.mode" 
+                                                        height="200">
+                                                    <transition name="fade">
+                                                        <div class="sneaker" v-if="selectingMode == index+1" transition="fade-transition">                
+                                                            <v-layout row justify-space-between class="ma-0 grey lighten-2">
+                                                                <v-flex xs2>
+                                                                </v-flex>
+                                                                <v-flex xs2 class="text-sm-right">
+                                                                    <v-icon color="green">check_circle</v-icon>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </div>
+                                                    </transition>
+                                                    <v-card-text>
+                                                        <div class="layout ma-0 align-center column pt-4">
+                                                            <v-avatar color="primary" :size="mode.icon.size">
+                                                                <img :src="mode.icon.src" alt="Kid Level">                                            
+                                                            </v-avatar>
+                                                            <div class="flex text-sm-center">
+                                                            <div class="subheading">{{mode.name}}</div>
+                                                            <span class="caption">{{mode.desc}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </v-card-text>
+                                                </v-card> 
+                                            </v-hover>
+                                        </v-flex>
+                                    </template>
+                                </template>
                             </v-layout>
                         </v-container>
                     </v-item-group>

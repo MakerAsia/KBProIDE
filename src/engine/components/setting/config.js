@@ -6,6 +6,7 @@ export default {
     persistence:{
         color : '',
         rightSeperator : 80,
+        devMode : false,
     },
     data:{
         rightDrawer : false,

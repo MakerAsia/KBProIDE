@@ -1,0 +1,749 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="+u$~rC9mVl,@%}YC/KE6" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">button_1_status</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="u;H=T53J]GfOjd{YC]7_">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="$K|@UDF.CeZ1et+S%F91">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="%xlMD6yQ;3/.W0PV/mr5">
+                <field name="TEXT">button 1 state</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1ey#Yn03KkdofAk$/0VC" deletable="false" movable="false">
+        <field name="TEXT">get button 1 pressed or not</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="d~BM~W9mkPc;scf,f%/6" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="#v}Q3hhKsO)%/4-HGvff"></shadow>
+      <block type="type_boolean" id="Oip`)99h[_j8]29pI/]c"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="~9m1?SA`^UET)Qdh|*7Q">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="7YnZhaZ(4W?a)!V}W2n-" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">button_2_status</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="u;H=T53J]GfOjd{YC]7_">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="$K|@UDF.CeZ1et+S%F91">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="%xlMD6yQ;3/.W0PV/mr5">
+                <field name="TEXT">button 2 state</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="7[q/OyDlC_X`64L55BE[" deletable="false" movable="false">
+        <field name="TEXT">get button 2 state</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="#Z/IZ?ryUG74*juXpzo`" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="]%w[reU%#v@BaV,K?X*/"></shadow>
+      <block type="type_boolean" id="z@j.s=Af?bMq:x@U*D{F"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="ZJcv2xr`g{Niuc$wfQuA">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="tR=5)(pKsM4}k~{h]5N[" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bme280_read_temp</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read temperature</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="I]_/7}.4I0H5KqI@Jr]N" deletable="false" movable="false">
+        <field name="TEXT">read temperature</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="K]#%Z^NMeC;?$},Ac,}f" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="Or%=tI=AP1xF!-9B]IQg"></shadow>
+      <block type="type_number" id="SJxT0j|p!r.i.wgrQM0n"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="PVIq*T6Lub@GlW3aB~ng">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="[N_nCj+zW]UE01E5gr!+" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bme280_read_humid</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read humidity</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="H3c8j`vwita(ags2R)68" deletable="false" movable="false">
+        <field name="TEXT">read humidity</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="AZ;;QuK+.42(?F!/jDij" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="$bjJ,6/f]vaVmJcH+$%v"></shadow>
+      <block type="type_number" id="jT^~78A0w?i7t:LH@qz0"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="MeyU2%yLz$s}MT$ex7IU">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="N2cVRs%Q(B+s.k$;.nbH" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bme280_read_pressure</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read air pressure</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="%s~~Jn573{NFRBwqPP(A" deletable="false" movable="false">
+        <field name="TEXT">read air pressure</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="PBDy2n4rA`qb14.bTo_2" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="R02_2/ftF?,/jJ-$e9^q"></shadow>
+      <block type="type_number" id="C-5pI[Z_ekOhbh24yL^S"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="}+lu|DQm$IBW6?ZS!^b5">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="jm~6S!pv`lyMM;HUB8u:" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bh1680_read_light_1</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read light sensor 1</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="-VI$c^od+zTLy*maDU6i" deletable="false" movable="false">
+        <field name="TEXT">read light intensity from sensor 1</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="/K]{z.DwqxQ;Y}sj7xeV" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="|i[V?md1iEv}NG;s@aT|"></shadow>
+      <block type="type_number" id="vo#tW-h8hIW8r(k4}Z%z"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=")~sWuRPk9fU])7GhiDr*">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="$f(*lLCiZyvb[Iwq$!rV" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bh1680_read_light_2</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read light sensor 2</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=";=ccV39WxK#~$W855/AV" deletable="false" movable="false">
+        <field name="TEXT">read light intensity from sensor 2</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="%(y[?fFD[r#lwxKdL]Cp" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="U.gTvpkjdevvLm7t8Fv@"></shadow>
+      <block type="type_number" id="44za8qHmqRe06hUKC?k+"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="MWxbN|ahRTAT!UsS)nQs">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=")n$:58NJiCK*S^XCY{nh" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bh1745_read_red</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "red" light color</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="/3J|YHxb7RrH1?m.G~(g" deletable="false" movable="false">
+        <field name="TEXT">read red light intensity from sensor</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=".tLxjs^kpA8zTv0Z.3~7" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="=NLP3:MmYjM?e,nr,;HJ"></shadow>
+      <block type="type_number" id="JIL6?;;#ZPeiT~1wYn}|"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="u+d+_5o1fP.8DDxFmY!u">
+        <mutation colour="#a55b5b"></mutation>
+        <field name="HUE">0</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="BxD5.UyH*bjU#BZwLJJa" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bh1745_read_green</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "green" light color</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="h*O^|~~!SM:Y|Gy3+%,s" deletable="false" movable="false">
+        <field name="TEXT">read green light color intensity from RGB sensor</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="7~CnZZn%]6f:Zrb;lr|n" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="@F%A|_Fo6V%@.z``j(H("></shadow>
+      <block type="type_number" id="e;yi0XU6~|f-ow;hxv?}"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="T%B3wy|tWm=X[)#ykonx">
+        <mutation colour="#5ba55b"></mutation>
+        <field name="HUE">120</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="[R{n_r[}*yTI0wSk7{TC" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bh1745_read_blue</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "blue" light color</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="zGq!e1bs;25UvqC#Pszf" deletable="false" movable="false">
+        <field name="TEXT">read blue light color intensity from RGB sensor</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="L$xx^qYxD)[k.cJ~lL6M" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="(C)G(P3p^:RQ-,1,@P+D"></shadow>
+      <block type="type_number" id="L=nA6jd!Zq/mc(?%!3=("></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="sbjmn,_m_gE:LN(m^KJK">
+        <mutation colour="#5b67a5"></mutation>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Z#18Q@|Dm%?zP}1O1g6%" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_acc_x</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "x" axis from accelerometer</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="SRzxuLWXMk4+md4D.Ns(" deletable="false" movable="false">
+        <field name="TEXT">read "x" axis from accelerometer</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="%+ETwG4]*WEK;9OdCgdJ" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="}o}EMg%|klfB{:2iTgRs"></shadow>
+      <block type="type_number" id="GYD.^wzcceRpXfM/eX{X"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Hx{D09drpmS+d}y:xz]x">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="lu/uKiMqi;.}MI)VG828" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_acc_y</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "y" axis from accelerometer</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="3o;g+T`%F@M]S[p[fqMq" deletable="false" movable="false">
+        <field name="TEXT">read "y" axis from accelerometer</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="=gOrMnc#bqL(%2u9xb:{" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="ZySd5EwCP.-AUOlO$XuH"></shadow>
+      <block type="type_number" id="bT,i%n-wPcTm]AKwo{VC"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="|q0#rvTDFRTWy:d}+zxi">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="}b**??p%^UcFI-qRXqR." deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_acc_z</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "z" axis from accelerometer</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="#=ZHFQ$xXHuoE{+CAtFb" deletable="false" movable="false">
+        <field name="TEXT">read "z" axis from accelerometer</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="`gz{wWa+)v,58y+@uk~]" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="*,,rcgHhUSY.5F4g);6M"></shadow>
+      <block type="type_number" id="u+z1YDN4uu/sV+T7H2Ro"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Y3WqpQq~?*C%VTawGc4H">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="ynhJ%rfz|cs-^T@Z#:1," deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_gyro_x</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "x" axis from gyroscope</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="?72cQQD$(4U!r-NB;k!5" deletable="false" movable="false">
+        <field name="TEXT">read "x" axis from gyroscope</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Ah|Us/z~wI}Op`la{F|l" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="zhV^Ki5xFY%7SHb9d[Gg"></shadow>
+      <block type="type_number" id="(_KHF(Hcg%MRV)V-4d*N"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="21C8Eo0]s8J[m3$R@$5D">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="yd.DFT-*GEtJ4e+PuJ?C" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_gyro_y</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "y" axis from gyroscope</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="xV_rD]*BCX={mnll}WC:" deletable="false" movable="false">
+        <field name="TEXT">read "y" axis from gyroscope</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="eGC~H[E3pa@vrx3V]:w{" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="6UscK]paEP%2M9m5grY("></shadow>
+      <block type="type_number" id="V.J@t0(@/yppVBST1!;+"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="KJ0Cwq)jxi%i:PO{0:ZH">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="j!G`w2_u]Iga!vh|rZ.+" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_gyro_z</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read "z" axis from gyroscope</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="N9$,32V`F9v:r%@L#j$h" deletable="false" movable="false">
+        <field name="TEXT">read "z" axis from gyroscope</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="H3JTK0cB|UJDW9kk-/=1" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="a1:LS_~que|NWZk,Kzrk"></shadow>
+      <block type="type_number" id="*pK`}|Wr.Lz^7P=qftTr"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="s|w|$`0UaVh[Hc64Xof]">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="+Ga$1]0g|RiZ{5bJe:dK" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bmx055_read_compass</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="0MC+-!OKP/og?3NaEWP`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="?1;+,!+y9x}M.+;bxdX:">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="?f~-=4AgKR6-XnGXtyz`">
+                <field name="TEXT">read angle from compass sensor</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="X7=xH0Yc$@:x:)2|z|,R" deletable="false" movable="false">
+        <field name="TEXT">read angle from compass sensor</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="p1,XX9fc~dfh(_(r9(=9" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="3?L}4c;ncyg/|)DzZmHA"></shadow>
+      <block type="type_number" id="AxI_%6l`P$ih4$uAKZnW"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="-^u=?PmGJ=%+ua/ERviV">
+        <mutation colour="#80a55b"></mutation>
+        <field name="HUE">90</field>
+      </block>
+    </value>
+  </block></xml>

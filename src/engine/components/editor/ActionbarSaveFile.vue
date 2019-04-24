@@ -38,7 +38,7 @@ export default {
                 let codeOption = {
                     title : 'Save Code File',
                     filters : [ 
-                        { name : 'Source code file' , extensions : ['cpp','c'] }
+                        { name : 'Source code file' , extensions : ['kbp','ino','cpp','c'] }
                     ]
                 }
                 let res = dialog.showSaveDialog(null,codeOption);

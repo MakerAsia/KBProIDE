@@ -33,7 +33,20 @@
           <async-component :target="settingTarget" :key="compName+'.'+settingName"/>
         </template>
       </template>
-
+      <div>
+        <v-divider></v-divider>
+        <v-flex>
+            <v-subheader class="px-1 my-2">
+                Developer Mode
+            </v-subheader>
+            <div class="my-3">
+                <v-switch 
+                    v-model="$global.setting.devMode" 
+                    :label="`Enabled : ${$global.setting.devMode ? 'ON' : 'OFF'}`">
+                </v-switch>
+            </div>
+        </v-flex>
+    </div>
     </v-layout>
   </v-container>
 </div>

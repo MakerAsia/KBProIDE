@@ -20,7 +20,6 @@
                 ></v-select>
             </div>
         </v-flex>
-
     </div>
 </template>
 <script>

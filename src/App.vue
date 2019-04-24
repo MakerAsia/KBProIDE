@@ -132,7 +132,7 @@ export default {
   computed: {
 
   },
-  created () {    
+  created () {  
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
     });

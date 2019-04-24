@@ -63,8 +63,8 @@ export default {
                 if(userDec == true){
                     let codeOption = {
                         title : 'Open Code File',
-                        filters : [ 
-                            { name : 'Source code file' , extensions : ['c','cpp'] }
+                        filters : [
+                            { name : 'Source code file' , extensions : ['kbp','ino','c','cpp'] }
                         ]
                     }
                     var filePaths = dialog.showOpenDialog(null, codeOption);

@@ -178,11 +178,11 @@ var initBlockly = function(boardInfo){
     var platformBlockFile =  util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
     var blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
     var blocks = platformBlockFile.concat(blocklyFile);
-    if(blocklyFile.length > 0){
-        blocklyFile.sort(function(a, b){
+    if(blocks.length > 0){
+        blocks.sort(function(a, b){
             return a.length - b.length;
         });
-        blocklyFile.forEach(element => {
+        blocks.forEach(element => {
             if(element.includes('config.js')){ //skip config.js file
                 return;
             }
