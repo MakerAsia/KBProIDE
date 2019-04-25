@@ -48,7 +48,7 @@
                                                 class="red"
                                                 style="bottom:25px; right:5px"
                                                 @click="toberemove = data.name; confirmRemoveDialog = true"
-                                                :disabled="data.status != 'READY'"
+                                                :disabled="(data.status != 'READY' && data.status != 'INSTALLED') || $global.board.board == data.name"
                                             >
                                                 <v-icon>fa-trash-o</v-icon>
                                             </v-btn>
@@ -113,7 +113,7 @@
                                                     {{data.title}}
                                                 </h4>
                                                 <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
-                                                <v-img contain v-else class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
+                                                <v-img contain v-else class="board-image" :src="`${data.git}raw/master/${data.image}`"/>
                                             </v-card-media>
                                             <v-card-text>
                                                 <v-btn
@@ -170,6 +170,7 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click.native="publishNewBoard">Publish your board</v-btn>
                     <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
                     <v-btn color="blue darken-1" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
                 </v-card-actions>
@@ -204,11 +205,14 @@
 
 const { shell } = require('electron');
 const fs = require('fs');
+const request = require('request-promise');
 
 import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import util from '@/engine/utils';
+
+var mother = null;
 export default {
     components: {
         VWidget
@@ -232,6 +236,8 @@ export default {
             toberemove : '',
             statusText : '',
             statusProgress : 0,
+
+            addBoardDialog : false,
         }
     },
     methods:{        
@@ -274,19 +280,20 @@ export default {
             this.onlineBoardStatus = 'wait';
             bm.listOnlineBoard(name).then(res=>{                
                 //name,start return {end : lastVisible, boards : onlineBoards}
-                this.onlineBoardPage = res.end;
-                this.onlineBoards = res.boards.map(obj=>{ obj.status =  'READY'; return obj;});
-                this.onlineBoardStatus = 'OK';                
+                mother.onlineBoardPage = res.end;
+                mother.onlineBoards = res.boards.map(obj=>{ obj.status =  'READY'; return obj;});
+                mother.onlineBoardStatus = 'OK';
             }).catch(err=>{
-                this.onlineBoardStatus = 'ERROR';
+                mother.onlineBoardStatus = 'ERROR';
             });   
         },
         listLocalBoard(name = ''){
+            this.installedBoard = bm.boards().map(obj=>{ obj.status =  'READY'; return obj;})
             if(name != ''){
                 this.localBoards = this.installedBoard.filter(obj=> {return obj.name.startsWith(name)});
             }else{
                 this.localBoards = this.installedBoard;
-            }            
+            }
         },
         installOnlineBoard(name){
             let b = this.getOnlineBoardByName(name);
@@ -305,8 +312,9 @@ export default {
                 }
             }).then(()=>{ //install success
                 b.status = 'INSTALLED';
-                this.statusText = '';                
-                this.localBoards.push(b);
+                this.statusText = '';
+                bm.clearListedBoard();
+                this.listAllBoard();
             }).catch(err=>{
                 this.statusText = `Error : ${err}`;
                 b.status = 'ERROR';
@@ -315,10 +323,73 @@ export default {
                     this.statusText = '';
                 }, 5000);
             })
+        },
+        publishNewBoard : async function(){
+            let res = await this.$dialog.prompt({
+                text: 'https://github.com/user/repo/',
+                title: 'Input Board Repository'
+            });
+            var json = null;
+            if((/^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g).test(res)){
+                this.$dialog.notify.info('Please wait...', {
+                            position: 'top-center',
+                            timeout: 3000
+                });
+                request(res + 'raw/master/config.js')
+                .then( res => {
+                    json = eval(res);
+                    if(json.name){ //search if existing
+                        return Vue.prototype.$db.collection('boards')
+                            .where('name','==',json.name) //search start with
+                            .get();
+                    }else{
+                        return false;
+                    }
+                })
+                .then(res=>{
+                    if(res && res.size >= 1){
+                        return json.version > res.docs[0].data().version;
+                    }else{
+                        return true;
+                    }
+                })
+                .then(res=>{
+                    if(res){
+                        return Vue.prototype.$db.collection("boards").doc(json.name).set(json);
+                    }else{
+                        this.$dialog.notify.error('Existing board name or is not newest version', {
+                            position: 'top-center',
+                            timeout: 3000
+                        });
+                        return false;
+                    }
+                })
+                .then(res=>{
+                    if(res){
+                        this.$dialog.notify.success('Added your board success, please refresh again', {
+                            position: 'top-center',
+                            timeout: 3000
+                        });
+                    }
+                })
+                .catch(err=>{
+                    console.log('request error -----');
+                    console.log(err);
+                    this.$dialog.notify.error('Error something went wrong, please check the log', {
+                        position: 'top-center',
+                        timeout: 3000
+                    });
+                })
+            }else{
+                this.$dialog.notify.error('Github link format error. Please check your link again', {
+                    position: 'top-center',
+                    timeout: 3000
+                });
+            }
         }
     },
     mounted(){
-        
+        mother = this;
     },
     destroyed() {
       

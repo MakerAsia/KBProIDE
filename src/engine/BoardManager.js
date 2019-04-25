@@ -214,7 +214,7 @@ var installOnlineBoard = function(info,cb)
             let dirname = path.join(util.boardDir, dirs[i]);
             if(fs.lstatSync(dirname).isDirectory() && dirname.endsWith('-master')){
                 let sourceDir = dirname;
-                let targetDir = dirname.replace(/\-master$/,"");
+                let targetDir = path.join(util.boardDir,info.name);
                 fs.renameSync(sourceDir,targetDir);
             }
         }
@@ -233,7 +233,9 @@ var boards = function(){
     }
     return listedBoards;
 };
-
+var clearListedBoard = function(){
+    listedBoards = [];
+};
 var packages = function(selectedBoard){
     if((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object) || (listedPackagesBoard != selectedBoard)){ // check empty object !!!
         listedPackages = listPackage(selectedBoard);
@@ -262,6 +264,7 @@ var filerBoardPackageComponent = function(localPackage,name){
 };
 export default {
     boards,
+    clearListedBoard,
     packages,
     listBoard,
     listOnlineBoard,

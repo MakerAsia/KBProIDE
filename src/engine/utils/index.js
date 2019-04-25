@@ -139,7 +139,8 @@ var loadCofigComponents = function(obj,compName){
       }
       // load data from localStorage if exist
       if(localStorage[compName+'.'+pkey]){
-        componentData[pkey] = JSON.parse(localStorage[compName+'.'+pkey]);
+        let lcData = localStorage[compName+'.'+pkey];
+        componentData[pkey] = lcData == "undefined" ? null : JSON.parse(lcData);
       }else{
         componentData[pkey] = obj.persistence[pkey];
       }
