@@ -170,7 +170,7 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="publishNewBoard">Publish your board</v-btn>
+                    <v-btn v-if="$global.setting.devMode == true" color="blue darken-1" flat @click.native="publishNewBoard">Publish your board</v-btn>
                     <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
                     <v-btn color="blue darken-1" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
                 </v-card-actions>
