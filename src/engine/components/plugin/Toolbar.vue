@@ -6,7 +6,7 @@
             </v-btn>
             <span>Plugin Manager</span>
         </v-tooltip>
-        <v-dialog v-model="pluginDialog" max-width="70%" max-height="80%" scrollable persistent>            
+        <v-dialog v-model="pluginDialog" max-width="70%" max-height="80%" scrollable persistent>
             <v-card>
                 <v-card-title>
                     <span class="headline">Plugin Manager</span>
@@ -18,8 +18,8 @@
                         single-line
                         clearable
                         hide-details
-                        :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"                        
-                        v-model="searchText"></v-text-field>                    
+                        :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"                
+                        v-model="searchText"></v-text-field>
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar>

@@ -5,6 +5,7 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+const path = require('path');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -14,10 +15,13 @@ let win
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
 function createWindow () {
+  console.log('ssssssssssssssssssssss');
+  console.log(path.join(__dirname, '/icons/png/64x64.png'));
   // Create the browser window.
   win = new BrowserWindow({ 
     width: 800, 
     height: 600,
+    icon: path.join(__dirname, '/icons/png/64x64.png'),
     webPreferences: { //TODO check here!
       webSecurity: false
     }
