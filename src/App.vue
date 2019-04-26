@@ -5,7 +5,6 @@
         <app-toolbar class="app--toolbar"></app-toolbar>
         <v-content>
           <!-- Page Header -->
-          <page-header v-if="$route.meta.breadcrumb"></page-header>
           <div class="page-wrapper">
             <!-- screen divider (into 3 section page,rightTab,bottomTab) -->
             <multipane class="multiplate-warper" layout="horizontal" @paneResizeStop="onResizePanel">
@@ -99,13 +98,37 @@
       {{ $global.ui.snackbarConfig.text }}
       <v-btn flat icon dark @click.native="$global.ui.snackbarStatus = false"><v-icon>close</v-icon></v-btn>
     </v-snackbar>
+
+    <!-- app updater -->
+    <v-dialog v-model="updateDialog" scrollable max-width="500px">
+      <v-card>
+          <v-card-title>
+            <span class="headline">New version found!</span>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text style="height: 300px;">
+            <p v-html="update.info"></p>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn color="blue darken-1" flat v-on="on" @click="updateDialog = false">Don't show again</v-btn>
+              </template>
+              <span>Ignore this version but you can manually update by click 'update' on menubar</span>
+            </v-tooltip>
+            <v-btn color="blue darken-1" flat @click="updateDialog = false">Next time</v-btn>
+            <v-btn color="primary" @click="updateDialog = false">Update Now!</v-btn>
+          </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- end update -->
+
   </div>
 </template>
 <script>
 import Vue from "vue";
-import AppDrawer from '@/engine/views/AppDrawer';
 import AppToolbar from '@/engine/views/AppToolbar';
-import PageHeader from '@/engine/views/PageHeader';
 import AppFooter from '@/engine/views/AppFooter';
 import { Multipane, MultipaneResizer } from 'vue-multipane';
 import draggable from 'vuedraggable'
@@ -114,12 +137,11 @@ import bm from '@/engine/BoardManager';
 import AsyncComponent from '@/engine/AsyncComponent';
 import AppEvents from  './event';
 import util from '@/engine/utils';
-
+//========= updating =========//
+const EAU = require('electron-asar-hot-updater');
 export default {
   components: {
-    AppDrawer,
-    AppToolbar,    
-    PageHeader,
+    AppToolbar,
     Multipane,
     draggable,
     MultipaneResizer,
@@ -128,11 +150,13 @@ export default {
   },
   data: () => ({        
     expanded: true,
+    updateDialog : false,
+    update : {info:'',},
   }),
   computed: {
 
   },
-  created () {  
+  created () {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
     });
@@ -143,11 +167,46 @@ export default {
     //----- load external plugin -----//    
     this.reloadBoardPackage();
     this.$global.$on('board-change',this.reloadBoardPackage);
+    //----- check for update -----//
+    this.checkUpdate();
+    this.$global.$on('check-update',this.checkUpdate);
   },
   methods: {
     closeTab(name){
       this.$global.ui.removeAllTab(name);
-    },    
+    },
+    checkUpdate(showNotification = true){
+      this.$db.collection('apps').get().then(appData =>{    
+        if(appData.size == 1){
+          let data = appData.docs[0].data();
+          this.update = data;
+          //this.updateDialog = true;
+          EAU.init({
+            'server': false, // Where to check. true: server side, false: client side, default: true.
+            'debug': false // Default: false.
+          });
+          EAU.process(data,function (error, last, body) {
+            if(!error){
+              window.getApp.updateDialog = true;
+            }else if (error === 'no_update_available') { 
+              if(showNotification){
+                window.getApp.$dialog.notify.info('This is newest version', {
+                    position: 'top-center',
+                    timeout: 3000
+                });
+              }
+              return false;
+            }else{
+              window.getApp.$dialog.notify.error('check version error : ' + error, {
+                    position: 'top-center',
+                    timeout: 3000
+              });
+              return false;
+            }
+          });
+        }
+      });
+    },
     reloadBoardPackage(){
       var boardName = this.$global.board.board;
       var boardPackage = bm.packages(boardName);
@@ -178,7 +237,7 @@ export default {
               }
             }
           }
-          document.head.appendChild(script);          
+          document.head.appendChild(script);
         }
       });
     },
@@ -188,36 +247,6 @@ export default {
         this.$refs.rtabs.onResize();
       }
     },
-    /*getTabNumber(tabModel,tabs) {
-      let name = (tabModel.split('-')[1]);
-      return tabs.map(e => e.name).indexOf(name);
-    },
-    tabUpdate(evt,model,tabs){
-      let tabNumber = this.getTabNumber(model,tabs); // The active tab number before udpate
-      let oldIndex = evt.oldIndex; // Old index number of tab we are moving
-      let newIndex = evt.newIndex; // New index number of tab we are moving
-      let tabActive = null; // The new tab which can be set as active tab      
-      if (tabNumber === oldIndex) {
-        tabActive = newIndex;
-      } else if (tabNumber === newIndex && tabNumber < oldIndex) {
-        tabActive = tabNumber + 1;
-      } else if (tabNumber === newIndex && tabNumber > oldIndex) {
-        tabActive = tabNumber - 1;
-      } else if (tabNumber < oldIndex) {
-        tabActive = tabNumber + 1;
-      } else if (tabNumber > oldIndex) {
-        tabActive = tabNumber - 1;
-      }
-      return tabActive;
-    },
-    rtabUpdate(evt) { //update active tab when drag tab      
-      let tabActive = this.tabUpdate(evt,this.$global.ui.rightTabModel,this.$global.ui.rightTab);      
-      this.$global.ui.rightTabModel = 'rtab-'+tabActive;
-    },
-    btabUpdate(evt){      
-      let tabActive = this.tabUpdate(evt,this.bottomTabModel,null);
-      this.bottomTabModel = "btab-" + tabActive;
-    }*/
   },
 };
 /*height:calc(100vh - 64px - 50px - 81px -23px); */

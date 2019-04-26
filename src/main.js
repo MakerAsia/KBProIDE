@@ -68,7 +68,6 @@ Object.keys(comps).forEach(function(key){
 });
 //=====================================//
 
-
 //=========== board manager ===========//
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
