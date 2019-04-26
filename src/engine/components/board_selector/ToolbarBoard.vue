@@ -43,14 +43,28 @@
                                             <img class="board-image" :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
                                         </v-card-media>
                                         <v-card-text>
-                                            <v-btn
+                                            <v-btn v-if="data.status != 'UPDATABLE'"
                                                 icon fab absolute right bottom small dark
                                                 class="red"
                                                 style="bottom:25px; right:5px"
-                                                @click="toberemove = data.name; confirmRemoveDialog = true"
+                                                @click="removeBoard(data.name)"
                                                 :disabled="(data.status != 'READY' && data.status != 'INSTALLED') || $global.board.board == data.name"
                                             >
-                                                <v-icon>fa-trash-o</v-icon>
+                                                <v-progress-circular
+                                                        v-if="data.status != 'READY'"
+                                                        indeterminate
+                                                        color="primary lighten-4"
+                                                >
+                                                </v-progress-circular>
+                                                <v-icon v-else>fa-trash-o</v-icon>
+                                            </v-btn>
+                                            <v-btn v-else
+                                                icon fab absolute right bottom small dark
+                                                class="red"
+                                                style="bottom:25px; right:5px"
+                                                @click="updateBoard(data.name)"
+                                            >
+                                                <v-icon>fa-retweet</v-icon>
                                             </v-btn>
                                             <div class="board-desc-text" @click="e=>e.target.classList.toggle('board-desc-text-more')">
                                                 <div class="board-desc-more"><v-icon>fa-chevron-down</v-icon></div>
@@ -67,6 +81,15 @@
                                             </transition>
                                         </v-card-text>
                                         <v-divider></v-divider>
+                                        <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>
+                                        <v-progress-linear 
+                                            v-if="data.status != 'READY'"
+                                            height="2"
+                                            style="position:absolute; margin-top: -2px;"
+                                            color="primary"
+                                            v-model="statusProgress"
+                                            :indeterminate="data.status == 'DOWNLOAD'">
+                                        </v-progress-linear>
                                         <v-card-actions>
                                             <span class="ml-2"><strong>{{data.version}}</strong></span>
                                             <v-spacer></v-spacer>
@@ -121,7 +144,7 @@
                                                     style="bottom:25px; right:5px"
                                                     class="primary"
                                                     :disabled="data.status != 'READY'"
-                                                    @click="tobeinstall = data.name; confirmInstallDialog = true"
+                                                    @click="installOnlineBoard(data.name)"
                                                 >
                                                     <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
                                                     <v-progress-circular
@@ -176,28 +199,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="confirmRemoveDialog" persistent max-width="500px">
-            <v-card>
-                <v-card-title class="headline">Remove board confirmation</v-card-title>
-                <v-card-text>Do you want to remove <strong>{{toberemove}}</strong>?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">Cancel</v-btn>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="confirmInstallDialog" persistent max-width='500px'>
-            <v-card>
-                <v-card-title class="headline">Install board confirmation</v-card-title>
-                <v-card-text>Do you want to install <strong>{{tobeinstall}}</strong>?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false">Cancel</v-btn>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false; installOnlineBoard(tobeinstall);">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -211,6 +212,7 @@ import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import bm from '@/engine/BoardManager';
 import util from '@/engine/utils';
+import { setTimeout } from 'timers';
 
 var mother = null;
 export default {
@@ -222,8 +224,6 @@ export default {
             boardImageDir : util.boardDir,
             selectingBoard : this.$global.board.board,
             boardDialog : false,
-            confirmRemoveDialog : false,
-            confirmInstallDialog : false,
             searchText : '',             
             isInstalling : false,
 
@@ -232,8 +232,6 @@ export default {
             onlineBoardStatus : 'wait',
             onlineBoardPage : 0,
             onlineBoards : [],
-            tobeinstall : '',
-            toberemove : '',
             statusText : '',
             statusProgress : 0,
 
@@ -272,7 +270,7 @@ export default {
         {
             return window.navigator.onLine;
         },
-        listAllBoard(name = ''){            
+        listAllBoard(name = ''){
             this.listOnlineBoard(name);
             this.listLocalBoard(name);
         },
@@ -281,48 +279,134 @@ export default {
             bm.listOnlineBoard(name).then(res=>{                
                 //name,start return {end : lastVisible, boards : onlineBoards}
                 mother.onlineBoardPage = res.end;
-                mother.onlineBoards = res.boards.map(obj=>{ obj.status =  'READY'; return obj;});
+                let filtered = [];
+                res.boards.forEach(obj => {
+                    let f = mother.installedBoard.find(elm => elm.name == obj.name);
+                    if(f){
+                        if(obj.version > f.version){
+                            f.status = 'UPDATABLE'
+                        }
+                    }else{
+                        obj.status =  'READY';
+                        filtered.push(obj);
+                    }
+                });
+                mother.onlineBoards = filtered;
                 mother.onlineBoardStatus = 'OK';
             }).catch(err=>{
                 mother.onlineBoardStatus = 'ERROR';
-            });   
+            });
         },
         listLocalBoard(name = ''){
             this.installedBoard = bm.boards().map(obj=>{ obj.status =  'READY'; return obj;})
+            this.localBoards = [];
             if(name != ''){
                 this.localBoards = this.installedBoard.filter(obj=> {return obj.name.startsWith(name)});
             }else{
                 this.localBoards = this.installedBoard;
             }
         },
-        installOnlineBoard(name){
-            let b = this.getOnlineBoardByName(name);
-            b.status='DOWNLOAD';
-            this.statusText = "Downloading";
-            this.statusProgress = 0;
-            bm.installBoardByName(name,progress => {
-                //{process : 'board', status : 'DOWNLOAD', state:state }
-                if(progress.status == 'DOWNLOAD'){ //when download just show to text
-                    this.statusText = 
-                        `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
-                }else if(progress.status == 'UNZIP'){
-                    b.status = 'UNZIP';
-                    this.statusText = `Unzip file ${progress.state.percentage}%`;
-                    this.statusProgress = progress.state.percentage;
-                }
-            }).then(()=>{ //install success
-                b.status = 'INSTALLED';
-                this.statusText = '';
-                bm.clearListedBoard();
-                this.listAllBoard();
-            }).catch(err=>{
-                this.statusText = `Error : ${err}`;
-                b.status = 'ERROR';
-                setTimeout(() => {
+        installOnlineBoard : async function(name){
+            const res = await this.$dialog.confirm({
+                    text: 'Do you really want to install ' + name + '?',
+                    title: 'Warning',
+            });
+            if(res === true){
+                let b = this.getOnlineBoardByName(name);
+                b.status='DOWNLOAD';
+                this.statusText = "Downloading";
+                this.statusProgress = 0;
+                bm.installBoardByName(name,progress => {
+                    //{process : 'board', status : 'DOWNLOAD', state:state }
+                    if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                        this.statusText = 
+                            `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
+                    }else if(progress.status == 'UNZIP'){
+                        b.status = 'UNZIP';
+                        this.statusText = `Unzip file ${progress.state.percentage}%`;
+                        this.statusProgress = progress.state.percentage;
+                    }
+                }).then(()=>{ //install success
+                    b.status = 'INSTALLED';
+                    this.statusText = '';
+                    bm.clearListedBoard();
+                    this.listAllBoard();
+                }).catch(err=>{
+                    this.statusText = `Error : ${err}`;
+                    b.status = 'ERROR';
+                    setTimeout(() => {
+                        b.status = 'READY';
+                        this.statusText = '';
+                    }, 5000);
+                })
+            }
+        },
+        removeBoard : async function(board){
+            const res = await this.$dialog.confirm({
+                    text: 'Do you really want to remove ' + board + '?',
+                    title: 'Warning',
+            });
+            if(res === true){
+                console.log('removing board : ' + board);
+                bm.removeBoard(board)
+                .then(()=>{
+                    bm.clearListedBoard();
+                    this.listAllBoard();
+                })
+                .catch(err=>{
+                    console.log('Error : cannot remove board');
+                    console.log(err);
+                });
+            }
+        },
+        updateBoard : async function(board){
+            const res = await this.$dialog.confirm({
+                    text: 'Do you want to update '+board+' board?',
+                    title: 'Warning',
+            });
+            if(res === true){
+                var b = this.getBoardByName(board);
+                var st = b.status;
+                bm.backupBoard(board)
+                .then(()=>{
+                    console.log('update board : ' + board);
+                    b.status='DOWNLOAD';
+                    this.statusText = "Downloading";
+                    this.statusProgress = 0;
+                    return bm.installBoardByName(board,progress => {
+                        //{process : 'board', status : 'DOWNLOAD', state:state }
+                        if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                            this.statusText = 
+                                `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
+                        }else if(progress.status == 'UNZIP'){
+                            b.status = 'UNZIP';
+                            this.statusText = `Unzip file ${progress.state.percentage}%`;
+                            this.statusProgress = progress.state.percentage;
+                        }
+                    })
+                })
+                .then(()=>{ //install success
                     b.status = 'READY';
                     this.statusText = '';
-                }, 5000);
-            })
+                    bm.removeBoard(board+'-backup-board').then(()=>{
+                        bm.clearListedBoard();
+                        mother.localBoards = [];
+                        setTimeout(()=>{
+                            this.listAllBoard();
+                        },1000); 
+                    });
+                }).catch(err=>{
+                    this.statusText = `Error : ${err}`;
+                    b.status = 'ERROR';
+                    bm.restoreBoard(board).then(()=>{
+
+                    });
+                    setTimeout(() => {
+                        b.status = st;
+                        this.statusText = '';
+                    }, 5000);
+                })
+            }
         },
         publishNewBoard : async function(){
             let res = await this.$dialog.prompt({
@@ -335,7 +419,7 @@ export default {
                             position: 'top-center',
                             timeout: 3000
                 });
-                request(res + 'raw/master/config.js')
+                request(res + 'raw/master/config.js?random='+util.randomString()) //add randomstring prevent cached response
                 .then( res => {
                     json = eval(res);
                     if(json.name){ //search if existing
@@ -355,21 +439,19 @@ export default {
                 })
                 .then(res=>{
                     if(res){
-                        return Vue.prototype.$db.collection("boards").doc(json.name).set(json);
+                        Vue.prototype.$db.collection("boards").doc(json.name).set(json);
+                        if(res){
+                            this.$dialog.notify.success('Added your board success, please refresh again', {
+                                position: 'top-center',
+                                timeout: 3000
+                            });
+                        }
                     }else{
                         this.$dialog.notify.error('Existing board name or is not newest version', {
                             position: 'top-center',
                             timeout: 3000
                         });
                         return false;
-                    }
-                })
-                .then(res=>{
-                    if(res){
-                        this.$dialog.notify.success('Added your board success, please refresh again', {
-                            position: 'top-center',
-                            timeout: 3000
-                        });
                     }
                 })
                 .catch(err=>{

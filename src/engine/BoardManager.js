@@ -14,7 +14,7 @@ var listedPackagesBoard = '';
 
 var listBoard = function(){
     var context = [];
-    var dirs = util.fs.readdirSync(util.boardDir);    
+    var dirs = util.fs.readdirSync(util.boardDir);
     dirs.forEach(element => {
         if(util.fs.lstatSync(util.boardDir+"/"+element).isFile()){
             return;
@@ -28,6 +28,7 @@ var listBoard = function(){
     });
     return context;
 };
+
 
 var listPackage = function(boardName,includePlatform = true)
 {
@@ -227,6 +228,37 @@ var installOnlineBoard = function(info,cb)
     });
 };
 
+var removeBoard = function(boardName)
+{
+    return new Promise((resolve,reject)=>{
+        let target = `${util.boardDir}/${boardName}`;
+        if(fs.existsSync(target)){
+            util.rmdirf(target);
+            resolve();
+        }else{
+            reject('no directory')
+        }
+    });
+}
+var backupBoard = function(boardName)
+{
+    return new Promise((resolve,reject)=>{
+        let target = `${util.boardDir}/${boardName}`;
+        let newer = `${util.boardDir}/${boardName}-backup-board`;
+        fs.renameSync(target,newer);
+        resolve();
+    }) ;
+}
+
+var restoreBoard = function(boardName)
+{
+    return new Promise((resolve,reject)=>{
+        let target = `${util.boardDir}/${boardName}`;
+        let newer = `${util.boardDir}/${boardName}-backup-board`;
+        fs.renameSync(newer,target);
+        resolve();
+    }) ;
+}
 var boards = function(){
     if(listedBoards.length === 0){ // check empty object !!!
         listedBoards = listBoard();
@@ -235,6 +267,11 @@ var boards = function(){
 };
 var clearListedBoard = function(){
     listedBoards = [];
+    Object.keys(util.requireFunc.cache).map(file => {
+        if((/\/boards\/.*?\/config\.js/g).test(file) || (/\\boards\\.*?\\config\.js/g).test(file)){
+            delete util.requireFunc.cache[file];
+        }
+    });
 };
 var packages = function(selectedBoard){
     if((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object) || (listedPackagesBoard != selectedBoard)){ // check empty object !!!
@@ -280,6 +317,9 @@ export default {
     loadBoardManagerConfig,
     installOnlineBoard,
     installBoardByName,
+    removeBoard,
+    backupBoard,
+    restoreBoard,
     load : ()=>{
 
     },

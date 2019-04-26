@@ -1,4 +1,6 @@
 <template>
+<div></div>
+<!--
     <v-menu offset-y bottom left origin="top right" class="elelvation-1" :nudge-bottom="14" transition="scale-transition">
         <v-btn icon flat slot="activator">
             <v-badge color="red" overlap>
@@ -13,7 +15,6 @@
                     <v-toolbar-title><h4>Notification</h4></v-toolbar-title>
                 </v-toolbar>
                 <v-divider></v-divider>
-                <!-- app update -->
                 <v-card-text class="pa-0">
                     <v-list two-line class="pa-0">
                         <template v-for="(item, index) in items">
@@ -33,7 +34,6 @@
                         </template>
                     </v-list>
                 </v-card-text>
-                <!-- end app update -->
 
                 <v-card-text class="pa-0">
                     <v-list two-line class="pa-0">
@@ -58,6 +58,7 @@
         </template>
 
     </v-menu>
+-->   
 </template>
 <script>
 const fs = require('fs');

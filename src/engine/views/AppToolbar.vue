@@ -11,7 +11,7 @@
       <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
     </v-toolbar-title>
     
-    <img src="/static/trollface.jpg" height="48" alt="Problem? report me at fb.com/comdet" class="mr-3" style="border-radius: 5px;">
+    <img src="/static/logo/logo2-resized.png" height="64" alt="Problem? report me at fb.com/comdet" class="mr-3" style="border-radius: 5px;">
     
     
     <!-- dynamic left toolbar -->
