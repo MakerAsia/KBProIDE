@@ -113,7 +113,7 @@
             <v-spacer></v-spacer>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn color="blue darken-1" flat v-on="on" @click="updateDialog = false">Don't show again</v-btn>
+                <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.version)">Ignore this version</v-btn>
               </template>
               <span>Ignore this version but you can manually update by click 'update' on menubar</span>
             </v-tooltip>
@@ -123,7 +123,6 @@
       </v-card>
     </v-dialog>
     <!-- end update -->
-
   </div>
 </template>
 <script>
@@ -151,7 +150,7 @@ export default {
   data: () => ({        
     expanded: true,
     updateDialog : false,
-    update : {info:'',},
+    update : {info:'',version:''},
   }),
   computed: {
 
@@ -175,7 +174,7 @@ export default {
     closeTab(name){
       this.$global.ui.removeAllTab(name);
     },
-    checkUpdate(showNotification = true){
+    checkUpdate(showNotification = true,forceShowUpdate = false){
       this.$db.collection('apps').get().then(appData =>{    
         if(appData.size == 1){
           let data = appData.docs[0].data();
@@ -187,6 +186,10 @@ export default {
           });
           EAU.process(data,function (error, last, body) {
             if(!error){
+              if(window.getApp.$global.setting.ignoreUpdateVersion == last && forceShowUpdate == false){
+                console.log('User ignored update popup');
+                return false
+              }
               window.getApp.updateDialog = true;
             }else if (error === 'no_update_available') { 
               if(showNotification){
@@ -206,6 +209,13 @@ export default {
           });
         }
       });
+    },
+    ignoreUpdate(version){
+      this.$global.setting.ignoreUpdateVersion = version;
+      this.updateDialog = false;
+    },
+    update(){
+
     },
     reloadBoardPackage(){
       var boardName = this.$global.board.board;

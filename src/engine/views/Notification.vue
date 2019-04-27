@@ -65,7 +65,6 @@ const fs = require('fs');
 
 import VWidget from '@/engine/views/VWidget';
 import util from '@/engine/utils';
-import updater from '@/engine/UpdateManager';
 
 export default {
     name: 'notification',
@@ -79,7 +78,6 @@ export default {
                 title: 'New version released 1.0.1',
                 color: 'light-green',
                 icon: 'fa-new',
-                handle : updater.updateApp()
             },
             {
                 title: 'New message from Michael',

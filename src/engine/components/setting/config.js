@@ -7,6 +7,7 @@ export default {
         color : '',
         rightSeperator : 80,
         devMode : false,
+        ignoreUpdateVersion : ''
     },
     data:{
         rightDrawer : false,

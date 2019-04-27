@@ -13,7 +13,6 @@ import ui from '@/engine/UIManager';
 import pfm from '@/engine/PlatformManager';
 import compiler from '@/engine/Compiler';
 import util from '@/engine/utils';
-import updater from '@/engine/UpdateManager';
 
 import SmoothScrollbar from 'vue-smooth-scrollbar';
 Vue.use(SmoothScrollbar);
@@ -119,8 +118,6 @@ Object.keys(componentAllData.persistence).forEach(function(key){
 console.log('======> $global data <=====');
 console.log(componentAllData);
 console.log('===========================')
-//---- app update ----//
-updater.run();
 
 //---- setup $global ----//
 Vue.prototype.$global = new Vue({
