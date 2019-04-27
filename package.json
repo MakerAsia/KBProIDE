@@ -21,7 +21,6 @@
     "electron-asar-hot-updater": "git+https://github.com/comdet/electron-asar-hot-updater.git",
     "electron-root-path": "^1.0.7",
     "external-loader": "^0.1.1",
-    "firebase": "^5.8.6",
     "font-awesome": "^4.7.0",
     "lodash.truncate": "^4.4.2",
     "md5": "^2.2.1",

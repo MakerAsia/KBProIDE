@@ -17,8 +17,8 @@ import util from '@/engine/utils';
 import SmoothScrollbar from 'vue-smooth-scrollbar';
 Vue.use(SmoothScrollbar);
 //---- firebase database ----//
-import firebase from 'firebase';
-require('firebase/firestore');
+//import firebase from 'firebase';
+//require('firebase/firestore');
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyD8iU1-u0KFl7vFCJdwzJzAha7kOLtMKcQ",
