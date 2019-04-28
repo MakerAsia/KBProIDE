@@ -9,6 +9,7 @@
 
 <script>
 const {dialog} = require('electron').remote;
+const electron = require('electron');
 const fs = require('fs');
 import util from '@/engine/utils';
 export default {
@@ -16,6 +17,9 @@ export default {
         return {
             saveDialog : false
         }
+    },
+    created(){
+        electron.ipcRenderer.on('file-save',this.saveFilePopUp);
     },
     methods : {
         saveFilePopUp : async function(){

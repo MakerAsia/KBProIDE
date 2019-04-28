@@ -6,3 +6,11 @@
         <span>Setting</span>
     </v-tooltip>
 </template>
+<script>
+const electron = require('electron');
+export default {
+    created(){
+        electron.ipcRenderer.on('file-setting',()=>{ this.$global.ui.rightDrawer('./components/setting/RightDrawer'); });
+    }
+}
+</script>

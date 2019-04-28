@@ -14,6 +14,7 @@ import pfm from '@/engine/PlatformManager';
 import compiler from '@/engine/Compiler';
 import util from '@/engine/utils';
 
+
 import SmoothScrollbar from 'vue-smooth-scrollbar';
 Vue.use(SmoothScrollbar);
 //---- firebase database ----//
@@ -54,7 +55,6 @@ var addWatcher = function(name,ghandler,deep){
     deep : deep
   }
 }
-
 
 //========= component  manager =========//
 var comps = cm.listComponent();

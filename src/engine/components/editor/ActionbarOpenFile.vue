@@ -12,6 +12,7 @@
 <script>
 import { resolve } from 'url';
 import util from '@/engine/utils';
+const electron = require('electron');
 const {dialog} = require('electron').remote;
 const fs = require('fs');
 
@@ -21,6 +22,9 @@ export default {
         return {
             openDialog : false
         }
+    },
+    created(){
+        electron.ipcRenderer.on('file-open',this.openFilePopUp);
     },
     methods : {
         openFilePopUp : async function(){
@@ -75,9 +79,6 @@ export default {
                     }
                 }
             }
-        },
-        openFile : function(){
-            
         }
     }
 }

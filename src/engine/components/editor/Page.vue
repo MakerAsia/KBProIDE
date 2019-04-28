@@ -59,6 +59,7 @@
     
 </template>
 <script>
+const electron = require('electron');
 var path = require('path');
 // === UI Management ===
 import { Multipane, MultipaneResizer } from 'vue-multipane';
@@ -241,8 +242,16 @@ export default {
         musicDialog : false,
      }
    },
+   created(){
+       myself = this;
+       electron.ipcRenderer.on('edit-undo',()=>{
+           console.log('ssssssssss');
+       });
+       electron.ipcRenderer.on('edit-redo',()=>{
+           this.workspace.undo(true);
+       });
+   },
    mounted(){
-        myself = this;
         Blockly.Msg = Object.assign(en, Blockly.Msg);
         Blockly.Msg = Blockly.Msg();
         Blockly.utils.getMessageArray_ = function () {

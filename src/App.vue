@@ -115,7 +115,7 @@
               <template v-slot:activator="{ on }">
                 <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.version)">Ignore this version</v-btn>
               </template>
-              <span>Ignore this version but you can manually update by click 'update' on menubar</span>
+              <span>Ignore this version but you can manually update by click 'help -> Update' on menubar</span>
             </v-tooltip>
             <v-btn color="blue darken-1" flat @click="updateDialog = false">Next time</v-btn>
             <v-btn color="primary" @click="updateDialog = false">Update Now!</v-btn>
@@ -138,6 +138,8 @@ import AppEvents from  './event';
 import util from '@/engine/utils';
 //========= updating =========//
 const EAU = require('electron-asar-hot-updater');
+const electron = require('electron');
+
 export default {
   components: {
     AppToolbar,
@@ -169,6 +171,7 @@ export default {
     //----- check for update -----//
     this.checkUpdate();
     this.$global.$on('check-update',this.checkUpdate);
+    electron.ipcRenderer.on('help-update',()=>{ this.checkUpdate(true,true); });
   },
   methods: {
     closeTab(name){

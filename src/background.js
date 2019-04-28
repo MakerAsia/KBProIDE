@@ -1,16 +1,18 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow,Menu } from 'electron'
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+
 const path = require('path');
-const isDevelopment = process.env.NODE_ENV !== 'production'
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
@@ -38,7 +40,6 @@ function createWindow () {
     win = null
   })
 }
-
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
@@ -46,7 +47,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
+}) 
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -81,3 +82,6 @@ if (isDevelopment) {
     })
   }
 }
+
+//====== create menu =======//
+require('./menu');

@@ -7,11 +7,15 @@
     </v-tooltip>
 </template>
 <script>
+const electron = require('electron');
 export default {
     data(){
         return {
             
         }
+    },
+    created(){
+        electron.ipcRenderer.on('file-new',this.newFile);
     },
     methods : {
         newFile : async function(){
