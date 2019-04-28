@@ -218,6 +218,7 @@ export default {
      return {
         workspace: null,
         toolbox: null,
+        cm : null,
         editor_options: {
             mode: 'text/x-c++src',
             theme: 'mdn-like',
@@ -243,13 +244,44 @@ export default {
      }
    },
    created(){
-       myself = this;
-       electron.ipcRenderer.on('edit-undo',()=>{
-           console.log('ssssssssss');
-       });
-       electron.ipcRenderer.on('edit-redo',()=>{
-           this.workspace.undo(true);
-       });
+        myself = this;
+        electron.ipcRenderer.on('edit-undo',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'Z'.charCodeAt(0), ctrlKey : true, target : {type : 'none'}});
+            }else{
+                let cm = myself.getCm();
+                cm.execCommand('undo');
+            }
+        });
+        electron.ipcRenderer.on('edit-redo',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'Y'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                let cm = myself.getCm();
+                cm.execCommand('redo');
+            }
+        });
+        electron.ipcRenderer.on('edit-cut',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'X'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                document.execCommand('cut');
+            }
+        });
+        electron.ipcRenderer.on('edit-copy',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'C'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                document.execCommand('copy');
+            }
+        });
+        electron.ipcRenderer.on('edit-paste',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'V'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                document.execCommand('paste');
+            }
+        });
    },
    mounted(){
         Blockly.Msg = Object.assign(en, Blockly.Msg);

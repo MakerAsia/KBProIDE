@@ -171,7 +171,11 @@ export default {
     //----- check for update -----//
     this.checkUpdate();
     this.$global.$on('check-update',this.checkUpdate);
-    electron.ipcRenderer.on('help-update',()=>{ this.checkUpdate(true,true); });
+    electron.ipcRenderer.on('help-update',()=>
+    {
+      window.getApp.$dialog.notify.info('Checking new update'); 
+      this.checkUpdate(true,true); 
+    });
   },
   methods: {
     closeTab(name){
@@ -196,17 +200,11 @@ export default {
               window.getApp.updateDialog = true;
             }else if (error === 'no_update_available') { 
               if(showNotification){
-                window.getApp.$dialog.notify.info('This is newest version', {
-                    position: 'top-center',
-                    timeout: 3000
-                });
+                window.getApp.$dialog.notify.info('This is newest version');
               }
               return false;
             }else{
-              window.getApp.$dialog.notify.error('check version error : ' + error, {
-                    position: 'top-center',
-                    timeout: 3000
-              });
+              window.getApp.$dialog.notify.error('check version error : ' + error);
               return false;
             }
           });
