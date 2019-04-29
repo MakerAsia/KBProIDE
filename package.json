@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "codemirror": "^5.43.0",
+    "codemirror-advanceddialog": "git+https://github.com/comdet/CodeMirror-AdvancedDialog.git",
+    "codemirror-revisedsearch": "git+https://github.com/comdet/CodeMirror-RevisedSearch.git",
     "electron-asar-hot-updater": "git+https://github.com/comdet/electron-asar-hot-updater.git",
     "electron-root-path": "^1.0.7",
     "external-loader": "^0.1.1",

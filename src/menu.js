@@ -38,6 +38,19 @@ const template = [
             },
             { type: 'separator' },
             {
+                label : 'Open Board folder',
+                click: () => { BrowserWindow.getFocusedWindow().webContents.send('file-board-folder'); }
+            },
+            {
+                label : 'Open Platform folder',
+                click: () => { BrowserWindow.getFocusedWindow().webContents.send('file-platform-folder'); }
+            },
+            {
+                label : 'Open Plugin folder',
+                click: () => { BrowserWindow.getFocusedWindow().webContents.send('file-plugin-folder'); }
+            },
+            { type: 'separator' },
+            {
               label : 'Setting',
               click: () => { BrowserWindow.getFocusedWindow().webContents.send('file-setting', ''); }
             },
@@ -133,7 +146,7 @@ const template = [
       },
       {
         label: 'About',
-        click () { BrowserWindow.getFocusedWindow().webContents.send('help-about'); }
+        click () { shell.openExternal('https://www.kbide.org/about'); }
       },
       { type: 'separator' },
       {

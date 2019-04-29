@@ -176,6 +176,18 @@ export default {
       window.getApp.$dialog.notify.info('Checking new update'); 
       this.checkUpdate(true,true); 
     });
+    electron.ipcRenderer.on('file-board-folder',()=>
+    {
+      electron.shell.openItem(util.boardDir);
+    });
+    electron.ipcRenderer.on('file-platform-folder',()=>
+    {
+       electron.shell.openItem(util.platformDir);
+    });
+    electron.ipcRenderer.on('file-plugin-folder',()=>
+    {
+       electron.shell.openItem(util.boardDir+'/'+window.getApp.$global.board.board+'/plugin');
+    });
   },
   methods: {
     closeTab(name){

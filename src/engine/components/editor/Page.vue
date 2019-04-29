@@ -74,11 +74,16 @@ import 'codemirror/mode/clike/clike';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/selection/active-line';
 //---- search ----//
+import 'codemirror/addon/display/panel'
 import 'codemirror/addon/dialog/dialog.css';
 import 'codemirror/addon/search/matchesonscrollbar.css';
-import 'codemirror/addon/dialog/dialog';
-import "codemirror/addon/search/searchcursor";
-import "codemirror/addon/search/search";
+//import 'codemirror/addon/dialog/dialog';
+//import "codemirror/addon/search/searchcursor";
+//import "codemirror/addon/search/search";
+import 'codemirror-advanceddialog';
+//import 'codemirror-advanceddialog/dist/dialog.css';
+import 'codemirror-revisedsearch';
+
 import "codemirror/addon/scroll/annotatescrollbar";
 import "codemirror/addon/search/matchesonscrollbar";
 import "codemirror/addon/search/jump-to-line";
@@ -280,6 +285,22 @@ export default {
                 Blockly.onKeyDown_({keyCode : 'V'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
             }else{
                 document.execCommand('paste');
+            }
+        });
+        electron.ipcRenderer.on('edit-find',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'F'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                let cm = myself.getCm();
+                cm.execCommand('find');
+            }
+        });
+        electron.ipcRenderer.on('edit-replace',()=>{
+            if(this.$global.editor.mode < 3){
+                Blockly.onKeyDown_({keyCode : 'H'.charCodeAt(0), ctrlKey : true,target : {type : 'none'}});
+            }else{
+                let cm = myself.getCm();
+                cm.execCommand('replace');
             }
         });
    },
@@ -533,6 +554,53 @@ export default {
 }
 .blocklyHtmlInput{
     background-color:white !important;
+}
+.CodeMirror-advanced-dialog {
+    width: 400px;
+    display: block;
+    position: absolute;
+    z-index: 999;
+    background-color: #333;
+    padding: 6px;
+    right: 30px;
+    top: 0px;
+    color : wheat;
+    -webkit-box-shadow: 2px 2px 6px 1px #666;
+    -moz-box-shadow: 2px 2px 6px 1px #666;
+    box-shadow: 2px 2px 6px 1px #666;
+}
+.CodeMirror-advanced-dialog input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 5em;
+    background-color: #555;
+    color: wheat;
+}
+
+.CodeMirror-advanced-dialog button {
+    font-size: 70%;
+}
+
+.CodeMirror-advanced-dialog .row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.CodeMirror-advanced-dialog input[type="text"] {
+    display: inline-block;
+    margin: 10px;
+    flex: 1 1 auto;
+}
+.CodeMirror-advanced-dialog input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #999;
+  opacity: 1; /* Firefox */
+}
+.CodeMirror-search-hint {
+    display: block;
+    font-style: italic;
+    flex: 0 0 100%;
 }
 </style>
 
