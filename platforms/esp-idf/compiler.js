@@ -1,13 +1,10 @@
 const path = require('path');
 const util = require('util');
 const fs = require('fs');
-const SerialPort = require('serialport');
 const execPromise = util.promisify(require('child_process').exec);
-const execSync = require('child_process').execSync;
 const log = require('./log')
 
 var engine = Vue.prototype.$engine;
-var GB = Vue.prototype.$global;
 
 //---- setup dir and config ----//
 var platformName = 'esp-idf';

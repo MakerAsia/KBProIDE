@@ -84,8 +84,8 @@
 
 <script>
 import Piano from '@/engine/views/widgets/piano/Piano'
-import Tone from 'tone'
-var synth = new Tone.Synth().toMaster()
+//import Tone from 'tone'
+//var synth = new Tone.Synth().toMaster()
 export default {
     components :{
         Piano
@@ -126,11 +126,11 @@ export default {
             });
         },
         pressedNote : function(note) {
-            synth.triggerAttackRelease(note, '8n')
+            //synth.triggerAttackRelease(note, '8n')
             this.select.push(note);
         },
         clickedNote : function(note){
-            synth.triggerAttackRelease(note, '8n')
+            //synth.triggerAttackRelease(note, '8n')
         },
         remove (item) {
             this.select.splice(this.select.indexOf(item), 1)

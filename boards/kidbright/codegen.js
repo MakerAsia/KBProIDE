@@ -1,11 +1,12 @@
-const fs = require('fs');
-const md5 = require('md5');
-const log = require('./log');
-
-
 //---- setup dir ----//
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
+
+const fs = require('fs');
+const md5 = engine.util.requireFunc('md5');
+const log = require('./log');
+
+
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
 var platformDir = `${engine.util.platformDir}/${G.board.board_info.platform}`;
 var pluginDir = `${boardDirectory}/plugin`;

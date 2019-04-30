@@ -3,23 +3,29 @@ import ui from './ui';
 
 const path = require('path');
 const fs = require('fs');
-const rootDir = require('electron-root-path').rootPath;
+const rootDir = __dirname; // require('electron-root-path').rootPath;
 const os = require('os');
-const base64 = require('base64-js');
 
 import unzip from './unzip';
 
 var baseDir = "";
+console.log('app dirname = ' + rootDir);
 if(process.env.NODE_ENV == 'development'){
   if(process.platform == 'win32'){
-    baseDir = rootDir + '/../../..';
+    baseDir = rootDir + '/../../../../../..';
   }else if(process.platform == 'darwin'){
-    baseDir = rootDir + '/../../../../..';
+    baseDir = rootDir + '/../../../../../../../..';
   }else if(process.platform == 'linux'){ //TODO : didnot defined yet
-    baseDir = rootDir + '/../../../../..';
+    baseDir = rootDir + '/../../../../../../../..';
   }
 }else{
-  baseDir = rootDir;
+  if(process.platform == 'win32'){
+    baseDir = rootDir + '/../..';
+  }else if(process.platform == 'darwin'){
+    baseDir = rootDir + '/../..';
+  }else if(process.platform == 'linux'){ //TODO : didnot defined yet
+    baseDir = rootDir + '/../..';
+  }
 }
 baseDir = path.resolve(baseDir);
 

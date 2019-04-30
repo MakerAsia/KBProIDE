@@ -2,7 +2,6 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const execPromise = util.promisify(require('child_process').exec);
-const execSync = require('child_process').execSync;
 const log = require('./log')
 
 var engine = Vue.prototype.$engine;

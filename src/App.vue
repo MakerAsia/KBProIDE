@@ -100,16 +100,40 @@
     </v-snackbar>
 
     <!-- app updater -->
-    <v-dialog v-model="updateDialog" scrollable max-width="500px">
+    <v-dialog v-model="updateDialog" scrollable persistent max-width="500px">
       <v-card>
           <v-card-title>
             <span class="headline">New version found!</span>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 300px;">
-            <p v-html="update.info"></p>
+            <template v-if="updateStatus == 'UPDATING'">
+              <div class="text-xs-center mt-3">
+              <v-progress-circular
+                :rotate="360"
+                :size="200"
+                :width="30"
+                :value="updateValue"
+                :indeterminate="updateValue < 0"
+                color="teal"
+              >
+                {{ updateValue }} %
+              </v-progress-circular>  
+              </div>
+              <div class="text-xs-center mt-4">
+              <span>{{updateText}}</span>
+              </div>
+            </template>
+            <template v-else-if="updateStatus == 'ERROR'">
+              <div class="text-xs-center mt-3">
+                <v-icon :size="200" color="red">fa-exclamation-triangle</v-icon>
+              </div> 
+            </template>
+            <template v-else>
+              <p v-html="update.info"></p>
+            </template>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions v-if="updateStatus != 'UPDATING'">
             <v-spacer></v-spacer>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -118,7 +142,7 @@
               <span>Ignore this version but you can manually update by click 'help -> Update' on menubar</span>
             </v-tooltip>
             <v-btn color="blue darken-1" flat @click="updateDialog = false">Next time</v-btn>
-            <v-btn color="primary" @click="updateDialog = false">Update Now!</v-btn>
+            <v-btn color="primary" @click="updateApp">Update Now!</v-btn>
           </v-card-actions>
       </v-card>
     </v-dialog>
@@ -136,6 +160,8 @@ import bm from '@/engine/BoardManager';
 import AsyncComponent from '@/engine/AsyncComponent';
 import AppEvents from  './event';
 import util from '@/engine/utils';
+import { stat } from 'fs';
+import { spread } from 'q';
 //========= updating =========//
 const EAU = require('electron-asar-hot-updater');
 const electron = require('electron');
@@ -152,7 +178,13 @@ export default {
   data: () => ({        
     expanded: true,
     updateDialog : false,
-    update : {info:'',version:''},
+    update : {
+      info:'',
+      version:'',
+    },
+    updateStatus : 'IDLE',
+    updateValue : 0,
+    updateText : '',
   }),
   computed: {
 
@@ -227,8 +259,45 @@ export default {
       this.$global.setting.ignoreUpdateVersion = version;
       this.updateDialog = false;
     },
-    update(){
+    updateApp(){
+      this.updateStatus = 'UPDATING';
+      this.updateText = 'Downloading ... ';
+      EAU.progress(function(state){
+        if(state.size.total){
+          this.updateValue = Math.round(state.percent * 100);
+          this.updateText = `Downloading ${util.humanFileSize(state.speed.transferred)} of ${util.humanFileSize(total)}, speed : ${util.humanFileSize(speed)}/s`; 
+        }else{
+          this.updateText = `Downloading ${util.humanFileSize(state.speed.transferred)} , speed : ${util.humanFileSize(speed)}/s`; 
+        }
+      });
+      /*EAU.progress(function (state) {
+        // The state is an object that looks like this:
+        // {
+        //     percent: 0.5,           
+        //     speed: 554732,
+        //     size: {
+        //         total: 90044871,        
+        //         transferred: 27610959   
+        //     },
+        //     time: {
+        //         elapsed: 36.235,        
+        //         remaining: 81.403       
+        //     }
+        // }
+      })*/
 
+      EAU.download(function (error) {
+        if (error) {
+          this.updateStatus = 'ERROR';
+          this.updateText = error;
+          setTimeout(()=>{
+            this.updateStatus = 'IDLE';
+          },2000);
+          return false;
+        }
+        //
+        console.log('Update success');
+      })
     },
     reloadBoardPackage(){
       var boardName = this.$global.board.board;

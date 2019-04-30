@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const md5 = require('md5');
 const log = require('./log');
 
 
