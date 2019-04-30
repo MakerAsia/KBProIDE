@@ -20,7 +20,7 @@ function createWindow () {
   win = new BrowserWindow({ 
     width: 800, 
     height: 600,
-    icon: path.join(__dirname, '/icons/png/64x64.png'),
+    icon: path.join(__static, 'icon.png'),
     webPreferences: { //TODO check here!
       webSecurity: false
     }
