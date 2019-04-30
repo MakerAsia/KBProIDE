@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow,Menu } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import {
   createProtocol,
   installVueDevtools
@@ -25,7 +25,7 @@ function createWindow () {
       webSecurity: false
     }
   })
-
+  win.maximize();
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -35,7 +35,7 @@ function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-  win.webContents.openDevTools()//<<<<<<<<<<<<
+  //win.webContents.openDevTools()//<<<<<<<<<<<<
   win.on('closed', () => {
     win = null
   })
@@ -83,5 +83,9 @@ if (isDevelopment) {
   }
 }
 
+ipcMain.on('update-restart',()=>{
+  app.relaunch();
+  app.exit(0);
+});
 //====== create menu =======//
 require('./menu');

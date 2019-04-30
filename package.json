@@ -1,8 +1,8 @@
 {
   "name": "kbide",
-  "author": "Comdet Phueadphut",
-  "git": "http://www.github.com/makerasia",
-  "version": "1.0.2",
+  "author": "Khomdet Phueadphut",
+  "git": "https://github.com/MakerAsia/KBProIDE",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -33,7 +33,6 @@
     "request-promise": "^4.2.4",
     "roboto-fontface": "*",
     "serialport": "^7.1.4",
-    "tone": "^13.4.9",
     "vee-validate": "^2.1.4",
     "vue": "^2.5.21",
     "vue-blockly": "git+https://github.com/comdet/vue-blockly.git",

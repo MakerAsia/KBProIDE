@@ -98,8 +98,13 @@ export default {
             search: "", //sync search
             bpm: 40,
             interval: null,
-            isPlaying: false
+            isPlaying: false,
+            synth : null,
         };
+    },
+    mounted(){
+        //Tone.start();
+        this.synth = new Tone.Synth().toMaster(); 
     },
     computed: {
         color () {
@@ -126,11 +131,11 @@ export default {
             });
         },
         pressedNote : function(note) {
-            //synth.triggerAttackRelease(note, '8n')
+            this.synth.triggerAttackRelease(note, '8n')
             this.select.push(note);
         },
         clickedNote : function(note){
-            //synth.triggerAttackRelease(note, '8n')
+            this.synth.triggerAttackRelease(note, '8n')
         },
         remove (item) {
             this.select.splice(this.select.indexOf(item), 1)

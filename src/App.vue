@@ -264,10 +264,10 @@ export default {
       this.updateText = 'Downloading ... ';
       EAU.progress(function(state){
         if(state.size.total){
-          this.updateValue = Math.round(state.percent * 100);
-          this.updateText = `Downloading ${util.humanFileSize(state.speed.transferred)} of ${util.humanFileSize(total)}, speed : ${util.humanFileSize(speed)}/s`; 
+          window.getApp.updateValue = Math.round(state.percent * 100);
+          window.getApp.updateText = `Downloading ${util.humanFileSize(state.size.transferred)} of ${util.humanFileSize(state.size.total)}, speed : ${util.humanFileSize(state.speed)}/s`; 
         }else{
-          this.updateText = `Downloading ${util.humanFileSize(state.speed.transferred)} , speed : ${util.humanFileSize(speed)}/s`; 
+          window.getApp.updateText = `Downloading ${util.humanFileSize(state.size.transferred)} , speed : ${util.humanFileSize(speed)}/s`; 
         }
       });
       /*EAU.progress(function (state) {
@@ -288,15 +288,20 @@ export default {
 
       EAU.download(function (error) {
         if (error) {
-          this.updateStatus = 'ERROR';
-          this.updateText = error;
+          window.getApp.updateStatus = 'ERROR';
+          window.getApp.updateText = error;
           setTimeout(()=>{
-            this.updateStatus = 'IDLE';
+            window.getApp.updateStatus = 'IDLE';
           },2000);
           return false;
         }
         //
         console.log('Update success');
+        window.getApp.updateText = "Restarting ...";
+        setTimeout(()=>{
+          electron.remote.app.relaunch();
+          electron.remote.app.exit(0);
+        },2000);
       })
     },
     reloadBoardPackage(){
