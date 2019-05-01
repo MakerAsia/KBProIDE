@@ -2,11 +2,12 @@ const codegen = require('./codegen');
 const path = require('path')
 const fs = require('fs')
 const log = require('./log')
-const SerialPort = require('serialport');
-const moment = require('moment');
 
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
+
+const SerialPort = engine.util.requireFunc('serialport');
+const moment = engine.util.requireFunc('moment');
 
 //---- setup dir and config ----//
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
@@ -32,7 +33,7 @@ function listPort()
 {
     return new Promise(function(resolve,reject){
         try {
-            require('serialport').list(function (err, ports) {
+            engine.util.requireFunc('serialport').list(function (err, ports) {
                 if (err) reject(err);
                 if(ports.length == 0) reject("No COM PORT found");
 

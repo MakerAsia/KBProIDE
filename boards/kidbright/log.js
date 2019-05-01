@@ -1,5 +1,3 @@
-var moment = require('moment');
-
 module.exports = {
 	info: 1,
 	error: 2,
@@ -23,5 +21,5 @@ module.exports = {
 };
 
 function _log(str, tag) {
-	console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '\t' + tag + '\t' + str);
+	console.log('\t' + tag + '\t' + str);
 }

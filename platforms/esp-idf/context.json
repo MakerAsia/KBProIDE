@@ -35,7 +35,7 @@
         "-T esp32.common.ld","-T esp32.rom.ld","-T esp32.peripherals.ld","-T esp32.rom.libgcc.ld","-T esp32.rom.spiram_incompatible_fns.ld",
         "-Llib/esp_adc_cal","-lesp_adc_cal","-Llib/esp_http_client","-lesp_http_client","-Llib/esp_https_ota","-lesp_https_ota","-Llib/esp-tls",
         "-lesp-tls","-Llib/ethernet","-lethernet","-Llib/expat","-lexpat","-Llib/fatfs","-lfatfs","-Llib/freertos","-lfreertos",
-        "-Wl,--undefined=uxTopUsedPriority","-Llib/heap","-lheap","-Llib/idf_test","-lidf_test","-Llib/jsmn","-ljsmn","-Llib/json","-ljson",
+        "-Wl,--undefined=uxTopUsedPriority","-Llib/heap","-lheap","-Llib/jsmn","-ljsmn","-Llib/json","-ljson",
         "-Llib/libsodium","-llibsodium","-Llib/log","-llog","-Llib/lwip","-llwip","-Llib/main","-lmain","-Llib/mbedtls","-lmbedtls",
         "-Llib/mdns","-lmdns","-Llib/micro-ecc","-lmicro-ecc","-Llib/newlib","lib/newlib/lib/libc.a","lib/newlib/lib/libm.a","-lnewlib",
         "-Llib/nghttp","-lnghttp","-Llib/nvs_flash","-lnvs_flash","-Llib/openssl","-lopenssl","-Llib/pthread","-lpthread","-Llib/sdmmc","-lsdmmc",
