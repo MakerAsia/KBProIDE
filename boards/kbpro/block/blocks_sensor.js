@@ -5,7 +5,7 @@ Blockly.Blocks['button_1_status'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("/static/icons/sw12x12.png", 20, 20, "*"))
-        .appendField("button A state");
+        .appendField("button A is pressed");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour(90);
@@ -18,7 +18,7 @@ Blockly.Blocks['button_2_status'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("/static/icons/sw12x12.png", 20, 20, "*"))
-        .appendField("button B state");
+        .appendField("button B is pressed");
     this.setOutput(true, "Boolean");
     this.setColour(90);
  this.setTooltip("get button B state");

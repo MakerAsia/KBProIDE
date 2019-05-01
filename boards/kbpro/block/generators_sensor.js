@@ -2,12 +2,12 @@ module.exports = function(Blockly){
   'use strict';
 
 Blockly.JavaScript['button_1_status'] = function(block) {  
-  var code = 'digitalRead(14)';  
+  var code = '(!digitalRead(14))';  
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['button_2_status'] = function(block) {  
-  var code = 'digitalRead(15)';
+  var code = '(!digitalRead(15))';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
