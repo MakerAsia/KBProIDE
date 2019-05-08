@@ -1,6 +1,6 @@
 D:\KBPro\KBProIDE\boards\kbpro\build\b4-e6-2d-a3-79-c9\Servo.o: \
- D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\servo\src\Servo.cpp \
- D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\servo\src/Servo.h \
+ D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\ServoESP32\src\Servo.cpp \
+ D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\ServoESP32\src/Servo.h \
  D:\KBPro\KBProIDE\platforms\arduino-esp32\lib\include/Arduino.h \
  D:\KBPro\KBProIDE\platforms\arduino-esp32\sdk\include\newlib/stdint.h \
  D:\KBPro\KBProIDE\platforms\arduino-esp32\sdk\include\newlib/machine/_default_types.h \

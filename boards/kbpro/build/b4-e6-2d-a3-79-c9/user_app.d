@@ -198,4 +198,4 @@ D:\KBPro\KBProIDE\boards\kbpro\build\b4-e6-2d-a3-79-c9\user_app.o: \
  D:\KBPro\KBProIDE\boards\kbpro\include/MusicDefinitions.h \
  D:\KBPro\KBProIDE\boards\kbpro\include/XT_DAC_Audio.h \
  D:\KBPro\KBProIDE\boards\kbpro\include/MusicDefinitions.h \
- D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\servo\src/Servo.h
+ D:\KBPro\KBProIDE\platforms\arduino-esp32\plugin\ServoESP32\src/Servo.h

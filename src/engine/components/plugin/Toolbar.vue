@@ -29,7 +29,7 @@
                         </v-subheader>
                         <div>
                             <v-list three-line>
-                                <template v-for="(data, index) in localPlugin">                                    
+                                <template v-for="(data, index) in localPlugin">
                                     <v-list-tile :key="data.name" avatar class="list-title">
                                         <v-list-tile-avatar size="60px">
                                             <img :src="`file:///${data.directory}/${data.category.image}`"/>
@@ -45,12 +45,12 @@
                                             <v-list-tile-sub-title v-html="data.category.description"></v-list-tile-sub-title>
                                         </v-list-tile-content>
                                         
-                                        <v-list-tile-action>                           
+                                        <v-list-tile-action>
                                             <v-btn
                                                 icon fab small dark
                                                 class="red"
                                                 :disabled="data.status != 'READY'"
-                                                @click="removePlugin(data.name)"
+                                                @click="removePlugin(data.category.name)"
                                             >
                                                 <v-icon v-if="data.status == 'READY'">fa-trash</v-icon>
                                                 <v-progress-circular
@@ -58,7 +58,7 @@
                                                     indeterminate
                                                     color="primary lighten-4"
                                                 >
-                                                </v-progress-circular>                          
+                                                </v-progress-circular>
                                             </v-btn>
                                         </v-list-tile-action>
                                         <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
@@ -88,7 +88,6 @@
                             </v-flex>
 
                             <v-list three-line v-else-if="onlinePluginStatus != 'wait'">
-
                                 <template v-for="(data, index) in onlinePlugin">                                    
                                     <v-list-tile
                                         :key="data.name"
@@ -96,7 +95,8 @@
                                         class="list-title"
                                     >
                                         <v-list-tile-avatar size="60px">
-                                            <img :src="data.image">
+                                            <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
+                                            <v-img contain v-else class="board-image" :src="`${data.git}/raw/master/${data.image}`"/>
                                         </v-list-tile-avatar>
                                         <v-list-tile-content class="ml-2">
                                             <v-list-tile-title>
@@ -114,7 +114,7 @@
                                                 icon fab small dark
                                                 class="primary"
                                                 :disabled="data.status != 'READY'"
-                                                @click=""
+                                                @click="installOnlinePlugin(data.name)"
                                             >
                                                 <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
                                                 <v-progress-circular
@@ -146,11 +146,14 @@
 <script>
 const { shell } = require('electron');
 const fs = require('fs');
+const request = require('request-promise');
 
 import SmoothScrollbar from '@/engine/views/widgets/list/SmoothScrollbar'
 import VWidget from '@/engine/views/VWidget';
 import util from '@/engine/utils';
 import pm from '@/engine/PluginManager';
+
+var mother = null;
 
 export default {
     components: {
@@ -197,13 +200,29 @@ export default {
             pm.listOnlinePlugin(boardInfo,name).then(res=>{
                 //name,start return {end : lastVisible, plugins : onlinePlugins}
                 this.onlinePluginPage = res.end;
-                this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
+
+                let filtered = [];
+                res.plugins.forEach(obj => {
+                    let f = mother.installedPlugin.find(elm => elm.category.name == obj.name);
+                    if(f){
+                        if(obj.version > f.category.version){
+                            f.status = 'UPDATABLE'
+                        }
+                    }else{
+                        obj.status =  'READY';
+                        filtered.push(obj);
+                    }
+                });
+                mother.onlinePlugin = filtered;
+                //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
                 this.onlinePluginStatus = 'OK';
             }).catch(err=>{
                 this.onlinePluginStatus = 'ERROR';
             });
         },
         listLocalPlugin(name = ''){
+            this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;});
+            this.localPlugin = [];
             if(name != ''){
                 this.localPlugin = this.installedPlugin.filter(obj=> {return obj.name.startsWith(name)});
             }else{
@@ -215,7 +234,7 @@ export default {
             b.status='DOWNLOAD';
             this.statusText = "Downloading";
             this.statusProgress = 0;
-            /*pm.installBoardByName(name,progress => {
+            pm.installOnlinePlugin(b,progress => {
                 //{process : 'board', status : 'DOWNLOAD', state:state }
                 if(progress.status == 'DOWNLOAD'){ //when download just show to text
                     this.statusText = 
@@ -227,26 +246,90 @@ export default {
                 }
             }).then(()=>{ //install success
                 b.status = 'INSTALLED';
-                this.statusText = '';                
-                this.localBoards.push(b);
+                this.statusText = '';
+                this.listAllPlugins();
+                this.$dialog.notify.info('Install success');
+                this.$global.$emit('board-change', this.$global.board.board_info);
             }).catch(err=>{
+                console.log(err);
                 this.statusText = `Error : ${err}`;
                 b.status = 'ERROR';
                 setTimeout(() => {
                     b.status = 'READY';
                     this.statusText = '';
                 }, 5000);
-            })*/
+            })
         },
-        removePlugin(name){
-
+        removePlugin : async function(name){
+            const res = await this.$dialog.confirm({
+                    text: 'Do you really want to remove ' + name + '?',
+                    title: 'Warning',
+            });
+            if(res === true){
+                console.log('removing plugin : ' + name);
+                let b = this.getPluginByName(name);
+                pm.removePlugin(b.category)
+                .then(()=>{
+                    this.$global.blockCode = '';
+                    document.location.reload();
+                })
+                .catch(err=>{
+                    this.$dialog.notify.error('Cannot remove plugin : ' + err);
+                    console.log('Error : cannot remove plugin');
+                    console.log(err);
+                });
+            }
         },
-        publishNewPlugin(){
-                
+        publishNewPlugin : async function(){
+            let res = await this.$dialog.prompt({
+                text: 'https://github.com/user/repo/',
+                title: 'Input Board Repository'
+            });
+            var json = null;
+            if((/^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g).test(res)){
+                this.$dialog.notify.info('Please wait...');
+                request(res + 'raw/master/library.json?random='+util.randomString()) //add randomstring prevent cached response
+                .then( res => {
+                    json = JSON.parse(res);
+                    if(json.name){ //search if existing
+                        return Vue.prototype.$db.collection('plugins')
+                            .where('name','==',json.name) //search start with
+                            .get();
+                    }else{
+                        return false;
+                    }
+                })
+                .then(res=>{
+                    if(res && res.size >= 1){
+                        return json.version > res.docs[0].data().version;
+                    }else{
+                        return true;
+                    }
+                })
+                .then(res=>{
+                    if(res){
+                        Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
+                        if(res){
+                            this.$dialog.notify.success('submit your plugin success, please refresh again');
+                        }
+                    }else{
+                        this.$dialog.notify.error('Existing plugin name or is not newest version');
+                        return false;
+                    }
+                })
+                .catch(err=>{
+                    console.log('request error -----');
+                    console.log(err);
+                    this.$dialog.notify.error('Error something went wrong, please check the log');
+                })
+            }else{
+                this.$dialog.notify.error('Github link format error. Please check your link again');
+            }
         }
     },
     mounted(){
         //console.log(this.localPlugin);
+        mother = this;
     },
     destroyed() {
 

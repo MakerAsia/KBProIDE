@@ -1,0 +1,305 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id=":]j~{+:0IbqKEt-A:b8:" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">esp32_servo_attach</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="Gglv[HVPa43u5!`6d:cw">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="CyZVKkSNf:3_%J2XN+?x">
+            <field name="TEXT">attach servo pin</field>
+            <next>
+              <block type="field_input" id="+mY$*p{[m?3u]?u~l1KK">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="OOcp;4{N}Lr:.z#kjEXs" deletable="false" movable="false">
+        <field name="TEXT">Associate this instance with a servomotor whose input is connected to pin.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="=nw{@eW._=wjM(P/NgD~" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="[i{QAWF+w2l2Ms6nzGG6"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="+CV{u#+LSiE:j%e1G]_7"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Gj~n6%S]#+8yY^Vbcx@5">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="q]!c#?SM3qAgodN|HyfZ" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">esp32_servo_detach</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="3T)qA8^)FY{f:.pBhSz]">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=")!Ne,`6+5B_m|[!3VD[w">
+            <field name="TEXT">detach servo pin</field>
+            <next>
+              <block type="field_input" id="rF^s,-RhC=RGOoyFxRu]">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="?9@MoE?c7bn$)~=dzYbF" deletable="false" movable="false">
+        <field name="TEXT">Stop driving the servo pulse train.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="A^fPk3w)_R|@@-@2EBNe" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="+?IoVKYRNS2S$KDm|lhV"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id=",5Wfug}6CeH1ou7Ui^fh"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Fq=~SKr!/vM/BDlQH4A9">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="?h_Fg`mQs{U_DQ{oxwIR" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">esp32_servo_write</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="o}FIoyI5^tSdMuOuO)q,">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="*){.w-iH${s::SMkqBPc">
+            <field name="TEXT">write servo</field>
+            <next>
+              <block type="field_input" id="Z#%ebN`nT71w)2R)JE:#">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+                <next>
+                  <block type="field_static" id="8`j{-Hm(3xD$DKOA=nmU">
+                    <field name="TEXT"> to angle</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="Y|t}wBO-x(NA?tEvF`1#">
+            <field name="INPUTNAME">degree</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="XimD)/7Y(KpvK1+_Q=va"></shadow>
+              <block type="type_number" id="o?y;Do4V|AD`.@]$v_i!"></block>
+            </value>
+            <next>
+              <block type="input_dummy" id=":qM]bI*|4Y#J@)KZ#fmy">
+                <field name="ALIGN">LEFT</field>
+                <statement name="FIELDS">
+                  <block type="field_static" id="ldrvusO`,^`5PVm%SCe|">
+                    <field name="TEXT"> degree</field>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="|xDolIoDlbUY)|X$u}J@" deletable="false" movable="false">
+        <field name="TEXT">Set the servomotor target angle.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="foNhNNA}_;K=B6-#{GPP" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="BSiotgW4qv4oj_:ld55G"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="4#I!{rT|v{SoAIu1%`Sw"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="ux{SqV-0rIYnQU1hb#}n">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="?h_Fg`mQs{U_DQ{oxwIR" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">esp32_servo_write_micros</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="o}FIoyI5^tSdMuOuO)q,">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="*){.w-iH${s::SMkqBPc">
+            <field name="TEXT">write servo</field>
+            <next>
+              <block type="field_input" id="Z#%ebN`nT71w)2R)JE:#">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+                <next>
+                  <block type="field_static" id="8`j{-Hm(3xD$DKOA=nmU">
+                    <field name="TEXT">with pulse</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="Y|t}wBO-x(NA?tEvF`1#">
+            <field name="INPUTNAME">degree</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="XimD)/7Y(KpvK1+_Q=va"></shadow>
+              <block type="type_number" id="o?y;Do4V|AD`.@]$v_i!"></block>
+            </value>
+            <next>
+              <block type="input_dummy" id=":qM]bI*|4Y#J@)KZ#fmy">
+                <field name="ALIGN">LEFT</field>
+                <statement name="FIELDS">
+                  <block type="field_static" id="ldrvusO`,^`5PVm%SCe|">
+                    <field name="TEXT">microseconds</field>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="|xDolIoDlbUY)|X$u}J@" deletable="false" movable="false">
+        <field name="TEXT">Set the pulse width, in microseconds.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="foNhNNA}_;K=B6-#{GPP" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="BSiotgW4qv4oj_:ld55G"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="4#I!{rT|v{SoAIu1%`Sw"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="ux{SqV-0rIYnQU1hb#}n">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="q]!c#?SM3qAgodN|HyfZ" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">esp32_servo_read</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="3T)qA8^)FY{f:.pBhSz]">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=")!Ne,`6+5B_m|[!3VD[w">
+            <field name="TEXT">read angle servo pin</field>
+            <next>
+              <block type="field_input" id="rF^s,-RhC=RGOoyFxRu]">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="?9@MoE?c7bn$)~=dzYbF" deletable="false" movable="false">
+        <field name="TEXT">Get the servomotor's target angle, in degrees.  This will lie inside the range specified at attach() time.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="A^fPk3w)_R|@@-@2EBNe" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="fFe9alfCvZMkTB-M`aSQ"></shadow>
+      <block type="type_number" id="u0o+g+=NNnY:#cCE2;YB"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Fq=~SKr!/vM/BDlQH4A9">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="q]!c#?SM3qAgodN|HyfZ" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">esp32_servo_read_micros</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="3T)qA8^)FY{f:.pBhSz]">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=")!Ne,`6+5B_m|[!3VD[w">
+            <field name="TEXT">read pulse microsec servo pin</field>
+            <next>
+              <block type="field_input" id="rF^s,-RhC=RGOoyFxRu]">
+                <field name="TEXT">1</field>
+                <field name="FIELDNAME">pin</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="?9@MoE?c7bn$)~=dzYbF" deletable="false" movable="false">
+        <field name="TEXT">Get the current pulse width, in microseconds.  This will lie within the range specified at attach() time.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="A^fPk3w)_R|@@-@2EBNe" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="fFe9alfCvZMkTB-M`aSQ"></shadow>
+      <block type="type_number" id="u0o+g+=NNnY:#cCE2;YB"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Fq=~SKr!/vM/BDlQH4A9">
+        <mutation colour="#93a55b"></mutation>
+        <field name="HUE">75</field>
+      </block>
+    </value>
+  </block></xml>

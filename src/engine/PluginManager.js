@@ -1,6 +1,10 @@
 import util from '@/engine/utils'
 import RealBlockly from 'vue-blockly';
 const fs = require('fs')
+const os = require('os');
+const path = require('path');
+const request = require('request');
+const progress = require('request-progress');
 
 var localBoardName = '';
 var localPlugins = {};
@@ -105,6 +109,11 @@ var loadPlugin = function(boardInfo){
     }
     return localPlugins;
 };
+
+var clearListedPlugin = function(){
+    localPlugins = {};
+};
+
 var plugins = function(boardInfo)
 {
     let lpg = loadPlugin(boardInfo);
@@ -156,8 +165,33 @@ var listOnlinePlugin = function(boardInfo,name = '',start = 0){
         }
     });
 }
+
+var installPluginByName = function(name,cb)
+{
+    return new Promise((resolve,reject) => {
+        Vue.prototype.$db.collection('plugins')
+            .where("name", "==", name)
+            .get()
+            .then(platfromData =>{
+                platfromData.forEach(element => {
+                    return resolve(element.data());                    
+                });
+            }).catch(err=>{
+                reject(err);
+            });
+    }).then((info)=>{
+        return installOnlinePlugin(info,cb);
+    });
+};
 var installOnlinePlugin = function(info,cb)
 {
+    if(info.board){
+        var targetDir = util.boardDir + "/" + info.board + "/plugin";
+    }else if(info.platform){
+        var targetDir = util.platformDir + "/" + info.platform + "/plugin";
+    }else{
+        throw "no target defined";
+    }
     return new Promise((resolve, reject) => { //download zip
         if(!info.git){ reject('no git found'); }
         var zipUrl = info.git + "/archive/master.zip";
@@ -181,38 +215,85 @@ var installOnlinePlugin = function(info,cb)
         })
         .pipe(file);
     }).then((zipFile)=>{ //unzip file
-        //check condition scope here 
-        var targetDir = '';/////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<, มึงต้องดูว่าบอร์ดไหนสามารถใช้ซ้ำกันได้ด้วยนะ
-        if(info.scope.includes('platform')){
-            targetDir = util.platformDir+'/'+info.platform+'/plugin';
-        }else if(info.scope.includes('board')){
-            targetDir = util.boardDir+'/'+info.boardDir+'/board';
-        }
-        return util.unzip(zipFile,{dir: util.boardDir},p=>{ 
+        return util.unzip(zipFile,{dir: targetDir},p=>{ 
             cb & cb({process : 'board', status : 'UNZIP', state: p });
         });
     }).then(()=>{ //rename folder
         //rename ended with word '-master' in boards 
-        var dirs = fs.readdirSync(util.boardDir);
+        var dirs = fs.readdirSync(targetDir);
         for(let i =0; i< dirs.length; i++){
-            let dirname = path.join(util.boardDir, dirs[i]);
+            let dirname = path.join(targetDir, dirs[i]);
             if(fs.lstatSync(dirname).isDirectory() && dirname.endsWith('-master')){
-                let sourceDir = dirname;
-                let targetDir = dirname.replace(/\-master$/,"");
-                fs.renameSync(sourceDir,targetDir);
+                let source = dirname;
+                let target = path.join(targetDir,info.name);
+                fs.renameSync(source,target);
             }
         }
         return true;
-    }).then(()=>{ //install platform
-        if(!fs.readdirSync(util.platformDir).includes(info.platform)){
-            return pfm.installPlatfromByName(info.platform);
-        }
-        return Promise.resolve();
     });
 };
+
+var removePlugin = function(pluginInfo)
+{
+    if(pluginInfo.board){
+        var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
+    }else if(pluginInfo.platform){
+        var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
+    }else{
+        throw "no target defined";
+    }
+    return new Promise((resolve,reject)=>{
+        let target = `${targetDir}/${pluginInfo.name}`;
+        if(fs.existsSync(target)){
+            util.rmdirf(target);
+            resolve();
+        }else{
+            reject('no directory')
+        }
+    });
+}
+var backupPlugin = function(pluginInfo)
+{
+    if(pluginInfo.board){
+        var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
+    }else if(pluginInfo.platform){
+        var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
+    }else{
+        throw "no target defined";
+    }
+    return new Promise((resolve,reject)=>{
+        let target = `${targetDir}/${pluginInfo.name}`;
+        let newer = `${targetDir}/${pluginInfo.name}-backup-board`;
+        fs.renameSync(target,newer);
+        resolve();
+    }) ;
+}
+
+var restorePlugin = function(pluginInfo)
+{
+    if(pluginInfo.board){
+        var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
+    }else if(pluginInfo.platform){
+        var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
+    }else{
+        throw "no target defined";
+    }
+    return new Promise((resolve,reject)=>{
+        let target = `${targetDir}/${pluginInfo.name}`;
+        let newer = `${targetDir}/${pluginInfo.name}-backup-board`;
+        fs.renameSync(newer,target);
+        resolve();
+    }) ;
+}
+
 export default{
     listPlugin,
     loadPlugin,
     plugins,
     listOnlinePlugin,
+    installOnlinePlugin,
+    clearListedPlugin,
+    removePlugin,
+    backupPlugin,
+    restorePlugin,
 }

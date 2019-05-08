@@ -140,7 +140,6 @@ export default {
                     this.$global.$emit('editor-mode-change', mode);
                 });
             }
-            
       }
   },
   watch:{

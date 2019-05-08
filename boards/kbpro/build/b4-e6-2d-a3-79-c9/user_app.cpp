@@ -28,22 +28,9 @@ KBProTime kbprotime;
 BluetoothSerial SerialBT;
 XT_DAC_Audio_Class DacAudio(26,3);
 
-int degrees;
-Number i;
- void setServo(int degrees);
+int i;
  Servo Servo1;
- Servo Servo2;
 
-
-void setServo(int degrees){
-          Servo1.write(degrees);
-  Servo2.write(degrees);
-  Serial.println(degrees);
-  delay(20);
-
-          return;
-
-}
 
 
 void setup()
@@ -64,23 +51,21 @@ void setup()
     Serial.begin(115200);
   
   
-  Servo1.attach(4);
-  
-  
-  Servo2.attach(5);
+  Servo1.attach(25);
 
 
 }
 void loop()
 {
-  /**
- * Describe this function...
- */
-  for (i = 0; i <= 180; i++) {
-    setServo(i);
+    for (i = 0; i <= 180; i++) {
+    Servo1.write(i);
+    Serial.println(i);
+    delay(20);
   }
   for (i = 180; i >= 0; i--) {
-    setServo(i);
+    Servo1.write(i);
+    Serial.println(i);
+    delay(20);
   }
 
   
