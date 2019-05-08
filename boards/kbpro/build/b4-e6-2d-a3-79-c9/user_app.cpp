@@ -13,6 +13,11 @@
 #include "MusicDefinitions.h"
 #include "XT_DAC_Audio.h"
 
+#include "Servo.h"
+
+typedef int Number;
+typedef int Boolean;
+
 using namespace std;
 
 SH1106 display(0x3c, 21, 22);
@@ -23,14 +28,20 @@ KBProTime kbprotime;
 BluetoothSerial SerialBT;
 XT_DAC_Audio_Class DacAudio(26,3);
 
-String res;
- String build_string();
+int degrees;
+Number i;
+ void setServo(int degrees);
+ Servo Servo1;
+ Servo Servo2;
 
 
-String build_string(){
-          res = (String("button A =")+String(digitalRead(14)));
+void setServo(int degrees){
+          Servo1.write(degrees);
+  Servo2.write(degrees);
+  Serial.println(degrees);
+  delay(20);
 
-          return res;
+          return;
 
 }
 
@@ -49,7 +60,14 @@ void setup()
   bh1745.Initialize();
   bh1745.begin();
   
+  
     Serial.begin(115200);
+  
+  
+  Servo1.attach(4);
+  
+  
+  Servo2.attach(5);
 
 
 }
@@ -58,7 +76,12 @@ void loop()
   /**
  * Describe this function...
  */
-  delay(500);
-  Serial.println((build_string()));
+  for (i = 0; i <= 180; i++) {
+    setServo(i);
+  }
+  for (i = 180; i >= 0; i--) {
+    setServo(i);
+  }
 
+  
 }

@@ -136,21 +136,21 @@ var renderBlock = function(blocks,level = 1){
     });
     return res;
 };
-var loadAndRenderPluginsBlock = function(Blockly,boardName)
+var loadAndRenderPluginsBlock = function(Blockly,boardInfo,pluginInfo)
 {
     var pluginName = 'Plugins';
-    var plugins = plug.loadPlugin(boardName);
+    var plugins = pluginInfo; // plug.loadPlugin(boardInfo);
     let catStr = '';
     //console.log(plugins);
-    plugins.categories.forEach(cat=>{        
+    plugins.categories.forEach(cat=>{
         let blockStr = '';
         Object.keys(cat.plugins).forEach(subPlugin => {
             let blocks = cat.plugins[subPlugin].blocks;
             let dir = cat.plugins[subPlugin].dir;
             //----- load block -----//
             try{
-                eval(fs.readFileSync(`${dir}/blocks.js`,'utf8'));
-                eval(fs.readFileSync(`${dir}/generators.js`,'utf8'));
+                eval(fs.readFileSync(`${dir}/${subPlugin}`,'utf8'));
+                eval(fs.readFileSync(`${dir}/${subPlugin.replace("block","generator")}`,'utf8'));
             }catch(e){
                 console.log(`Error : cannot load plugin block [${subPlugin}] => `+e);
             }
@@ -158,9 +158,9 @@ var loadAndRenderPluginsBlock = function(Blockly,boardName)
             blocks.forEach(typeName => {
                 blockStr += `<block type="${typeName}"></block>`;
             });
-        })        
+        });
         //let thName = cat.category.title;
-        let name = cat.category.title;
+        let name = cat.category.name;
         let color = cat.category.color;
         catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });
@@ -388,6 +388,7 @@ export default {
         this.$global.editor.Blockly = Blockly;
         this.$global.editor.workspace = this.workspace;
         this.$global.editor.CodeMirror = this.getCm();
+        
     },
     methods:{
         getCm(){
@@ -455,7 +456,10 @@ export default {
                 }
             }
         },
-        onBoardChange: function(boardInfo){            
+        onBoardChange: function(boardInfo){
+            //reload plugin
+            this.$global.plugin.pluginInfo =  plug.loadPlugin(this.$global.board.board_info);
+
             initBlockly(boardInfo);
             let boardName = boardInfo.name;
             let blocks = loadBlock(boardName);
@@ -466,8 +470,8 @@ export default {
             if('blocks' in blocks){ //render extended block
                 stringBlock += renderBlock(blocks.blocks);
             }
-            // render plugin blocks            
-            stringBlock += loadAndRenderPluginsBlock(Blockly,boardName);
+            // render plugin blocks
+            stringBlock += loadAndRenderPluginsBlock(Blockly,boardInfo,this.$global.plugin.pluginInfo);
             // TODO : render platform block
             this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
             this.workspace.updateToolbox(this.toolbox);

@@ -61,7 +61,7 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
     return new Promise((resolve,reject)=>{
         let cflags = G.cflags.join(" ") + ' ' + boardcflags.join(" ")
         let cppOptions = G.cpp_options.join(" ") + boardCppOptions.join(" ")
-        let inc_switch = plugins_includes_switch.join(" ")
+        let inc_switch = plugins_includes_switch.map(obj=>`-I"${obj}"`).join(" ")
 
         sources.forEach(async (file, idx, arr) => {            
             let filename = getName(file)

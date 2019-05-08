@@ -31,7 +31,28 @@ module.exports = {
     createCodeContext : function(rawCode,config,plugins)
     {
         var source_code = rawCode;
-        //---- variable -----//        
+        var pluginInfo = G.plugin.pluginInfo; 
+        //---- custom include ----//
+        let extInc = /#EXTINC(.*?)#END/gm;
+        let replaceRegex = /#EXTINC.*?#END/gm;
+        let plugins_includes_switch = [];
+        let plugins_sources = [];
+        let incFiles = findString(extInc,source_code);
+        for(let ix in incFiles){
+            let incFileRes = /#include\s*(?:\<|\")(.*?\.h)(?:\>|\")/gm.exec(incFiles[ix]);
+            if(incFileRes){
+                let incFile = incFileRes[1].trim();
+                //lookup plugin 
+                let includedPlugin = pluginInfo.categories.filter(obj=> obj.sourceFile.includes(incFile));
+                if(includedPlugin.length > 0){
+                    plugins_includes_switch.push(includedPlugin[0].directory + "/src");
+                    let targetCppFile = includedPlugin[0].directory + "/src/" + incFile.replace(".h",".cpp");
+                    plugins_sources.push(targetCppFile);
+                }
+            }
+        }
+        source_code = source_code.replace(replaceRegex,"");
+        //---- variable -----//
         let varRegex = /#VARIABLE(.*?)#END/gms;
         let varReplaceRegex = /#VARIABLE.*?#END/gms;
         let variables = findString(varRegex,source_code);        
@@ -57,16 +78,30 @@ module.exports = {
         let blocksetup_code = findString(blocksetupRegex,source_code);
         source_code = source_code.replace(blockreplaceRegex1,"");
         //---- clean empty line ----//
-        let replaceRegex2 = /^\s*[\r\n]/gm;        
+        let replaceRegex2 = /^\s*[\r\n]/gm;
         source_code = source_code.replace(replaceRegex2,"");
-        //----- list include cpp file------//        
-        return {            
+        //---- plugin ----//
+        /*let regexPlugin = /Plugin\.([_0-9A-Za-z]+)\((.*?)\).([_0-9A-Za-z]+).\((.*?)\)/gm;
+        let pluginString = findString(regexPlugin,source_code);
+        for(let p in pluginString){
+            let pline = pluginString[p];
+            let clasName = pline[1];
+            let classConstructor = pline[2];
+            let functionName = pline[3];
+            let 
+        }*/
+        //----- list include cpp file------// 
+
+        return {
+            EXTINC : incFiles.join('\n'),
             FUNCTION : functions.join('\n'),
             VARIABLE : variables.join('\n'),
             SETUP_CODE : setup_code.join('\n'),
             BLOCKSETUP : blocksetup_code,
             LOOP_CODE : source_code,
-            LOOP_EXT_CODE : loop_ext_code
+            LOOP_EXT_CODE : loop_ext_code,
+            plugins_includes_switch : plugins_includes_switch,
+			plugins_sources : plugins_sources,
         }
     },
 	generate : function(rawCode){

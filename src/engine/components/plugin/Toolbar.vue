@@ -29,33 +29,28 @@
                         </v-subheader>
                         <div>
                             <v-list three-line>
-
                                 <template v-for="(data, index) in localPlugin">                                    
-                                    <v-list-tile
-                                        :key="data.name"
-                                        avatar
-                                        class="list-title"
-                                    >
+                                    <v-list-tile :key="data.name" avatar class="list-title">
                                         <v-list-tile-avatar size="60px">
-                                            <img :src="data.image">
+                                            <img :src="`file:///${data.directory}/${data.category.image}`"/>
                                         </v-list-tile-avatar>
                                         <v-list-tile-content class="ml-2">
                                             <v-list-tile-title>
-                                                <strong>{{data.title}}</strong>
+                                                <strong>{{data.category.title}}</strong>
                                                 <span class="body-1">
-                                                    [ v{{data.version}} by {{data.author}} ]
-                                                    [ <a v-if="data.git" @click="openLink(data.git)"> git </a> ]
+                                                    [ v{{data.category.version}} by {{data.category.author}} ]
+                                                    [ <a v-if="data.category.git" @click="openLink(data.category.git)"> git </a> ]
                                                 </span>
                                             </v-list-tile-title>
-                                            <v-list-tile-sub-title v-html="data.description"></v-list-tile-sub-title>
+                                            <v-list-tile-sub-title v-html="data.category.description"></v-list-tile-sub-title>
                                         </v-list-tile-content>
                                         
-                                        <v-list-tile-action>                                            
+                                        <v-list-tile-action>                           
                                             <v-btn
                                                 icon fab small dark
                                                 class="red"
                                                 :disabled="data.status != 'READY'"
-                                                @click="toberemove = data.name; confirmRemoveDialog = true"
+                                                @click="removePlugin(data.name)"
                                             >
                                                 <v-icon v-if="data.status == 'READY'">fa-trash</v-icon>
                                                 <v-progress-circular
@@ -63,7 +58,7 @@
                                                     indeterminate
                                                     color="primary lighten-4"
                                                 >
-                                                </v-progress-circular>                                
+                                                </v-progress-circular>                          
                                             </v-btn>
                                         </v-list-tile-action>
                                         <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
@@ -119,7 +114,7 @@
                                                 icon fab small dark
                                                 class="primary"
                                                 :disabled="data.status != 'READY'"
-                                                @click="tobeinstall = data.name; confirmInstallDialog = true"
+                                                @click=""
                                             >
                                                 <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
                                                 <v-progress-circular
@@ -140,35 +135,11 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <v-btn v-if="$global.setting.devMode == true" color="blue darken-1" flat @click.native="publishNewPlugin">Publish your plugin</v-btn>
                     <v-btn color="blue darken-1" flat @click.native="pluginDialog = false">Close</v-btn>                    
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-        <v-dialog v-model="confirmRemoveDialog" persistent max-width="500px">
-            <v-card>
-                <v-card-title class="headline">Remove plugin confirmation</v-card-title>
-                <v-card-text>Do you want to remove <strong>{{toberemove}}</strong>?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">Cancel</v-btn>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmRemoveDialog = false">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="confirmInstallDialog" persistent max-width='500px'>
-            <v-card>
-                <v-card-title class="headline">Install plugin confirmation</v-card-title>
-                <v-card-text>Do you want to install <strong>{{tobeinstall}}</strong>?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false">Cancel</v-btn>
-                <v-btn class="green--text darken-1" flat="flat" @click.native="confirmInstallDialog = false;">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
     </div>
 </template>
 
@@ -193,20 +164,18 @@ export default {
             searchText : '', 
             isInstalling : false,
             
-            installedPlugin : pm.plugins(this.$global.board.board).map(obj=>{ obj.status =  'READY'; return obj;}),
-            localPlugin : pm.plugins(this.$global.board.board).map(obj=>{ obj.status =  'READY'; return obj;}),
+            installedPlugin : pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;}),
+            localPlugin : pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;}),
             onlinePluginStatus : 'wait',
             onlinePluginPage : 0,
             onlinePlugin : [],
-            tobeinstall : '',
-            toberemove : '',
             statusText : '',
             statusProgress : 0,
         }
     },
     methods:{
         getPluginByName(name){
-            return this.installedPlugin.find(obj => { return obj.name == name});
+            return this.installedPlugin.find(obj => { return obj.category.name == name});
         },
         getOnlinePluginByName(name){
             return this.onlinePlugin.find(obj=>{ return obj.name == name});
@@ -224,7 +193,8 @@ export default {
         },
         listOnlinePlugin(name = ''){
             this.onlinePluginStatus = 'wait';
-            pm.listOnlinePlugin(name).then(res=>{
+            var boardInfo = this.$global.board.board_info;
+            pm.listOnlinePlugin(boardInfo,name).then(res=>{
                 //name,start return {end : lastVisible, plugins : onlinePlugins}
                 this.onlinePluginPage = res.end;
                 this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
@@ -267,6 +237,12 @@ export default {
                     this.statusText = '';
                 }, 5000);
             })*/
+        },
+        removePlugin(name){
+
+        },
+        publishNewPlugin(){
+                
         }
     },
     mounted(){

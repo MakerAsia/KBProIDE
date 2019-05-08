@@ -135,7 +135,7 @@ Blockly.Blocks['time_millis'] = {
     this.appendDummyInput()
         .appendField("timestamp millisecond");
     this.setInputsInline(true);
-    this.setOutput(true, "uint32_t");
+    this.setOutput(true, ["Number","uint32_t"]);
     this.setColour(0);
  this.setTooltip("get time since program start in millisecond");
  this.setHelpUrl("");
@@ -147,7 +147,7 @@ Blockly.Blocks['time_micros'] = {
     this.appendDummyInput()
         .appendField("timestamp microsecond");
     this.setInputsInline(true);
-    this.setOutput(true, "uint32_t");
+    this.setOutput(true,["Number","uint32_t"]);
     this.setColour(0);
  this.setTooltip("get time since program start in microsecond");
  this.setHelpUrl("");

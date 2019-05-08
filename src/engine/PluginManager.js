@@ -1,35 +1,44 @@
 import util from '@/engine/utils'
+import RealBlockly from 'vue-blockly';
 const fs = require('fs')
+
 var localBoardName = '';
 var localPlugins = {};
+
 var listPlugin = function(dir){
     var plugins = {};
-    let catPlugins = fs.readdirSync(dir);
-    if(catPlugins.length > 0){
-        catPlugins.forEach(plugin => {
-            let fdir = `${dir}/${plugin}`;
-            if(fs.lstatSync(fdir).isDirectory()){                
+    let blockFiles = fs.readdirSync(dir);
+    if(blockFiles.length > 0){
+        blockFiles.forEach(blockFile => {
+            let fblock = `${dir}/${blockFile}`;
+            if(blockFile.endsWith(".js") && blockFile.startsWith("block") && fs.lstatSync(fblock).isFile()){
                 // extract block definitions
                 var blocks = [];
                 var Blockly = {
                     Blocks : []
                 }
                 try{
-                    eval(fs.readFileSync(`${fdir}/blocks.js`,'utf8'));
-                    for (var i in Blockly.Blocks) {
+                    if(!document.BlockyPlugin){
+                        document.BlocklyPlugin = {};
+                    }
+                    let pluginWorkspace = new RealBlockly.Workspace();
+                    eval(fs.readFileSync(fblock,'utf8'));
+                    for (var i in Blockly.Blocks){
+                        document.BlocklyPlugin[i] = pluginWorkspace;
                         blocks.push(i);
                     }
                 }catch(e){
-                    console.log(`plugin "${plugin}" blocks.js error`);
+                    console.log(`plugin "${blockFile}" blocks.js error`);
                 }//----------------------//
 
                 // extrack block generators
+                let fgen = `${dir}/${blockFile.replace("block","generator")}`;
                 var generators = [];
                 var Blockly = {
                     JavaScript: []
                 };
                 try {
-                    eval(fs.readFileSync(`${fdir}/generators.js`,'utf8'));
+                    eval(fs.readFileSync(fgen,'utf8'));
                     for (var i in Blockly.JavaScript) {
                         generators.push(i);
                     }
@@ -37,66 +46,77 @@ var listPlugin = function(dir){
                     console.log(`plugin "${plugin}" generator.js error`);
                 }//----------------------//
                 // TODO : check block and generator must eq
-                plugins[plugin] = {
-                    dir : fdir,
-                    name : plugin,
+                plugins[blockFile] = {
+                    dir : dir,
                     blocks : blocks,
                     generators : generators                    
                 };
-                console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? 's' : ''}`);
+                console.log(`plugin "${blockFile}" found ${blocks.length} block${blocks.length > 1 ? 's' : ''}`);
             }
         });
     }
     return plugins;
 }
-
-var listCategoryPlugins = function(pluginDir)
-{
+var listCategoryPlugins = function(pluginDir){
     var categories = [];
     var allPlugin = {};
     if(fs.existsSync(pluginDir)){
         var cats = fs.readdirSync(pluginDir);
         cats.forEach(cat => {
             var dir = `${pluginDir}/${cat}`
-            var infoFile = `${dir}/${cat}.json`
-
-            if(!fs.lstatSync(dir).isDirectory()){ return; }
-            if(!fs.existsSync(infoFile)) { return; }
-
-            var catInfoFile = JSON.parse(fs.readFileSync(infoFile));
-            var plugins = listPlugin(dir);
-            categories.push({
-                directory : cat,
-                plugins : plugins,
-                category : catInfoFile
-            });
-            Object.assign(allPlugin,plugins);
+            var infoFile = `${dir}/library.json`
+            var srcDir = `${dir}/src`
+            var blockDir = `${dir}/blocks`
+            if(fs.existsSync(infoFile) && fs.existsSync(srcDir) && fs.existsSync(blockDir)){
+                var pluginInfo = JSON.parse(fs.readFileSync(infoFile,'utf8'));
+                var plugins = listPlugin(blockDir);
+                var srcFile = fs.readdirSync(srcDir);
+                categories.push({
+                    directory : dir,
+                    dirName : cat,
+                    sourceFile : srcFile,
+                    plugins : plugins,
+                    category : pluginInfo
+                });
+                Object.assign(allPlugin,plugins);
+            }
         });
     }
     return {categories:categories,plugins:allPlugin};
-};
-
+}
 //TODO : look for platform blocks
 
-var loadPlugin = function(boardName,boardInfo){
-    if((Object.entries(localPlugins).length === 0 && localPlugins.constructor === Object)||(boardName != localBoardName)){ // check empty object !!!
-        localPlugins = listCategoryPlugins(`${util.boardDir}/${boardName}/plugin`);
-        localBoardName = boardName;
+var loadPlugin = function(boardInfo){
+    if((Object.entries(localPlugins).length === 0 && localPlugins.constructor === Object)||(boardInfo.name != localBoardName)){ // check empty object !!!
+        //load mother platform
+        //TODO : implement look up in mother of platform again
+        //load from platform
+        let platformPlugins = listCategoryPlugins(`${util.platformDir}/${boardInfo.platform}/plugin`)
+        //load from board
+        let boardPlugins = listCategoryPlugins(`${util.boardDir}/${boardInfo.name}/plugin`)
+        //join all together
+        let allPlugins = {};
+        Object.assign(allPlugins,platformPlugins.plugins);
+        Object.assign(allPlugins,boardPlugins.plugins);
+        localPlugins = { 
+            categories: platformPlugins.categories.concat(boardPlugins.categories),
+            plugins: allPlugins
+        };
     }
     return localPlugins;
 };
-var plugins = function(boardName)
+var plugins = function(boardInfo)
 {
-    let lpg = loadPlugin(boardName);
-    let cat = lpg.categories.map(data => { return data.category; });      
-    return cat;
+    let lpg = loadPlugin(boardInfo);
+    return lpg.categories;
 };
 
-var listOnlinePlugin = function(name = '',start = 0){
+var listOnlinePlugin = function(boardInfo,name = '',start = 0){
     return new Promise((resolve,reject)=>{
         let onlinePlugins = [];
         if(name == ''){ //list all
             Vue.prototype.$db.collection('plugins')
+            //.where("board","==","sfsdfs")
             .orderBy("name")
             .startAfter(start)
             .limit(50)

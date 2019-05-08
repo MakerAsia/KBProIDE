@@ -26,6 +26,7 @@ function compile(rawCode,boardName,config,cb)
         }else{
             var codegen = engine.util.requireFunc(`${platformDir}/codegen`);
         }
+        //---- inc folder ----//
         var app_dir = `${boardDirectory}/build/${boardName}`;
         let inc_src = engine.util.walk(boardIncludeDir).filter(file => path.extname(file) == ".cpp" || path.extname(file) == ".c");
         inc_src = inc_src.concat(engine.util.walk(platfromIncludeDir).filter(file => path.extname(file) == ".cpp" || path.extname(file) == ".c"));
@@ -33,9 +34,30 @@ function compile(rawCode,boardName,config,cb)
         //--- step 1 load template and create full code ---//
         if(config.isSourceCode){
             var sourceCode = rawCode;
+            //searching all include to find matched used plugin file
+            var codeContext = {
+                plugins_sources : [],
+                plugins_includes_switch : []
+            };
+            let pluginInfo = G.plugin.pluginInfo;
+            let incsRex = /#include\s*(?:\<|\")(.*?\.h)(?:\>|\")/gm;
+            var m;
+            while (m = incsRex.exec(sourceCode)){
+                let incFile = m[1].trim();
+                //lookup plugin 
+                let includedPlugin = pluginInfo.categories.filter(obj=> obj.sourceFile.includes(incFile));
+                if(includedPlugin.length > 0){
+                    codeContext.plugins_includes_switch.push(includedPlugin[0].directory + "/src");
+                    let targetCppFile = includedPlugin[0].directory + "/src/" + incFile.replace(".h",".cpp");
+                    codeContext.plugins_sources.push(targetCppFile);
+                }
+            }
         }else{
             var {sourceCode,codeContext} = codegen.generate(rawCode);
         }
+        //----- plugin file src ----//
+        inc_src = inc_src.concat(codeContext.plugins_sources);
+        inc_switch = inc_switch.concat(codeContext.plugins_includes_switch);
         //------ clear build folder and create new one --------//
         if(fs.existsSync(app_dir)){
             engine.util.rmdirf(app_dir);
@@ -62,17 +84,16 @@ function compile(rawCode,boardName,config,cb)
             app_dir : app_dir,
             process_dir : boardDirectory,
         };
-        var sourceFiles = inc_src;
-        var includeSwitch = inc_switch;
-        sourceFiles.push(`${app_dir}/user_app.cpp`);        
+        
+        inc_src.push(`${app_dir}/user_app.cpp`);        
         platformCompiler.setConfig(contextBoard);        
         //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
         engine.util.promiseTimeout(1000).then(()=>{
-            return platformCompiler.compileFiles(sourceFiles,[], cflags, includeSwitch); 
+            return platformCompiler.compileFiles(inc_src,[], cflags, inc_switch); 
         }).then(()=>{
             return engine.util.promiseTimeout(1000);
         }).then(()=>{
-            return platformCompiler.archiveProgram(sourceFiles);
+            return platformCompiler.archiveProgram(inc_src);
         }).then(()=>{
             return engine.util.promiseTimeout(1000);
         }).then(()=>{
@@ -89,7 +110,6 @@ function compile(rawCode,boardName,config,cb)
             console.log('error msg : ' + msg);
             reject(msg);
         });
-        
     });
 }
 var exp = {};
