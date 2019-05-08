@@ -262,7 +262,7 @@ export default {
         },
         removePlugin : async function(name){
             const res = await this.$dialog.confirm({
-                    text: 'Do you really want to remove ' + name + '?',
+                    text: 'Do you really want to remove ' + name + '? , this process will clear your code.',
                     title: 'Warning',
             });
             if(res === true){
@@ -279,6 +279,9 @@ export default {
                     console.log(err);
                 });
             }
+        },
+        updatePlugin : async function(name){
+
         },
         publishNewPlugin : async function(){
             let res = await this.$dialog.prompt({
