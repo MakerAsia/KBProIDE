@@ -147,10 +147,14 @@ var loadAndRenderPluginsBlock = function(Blockly,boardInfo,pluginInfo)
         Object.keys(cat.plugins).forEach(subPlugin => {
             let blocks = cat.plugins[subPlugin].blocks;
             let dir = cat.plugins[subPlugin].dir;
+            let file = cat.plugins[subPlugin].file;
             //----- load block -----//
             try{
-                eval(fs.readFileSync(`${dir}/${subPlugin}`,'utf8'));
-                eval(fs.readFileSync(`${dir}/${subPlugin.replace("block","generator")}`,'utf8'));
+                eval(fs.readFileSync(`${dir}/${file}`,'utf8'));
+                eval(fs.readFileSync(`${dir}/${file.replace("block","generator")}`,'utf8'));
+                if(fs.existsSync(`${dir}/msg/en.js`)){
+                    eval(fs.readFileSync(`${dir}/msg/en.js`,'utf8'));    
+                }
             }catch(e){
                 console.log(`Error : cannot load plugin block [${subPlugin}] => `+e);
             }
@@ -160,7 +164,7 @@ var loadAndRenderPluginsBlock = function(Blockly,boardInfo,pluginInfo)
             });
         });
         //let thName = cat.category.title;
-        let name = cat.category.name;
+        let name = (cat.category.name.en)? cat.category.name.en : cat.category.name;
         let color = cat.category.color;
         catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });

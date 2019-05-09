@@ -46,7 +46,7 @@
                                         </v-list-tile-content>
                                         
                                         <v-list-tile-action>
-                                            <v-btn
+                                            <v-btn v-if="data.status != 'UPDATABLE'"
                                                 icon fab small dark
                                                 class="red"
                                                 :disabled="data.status != 'READY'"
@@ -60,6 +60,20 @@
                                                 >
                                                 </v-progress-circular>
                                             </v-btn>
+                                            <template v-else>
+                                                <v-tooltip bottom>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-on="on"
+                                                            icon fab small dark
+                                                            class="red"
+                                                            @click="updatePlugin(data.category.name)"
+                                                        >
+                                                            <v-icon>fa-retweet</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>New version found : v{{data.nextVersion}}</span>
+                                                </v-tooltip>
+                                            </template>
                                         </v-list-tile-action>
                                         <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
                                     </v-list-tile>
@@ -164,7 +178,7 @@ export default {
             pluginDialog : false,
             confirmRemoveDialog : false,
             confirmInstallDialog : false,
-            searchText : '', 
+            searchText : '',
             isInstalling : false,
             
             installedPlugin : pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;}),
@@ -178,7 +192,7 @@ export default {
     },
     methods:{
         getPluginByName(name){
-            return this.installedPlugin.find(obj => { return obj.category.name == name});
+            return this.localPlugin.find(obj => { return obj.category.name == name});
         },
         getOnlinePluginByName(name){
             return this.onlinePlugin.find(obj=>{ return obj.name == name});
@@ -200,13 +214,13 @@ export default {
             pm.listOnlinePlugin(boardInfo,name).then(res=>{
                 //name,start return {end : lastVisible, plugins : onlinePlugins}
                 this.onlinePluginPage = res.end;
-
                 let filtered = [];
                 res.plugins.forEach(obj => {
-                    let f = mother.installedPlugin.find(elm => elm.category.name == obj.name);
+                    let f = mother.localPlugin.find(elm => elm.category.name == obj.name);
                     if(f){
                         if(obj.version > f.category.version){
-                            f.status = 'UPDATABLE'
+                            f.status = 'UPDATABLE';
+                            f.nextVersion = obj.version;
                         }
                     }else{
                         obj.status =  'READY';
@@ -281,7 +295,53 @@ export default {
             }
         },
         updatePlugin : async function(name){
+            const res = await this.$dialog.confirm({
+                    text: 'Do you want to update '+name+' plugin?',
+                    title: 'Warning',
+            });
+            if(res === true){
+                var p = this.getPluginByName(name);
+                var st = p.status;
+                pm.backupPlugin(p.category)
+                .then(()=>{
+                    console.log('update plugin : ' + name);
+                    p.status='DOWNLOAD';
+                    this.statusText = "Downloading";
+                    this.statusProgress = 0;
+                    return pm.installOnlinePlugin(p.category,progress => {
+                        //{process : 'board', status : 'DOWNLOAD', state:state }
+                        if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                            this.statusText = 
+                                `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
+                        }else if(progress.status == 'UNZIP'){
+                            p.status = 'UNZIP';
+                            this.statusText = `Unzip file ${progress.state.percentage}%`;
+                            this.statusProgress = progress.state.percentage;
+                        }
+                    })
+                })
+                .then(()=>{ //install success
+                    p.status = 'READY';
+                    this.statusText = '';
+                    pm.removePlugin(p.category,true).then(()=>{
+                        this.$dialog.notify.info('Update plugin success');
+                        this.listAllPlugins();
+                        setTimeout(()=>{
+                            this.$global.$emit('board-change', this.$global.board.board_info);
+                        },1000); 
+                    });
+                }).catch(err=>{
+                    this.statusText = `Error : ${err}`;
+                    p.status = 'ERROR';
+                    setTimeout(() => {
+                        p.status = st;
+                        this.statusText = '';
+                    }, 5000);
+                    pm.restorePlugin(p.category).then(()=>{
 
+                    });
+                })
+            }
         },
         publishNewPlugin : async function(){
             let res = await this.$dialog.prompt({

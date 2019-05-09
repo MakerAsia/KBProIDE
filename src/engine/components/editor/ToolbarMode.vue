@@ -135,6 +135,14 @@ export default {
                     });
                 }
             }else{
+                /*const res = await this.$dialog.confirm({
+                    text: 'Switching to block mode will lose this code.',
+                    title: 'Warning',
+                    actions : [
+                        { text : 'Cancel', key : false },
+                        { text : 'OK' , key : true},
+                    ]
+                });*/
                 this.$global.editor.mode = mode;
                 this.$nextTick(function () { //wait for element changed before fire event
                     this.$global.$emit('editor-mode-change', mode);

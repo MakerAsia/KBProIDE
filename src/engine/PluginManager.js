@@ -52,6 +52,7 @@ var listPlugin = function(dir){
                 // TODO : check block and generator must eq
                 plugins[blockFile] = {
                     dir : dir,
+                    file : blockFile,
                     blocks : blocks,
                     generators : generators                    
                 };
@@ -61,6 +62,57 @@ var listPlugin = function(dir){
     }
     return plugins;
 }
+var listKidBrightPlugin = function(dir)
+{
+    console.log('-----------');
+    var plugins = {};
+    let catPlugins = fs.readdirSync(dir);
+    if(catPlugins.length > 0){
+        catPlugins.forEach(plugin => {
+            let fdir = `${dir}/${plugin}`;
+            if(fs.lstatSync(fdir).isDirectory()){                
+                // extract block definitions
+                var blocks = [];
+                var Blockly = {
+                    Blocks : []
+                }
+                try{
+                    eval(fs.readFileSync(`${fdir}/blocks.js`,'utf8'));
+                    for (var i in Blockly.Blocks) {
+                        blocks.push(i);
+                    }
+                }catch(e){
+                    console.log(`plugin "${plugin}" blocks.js error`);
+                }//----------------------//
+
+                // extrack block generators
+                var generators = [];
+                var Blockly = {
+                    JavaScript: []
+                };
+                try {
+                    eval(fs.readFileSync(`${fdir}/generators.js`,'utf8'));
+                    for (var i in Blockly.JavaScript) {
+                        generators.push(i);
+                    }
+                } catch (e) {
+                    console.log(`plugin "${plugin}" generator.js error`);
+                }//----------------------//
+                // TODO : check block and generator must eq
+                plugins[plugin] = {
+                    dir : fdir,
+                    file : 'blocks.js',
+                    name : plugin,
+                    blocks : blocks,
+                    generators : generators                    
+                };
+                console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? 's' : ''}`);
+            }
+        });
+    }
+    return plugins;
+};
+
 var listCategoryPlugins = function(pluginDir){
     var categories = [];
     var allPlugin = {};
@@ -68,9 +120,10 @@ var listCategoryPlugins = function(pluginDir){
         var cats = fs.readdirSync(pluginDir);
         cats.forEach(cat => {
             var dir = `${pluginDir}/${cat}`
-            var infoFile = `${dir}/library.json`
-            var srcDir = `${dir}/src`
-            var blockDir = `${dir}/blocks`
+            var infoFile = `${dir}/library.json`;
+            var kbPluginInfoFile = `${dir}/${cat}.json`;
+            var srcDir = `${dir}/src`;
+            var blockDir = `${dir}/blocks`;
             if(fs.existsSync(infoFile) && fs.existsSync(srcDir) && fs.existsSync(blockDir)){
                 var pluginInfo = JSON.parse(fs.readFileSync(infoFile,'utf8'));
                 var plugins = listPlugin(blockDir);
@@ -81,6 +134,16 @@ var listCategoryPlugins = function(pluginDir){
                     sourceFile : srcFile,
                     plugins : plugins,
                     category : pluginInfo
+                });
+                Object.assign(allPlugin,plugins);
+            }else if(fs.existsSync(dir) && fs.existsSync(kbPluginInfoFile)){
+                var catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFile));
+                var plugins = listKidBrightPlugin(dir);
+                categories.push({
+                    directory : dir,
+                    dirName : cat,
+                    plugins : plugins,
+                    category : catInfoFile
                 });
                 Object.assign(allPlugin,plugins);
             }
@@ -119,13 +182,12 @@ var plugins = function(boardInfo)
     let lpg = loadPlugin(boardInfo);
     return lpg.categories;
 };
-
-var listOnlinePlugin = function(boardInfo,name = '',start = 0){
+var performPluginSearch = function(name,value,start = 0)
+{
     return new Promise((resolve,reject)=>{
         let onlinePlugins = [];
-        if(name == ''){ //list all
-            Vue.prototype.$db.collection('plugins')
-            //.where("board","==","sfsdfs")
+        Vue.prototype.$db.collection('plugins')
+            .where(name,"==",value)
             .orderBy("name")
             .startAfter(start)
             .limit(50)
@@ -138,18 +200,22 @@ var listOnlinePlugin = function(boardInfo,name = '',start = 0){
             }).catch(err=>{
                 reject(err);
             });
-        }else{
-            var strSearch = name;
-            var strlength = strSearch.length;
-            var strFrontCode = strSearch.slice(0, strlength-1);
-            var strEndCode = strSearch.slice(strlength-1, strSearch.length);
+    });
+}
+var performPluginNameSearch = function(name,column,value,start= 0){
+    return new Promise((resolve,reject)=>{
+        let onlinePlugins = [];
+        var strSearch = name;
+        var strlength = strSearch.length;
+        var strFrontCode = strSearch.slice(0, strlength-1);
+        var strEndCode = strSearch.slice(strlength-1, strSearch.length);
 
-            var startcode = strSearch;
-            var endcode= strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
-
-            Vue.prototype.$db.collection('plugins')   
+        var startcode = strSearch;
+        var endcode= strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+        Vue.prototype.$db.collection('plugins')   
             .where('name','>=',startcode) //search start with
             .where('name','<',endcode)
+            .where(column,"==",value)
             .orderBy("name")
             //.startAfter(start)
             .limit(50)
@@ -162,6 +228,38 @@ var listOnlinePlugin = function(boardInfo,name = '',start = 0){
             }).catch(err=>{
                 reject(err);
             });
+    });    
+}
+var listOnlinePlugin = function(boardInfo,name = '',start = 0){
+    return new Promise((resolve,reject)=>{
+        let onlinePlugins = [];
+        if(name == ''){ //list all
+            performPluginSearch("board",boardInfo.name)
+                .then(res=>{
+                    onlinePlugins = onlinePlugins.concat(res.plugins);
+                    return performPluginSearch("platform",boardInfo.platform);
+                })
+                .then(res=>{
+                    onlinePlugins = onlinePlugins.concat(res.plugins);
+                    resolve({plugins : onlinePlugins});
+                })
+                .catch(err=>{
+                    reject(err);
+                });
+        }else{
+            performPluginNameSearch(name,"board",boardInfo.name)
+                .then(res=>{
+                    onlinePlugins = onlinePlugins.concat(res.plugins);
+                    return performPluginNameSearch(name,"platform",boardInfo.platform);
+                })
+                .then(res=>{
+                    onlinePlugins = onlinePlugins.concat(res.plugins);
+                    resolve({plugins : onlinePlugins});
+                })
+                .catch(err=>{
+                    reject(err);
+                });
+            
         }
     });
 }
@@ -233,7 +331,7 @@ var installOnlinePlugin = function(info,cb)
     });
 };
 
-var removePlugin = function(pluginInfo)
+var removePlugin = function(pluginInfo,isBackupRemove = false)
 {
     if(pluginInfo.board){
         var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
@@ -244,6 +342,9 @@ var removePlugin = function(pluginInfo)
     }
     return new Promise((resolve,reject)=>{
         let target = `${targetDir}/${pluginInfo.name}`;
+        if(isBackupRemove){
+            target += "-backup-plugin";
+        }
         if(fs.existsSync(target)){
             util.rmdirf(target);
             resolve();
@@ -252,6 +353,7 @@ var removePlugin = function(pluginInfo)
         }
     });
 }
+
 var backupPlugin = function(pluginInfo)
 {
     if(pluginInfo.board){
@@ -263,7 +365,7 @@ var backupPlugin = function(pluginInfo)
     }
     return new Promise((resolve,reject)=>{
         let target = `${targetDir}/${pluginInfo.name}`;
-        let newer = `${targetDir}/${pluginInfo.name}-backup-board`;
+        let newer = `${targetDir}/${pluginInfo.name}-backup-plugin`;
         fs.renameSync(target,newer);
         resolve();
     }) ;
@@ -280,7 +382,7 @@ var restorePlugin = function(pluginInfo)
     }
     return new Promise((resolve,reject)=>{
         let target = `${targetDir}/${pluginInfo.name}`;
-        let newer = `${targetDir}/${pluginInfo.name}-backup-board`;
+        let newer = `${targetDir}/${pluginInfo.name}-backup-plugin`;
         fs.renameSync(newer,target);
         resolve();
     }) ;
