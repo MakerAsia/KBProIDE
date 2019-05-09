@@ -246,8 +246,8 @@ export default {
             });
         },
         listLocalPlugin(name = ''){
-            this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;});
             this.localPlugin = [];
+            this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj=>{ obj.status =  'READY'; return obj;});
             if(name != ''){
                 this.localPlugin = this.installedPlugin.filter(obj=> {return obj.name.startsWith(name)});
             }else{
@@ -296,7 +296,8 @@ export default {
                 pm.removePlugin(b.category)
                 .then(()=>{
                     this.$global.blockCode = '';
-                    document.location.reload();
+                    this.$dialog.notify.info('Remove plugin success');
+                    this.$global.$emit('board-change', this.$global.board.board_info);
                 })
                 .catch(err=>{
                     this.$dialog.notify.error('Cannot remove plugin : ' + err);
@@ -411,7 +412,7 @@ export default {
     watch : {
         pluginDialog : function(val){
             if(val){//on opening
-                this.listOnlinePlugin();
+                this.listAllPlugins();
             }
         }
     }
