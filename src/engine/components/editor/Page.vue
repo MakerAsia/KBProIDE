@@ -164,7 +164,7 @@ var loadAndRenderPluginsBlock = function(Blockly,boardInfo,pluginInfo)
             });
         });
         //let thName = cat.category.title;
-        let name = (cat.category.name.en)? cat.category.name.en : cat.category.name;
+        let name = (cat.category.name.en)? cat.category.name.en : cat.category.title;
         let color = cat.category.color;
         catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });

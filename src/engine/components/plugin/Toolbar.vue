@@ -32,20 +32,31 @@
                                 <template v-for="(data, index) in localPlugin">
                                     <v-list-tile :key="data.name" avatar class="list-title">
                                         <v-list-tile-avatar size="60px">
-                                            <img :src="`file:///${data.directory}/${data.category.image}`"/>
+                                            <template v-if="data.category.image">
+                                                <v-img contain v-if="data.category.image.startsWith('http') === true" :src="data.category.image"/>
+                                                <v-img contain v-else :src="`file:///${data.directory}/${data.category.image}`"/>
+                                            </template>
+                                            <v-img contain v-else src="/static/images/noimage.jpg"/>
                                         </v-list-tile-avatar>
-                                        <v-list-tile-content class="ml-2">
-                                            <v-list-tile-title>
-                                                <strong>{{data.category.title}}</strong>
-                                                <span class="body-1">
-                                                    [ v{{data.category.version}} by {{data.category.author}} ]
-                                                    [ <a v-if="data.category.git" @click="openLink(data.category.git)"> git </a> ]
-                                                </span>
-                                            </v-list-tile-title>
-                                            <v-list-tile-sub-title v-html="data.category.description"></v-list-tile-sub-title>
-                                        </v-list-tile-content>
-                                        
-                                        <v-list-tile-action>
+                                        <template v-if='data.category.name && typeof(data.category.name) === "string"'>
+                                            <v-list-tile-content class="ml-2">
+                                                <v-list-tile-title>
+                                                    <strong>{{data.category.title}}</strong>
+                                                    <span class="body-1">
+                                                        [ v{{data.category.version}} by {{data.category.author}} ]
+                                                        [ <a v-if="data.category.git" @click="openLink(data.category.git)"> git </a> ]
+                                                    </span>
+                                                </v-list-tile-title>
+                                                <v-list-tile-sub-title v-html="data.category.description"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                        <template v-else>
+                                            <v-list-tile-content class="ml-2">
+                                                <strong>Please migrate your json file to use this feature</strong>
+                                                <span class="body-1">Plugin : {{data.category.name.en}} <br/>Tutorial : https://kbide.org/tutorial/plugins </span> 
+                                            </v-list-tile-content>
+                                        </template>
+                                        <v-list-tile-action v-if='data.category.name && typeof(data.category.name) === "string"'>
                                             <v-btn v-if="data.status != 'UPDATABLE'"
                                                 icon fab small dark
                                                 class="red"
