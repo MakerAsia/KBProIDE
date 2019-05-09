@@ -2,7 +2,7 @@
   "name": "kbide",
   "author": "Khomdet Phueadphut",
   "git": "https://github.com/MakerAsia/KBProIDE",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
