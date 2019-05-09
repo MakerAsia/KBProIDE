@@ -72,18 +72,14 @@
                                                 </v-progress-circular>
                                             </v-btn>
                                             <template v-else>
-                                                <v-tooltip bottom>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-on="on"
-                                                            icon fab small dark
-                                                            class="red"
-                                                            @click="updatePlugin(data.category.name)"
-                                                        >
-                                                            <v-icon>fa-retweet</v-icon>
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>New version found : v{{data.nextVersion}}</span>
-                                                </v-tooltip>
+                                                <v-btn
+                                                    icon fab small dark
+                                                    class="red"
+                                                    @click="updatePlugin(data.category.name)"
+                                                >
+                                                    <v-icon>fa-retweet</v-icon>
+                                                </v-btn>
+                                                    
                                             </template>
                                         </v-list-tile-action>
                                         <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     

@@ -1,6 +1,6 @@
 export default {
     name : 'setting',
-    index : 0,
+    index : 3,
     description : "no have",
     tooltip : 'Setting',
     persistence:{
