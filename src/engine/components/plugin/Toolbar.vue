@@ -53,7 +53,7 @@
                                         <template v-else>
                                             <v-list-tile-content class="ml-2">
                                                 <strong>Please migrate your json file to use this feature</strong>
-                                                <span class="body-1">Plugin : {{data.category.name.en}} <br/>Tutorial : https://kbide.org/tutorial/plugins </span> 
+                                                <span class="body-1">Plugin : {{data.category.name.en}} <br/>Tutorial : https://kbide.org/tutorials/plugin </span> 
                                             </v-list-tile-content>
                                         </template>
                                         <v-list-tile-action v-if='data.category.name && typeof(data.category.name) === "string"'>
