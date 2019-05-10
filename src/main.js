@@ -29,21 +29,22 @@ var config = {
   storageBucket: "kbproide.appspot.com",
   messagingSenderId: "1046722656270",
 };
-
 firebase.initializeApp(config);
 Vue.prototype.$db = firebase.firestore();
 
 Vue.config.productionTip = false;
 
 //---- load data to global variable ----//
-let componentAllData = {data: {}, persistence: {}};
-let watcher = {};
-let watcherHandler = {};
+var componentAllData = {
+  data: {},
+  persistence: {},
+};
+var watcher = {};
+var watcherHandler = {};
 //--------------------------------------//
 
-let addWatcher = function(name, ghandler, deep) {
-  if (!(name in watcherHandler)) {
-    // new handler
+var addWatcher = function(name, ghandler, deep) {
+  if (!(name in watcherHandler)) { // new handler
     watcherHandler[name] = [];
   }
   watcherHandler[name].push(ghandler);
@@ -58,7 +59,7 @@ let addWatcher = function(name, ghandler, deep) {
 };
 
 //========= component  manager =========//
-const comps = cm.listComponent();
+var comps = cm.listComponent();
 Object.keys(comps).forEach(function(key) {
   if ("config" in comps[key]) {
     let cmConfigData = util.loadCofigComponents(comps[key].config, key);
@@ -69,37 +70,30 @@ Object.keys(comps).forEach(function(key) {
 //=====================================//
 
 //=========== board manager ===========//
-//var boards = bm.listBoard();
-const boardInfo = bm.loadBoardManagerConfig();
-const boardInfoComponent = util.loadCofigComponents(boardInfo, "board");
+var boards = bm.listBoard();
+var boardInfo = bm.loadBoardManagerConfig();
+var boardInfoComponent = util.loadCofigComponents(boardInfo, "board");
 // assign data to $global
 componentAllData.data["board"] = boardInfoComponent.data;
 componentAllData.persistence["board"] = boardInfoComponent.persistence;
 // load packages
-const boardPackage = bm.packages(boardInfoComponent.data.board);
+var boardPackage = bm.packages(boardInfoComponent.data.board);
 
 // assign package to board
 componentAllData.data["board"]["package"] = {};
 Object.keys(boardPackage).forEach(packageName => {
   componentAllData.data.board.package[packageName] = {};
   let boardPackageData = util.loadCofigComponents(
-      boardPackage[packageName].config,
-      "board.package." + packageName,
-  );
+      boardPackage[packageName].config, "board.package." + packageName);
   componentAllData.data.board.package[packageName] = boardPackageData.data;
-  componentAllData.persistence["board.package." + packageName] =
-      boardPackageData.persistence;
+  componentAllData.persistence["board.package." +
+  packageName] = boardPackageData.persistence;
 });
 
-addWatcher(
-    "board.board",
-    function(val) {
-      //listen board name change we need to reload everything
-      console.log("board changed to : " + val);
-      localStorage["board.board"] = JSON.stringify(val);
-    },
-    false,
-);
+addWatcher("board.board", function(val) { //listen board name change we need to reload everything
+  console.log("board changed to : " + val);
+  localStorage["board.board"] = JSON.stringify(val);
+}, false);
 
 //console.log(process.platform);
 //console.log(util.rootDir);
@@ -109,7 +103,7 @@ addWatcher(
 //=====================================//
 
 //============= ui manager ============//
-const uiComponentData = util.loadCofigComponents(ui, "ui");
+var uiComponentData = util.loadCofigComponents(ui, "ui");
 componentAllData.data["ui"] = uiComponentData.data;
 componentAllData.persistence["ui"] = uiComponentData.persistence;
 //=====================================//
@@ -117,13 +111,9 @@ componentAllData.persistence["ui"] = uiComponentData.persistence;
 //---- persistence data watcher ----//
 Object.keys(componentAllData.persistence).forEach(function(key) {
   componentAllData.persistence[key].forEach(function(pkey) {
-    addWatcher(
-        key + "." + pkey,
-        function(val) {
-          localStorage[key + "." + pkey] = JSON.stringify(val);
-        },
-        true,
-    );
+    addWatcher(key + "." + pkey, function(val) {
+      localStorage[key + "." + pkey] = JSON.stringify(val);
+    }, true);
   });
 });
 console.log("======> $global data <=====");
@@ -136,7 +126,7 @@ Vue.prototype.$global = new Vue({
                                   watch: watcher,
                                 });
 //---- setup $engine ----//
-const engineData = {
+var engineData = {
   util: util,
   compiler: compiler,
   componentManager: cm,
