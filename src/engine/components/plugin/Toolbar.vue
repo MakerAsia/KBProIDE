@@ -116,8 +116,8 @@
                                         class="list-title"
                                     >
                                         <v-list-tile-avatar size="60px">
-                                            <v-img contain v-if="data.image.startsWith('http') === true" class="board-image" :src="data.image"/>
-                                            <v-img contain v-else class="board-image" :src="`${data.git}/raw/master/${data.image}`"/>
+                                            <v-img contain v-if="data.image.startsWith('http') === true" :src="data.image"/>
+                                            <v-img contain v-else :src="`${data.git}/raw/master/${data.image}`"/>
                                         </v-list-tile-avatar>
                                         <v-list-tile-content class="ml-2">
                                             <v-list-tile-title>
@@ -199,10 +199,10 @@ export default {
     },
     methods:{
         getPluginByName(name){
-            return this.localPlugin.find(obj => { return obj.category.name == name});
+            return this.localPlugin.find(obj => { return obj.category.name === name});
         },
         getOnlinePluginByName(name){
-            return this.onlinePlugin.find(obj=>{ return obj.name == name});
+            return this.onlinePlugin.find(obj=>{ return obj.name === name});
         },
         openLink(url){
             shell.openExternal(url);
@@ -223,7 +223,7 @@ export default {
                 this.onlinePluginPage = res.end;
                 let filtered = [];
                 res.plugins.forEach(obj => {
-                    let f = mother.localPlugin.find(elm => elm.category.name == obj.name);
+                    let f = mother.localPlugin.find(elm => elm.category.name === obj.name);
                     if(f){
                         if(obj.version > f.category.version){
                             f.status = 'UPDATABLE';
@@ -416,7 +416,7 @@ export default {
 </script>
 <style>
 .list-title {
-    background-color: white !important;    
+    background-color: white !important;
 }
 .v-list--three-line .v-list__tile__avatar {
     margin-top: unset !important;
@@ -438,79 +438,5 @@ export default {
 .search-board {
     width: 40px;
     margin-bottom: -10px !important;
-}
-.v-expansion-panel{
-    box-shadow: unset !important;
-}
-.v-expansion-panel__header{
-    padding-top:0px !important;
-    padding-bottom: 0px !important;
-    padding-left: 0px !important;
-    min-height: unset !important;
-}
-.board-desc-text{
-    cursor: pointer;
-    max-height: 42px;
-    min-height: 42px;
-    transition: max-height 0.2s ease-out;
-    overflow: hidden;
-    padding-right : 25px;
-}
-.board-desc-text-more{
-    transition: max-height 0.5s ease-in;
-    max-height: 200px;
-}
-.board-desc-text-more > .board-desc-more{
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-}
-.board-desc-more{
-    position: absolute;
-    bottom: 80px;
-    right: 15px;    
-    overflow: hidden;
-    transition-duration: 0.8s;
-    transition-property: transform;
-    pointer-events:none;
-}
-.board-desc-icon{
-    margin-left: 5px;
-}
-.board-image{
-    display: block;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 0;
-    height: 150px;
-}
-.selected-board-icon{
-    top: 0;
-    width: 130px;
-    height: 130px;
-    padding-top: 0px;
-    padding-right: 0px;
-    right: 0;
-    position: absolute;
-}
-.corner-select{
-    border-top :130px solid rgba(0,0,0,0.6);
-    border-left : 130px solid transparent;
-    height : 0px;
-    width: 0px;
-    position: absolute;
-}
-.corner-icon{
-    position: absolute;
-    right: 5px;
-    top : 5px;
-    z-index: 1;
-    text-shadow: 1px 1px 5px #000;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 </style>

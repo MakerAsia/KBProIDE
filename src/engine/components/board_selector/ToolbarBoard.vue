@@ -486,15 +486,7 @@ export default {
     width: 40px;
     margin-bottom: -10px !important;
 }
-.v-expansion-panel{
-    box-shadow: unset !important;
-}
-.v-expansion-panel__header{
-    padding-top:0px !important;
-    padding-bottom: 0px !important;
-    padding-left: 0px !important;
-    min-height: unset !important;
-}
+
 .board-desc-text{
     cursor: pointer;
     max-height: 42px;
