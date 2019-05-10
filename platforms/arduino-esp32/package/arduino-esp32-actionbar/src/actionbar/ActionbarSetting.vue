@@ -4,11 +4,11 @@
             <v-btn color="primary darken-2" slot="activator" icon @click="settingDialog = true">
             <v-icon dark>fa-cogs</v-icon>
             </v-btn>
-            
+
             <span>Setup board</span>
         </v-tooltip>
-        
-        <v-dialog v-model="settingDialog" max-width="500px">            
+
+        <v-dialog v-model="settingDialog" max-width="500px">
             <v-card>
                 <v-card-title>
                     <span class="headline">Setup board</span>
@@ -32,7 +32,7 @@
                                         label="Serial upload baudrate"
                                     ></v-combobox>
                                 </div>
-                            </v-flex>                          
+                            </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -53,7 +53,7 @@ export default{
         return {
             comports: [],
             baudrates : [115200,256000,230400,512000,921600],
-            baudrate : 921600,            
+            baudrate : 921600,
             showPassword : false,
             settingDialog: false,
         }
@@ -65,7 +65,7 @@ export default{
         listPort(){
             SerialPort.list().then((ports)=>{
                 if(ports.length > 0){
-                    this.comports = ports.map(obj=>obj.comName); 
+                    this.comports = ports.map(obj=>obj.comName);
                     /*comName : "COM5"
                     locationId : undefined
                     manufacturer : "FTDI"
@@ -74,7 +74,7 @@ export default{
                     serialNumber : "DM01USZ0"
                     vendorId :"0403"*/
                     //this.comport = this.comports[0];
-                    this.$global.board.package['arduino-esp32-actionbar'].comport = this.comports[0]; 
+                    this.$global.board.package['arduino-esp32-actionbar'].comport = this.comports[0];
                 }
             }).catch((err)=>{
                 console.log('Error on list port');
