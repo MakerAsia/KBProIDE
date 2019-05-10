@@ -22,3 +22,4 @@ boards/kidbright/build/
 #Electron-builder output
 /dist_electron
 dist
+boards/kbpro/build
