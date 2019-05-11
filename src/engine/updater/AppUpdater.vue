@@ -7,7 +7,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 300px;">
-            <template v-if="updateStatus == 'UPDATING'">
+            <template v-if="updateStatus === 'UPDATING'">
               <div class="text-xs-center mt-3">
               <v-progress-circular
                 :rotate="360"
@@ -24,7 +24,7 @@
               <span>{{updateText}}</span>
               </div>
             </template>
-            <template v-else-if="updateStatus == 'ERROR'">
+            <template v-else-if="updateStatus === 'ERROR'">
               <div class="text-xs-center mt-3">
                 <v-icon :size="200" color="red">fa-exclamation-triangle</v-icon>
               </div> 
@@ -33,7 +33,7 @@
               <p v-html="update.info"></p>
             </template>
           </v-card-text>
-          <v-card-actions v-if="updateStatus != 'UPDATING'">
+          <v-card-actions v-if="updateStatus !== 'UPDATING'">
             <v-spacer></v-spacer>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -94,9 +94,16 @@ export default {
         },
         checkUpdate(showNotification = false,forceShowUpdate = false){
             this.$db.collection('apps').get().then(appData =>{    
-                if(appData.size == 1){
+                if(appData.size === 1){
                     let data = appData.docs[0].data();
                     this.update = data;
+                    if(this.update.type === "platform"){
+
+                    }else if(this.update.type === "app"){
+
+                    }else if(this.update.type === "board"){
+
+                    }
                     //this.updateDialog = true;
                     EAU.init({
                         'server': false, // Where to check. true: server side, false: client side, default: true.
@@ -104,7 +111,7 @@ export default {
                     });
                     EAU.process(data,function (error, last, body) {
                         if(!error){
-                            if(mother.$global.setting.ignoreUpdateVersion == last && forceShowUpdate == false){
+                            if(mother.$global.setting.ignoreUpdateVersion === last && forceShowUpdate === false){
                                 console.log('User ignored update popup');
                                 return false;
                             }

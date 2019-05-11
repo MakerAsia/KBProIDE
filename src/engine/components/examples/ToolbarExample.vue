@@ -11,15 +11,6 @@
                 <v-card-title>
                     <span class="headline">Examples & Tutorials</span>
                     <v-spacer class="hidden-xs-only"></v-spacer>
-                    <v-text-field
-                            prepend-icon="search"
-                            label="example name"
-                            class="ma-0 pa-0 search-board"
-                            single-line
-                            clearable
-                            hide-details
-                            :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
-                            v-model="searchText"></v-text-field>
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar>
