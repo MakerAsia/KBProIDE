@@ -125,20 +125,20 @@
     methods: {
       run() { //find port and mac
         console.log("---> step 1 <---");
-        this.stepResult["1"].msg = "Finding board";
         comport = G.board.package["arduino-esp32-actionbar"].comport;
+        this.stepResult["1"].msg = `Finding board using ${comport}`;
         if (!comport) {
           console.log("------ process error ------");
-          this.stepResult["1"].msg = "Cannot find COMPORT : " + comport;
+          this.stepResult["1"].msg = `Cannot find COMPORT : ${comport}`;
           this.stepResult["1"].result = false;
           this.failed = true;
           return;
         }
         boardCompiler.readMac(comport).then(boardMac => {
-          this.stepResult["1"].msg += " MAC " + boardMac.mac;
+          this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
           boardName = mac.replace(/:/g, "-");
-          console.log("[STEP 1] got it boardName = " + boardName + " mac = " + mac);
+          console.log(`[STEP 1] got it boardName = ${boardName} mac = ${mac}`);
           this.compileStep = 2;
           console.log("---> step 2 <---");
 

@@ -18,16 +18,16 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex xs12>
-                                <v-subheader class="pa-0 mb-2">[X] Board setting</v-subheader>
+                                <v-subheader class="pa-0 mb-2">Board setting</v-subheader>
                                 <div class="d-flex">
                                     <v-combobox
                                             class="mr-3"
-                                            v-model="$global.board.package['arduino-esp32-actionbar'].comport"
+                                            v-model="currentPort"
                                             :items="comports"
                                             label="Select COM port"
                                     ></v-combobox>
                                     <v-combobox
-                                            v-model="$global.board.package['arduino-esp32-actionbar'].baudrate"
+                                            v-model="baudrate"
                                             :items="baudrates"
                                             label="Serial upload baudrate"
                                     ></v-combobox>
@@ -52,8 +52,9 @@
     data() {
       return {
         comports: [],
+        currentPort: this.$global.board.package["arduino-esp32-actionbar"].comport,
         baudrates: [115200, 256000, 230400, 512000, 921600],
-        baudrate: 921600,
+        baudrate: this.$global.board.package["arduino-esp32-actionbar"].baudrate,
         showPassword: false,
         settingDialog: false,
       };
@@ -65,7 +66,6 @@
       listPort() {
         SerialPort.list().then((ports) => {
           if (ports.length > 0) {
-            console.log(ports);
             const excludePorts = [
               //"/dev/tty.Bluetooth-Incoming-Port",
             ];
@@ -87,10 +87,18 @@
       },
     },
     watch: {
-      settingDialog: function(val) {
-        if (val) {//on opening
+      settingDialog: function(port) {
+        if (port) {//on opening
           this.listPort();
         }
+      },
+      currentPort: function(port) {
+        console.log(`current Port changed. to ${port}`);
+        this.$global.board.package["arduino-esp32-actionbar"].comport = port;
+      },
+      baudrate: function(rate) {
+        console.log(`current Port changed. to ${port}`);
+        this.$global.board.package["arduino-esp32-actionbar"].baudrate = rate;
       },
     },
   };
