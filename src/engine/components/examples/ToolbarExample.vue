@@ -89,7 +89,8 @@
                                                                     v-if="example.files.find(obj=>obj.endsWith('.bly'))"
                                                                     small
                                                                     color="primary"
-                                                                    @click="openBlock(example.files.find(obj=>obj.endsWith('.bly')))">
+                                                                    @click.stop=""
+                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
                                                                 <v-icon>fa-puzzle-piece</v-icon>
                                                                 &nbsp;&nbsp;Open Block
                                                             </v-btn>
@@ -97,7 +98,8 @@
                                                                     v-if="example.files.find(obj=>obj.endsWith('.ino'))"
                                                                     small
                                                                     color="primary"
-                                                                    @click="openCode(example.files.find(obj=>obj.endsWith('.ino')))">
+                                                                    @click.stop=""
+                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
                                                                 <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
                                                             </v-btn>
                                                         </v-flex>
@@ -131,9 +133,11 @@
 
 <script>
   import VueMarkdown from "vue-markdown";
+  import {remote} from "electron";
 
   let mother = null;
   const fs = require("fs");
+  const path = require("path");
   export default {
     name: "example-dialog",
     components: {
@@ -148,7 +152,6 @@
     },
     created() {
       mother = this;
-      //console.log(this.$global.plugin.pluginInfo.categories);
     },
     methods: {
       getMarkdown(files) {
@@ -166,30 +169,50 @@
       },
       prepareTags() {
         let markdowns = document.getElementsByClassName("vue-markdown");
-        for(let inx = 0; inx < markdowns.length; inx++){
-          //console.log(inx);
+        for (let inx = 0; inx < markdowns.length; inx++) {
           let markdownSection = markdowns.item(inx);
           let aTags = markdownSection.getElementsByTagName("a");
-          if(aTags && aTags.length > 0){
+          if (aTags && aTags.length > 0) {
             for (let i = 0; i < aTags.length; i++) {
-              //console.log(aTags.item(i).href);
               let originalHref = aTags.item(i).href.slice(0);
-              if(originalHref.indexOf("#") < 0) {
-                console.log(originalHref);
+              if (originalHref.indexOf("#") < 0) {
+                //console.log(originalHref);
                 aTags[i].setAttribute("onclick", "require('electron').shell.openExternal('" + originalHref + "')");
                 aTags[i].href = "#";
               }
             }
           }
-          /*for (let i = 0; i < aTags.length; i++) {
-            let originalHref = aTags[i].href.valueOf();
-            console.log(originalHref);
-            aTags[i].setAttribute("onclick", "require('electron').shell.openExternal('" + originalHref + "')");
-            //aTags[i].href = "#";
-          }*/
         }
         return false;
-      }
+      },
+      openBlock(file) {
+        let win = new remote.BrowserWindow({
+                                             width: 800,
+                                             height: 600,
+                                             icon: path.join(__static, "icon.png"),
+                                             webPreferences: { //TODO check here!
+                                               webSecurity: false,
+                                             },
+                                           });
+        win.on("close", function() { win = null; });
+        //"http://localhost:8080/#/editor?persistance=false&mode=1&file=file
+        win.loadURL(`${document.location.href}?persistence=false&mode=1&file=${file}`);
+        win.show();
+      },
+      openCode(file) {
+        let win = new remote.BrowserWindow({
+                                             width: 800,
+                                             height: 600,
+                                             icon: path.join(__static, "icon.png"),
+                                             webPreferences: { //TODO check here!
+                                               webSecurity: false,
+                                             },
+                                           });
+        win.on("close", function() { win = null; });
+        //"http://localhost:8080/#/editor?persistance=false&mode=3&file=file
+        win.loadURL(`${document.location.href}?persistence=false&mode=3&file=${file}`);
+        win.show();
+      },
     },
     watch: {
       exapleDialog: function(value) {

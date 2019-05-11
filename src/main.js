@@ -16,6 +16,9 @@ import util from "@/engine/utils";
 
 import SmoothScrollbar from "vue-smooth-scrollbar";
 
+const fs = require("fs");
+
+
 Vue.use(SmoothScrollbar);
 //---- firebase database ----//
 //import firebase from 'firebase';
@@ -41,9 +44,14 @@ var componentAllData = {
 };
 var watcher = {};
 var watcherHandler = {};
+
 //--------------------------------------//
 
-var addWatcher = function(name, ghandler, deep) {
+let addWatcher = function(name, ghandler, deep) {
+  if(global.config.persistence === "false"){
+    console.log("persistence disabled");
+    return;
+  }
   if (!(name in watcherHandler)) { // new handler
     watcherHandler[name] = [];
   }
@@ -58,6 +66,26 @@ var addWatcher = function(name, ghandler, deep) {
   };
 };
 
+let parseConfig = function()
+{
+  let params = global.location.hash && global.location.hash.split('?');
+  let res = {};
+  if(params && params.length === 2){
+    let paramsString = params[1].split("&");
+    for (let i = 0; i < paramsString.length; ++i)
+    {
+      let p=paramsString[i].split('=', 2);
+      if (p.length === 1){
+        res[p[0]] = "";
+      }else{
+        res[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+      }
+    }
+  }
+  return res;
+};
+
+global.config = parseConfig();
 //========= component  manager =========//
 var comps = cm.listComponent();
 Object.keys(comps).forEach(function(key) {
@@ -125,6 +153,20 @@ Vue.prototype.$global = new Vue({
                                   data: componentAllData.data,
                                   watch: watcher,
                                 });
+
+//=========== load form config ==============//
+if(global.config.mode){
+  Vue.prototype.$global.editor.mode = parseInt(global.config.mode);
+}
+if(global.config.file && fs.existsSync(global.config.file)) {
+ let targetFile = global.config.file;
+  if (targetFile.endsWith(".bly")) {
+    let contentFile = fs.readFileSync(targetFile, "utf8");
+    Vue.prototype.$global.editor.blockCode = util.b64DecodeUnicode(contentFile);
+  } else if (global.config.file.endsWith(".ino")) {
+    Vue.prototype.$global.editor.sourceCode = fs.readFileSync(targetFile,'utf8');
+  }
+}
 //---- setup $engine ----//
 var engineData = {
   util: util,

@@ -1798,3 +1798,123 @@ AppPath: D:\KBPro\KBProIDE\dist_electron/
 AppPathFolder: D:\KBPro\KBProIDE\dist_electron
 0.2.0
 Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
+AppPath: D:\KBPro\KBProIDE\dist_electron/
+AppPathFolder: D:\KBPro\KBProIDE\dist_electron
+0.2.0
+Update available: 0.1.9
