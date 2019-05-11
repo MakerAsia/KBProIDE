@@ -91,6 +91,7 @@ function compile(rawCode, boardName, config, cb) {
       board_name: boardName,
       app_dir: app_dir,
       process_dir: boardDirectory,
+      cb,
     };
 
     inc_src.push(`${app_dir}/user_app.cpp`);

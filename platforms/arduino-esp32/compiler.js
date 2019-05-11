@@ -42,6 +42,7 @@ const setConfig = (context) => {
   G.board_name = context.board_name;   //require boardname
   G.app_dir = context.app_dir;         //require app_dir
   G.process_dir = context.process_dir; //require working dir
+  G.cb = context.cb || function() { };
 
   if (!G.cpp_options) {
     G.cpp_options = [];
@@ -70,6 +71,8 @@ const compileFiles = function(sources, boardCppOptions, boardcflags,
     let cppOptions = G.cpp_options.join(" ") + boardCppOptions.join(" ");
     let inc_switch = plugins_includes_switch.map(obj => `-I"${obj}"`).join(" ");
 
+    //G.cb("callling compileFiles.");
+
     sources.forEach(async (file, idx, arr) => {
       let filename = getName(file);
       let fn_obj = `${G.app_dir}/${filename}.o`;
@@ -79,16 +82,19 @@ const compileFiles = function(sources, boardCppOptions, boardcflags,
         const {stdout, stderr} = await execPromise(ospath(cmd),
                                                    {cwd: G.process_dir});
         if (!stderr) {
-          console.log(`[x] compiling... ${path.basename(file)} ok.`);
+          console.log(`compiling... ${path.basename(file)} ok.`);
+          G.cb(`compiling... ${path.basename(file)} ok.`);
           // console.log(`${stdout}`);
         } else {
           //reject(stderr);
           console.log(
-              `[x] compiling... ${path.basename(file)} ok. (with warnings)`);
+              `compiling... ${path.basename(file)} ok. (with warnings)`);
+          G.cb(`compiling... ${path.basename(file)} ok. (with warnings)`);
           // console.log(`${stderr}`);
         }
       } catch (e) {
         console.log(`compiling... ${file} failed. with ${e}`);
+        G.cb(`compiling... ${file} failed. with ${e}`);
         reject(`compiling... ${file} failed.`);
       }
       if (idx === arr.length - 1) {
@@ -99,7 +105,8 @@ const compileFiles = function(sources, boardCppOptions, boardcflags,
 };
 
 function linkObject(ldflags, extarnal_libflags) {
-  log.i(`linking... ${G.ELF_FILE}`);
+  console.log(`linking... ${G.ELF_FILE}`);
+  G.cb(`linking... ${G.ELF_FILE}`);
   let flags = G.ldflags.concat(ldflags);
   let libflags = (extarnal_libflags) ? G.ldlibflag.concat(extarnal_libflags).
   join(" ") : G.ldlibflag.join(" ");

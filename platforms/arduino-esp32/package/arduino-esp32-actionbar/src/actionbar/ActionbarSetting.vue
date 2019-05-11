@@ -68,7 +68,7 @@
         SerialPort.list().then((ports) => {
           if (ports.length > 0) {
             const excludePorts = [
-              //"/dev/tty.Bluetooth-Incoming-Port",
+              "/dev/tty.Bluetooth-Incoming-Port",
             ];
             this.comports = ports.map(obj => obj.comName);
             this.comports = this.comports.filter(port => !excludePorts.includes(port));

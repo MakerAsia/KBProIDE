@@ -145,7 +145,9 @@
             sta_password: this.$global.board.package["kidbright-actionbar"].wifi_password,
             enable_iot: this.$global.board.package["kidbright-actionbar"].enable_iot,
           };
-          return boardCompiler.compile(rawCode, boardName, config, null);
+          return boardCompiler.compile(rawCode, boardName, config, () => {
+            console.log("boardCompiler cb.");
+          });
         }).then(() => {
           this.stepResult["2"].msg += "done!";
           this.compileStep = 3;

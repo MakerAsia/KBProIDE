@@ -85,7 +85,7 @@
 <script>
   const engine = Vue.prototype.$engine;
   const G = Vue.prototype.$global;
-  var path = `${engine.util.boardDir}/${G.board.board}/compiler`;
+  var path = `${engine.util.boardDir}/${G.board.board}/compiler.js`;
   var boardCompiler = engine.util.requireFunc(path);
 
   var comport = "";
@@ -158,9 +158,12 @@
             board_mac_addr: mac,
             isSourceCode: isSourceCode,
           };
-          return boardCompiler.compile(rawCode, boardName, config, null);
+          let compileCb = (status) => {
+            this.stepResult["2"].msg = status;
+          };
+          return boardCompiler.compile(rawCode, boardName, config, compileCb);
         }).then(() => {
-          this.stepResult["2"].msg += "done!";
+          this.stepResult["2"].msg = "Compile done!";
           this.compileStep = 3;
           this.stepResult["3"].msg = "Uploading ... ";
           console.log("---> step 3 <---");
