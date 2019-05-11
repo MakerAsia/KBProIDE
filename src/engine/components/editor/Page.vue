@@ -450,8 +450,12 @@ export default {
                     var codegen = util.requireFunc(`${platformDir}/codegen`);
                 }
                 //passing empty string if won't convert
-                var {sourceCode,codeContext} = codegen.generate(convert?this.$global.editor.rawCode : ""); 
-                this.$global.editor.sourceCode = sourceCode;
+                var {sourceCode,codeContext} = codegen.generate(convert?this.$global.editor.rawCode : "");
+                console.log("sssssssssssssssssssssssssss");
+                console.log(global.config);
+                if(global.config.mode !== 3){
+                  this.$global.editor.sourceCode = sourceCode;
+                }
             }
             if('cm' in this.$refs){
                 if(this.$refs.cm != undefined){ //enable editing code

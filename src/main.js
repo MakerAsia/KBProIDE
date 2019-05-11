@@ -156,7 +156,8 @@ Vue.prototype.$global = new Vue({
 
 //=========== load form config ==============//
 if(global.config.mode){
-  Vue.prototype.$global.editor.mode = parseInt(global.config.mode);
+  global.config.mode = parseInt(global.config.mode);
+  Vue.prototype.$global.editor.mode = global.config.mode;
 }
 if(global.config.file && fs.existsSync(global.config.file)) {
  let targetFile = global.config.file;
