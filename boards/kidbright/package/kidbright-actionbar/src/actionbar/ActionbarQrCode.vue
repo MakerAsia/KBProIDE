@@ -40,7 +40,6 @@ const G = Vue.prototype.$global;
 var path = `${engine.util.boardDir}/${G.board.board}/compiler`;
 var boardCompiler = engine.util.requireFunc(path);
 var comport = '';
-
 export default{
     components: {
         VueQRCodeComponent

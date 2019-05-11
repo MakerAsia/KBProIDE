@@ -215,7 +215,7 @@
       },
     },
     watch: {
-      exapleDialog: function(value) {
+      exampleDialog: function(value) {
         if (value) {
           this.pluginInfo = this.$global.plugin.pluginInfo.categories;
         }
