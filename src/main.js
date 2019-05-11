@@ -167,6 +167,9 @@ if(global.config.file && fs.existsSync(global.config.file)) {
     Vue.prototype.$global.editor.sourceCode = fs.readFileSync(targetFile,'utf8');
   }
 }
+if(global.config.persistence === "false"){
+  document.title += " << Example Mode :: this mode will not save persistence data >>"
+}
 //---- setup $engine ----//
 var engineData = {
   util: util,
