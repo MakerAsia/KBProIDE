@@ -2,9 +2,9 @@
     <div>
         <v-tooltip bottom>
             <v-btn color="primary darken-2" slot="activator" icon @click="compileDialog = true">
-                <v-icon dark>fa-play</v-icon>
+                <v-icon dark>fa-check</v-icon>
             </v-btn>
-            <span>Compile &#x26; Run</span>
+            <span>Just Compile</span>
         </v-tooltip>
 
         <v-widget title="Basic Usage">
@@ -53,16 +53,11 @@
                                         {{stepResult["2"].msg}}
                                     </v-stepper-content>
 
-                                    <v-stepper-step step="3" :complete="compileStep > 3"
-                                                    :rules="[()=>{ return stepResult['3'].result }]">
-                                        Upload program and Run
-                                        <small v-if="compileStep > 3">{{stepResult["3"].msg}}</small>
-                                    </v-stepper-step>
                                     <v-stepper-content step="3" v-if="compileStep >= 3">
                                         {{stepResult["3"].msg}}
                                         <v-progress-linear
                                                 height="2"
-                                                :active="compileStep < 4"
+                                                :active="compileStep < 3"
                                                 :indeterminate="true"
                                         ></v-progress-linear>
                                     </v-stepper-content>
@@ -72,10 +67,10 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" flat @click="rebuild"
-                                   :disabled="compileStep < 4 && failed === false">Compile
+                                   :disabled="compileStep < 2 && failed === false">Compile
                             </v-btn>
                             <v-btn color="blue darken-1" flat @click="compileDialog = false"
-                                   :disabled="compileStep < 4 && failed === false">Close
+                                   :disabled="compileStep < 2 && failed === false">Close
                             </v-btn>
                         </v-card-actions>
                     </v-card>
@@ -164,13 +159,6 @@
           return boardCompiler.compile(rawCode, boardName, config, compileCb);
         }).then(() => {
           this.stepResult["2"].msg += "done!";
-          this.compileStep = 3;
-          this.stepResult["3"].msg = "Uploading ... ";
-          console.log("---> step 3 <---");
-          return boardCompiler.flash(comport);
-        }).then(() => {
-          this.stepResult["3"].msg = "Upload success";
-          this.compileStep = 4;
         }).catch(err => {
           console.log("------ process error ------");
           console.log(err);

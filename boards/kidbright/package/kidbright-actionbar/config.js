@@ -8,6 +8,7 @@ module.exports = {
     image : '',
     version : '1.0.0',
     component : [
+        'actionbar-just-compile',
         'actionbar-build',
         'actionbar-wifi',
         'actionbar-set-clock',
