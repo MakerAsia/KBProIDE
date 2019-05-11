@@ -322,7 +322,7 @@ var boardName = "";
   }
 });
 // CONCATENATED MODULE: ./src/actionbar/ActionbarBuild.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarBuildvue_type_script_lang_js_ = (ActionbarBuildvue_type_script_lang_js_);
+ /* harmony default export */ var actionbar_ActionbarBuildvue_type_script_lang_js_ = (ActionbarBuildvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
@@ -4500,7 +4500,7 @@ var component = normalizeComponent(
   null,
   null,
   null
-
+  
 )
 
 /* harmony default export */ var ActionbarBuild = (component.exports);
@@ -4527,12 +4527,12 @@ var component = normalizeComponent(
 
 installComponents_default()(component, {VBtn: VBtn,VCard: VCard,VCardActions: VCardActions,VCardText: VCardText,VCardTitle: VCardTitle,VContainer: VContainer,VDialog: VDialog,VFadeTransition: VFadeTransition,VFlex: VFlex,VIcon: VIcon_VIcon,VLayout: VLayout,VProgressCircular: VProgressCircular,VProgressLinear: VProgressLinear,VSpacer: VSpacer,VStepper: VStepper,VStepperContent: VStepperContent,VStepperStep: VStepperStep,VTooltip: VTooltip})
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"/Users/nat/KBProIDE/boards/kidbright/package/kidbright-actionbar/node_modules/.cache/vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarQrCode.vue?vue&type=template&id=9cf63a3e&
-var ActionbarQrCodevue_type_template_id_9cf63a3e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":_vm.showQRCode},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-qrcode")])],1),_c('span',[_vm._v("Show QR Code")])],1),_c('v-dialog',{attrs:{"width":"270"},model:{value:(_vm.qrDialog),callback:function ($$v) {_vm.qrDialog=$$v},expression:"qrDialog"}},[_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.success !== true)?_c('v-layout',{staticClass:"pa-3 white",attrs:{"align-center":"","justify-center":"","column":"","fill-height":""}},[_c('v-flex',{attrs:{"sm12":"","text-xs-center":""}},[(_vm.success === 'wait')?_c('v-progress-circular',{attrs:{"size":50,"color":"primary","indeterminate":""}}):_vm._e(),(_vm.success === false)?_c('v-icon',{attrs:{"color":"red","size":"50"}},[_vm._v("warning")]):_vm._e()],1),_c('v-flex',{attrs:{"sm12":"","text-xs-center":"","mt-2":""}},[_vm._v("\n                    "+_vm._s(_vm.text)+"\n                ")])],1):_vm._e()],1),(_vm.success === true)?_c('v-flex',{staticClass:"white",attrs:{"sm12":"","text-xs-center":"","pa-2":""}},[_vm._v("\n            "+_vm._s(_vm.text)+"\n            "),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.success === true)?_c('VueQRCodeComponent',{attrs:{"text":_vm.text}}):_vm._e()],1)],1):_vm._e()],1)],1)}
-var ActionbarQrCodevue_type_template_id_9cf63a3e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"/Users/nat/KBProIDE/boards/kidbright/package/kidbright-actionbar/node_modules/.cache/vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarQrCode.vue?vue&type=template&id=d75a2d6e&
+var ActionbarQrCodevue_type_template_id_d75a2d6e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":_vm.showQRCode},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-qrcode")])],1),_c('span',[_vm._v("Show QR Code")])],1),_c('v-dialog',{attrs:{"width":"270"},model:{value:(_vm.qrDialog),callback:function ($$v) {_vm.qrDialog=$$v},expression:"qrDialog"}},[_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.success !== true)?_c('v-layout',{staticClass:"pa-3 white",attrs:{"align-center":"","justify-center":"","column":"","fill-height":""}},[_c('v-flex',{attrs:{"sm12":"","text-xs-center":""}},[(_vm.success === 'wait')?_c('v-progress-circular',{attrs:{"size":50,"color":"primary","indeterminate":""}}):_vm._e(),(_vm.success === false)?_c('v-icon',{attrs:{"color":"red","size":"50"}},[_vm._v("warning")]):_vm._e()],1),_c('v-flex',{attrs:{"sm12":"","text-xs-center":"","mt-2":""}},[_vm._v("\n                    "+_vm._s(_vm.text)+"\n                ")])],1):_vm._e()],1),(_vm.success === true)?_c('v-flex',{staticClass:"white",attrs:{"sm12":"","text-xs-center":"","pa-2":""}},[_vm._v("\n            "+_vm._s(_vm.text)+"\n            "),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.success === true)?_c('VueQRCodeComponent',{attrs:{"text":_vm.text}}):_vm._e()],1)],1):_vm._e()],1)],1)}
+var ActionbarQrCodevue_type_template_id_d75a2d6e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/actionbar/ActionbarQrCode.vue?vue&type=template&id=9cf63a3e&
+// CONCATENATED MODULE: ./src/actionbar/ActionbarQrCode.vue?vue&type=template&id=d75a2d6e&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"/Users/nat/KBProIDE/boards/kidbright/package/kidbright-actionbar/node_modules/.cache/vue-loader","cacheIdentifier":"4efb129b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vuetify-loader/lib/loader.js!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/vue-qrcode-component/src/QRCode.vue?vue&type=template&id=36f43883&
 var QRCodevue_type_template_id_36f43883_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div')}
@@ -4617,7 +4617,7 @@ var qrcode_default = /*#__PURE__*/__webpack_require__.n(qrcode);
   }
 });
 // CONCATENATED MODULE: ./node_modules/vue-qrcode-component/src/QRCode.vue?vue&type=script&lang=js&
- /* harmony default export */ var src_QRCodevue_type_script_lang_js_ = (QRCodevue_type_script_lang_js_);
+ /* harmony default export */ var src_QRCodevue_type_script_lang_js_ = (QRCodevue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./node_modules/vue-qrcode-component/src/QRCode.vue
 
 
@@ -4634,7 +4634,7 @@ var QRCode_component = normalizeComponent(
   null,
   null,
   null
-
+  
 )
 
 /* harmony default export */ var QRCode = (QRCode_component.exports);
@@ -4711,7 +4711,7 @@ var ActionbarQrCodevue_type_script_lang_js_comport = '';
   }
 });
 // CONCATENATED MODULE: ./src/actionbar/ActionbarQrCode.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarQrCodevue_type_script_lang_js_ = (ActionbarQrCodevue_type_script_lang_js_);
+ /* harmony default export */ var actionbar_ActionbarQrCodevue_type_script_lang_js_ = (ActionbarQrCodevue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./src/actionbar/ActionbarQrCode.vue?vue&type=style&index=0&lang=css&
 var ActionbarQrCodevue_type_style_index_0_lang_css_ = __webpack_require__("W4uW");
 
@@ -4726,13 +4726,13 @@ var ActionbarQrCodevue_type_style_index_0_lang_css_ = __webpack_require__("W4uW"
 
 var ActionbarQrCode_component = normalizeComponent(
   actionbar_ActionbarQrCodevue_type_script_lang_js_,
-  ActionbarQrCodevue_type_template_id_9cf63a3e_render,
-  ActionbarQrCodevue_type_template_id_9cf63a3e_staticRenderFns,
+  ActionbarQrCodevue_type_template_id_d75a2d6e_render,
+  ActionbarQrCodevue_type_template_id_d75a2d6e_staticRenderFns,
   false,
   null,
   null,
   null
-
+  
 )
 
 /* harmony default export */ var ActionbarQrCode = (ActionbarQrCode_component.exports);
@@ -4822,7 +4822,7 @@ var ActionbarWifivue_type_template_id_eaff7e40_staticRenderFns = []
   }
 });
 // CONCATENATED MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarWifivue_type_script_lang_js_ = (ActionbarWifivue_type_script_lang_js_);
+ /* harmony default export */ var actionbar_ActionbarWifivue_type_script_lang_js_ = (ActionbarWifivue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./src/actionbar/ActionbarWifi.vue?vue&type=style&index=0&lang=css&
 var ActionbarWifivue_type_style_index_0_lang_css_ = __webpack_require__("Ol8o");
 
@@ -6690,7 +6690,7 @@ var ActionbarWifi_component = normalizeComponent(
   null,
   null,
   null
-
+  
 )
 
 /* harmony default export */ var ActionbarWifi = (ActionbarWifi_component.exports);
@@ -6804,7 +6804,7 @@ var ActionbarSetClockvue_type_script_lang_js_comport = '';
   }
 });
 // CONCATENATED MODULE: ./src/actionbar/ActionbarSetClock.vue?vue&type=script&lang=js&
- /* harmony default export */ var actionbar_ActionbarSetClockvue_type_script_lang_js_ = (ActionbarSetClockvue_type_script_lang_js_);
+ /* harmony default export */ var actionbar_ActionbarSetClockvue_type_script_lang_js_ = (ActionbarSetClockvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./src/actionbar/ActionbarSetClock.vue?vue&type=style&index=0&lang=css&
 var ActionbarSetClockvue_type_style_index_0_lang_css_ = __webpack_require__("Nsrq");
 
@@ -7442,7 +7442,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarQrCode_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("PlUs");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarQrCode_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarQrCode_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarQrCode_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a);
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_vuetify_loader_lib_loader_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActionbarQrCode_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
