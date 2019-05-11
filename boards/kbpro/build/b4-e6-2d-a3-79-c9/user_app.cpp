@@ -4,69 +4,152 @@
 #include <WiFiClient.h>
 #include <WiFiAP.h>
 #include <WebServer.h>
-#include "SH1106.h"
-#include "BME280.h"
-#include "BMX055.h"
-#include "BH1745NUC.h"
 #include "KBProTime.h"
 #include "BluetoothSerial.h"
-#include "MusicDefinitions.h"
-#include "XT_DAC_Audio.h"
-
-#include "Servo.h"
-
-typedef int Number;
-typedef int Boolean;
 
 using namespace std;
 
-SH1106 display(0x3c, 21, 22);
-BME280 bme280 = BME280();
-BMX055 bmx055;
-BH1745NUC bh1745;
 KBProTime kbprotime;
 BluetoothSerial SerialBT;
-XT_DAC_Audio_Class DacAudio(26,3);
 
-int i;
- Servo Servo1;
+Number ballSpeed;
+Number barYPos;
+Number ballXDir;
+Number ballXPos;
+Number fpsDelay;
+Number ballYDir;
+Number ballYPos;
+Boolean enterGame;
+Number cpuScore;
+Number humanScore;
+ void compute();
+ void render();
+ void reset();
 
+
+void compute(){
+          if (ballXDir) {
+    ballXPos = ballXPos + ballSpeed;
+  } else {
+    ballXPos = ballXPos - ballSpeed;
+  }
+  if (ballYDir) {
+    ballYPos = ballYPos + ballSpeed;
+  } else {
+    ballYPos = ballYPos - ballSpeed;
+  }
+  if (ballXPos >= 125) {
+    if ((ballYPos >= barYPos - 3) && (ballYPos <= barYPos + 20)) {
+      ballXDir = !ballXDir;
+      fpsDelay = fpsDelay - 1;
+    } else {
+      cpuScore = cpuScore + 1;
+      delay(1000);
+      reset();
+    }
+  }
+  if (ballXPos <= 2) {
+    ballXDir = !ballXDir;
+  }
+
+          return;
+
+}
+
+
+void render(){
+          display.clear();
+
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(0,0,String(((String("CPU:")+String(cpuScore)))));
+
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(95,0,String(((String("YOU:")+String(humanScore)))));
+  display.fillCircle(ballXPos,ballYPos,2);
+  display.fillRect(125,barYPos,3,20);
+  display.fillRect(0,ballYPos,3,10);
+  display.display();
+
+          return;
+
+}
+
+
+void reset(){
+          ballSpeed = 1;
+  fpsDelay = 30;
+  ballXPos = 64;
+  ballYPos = 32;
+  ballXDir = 1;
+  ballYDir = 1;
+  barYPos = 32;
+
+          return;
+
+}
 
 
 void setup()
 {
-  pinMode(14,INPUT);
-  pinMode(15,INPUT);
-  display.init();
-  display.flipScreenVertically();
+  
+  
+    pinMode(37,INPUT_PULLUP);
+  pinMode(38,INPUT_PULLUP);
+  pinMode(39,INPUT_PULLUP);
+  enterGame = false;
+  reset();
+  humanScore = 0;
+  cpuScore = 0;
+
+  display.setFont(ArialMT_Plain_24);
+  display.drawString(30,20,String(String("PONG")));
+
   display.setFont(ArialMT_Plain_10);
-  //---SENSOR---//
-  bme280.init();
-  bmx055.begin();
-  bh1745.getAddr_BH1745NUC(BH1745NUC_DEFAULT_ADDRESS);
-  bh1745.Initialize();
-  bh1745.begin();
-  
-  
-    Serial.begin(115200);
-  
-  
-  Servo1.attach(25);
+  display.drawString(28,50,String(String("cheating version")));
+  display.display();
+  delay(3000);
+  while (!enterGame) {
+    if (digitalRead(38) == 0) {
+      enterGame = true;
+    }
+    delay(50);
+  }
+  display.clear();
+
+  display.setFont(ArialMT_Plain_24);
+  display.drawString(20,20,String(String("START")));
+  display.display();
+  delay(500);
+  display.clear();
 
 
 }
 void loop()
 {
-    for (i = 0; i <= 180; i++) {
-    Servo1.write(i);
-    Serial.println(i);
-    delay(20);
+  /**
+ * Describe this function...
+ */
+/**
+ * Describe this function...
+ */
+/**
+ * Describe this function...
+ */
+  if ((!digitalRead(14))) {
+    barYPos = barYPos + 2;
   }
-  for (i = 180; i >= 0; i--) {
-    Servo1.write(i);
-    Serial.println(i);
-    delay(20);
+  if ((!digitalRead(15))) {
+    barYPos = barYPos - 2;
   }
+  if (ballYPos < 0) {
+    ballYDir = !ballYDir;
+  }
+  if (ballYPos > 64) {
+    ballYDir = !ballYDir;
+  }
+  compute();
+  render();
+  delay(fpsDelay);
 
   
 }

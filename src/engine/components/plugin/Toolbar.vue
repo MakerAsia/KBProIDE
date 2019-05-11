@@ -134,19 +134,19 @@
                                             <v-btn
                                                 icon fab small dark
                                                 class="primary"
-                                                :disabled="data.status != 'READY'"
+                                                :disabled="data.status !== 'READY'"
                                                 @click="installOnlinePlugin(data.name)"
                                             >
-                                                <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
+                                                <v-icon v-if="data.status === 'READY'">fa-download</v-icon>
                                                 <v-progress-circular
-                                                    v-else-if="data.status != 'READY'"
+                                                    v-else-if="data.status !== 'READY'"
                                                     indeterminate
                                                     color="primary lighten-4"
                                                 >
                                                 </v-progress-circular>                                
                                             </v-btn>
                                         </v-list-tile-action>
-                                        <p v-if="data.status != 'READY'" class="text-info-status">{{statusText}}</p>                                     
+                                        <p v-if="data.status !== 'READY'" class="text-info-status">{{statusText}}</p>
                                     </v-list-tile>
                                     <v-divider :key="index" inset></v-divider>
                                 </template>
@@ -156,7 +156,7 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="$global.setting.devMode == true" color="blue darken-1" flat @click.native="publishNewPlugin">Publish your plugin</v-btn>
+                    <v-btn v-if="$global.setting.devMode === true" color="blue darken-1" flat @click.native="publishNewPlugin">Publish your plugin</v-btn>
                     <v-btn color="blue darken-1" flat @click.native="pluginDialog = false">Close</v-btn>                    
                 </v-card-actions>
             </v-card>
@@ -257,10 +257,10 @@ export default {
             this.statusProgress = 0;
             pm.installOnlinePlugin(b,progress => {
                 //{process : 'board', status : 'DOWNLOAD', state:state }
-                if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                if(progress.status === 'DOWNLOAD'){ //when download just show to text
                     this.statusText = 
                         `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
-                }else if(progress.status == 'UNZIP'){
+                }else if(progress.status === 'UNZIP'){
                     b.status = 'UNZIP';
                     this.statusText = `Unzip file ${progress.state.percentage}%`;
                     this.statusProgress = progress.state.percentage;
@@ -318,10 +318,10 @@ export default {
                     this.statusProgress = 0;
                     return pm.installOnlinePlugin(p.category,progress => {
                         //{process : 'board', status : 'DOWNLOAD', state:state }
-                        if(progress.status == 'DOWNLOAD'){ //when download just show to text
+                        if(progress.status === 'DOWNLOAD'){ //when download just show to text
                             this.statusText = 
                                 `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed/1000.0/1000.0).toFixed(2)}Mbps`; 
-                        }else if(progress.status == 'UNZIP'){
+                        }else if(progress.status === 'UNZIP'){
                             p.status = 'UNZIP';
                             this.statusText = `Unzip file ${progress.state.percentage}%`;
                             this.statusProgress = progress.state.percentage;
