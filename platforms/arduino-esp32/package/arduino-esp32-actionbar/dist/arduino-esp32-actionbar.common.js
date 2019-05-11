@@ -1274,6 +1274,7 @@ __webpack_require__.r(__webpack_exports__);
 var actionbar_namespaceObject = {};
 __webpack_require__.r(actionbar_namespaceObject);
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarBuild", function() { return ActionbarBuild; });
+__webpack_require__.d(actionbar_namespaceObject, "ActionbarJustCompile", function() { return ActionbarJustCompile; });
 __webpack_require__.d(actionbar_namespaceObject, "ActionbarSetting", function() { return ActionbarSetting; });
 
 // CONCATENATED MODULE: /Users/nat/KBProIDE/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
@@ -5729,6 +5730,257 @@ installComponents_default()(component, {
   VTooltip: VTooltip,
 })
 
+// CONCATENATED MODULE: /Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dcf8a58c-vue-loader-template"}!/Users/nat/KBProIDE/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!/Users/nat/KBProIDE/node_modules/vuetify-loader/lib/loader.js!/Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js??ref--0-0!/Users/nat/KBProIDE/node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarJustCompile.vue?vue&type=template&id=c775f6ec&
+var ActionbarJustCompilevue_type_template_id_c775f6ec_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.compileDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-check")])],1),_c('span',[_vm._v("Just Compile")])],1),_c('v-widget',{attrs:{"title":"Basic Usage"}},[_c('div',{attrs:{"slot":"widget-content"},slot:"widget-content"},[_c('v-dialog',{attrs:{"persistent":"","max-width":"450px"},model:{value:(_vm.compileDialog),callback:function ($$v) {_vm.compileDialog=$$v},expression:"compileDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Compile Program")])]),_c('v-card-text',[_c('v-container',[_c('v-layout',{attrs:{"align-center":"","column":""}},[_c('v-flex',{attrs:{"xs12":""}},[(_vm.compileStep <= 2)?_c('v-progress-circular',{attrs:{"size":80,"width":8,"color":"primary","indeterminate":""}}):_vm._e(),_c('v-fade-transition',{attrs:{"hide-on-leave":true}},[(_vm.compileStep > 2)?_c('v-icon',{attrs:{"color":"green","size":"110"}},[_vm._v("\n                                            check_circle_outline\n                                        ")]):_vm._e()],1)],1)],1)],1),_c('v-flex',{attrs:{"xs12":""}},[_c('v-stepper',{staticClass:"elevation-0 pb-0",attrs:{"vertical":""},model:{value:(_vm.compileStep),callback:function ($$v) {_vm.compileStep=$$v},expression:"compileStep"}},[_c('v-stepper-step',{attrs:{"step":"1","complete":_vm.compileStep > 1,"rules":[function (){ return _vm.stepResult['1'].result }]}},[_vm._v("\n                                    Finding board\n                                    "),(_vm.compileStep > 1)?_c('small',[_vm._v(_vm._s(_vm.stepResult["1"].msg))]):_vm._e()]),(_vm.compileStep >= 1)?_c('v-stepper-content',{attrs:{"step":"1"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult["1"].msg)+"\n                                ")]):_vm._e(),_c('v-stepper-step',{attrs:{"step":"2","complete":_vm.compileStep > 2,"rules":[function (){ return _vm.stepResult['2'].result }]}},[_vm._v("\n                                    Compile the code\n                                    "),(_vm.compileStep > 2)?_c('small',[_vm._v(_vm._s(_vm.stepResult["2"].msg))]):_vm._e()]),(_vm.compileStep >= 2)?_c('v-stepper-content',{attrs:{"step":"2"}},[_vm._v("\n                                    "+_vm._s(_vm.stepResult["2"].msg)+"\n                                ")]):_vm._e()],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":"","disabled":_vm.compileStep < 2 && _vm.failed === false},on:{"click":function($event){_vm.compileDialog = false}}},[_vm._v("Close\n                        ")])],1)],1)],1)],1)])],1)}
+var ActionbarJustCompilevue_type_template_id_c775f6ec_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/actionbar/ActionbarJustCompile.vue?vue&type=template&id=c775f6ec&
+
+// CONCATENATED MODULE: /Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js??ref--12-0!/Users/nat/KBProIDE/node_modules/thread-loader/dist/cjs.js!/Users/nat/KBProIDE/node_modules/babel-loader/lib!/Users/nat/KBProIDE/node_modules/vuetify-loader/lib/loader.js!/Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js??ref--0-0!/Users/nat/KBProIDE/node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarJustCompile.vue?vue&type=script&lang=js&
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var ActionbarJustCompilevue_type_script_lang_js_engine = Vue.prototype.$engine;
+var ActionbarJustCompilevue_type_script_lang_js_G = Vue.prototype.$global;
+var ActionbarJustCompilevue_type_script_lang_js_path = "".concat(ActionbarJustCompilevue_type_script_lang_js_engine.util.boardDir, "/").concat(ActionbarJustCompilevue_type_script_lang_js_G.board.board, "/compiler.js");
+var ActionbarJustCompilevue_type_script_lang_js_boardCompiler = ActionbarJustCompilevue_type_script_lang_js_engine.util.requireFunc(ActionbarJustCompilevue_type_script_lang_js_path);
+var ActionbarJustCompilevue_type_script_lang_js_comport = "";
+var ActionbarJustCompilevue_type_script_lang_js_mac = "";
+var ActionbarJustCompilevue_type_script_lang_js_boardName = "";
+/* harmony default export */ var ActionbarJustCompilevue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      compileStep: 1,
+      compileDialog: false,
+      failed: false,
+      stepResult: {
+        "1": {
+          result: true,
+          msg: ""
+        },
+        "2": {
+          result: true,
+          msg: ""
+        },
+        "3": {
+          result: true,
+          msg: ""
+        }
+      }
+    };
+  },
+  mounted: function mounted() {},
+  beforeDestroy: function beforeDestroy() {},
+  methods: {
+    run: function run() {
+      var _this = this;
+
+      //find port and mac
+      console.log("---> step 1 <---");
+      ActionbarJustCompilevue_type_script_lang_js_comport = ActionbarJustCompilevue_type_script_lang_js_G.board.package["arduino-esp32-actionbar"].comport;
+      this.stepResult["1"].msg = "Finding board using ".concat(ActionbarJustCompilevue_type_script_lang_js_comport);
+
+      if (!ActionbarJustCompilevue_type_script_lang_js_comport) {
+        console.log("------ process error ------");
+        this.stepResult["1"].msg = "Cannot find COMPORT : ".concat(ActionbarJustCompilevue_type_script_lang_js_comport);
+        this.stepResult["1"].result = false;
+        this.failed = true;
+        return;
+      }
+
+      ActionbarJustCompilevue_type_script_lang_js_boardCompiler.readMac(ActionbarJustCompilevue_type_script_lang_js_comport).then(function (boardMac) {
+        _this.stepResult["1"].msg += " MAC ".concat(boardMac.mac);
+        ActionbarJustCompilevue_type_script_lang_js_mac = boardMac.mac;
+        ActionbarJustCompilevue_type_script_lang_js_boardName = ActionbarJustCompilevue_type_script_lang_js_mac.replace(/:/g, "-");
+        console.log("[STEP 1] got it boardName = ".concat(ActionbarJustCompilevue_type_script_lang_js_boardName, " mac = ").concat(ActionbarJustCompilevue_type_script_lang_js_mac));
+        _this.compileStep = 2;
+        console.log("---> step 2 <---");
+        _this.stepResult["2"].msg = "Compile board ... "; //------ just update it prevent unupdated data -------//
+
+        ActionbarJustCompilevue_type_script_lang_js_G.editor.rawCode = ActionbarJustCompilevue_type_script_lang_js_G.editor.Blockly.JavaScript.workspaceToCode(ActionbarJustCompilevue_type_script_lang_js_G.editor.workspace);
+        var xml = ActionbarJustCompilevue_type_script_lang_js_G.editor.Blockly.Xml.domToText(ActionbarJustCompilevue_type_script_lang_js_G.editor.Blockly.Xml.workspaceToDom(ActionbarJustCompilevue_type_script_lang_js_G.editor.Blockly.mainWorkspace));
+        ActionbarJustCompilevue_type_script_lang_js_G.editor.blockCode = xml; //----------------------------------------------------//
+
+        var rawCode = ActionbarJustCompilevue_type_script_lang_js_G.editor.mode >= 3 ? ActionbarJustCompilevue_type_script_lang_js_G.editor.sourceCode : ActionbarJustCompilevue_type_script_lang_js_G.editor.rawCode;
+        var isSourceCode = ActionbarJustCompilevue_type_script_lang_js_G.editor.mode >= 3 ? true : false;
+        var config = {
+          board_mac_addr: ActionbarJustCompilevue_type_script_lang_js_mac,
+          isSourceCode: isSourceCode
+        };
+
+        var compileCb = function compileCb(status) {
+          console.log("compileCb called.");
+          _this.stepResult["2"].msg = status;
+        };
+
+        return ActionbarJustCompilevue_type_script_lang_js_boardCompiler.compile(rawCode, ActionbarJustCompilevue_type_script_lang_js_boardName, config, compileCb);
+      }).then(function () {
+        _this.compileStep = 3;
+        _this.stepResult["2"].msg = "Compile done!";
+        console.log("---> step 3 <---");
+      }).catch(function (err) {
+        console.log("------ process error ------");
+        console.log(err);
+        _this.failed = true;
+
+        if (_this.compileStep == 1) {
+          _this.stepResult["1"].msg = "Cannot find KidBright : " + err;
+          _this.stepResult["1"].result = false;
+        } else if (_this.compileStep == 2) {
+          _this.stepResult["2"].msg = "Compile error : " + err;
+          _this.stepResult["2"].result = false;
+        } else if (_this.compileStep == 3) {
+          _this.stepResult["3"].msg = "Cannot upload program : " + err;
+          _this.stepResult["3"].result = false;
+        }
+      });
+    }
+  },
+  watch: {
+    "compileDialog": function compileDialog(val) {
+      if (val) {
+        //on opening
+        this.compileStep = 1;
+        this.failed = false;
+        this.stepResult["1"].result = true;
+        this.stepResult["2"].result = true;
+        this.stepResult["3"].result = true;
+        this.run();
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/actionbar/ActionbarJustCompile.vue?vue&type=script&lang=js&
+ /* harmony default export */ var actionbar_ActionbarJustCompilevue_type_script_lang_js_ = (ActionbarJustCompilevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/actionbar/ActionbarJustCompile.vue
+
+
+
+
+
+/* normalize component */
+
+var ActionbarJustCompile_component = normalizeComponent(
+  actionbar_ActionbarJustCompilevue_type_script_lang_js_,
+  ActionbarJustCompilevue_type_template_id_c775f6ec_render,
+  ActionbarJustCompilevue_type_template_id_c775f6ec_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ActionbarJustCompile = (ActionbarJustCompile_component.exports);
+
+/* vuetify-loader */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+installComponents_default()(ActionbarJustCompile_component, {
+  VBtn: VBtn,
+  VCard: VCard,
+  VCardActions: VCardActions,
+  VCardText: VCardText,
+  VCardTitle: VCardTitle,
+  VContainer: VContainer,
+  VDialog: VDialog,
+  VFadeTransition: VFadeTransition,
+  VFlex: VFlex,
+  VIcon: VIcon_VIcon,
+  VLayout: VLayout,
+  VProgressCircular: VProgressCircular,
+  VSpacer: VSpacer,
+  VStepper: VStepper,
+  VStepperContent: VStepperContent,
+  VStepperStep: VStepperStep,
+  VTooltip: VTooltip,
+})
+
 // CONCATENATED MODULE: /Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"dcf8a58c-vue-loader-template"}!/Users/nat/KBProIDE/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!/Users/nat/KBProIDE/node_modules/vuetify-loader/lib/loader.js!/Users/nat/KBProIDE/node_modules/cache-loader/dist/cjs.js??ref--0-0!/Users/nat/KBProIDE/node_modules/vue-loader/lib??vue-loader-options!./src/actionbar/ActionbarSetting.vue?vue&type=template&id=7b25e13c&
 var ActionbarSettingvue_type_template_id_7b25e13c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('v-tooltip',{attrs:{"bottom":""}},[_c('v-btn',{attrs:{"slot":"activator","color":"primary darken-2","icon":""},on:{"click":function($event){_vm.settingDialog = true}},slot:"activator"},[_c('v-icon',{attrs:{"dark":""}},[_vm._v("fa-cogs")])],1),_c('span',[_vm._v("Setup board")])],1),_c('v-dialog',{attrs:{"max-width":"500px"},model:{value:(_vm.settingDialog),callback:function ($$v) {_vm.settingDialog=$$v},expression:"settingDialog"}},[_c('v-card',[_c('v-card-title',[_c('span',{staticClass:"headline"},[_vm._v("Setup board")])]),_c('v-divider'),_c('v-card-text',[_c('v-container',{attrs:{"grid-list-md":""}},[_c('v-layout',{attrs:{"wrap":""}},[_c('v-flex',{attrs:{"xs12":""}},[_c('v-subheader',{staticClass:"pa-0 mb-2"},[_vm._v("Board setting")]),_c('div',{staticClass:"d-flex"},[_c('v-combobox',{staticClass:"mr-3",attrs:{"items":_vm.comports,"label":"Select COM port"},model:{value:(_vm.currentPort),callback:function ($$v) {_vm.currentPort=$$v},expression:"currentPort"}}),_c('v-combobox',{attrs:{"items":_vm.baudrates,"label":"Serial upload baudrate"},model:{value:(_vm.baudrate),callback:function ($$v) {_vm.baudrate=$$v},expression:"baudrate"}})],1)],1)],1)],1)],1),_c('v-card-actions',[_c('v-spacer'),_c('v-btn',{attrs:{"color":"blue darken-1","flat":""},nativeOn:{"click":function($event){_vm.settingDialog = false}}},[_vm._v("Close")])],1)],1)],1)],1)}
 var ActionbarSettingvue_type_template_id_7b25e13c_staticRenderFns = []
@@ -9954,6 +10206,7 @@ installComponents_default()(ActionbarSetting_component, {
 })
 
 // CONCATENATED MODULE: ./src/actionbar/index.js
+
 
 
 // CONCATENATED MODULE: ./src/lib.js
