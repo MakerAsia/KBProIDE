@@ -53,7 +53,7 @@ if [ x$1 != x ] ; then
   prefix=$1
   shift
 else
-  prefix=/builds/idf/crosstool-NG/builds/xtensa-esp32-elf
+  prefix=/Volumes/build/idf/crosstool-NG/builds/xtensa-esp32-elf
 fi
 
 # Allow for alternate isysroot in which to find headers

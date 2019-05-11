@@ -15,7 +15,7 @@
                             color="primary"
                             indeterminate
                         ></v-progress-circular>
-                        <v-icon color="red" size="50" v-if="success === false">warning</v-icon>                    
+                        <v-icon color="red" size="50" v-if="success === false">warning</v-icon>
                     </v-flex>
                     <v-flex sm12 text-xs-center mt-2>
                         {{text}}
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import VueQRCodeComponent from 'vue-qrcode-component' 
+import VueQRCodeComponent from 'vue-qrcode-component'
 
 const engine = Vue.prototype.$engine;
 const G = Vue.prototype.$global;
@@ -50,17 +50,17 @@ export default{
             text : '',
             qrDialog: false,
         }
-    },    
+    },
     methods : {
         showQRCode(){
             this.success = 'wait';
             this.text = 'Generate QR Code'
-            boardCompiler.listPort().then(comp=>{                
-                comport = comp[0];                
+            boardCompiler.listPort().then(comp=>{
+                comport = comp[0];
                 return boardCompiler.readMac(comport);
-            }).then((boardMac)=>{                
+            }).then((boardMac)=>{
                 this.text = boardMac.mac;
-                this.success = true;                
+                this.success = true;
             }).catch(err=>{
                 this.success = false;
                 this.text = "Error : "+err;
