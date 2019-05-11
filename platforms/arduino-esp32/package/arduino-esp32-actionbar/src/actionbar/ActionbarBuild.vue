@@ -143,6 +143,10 @@
           console.log("---> step 2 <---");
 
           this.stepResult["2"].msg = "Compile board ... ";
+          //setInterval(() => {
+          //console.log("running..");
+          //this.stepResult["2"].msg += ".";
+          //}, 100);
           //------ just update it prevent unupdated data -------//
           G.editor.rawCode = G.editor.Blockly.JavaScript.workspaceToCode(G.editor.workspace);
           var xml = G.editor.Blockly.Xml.domToText(G.editor.Blockly.Xml.workspaceToDom(G.editor.Blockly.mainWorkspace));

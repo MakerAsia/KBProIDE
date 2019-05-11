@@ -48,11 +48,11 @@ const setConfig = (context) => {
     G.cflags = G.cflags.map(f => f.replace(/\{platform\}/g,platformDir));
     G.ldflags = G.ldflags.map(f => f.replace(/\{platform\}/g,platformDir));
     G.ldlibflag = G.ldlibflag.map(f => f.replace(/\{platform\}/g,platformDir));
-    
+
     G.COMPILER_AR = `${motherPlatformDir}/${G.toolchain_dir}/bin/xtensa-esp32-elf-ar`
     G.COMPILER_GCC = `${motherPlatformDir}/${G.toolchain_dir}/bin/xtensa-esp32-elf-gcc`
     G.COMPILER_CPP = `${motherPlatformDir}/${G.toolchain_dir}/bin/xtensa-esp32-elf-g++`
-    
+
     G.ELF_FILE = `${G.app_dir}/${G.board_name}.elf`
     G.BIN_FILE = `${G.app_dir}/${G.board_name}.bin`
     G.ARCHIVE_FILE = `${G.app_dir}/libmain.a`
@@ -64,15 +64,15 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
     fs.copyFileSync(`${platformDir}/main.cpp`,`${G.app_dir}/main.cpp`);
     sources.push(`${G.app_dir}/main.cpp`);
     return new Promise((resolve,reject)=>{
-        let cflags = G.cflags.join(" ") + ' ' + boardcflags.join(" ")
+        let cflags = `${G.cflags.join(" ")} ${boardcflags.join(" ")}`
         let cppOptions = G.cpp_options.join(" ") + boardCppOptions.join(" ")
         let inc_switch = plugins_includes_switch.map(obj=>`-I"${obj}"`).join(" ")
 
         sources.forEach(async (file, idx, arr) => {
             let filename = getName(file)
             let fn_obj = `${G.app_dir}/${filename}.o`;
-    
-            let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${inc_switch} -c "${file}" -o "${fn_obj}"`;        
+
+            let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${inc_switch} -c "${file}" -o "${fn_obj}"`;
             try {
                 const {stdout, stderr} = await execPromise(ospath(cmd), {cwd: G.process_dir})
                 if (!stderr) {
@@ -90,14 +90,14 @@ const compileFiles = function (sources, boardCppOptions, boardcflags, plugins_in
             if (idx === arr.length - 1) {
                 resolve();
             }
-        });        
+        });
     });
 }
 
 function linkObject(ldflags,extarnal_libflags) {
     log.i(`linking... ${G.ELF_FILE}`);
     let flags = G.ldflags.concat(ldflags);
-    let libflags = (extarnal_libflags)? G.ldlibflag.concat(extarnal_libflags).join(" ") : G.ldlibflag.join(" ");    
+    let libflags = (extarnal_libflags)? G.ldlibflag.concat(extarnal_libflags).join(" ") : G.ldlibflag.join(" ");
     flags = G.ldflags.join(" ") + ' ' + ldflags.join(" ")
     var cmd = `"${G.COMPILER_GCC}" ${flags} -Wl,--start-group ${libflags} -L"${G.app_dir}" -lmain -lgcov -Wl,--end-group -Wl,-EL -o "${G.ELF_FILE}"`;
     return execPromise(ospath(cmd), {cwd: G.process_dir})

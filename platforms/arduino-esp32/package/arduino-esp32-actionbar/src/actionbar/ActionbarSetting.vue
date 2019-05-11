@@ -52,6 +52,7 @@
     data() {
       return {
         comports: [],
+        isFirstLoad: true,
         currentPort: this.$global.board.package["arduino-esp32-actionbar"].comport,
         baudrates: [115200, 256000, 230400, 512000, 921600],
         baudrate: this.$global.board.package["arduino-esp32-actionbar"].baudrate,
@@ -79,7 +80,9 @@
             serialNumber : "DM01USZ0"
             vendorId :"0403"*/
             //this.comport = this.comports[0];
-            this.$global.board.package["arduino-esp32-actionbar"].comport = this.comports[0];
+            if (this.isFirstLoad) {
+              this.currentPort = this.comports[0];
+            }
           }
         }).catch((err) => {
           console.log("Error on list port");
@@ -90,10 +93,12 @@
       settingDialog: function(port) {
         if (port) {//on opening
           this.listPort();
+          this.isFirstLoad = false;
         }
       },
       currentPort: function(port) {
         console.log(`current Port changed. to ${port}`);
+        //this.$global.board.package["arduino-esp32-actionbar"].comport = this.comports[0];
         this.$global.board.package["arduino-esp32-actionbar"].comport = port;
       },
       baudrate: function(rate) {
