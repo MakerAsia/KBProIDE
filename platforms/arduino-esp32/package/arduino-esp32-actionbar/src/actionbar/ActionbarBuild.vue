@@ -159,6 +159,7 @@
             isSourceCode: isSourceCode,
           };
           let compileCb = (status) => {
+            console.log(`compileCb called.`);
             this.stepResult["2"].msg = status;
           };
           return boardCompiler.compile(rawCode, boardName, config, compileCb);
