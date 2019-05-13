@@ -415,10 +415,7 @@ export default {
             });
             var json = null;
             if((/^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g).test(res)){
-                this.$dialog.notify.info('Please wait...', {
-                            position: 'top-center',
-                            timeout: 3000
-                });
+                this.$dialog.notify.info('Please wait...');
                 request(res + 'raw/master/config.js?random='+util.randomString()) //add randomstring prevent cached response
                 .then( res => {
                     json = eval(res);
@@ -441,32 +438,20 @@ export default {
                     if(res){
                         Vue.prototype.$db.collection("boards").doc(json.name).set(json);
                         if(res){
-                            this.$dialog.notify.success('Added your board success, please refresh again', {
-                                position: 'top-center',
-                                timeout: 3000
-                            });
+                            this.$dialog.notify.success('Added your board success, please refresh again');
                         }
                     }else{
-                        this.$dialog.notify.error('Existing board name or is not newest version', {
-                            position: 'top-center',
-                            timeout: 3000
-                        });
+                        this.$dialog.notify.error('Existing board name or is not newest version');
                         return false;
                     }
                 })
                 .catch(err=>{
                     console.log('request error -----');
                     console.log(err);
-                    this.$dialog.notify.error('Error something went wrong, please check the log', {
-                        position: 'top-center',
-                        timeout: 3000
-                    });
+                    this.$dialog.notify.error('Error something went wrong, please check the log');
                 })
             }else{
-                this.$dialog.notify.error('Github link format error. Please check your link again', {
-                    position: 'top-center',
-                    timeout: 3000
-                });
+                this.$dialog.notify.error('Github link format error. Please check your link again');
             }
         }
     },
@@ -501,15 +486,7 @@ export default {
     width: 40px;
     margin-bottom: -10px !important;
 }
-.v-expansion-panel{
-    box-shadow: unset !important;
-}
-.v-expansion-panel__header{
-    padding-top:0px !important;
-    padding-bottom: 0px !important;
-    padding-left: 0px !important;
-    min-height: unset !important;
-}
+
 .board-desc-text{
     cursor: pointer;
     max-height: 42px;

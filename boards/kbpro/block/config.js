@@ -505,6 +505,9 @@ module.exports = {
             icon : '/static/icons/icons8_serial_tasks_96px.png',
             blocks : [
                 'controls_if',
+                {
+                    xml : '<block type="controls_if"><mutation else="1"></mutation></block>'
+                },
                 'logic_compare',
                 'logic_operation',
                 'logic_negate',

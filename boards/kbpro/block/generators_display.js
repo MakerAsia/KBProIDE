@@ -72,7 +72,7 @@ Blockly.JavaScript['i2c128x64_display_print'] = function(block) {
   var code = 
 `
 display.setFont(${dropdown_font});
-display.drawString(${value_x},${value_y},${value_text});
+display.drawString(${value_x},${value_y},String(${value_text}));
 `;
   return code;
 };

@@ -1,11 +1,11 @@
 export default {
     name : 'setting',
-    index : 0,
+    index : 5,
     description : "no have",
     tooltip : 'Setting',
     persistence:{
         color : '',
-        rightSeperator : 80,
+        rightSeparator : 80,
         devMode : false,
         ignoreUpdateVersion : ''
     },

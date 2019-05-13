@@ -21,3 +21,7 @@ boards/kidbright/build/
 
 #Electron-builder output
 /dist_electron
+dist
+boards/kbpro/build
+dist_electronupdater-log.txt
+build

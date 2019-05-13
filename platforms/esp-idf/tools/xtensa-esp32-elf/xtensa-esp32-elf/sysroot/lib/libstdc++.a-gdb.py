@@ -19,8 +19,8 @@ import gdb
 import os
 import os.path
 
-pythondir = '/builds/idf/crosstool-NG/builds/xtensa-esp32-elf/share/gcc-5.2.0/python'
-libdir = '/builds/idf/crosstool-NG/builds/xtensa-esp32-elf/xtensa-esp32-elf/lib'
+pythondir = '/Volumes/build/idf/crosstool-NG/builds/xtensa-esp32-elf/share/gcc-5.2.0/python'
+libdir = '/Volumes/build/idf/crosstool-NG/builds/xtensa-esp32-elf/xtensa-esp32-elf/lib'
 
 # This file might be loaded when there is no current objfile.  This
 # can happen if the user loads it manually.  In this case we don't

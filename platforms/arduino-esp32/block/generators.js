@@ -4,7 +4,7 @@ if(!Blockly.dbNameType){
     Blockly.dbNameType = {};
 }
 
-Blockly.JavaScript.init = function(workspace) {    
+Blockly.JavaScript.init = function(workspace) {
     Blockly.JavaScript.definitions_ = Object.create(null);
     Blockly.JavaScript.functionNames_ = Object.create(null);
     
@@ -19,15 +19,24 @@ Blockly.JavaScript.init = function(workspace) {
     // Add developer variables (not created or named by the user).
     var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
     for (var i = 0; i < devVarList.length; i++) {
-        defvars.push(Blockly.JavaScript.variableDB_.getName(devVarList[i],
-            Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+		let devVarInfo = Blockly.JavaScript.variableDB_.variableMap_.getVariableById(devVarList[i].getId());
+		if(devVarInfo && !(devVarInfo.type.toLowerCase().startsWith("plugin."))){
+			//if we found plugin variable let ignore them
+			defvars.push(Blockly.JavaScript.variableDB_.getName(devVarList[i],
+				Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+		}
     }
     // Add user variables, but only ones that are being used.
     var variables = Blockly.Variables.allUsedVarModels(workspace);
     for (var i = 0; i < variables.length; i++) {
-        defvars.push(Blockly.JavaScript.variableDB_.getName(variables[i].getId(),
-            Blockly.Variables.NAME_TYPE));
-	}	
+		let devVarInfo = Blockly.JavaScript.variableDB_.variableMap_.getVariableById(variables[i].getId());
+		if(devVarInfo && !(devVarInfo.type.toLowerCase().startsWith("plugin."))){
+			//if we found plugin variable let ignore them
+			defvars.push(Blockly.JavaScript.variableDB_.getName(variables[i].getId(),
+            	Blockly.Variables.NAME_TYPE));
+		}
+        
+	}
     // Declare all of the variables.
     if (defvars.length) {
 		var declareVar = [];
@@ -168,16 +177,8 @@ Blockly.JavaScript['logic_compare'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0';
 	var argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0';
 
-	var code = '';
-	// check string compare
-	if (block.childBlocks_[0].outputConnection.check_[0] == 'String') {
-		code = 'strcmp(' + argument0 + ', ' + argument1 + ') ' + OPERATORS[block.getFieldValue('OP')] + ' 0';
-	}
-	else {
-		// default is numeric
-		code = argument0 + ' ' + operator + ' ' + argument1;
-	}
-
+	var code = argument0 + ' ' + operator + ' ' + argument1;
+	
 	return [code, order];
 };
 
