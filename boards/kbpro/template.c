@@ -13,6 +13,9 @@
 #include "MusicDefinitions.h"
 #include "XT_DAC_Audio.h"
 
+typedef int Number;
+typedef int Boolean;
+
 using namespace std;
 
 SH1106 display(0x3c, 21, 22);
