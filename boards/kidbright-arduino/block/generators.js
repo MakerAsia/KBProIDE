@@ -41,14 +41,14 @@ Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
 Blockly.JavaScript['basic_led16x8_2chars'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
     //var argument0 = Blockly.JavaScript.valueToCode(block);
-	var code = 'matrix.printText(0, 0, ' + argument0 + ');\n';
+	var code = 'matrix.printText(0, 0, String(' + argument0 + '));\n';
 	return code;
 };
 
 Blockly.JavaScript['basic_led16x8_scroll'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
 	//return 'ht16k33.scroll(' + argument0 + ', true);\n';
-	var code = 'matrix.scrollText(' + argument0 + ');\n';
+	var code = 'matrix.scrollText(String(' + argument0 + '));\n';
 	return code;
 };
 
@@ -57,7 +57,7 @@ Blockly.JavaScript['basic_led16x8_scroll_when_ready'] = function(block) {
 
 	//return 'if (ht16k33.idle()) { ht16k33.scroll(' + argument0 + ', true); }\n';
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-	var code = 'matrix.scrollText(' + argument0 + ');\n';
+	var code = 'matrix.scrollText(String(' + argument0 + '));\n';
 	return code;
 };
 
@@ -364,10 +364,12 @@ Blockly.JavaScript['sensor_lm73'] = function(block) {
 };
 
 Blockly.JavaScript['sensor_ldr'] = function(block) {
-	return [
-		'ldr.get()',
-		Blockly.JavaScript.ORDER_ATOMIC
-	];
+	var code = 'map(analogRead(36), 0, 500, 100, 0)\n';
+	return code;
+	// return [
+	// 	'ldr.get()',
+	// 	Blockly.JavaScript.ORDER_ATOMIC
+	// ];
 };
 
 Blockly.JavaScript['sensor_switch1'] = function(block) {

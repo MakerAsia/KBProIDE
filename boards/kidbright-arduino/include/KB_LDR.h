@@ -1,14 +1,16 @@
 #include <Arduino.h>
-#include <Wire.h>
 
-class KB_LM73
+#define LDR_PIN 36
+
+class KB_LDR
 {
  public:
   void begin(void);
-  float readTemp();
+  int getRawLDR();
+  int getLDR();
 
  protected:
-  float temp;
+  int ldr;
 
  private:
 };
