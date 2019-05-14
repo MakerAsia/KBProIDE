@@ -13,11 +13,8 @@
 #include "MusicDefinitions.h"
 #include "XT_DAC_Audio.h"
 
-<<<<<<< HEAD
-=======
 ${EXTINC}
 
->>>>>>> 86ecec75c8d8827cbbfbb1ea8b2e0b77ac425a61
 typedef int Number;
 typedef int Boolean;
 

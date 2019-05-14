@@ -25,32 +25,40 @@ Blockly.JavaScript['basic_led16x8'] = function(block) {
 
 	var str = '';
 	for (var i = 0; i < 16; i++) {
-		str += '\\x' + buf[i].toString(16);;
+		str += '\\x' + buf[i].toString(16);
 	}
 
-	return 'ht16k33.show((uint8_t *)"' + str + '");\n';
+	//return 'ht16k33.show((uint8_t *)"' + str + '");\n';
+	return 'matrix.printText(0, 0, " ");\n';
 };
 
 Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
-	return 'ht16k33.show((uint8_t *)"\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0");\n';
+	var code = 'matrix.printText(0, 0, " ");\n';
+	return code;
+	//return 'ht16k33.show((uint8_t *)"\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0");\n';
 };
 
 Blockly.JavaScript['basic_led16x8_2chars'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-	return 'ht16k33.scroll(' + argument0 + ', false);\n';
+    //var argument0 = Blockly.JavaScript.valueToCode(block);
+	var code = 'matrix.printText(0, 0, ' + argument0 + ');\n';
+	return code;
 };
 
 Blockly.JavaScript['basic_led16x8_scroll'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-
-	return 'ht16k33.scroll(' + argument0 + ', true);\n';
+	//return 'ht16k33.scroll(' + argument0 + ', true);\n';
+	var code = 'matrix.scrollText(' + argument0 + ');\n';
+	return code;
 };
 
 Blockly.JavaScript['basic_led16x8_scroll_when_ready'] = function(block) {
-	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	//var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
 
-	return 'if (ht16k33.idle()) { ht16k33.scroll(' + argument0 + ', true); }\n';
+	//return 'if (ht16k33.idle()) { ht16k33.scroll(' + argument0 + ', true); }\n';
+	var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+	var code = 'matrix.scrollText(' + argument0 + ');\n';
+	return code;
 };
 
 Blockly.JavaScript['basic_delay'] = function(block) {
@@ -347,10 +355,12 @@ Blockly.JavaScript['music_set_tempo'] = function(block) {
 // sensor
 // =============================================================================
 Blockly.JavaScript['sensor_lm73'] = function(block) {
- return [
-  'lm73.get()',
-  Blockly.JavaScript.ORDER_ATOMIC
- ];
+	//var code = 'lm73.readTemp()\n';
+	//return code;
+	return [
+		'lm73.readTemp()',
+		Blockly.JavaScript.ORDER_ATOMIC
+	];
 };
 
 Blockly.JavaScript['sensor_ldr'] = function(block) {
