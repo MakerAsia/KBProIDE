@@ -6,7 +6,7 @@ void KB_LM73::begin(void) {
     Wire1.begin(4, 5);
 }
 
-String KB_LM73::readTemp() {
+float KB_LM73::readTemp() {
     Wire1.beginTransmission(0x4D);
     Wire1.write(0x00);
     Wire1.endTransmission();
@@ -23,5 +23,5 @@ String KB_LM73::readTemp() {
       if (buff[1] & 0b00100000) temp += 0.25;
       if (buff[0] & 0b10000000) temp *= -1.0;
     }
-    return String(temp);
+    return temp;
 }

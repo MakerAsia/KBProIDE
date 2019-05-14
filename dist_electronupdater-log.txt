@@ -942,3 +942,15 @@ AppPath: C:\Users\Asus\Documents\KBProIDE\dist_electron/
 AppPathFolder: C:\Users\Asus\Documents\KBProIDE\dist_electron
 0.2.0
 Update available: 0.1.9
+AppPath: C:\Users\Asus\Documents\KBProIDE\dist_electron/
+AppPathFolder: C:\Users\Asus\Documents\KBProIDE\dist_electron
+0.2.0
+Update available: 1.0.0
+AppPath: C:\Users\Asus\Documents\KBProIDE\dist_electron/
+AppPathFolder: C:\Users\Asus\Documents\KBProIDE\dist_electron
+0.2.0
+Update available: 1.0.0
+AppPath: C:\Users\Asus\Documents\KBProIDE\dist_electron/
+AppPathFolder: C:\Users\Asus\Documents\KBProIDE\dist_electron
+0.2.0
+Update available: 1.0.0
