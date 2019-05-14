@@ -1,0 +1,6 @@
+[submodule "platforms/esp-idf"]
+	path = platforms/esp-idf
+	url = https://github.com/MakerAsia/kbpro-esp-idf-platfrom
+[submodule "platforms/arduino-esp32"]
+	path = platforms/arduino-esp32
+	url = https://github.com/MakerAsia/kbpro-arduino-platfrom
