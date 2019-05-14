@@ -1210,6 +1210,7 @@ Blockly.Blocks["music_get_volume"] = {
 // =============================================================================
 var sensor_colour= Blockly.Msg.SENSOR_HUE ;
 // var sensor_colour="#CAC745";
+
 Blockly.Blocks["sensor_lm73"] = {
 	init: function() {
 		this.appendDummyInput()
