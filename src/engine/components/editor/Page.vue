@@ -451,8 +451,6 @@ export default {
                 }
                 //passing empty string if won't convert
                 var {sourceCode,codeContext} = codegen.generate(convert?this.$global.editor.rawCode : "");
-                console.log("sssssssssssssssssssssssssss");
-                console.log(global.config);
                 if(global.config.mode !== 3){
                   this.$global.editor.sourceCode = sourceCode;
                 }

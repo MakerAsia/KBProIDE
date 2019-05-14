@@ -10,20 +10,20 @@ import unzip from "./unzip";
 
 var baseDir = "";
 console.log("app dirname = " + rootDir);
-if (process.env.NODE_ENV == "development") {
-  if (process.platform == "win32") {
+if (process.env.NODE_ENV === "development") {
+  if (process.platform === "win32") {
     baseDir = rootDir + "/../../../../../..";
-  } else if (process.platform == "darwin") {
+  } else if (process.platform === "darwin") {
     baseDir = rootDir + "/../../../../../../../..";
-  } else if (process.platform == "linux") { //TODO : didnot defined yet
+  } else if (process.platform === "linux") { //TODO : didnot defined yet
     baseDir = rootDir + "/../../../../../../../..";
   }
 } else {
-  if (process.platform == "win32") {
+  if (process.platform === "win32") {
     baseDir = rootDir + "/../..";
-  } else if (process.platform == "darwin") {
+  } else if (process.platform === "darwin") {
     baseDir = rootDir + "/../..";
-  } else if (process.platform == "linux") { //TODO : didnot defined yet
+  } else if (process.platform === "linux") { //TODO : didnot defined yet
     baseDir = rootDir + "/../..";
   }
 }

@@ -300,6 +300,7 @@
       },
       listBoardExample(){
         let boardExampleDir = `${util.boardDir}/${this.$global.board.board_info.name}/examples`;
+        console.log(boardExampleDir);
         return this.listExample(boardExampleDir);
       },
       getMarkdown(files) {
