@@ -124,6 +124,17 @@
               });
             } else if (this.update.type === "platform") {
               Updater.init(this.update);
+              let pinfoFile = `${util.platformDir}/${mother.$global.board.board_info.platform}/config.js`;
+              if(!fs.existsSync(pinfoFile)){
+                return;
+              }
+              let currentPlatformInfo = fs.readFileSync(pinfoFile);
+              if(mother.update.platform !== mother.$global.board.board_info.platform){
+                return;
+              }
+              if(mother.update.version <= currentPlatformInfo.version){
+                return;
+              }
               if (mother.$global.setting.ignorePlatformVersion === mother.update.version && forceShowUpdate === false) {
                 console.log("User ignored this platform update popup");
                 return;
@@ -166,7 +177,8 @@
           });
         } else if (this.update.type === "platform") {
           Updater.progress(mother.progress);
-          Updater.process(util.platformDir).then(() => {
+          let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
+          Updater.process(currentPlatformDir).then(() => {
             console.log("Update platform success");
             mother.updateText = "Reloading in 2 seconds ...";
             setTimeout(() => {

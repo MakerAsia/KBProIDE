@@ -103,10 +103,18 @@ var Updater = {
 
     return new Promise((resolve, reject) => { //download zip
       if (!this.setup.git) { reject("no git found"); }
-      const zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
+      const zipFile = `${os.tmpdir()}/${util.randomString(10)}.zip`;
       const file = fs.createWriteStream(zipFile);
+      let targetUrl = "";
+      if(process.platform === "win32"){
+        targetUrl = `${Updater.setup.zip}-win32.zip`;
+      }else if(process.platform === "darwin"){
+        targetUrl = `${Updater.setup.zip}-darwin.zip`;
+      }else if(process.platform === "linux"){
+        targetUrl = `${Updater.setup.zip}-linux.zip`;
+      }
       progress(
-          request(Updater.setup.zip),
+          request(targetUrl),
           {
             throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms
             delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms
