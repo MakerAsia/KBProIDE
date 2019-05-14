@@ -146,4 +146,4 @@ var Updater = {
   },
 };
 
-module.exports = Updater;
+export default Updater;
