@@ -1,0 +1,174 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="!9~P!X(0r{_FC(A`.Ez%" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">dhtesp_setup</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="i_^Ulry+C^g8N:Qo#:8W">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_variable" id="y[B)@_FT+AEp`uZ?4#2m">
+            <field name="TEXT">DhtSensor1</field>
+            <field name="FIELDNAME">instance</field>
+            <next>
+              <block type="field_static" id="8zP`9[`s,RtFM=pLI^Ic">
+                <field name="TEXT">Setup</field>
+                <next>
+                  <block type="field_dropdown" id="5=4YA~YC~Jojk:*Z3+jU">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">dht_type</field>
+                    <field name="USER0">DHT11</field>
+                    <field name="CPU0">DHTesp::DHT11</field>
+                    <field name="USER1">DHT22</field>
+                    <field name="CPU1">DHTesp::DHT22</field>
+                    <field name="USER2">AM2302</field>
+                    <field name="CPU2">DHTesp::AM2302</field>
+                    <field name="USER3">RHT03</field>
+                    <field name="CPU3">DHTesp::RHT03</field>
+                    <next>
+                      <block type="field_static" id="4|`=K`D[7Hi7k3TE!u{#">
+                        <field name="TEXT">pin</field>
+                        <next>
+                          <block type="field_number" id="m?hKhr-FS6sN]1w-xYbo">
+                            <field name="VALUE">0</field>
+                            <field name="FIELDNAME">pin</field>
+                            <field name="MIN">0</field>
+                            <field name="MAX">50</field>
+                            <field name="PRECISION">0</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="ECMe6*M^g^|?jh47k?n=" deletable="false" movable="false">
+        <field name="TEXT">setup sensor DHT </field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="OFMqq=[1m#FX~cc/c@ar" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="+8P~ha4C.(lPBK|%_U24"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="e{SLrYi1EG{2#7g/dK}l"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=";/Pzr.v^I8{QbMU|s@;x">
+        <mutation colour="#5ba593"></mutation>
+        <field name="HUE">165</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="6B=_n3us!K9%|-%fLrG(" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">dhtesp_read_temp</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="@I(7Bl0P.*:z.X?!-#Oy">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_variable" id="^B{w-)6w.b@xpILPLA.9">
+            <field name="TEXT">DhtSensor1</field>
+            <field name="FIELDNAME">instance</field>
+            <next>
+              <block type="field_static" id="Bd-J|vkLNj,!Z3yG=P@|">
+                <field name="TEXT">read temperature °C</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="/6Crb$#UNW04(d$mv~n3" deletable="false" movable="false">
+        <field name="TEXT">read temperature in Celsius</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="depO{EdXE)1ZK~2uaY~$" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="v=rMp)b@]t%CE=lU1-),"></shadow>
+      <block type="type_group" id="QE3Qtq6sClp0Th-V*Qh:">
+        <mutation types="2"></mutation>
+        <value name="TYPE0">
+          <block type="type_other" id="yf!K*h-U=k4iE;PAj/DT">
+            <field name="TYPE">float</field>
+          </block>
+        </value>
+        <value name="TYPE1">
+          <block type="type_number" id="/^G[@;K.Mpj8yI`2F55C"></block>
+        </value>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="{mEq`6IK@{~,GbhPjc+x">
+        <mutation colour="#5ba593"></mutation>
+        <field name="HUE">165</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="6B=_n3us!K9%|-%fLrG(" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">dhtesp_read_humid</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="@I(7Bl0P.*:z.X?!-#Oy">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_variable" id="^B{w-)6w.b@xpILPLA.9">
+            <field name="TEXT">DhtSensor1</field>
+            <field name="FIELDNAME">instance</field>
+            <next>
+              <block type="field_static" id="Bd-J|vkLNj,!Z3yG=P@|">
+                <field name="TEXT">read humidity %</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="/6Crb$#UNW04(d$mv~n3" deletable="false" movable="false">
+        <field name="TEXT">read humidity in percentage</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="depO{EdXE)1ZK~2uaY~$" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="v=rMp)b@]t%CE=lU1-),"></shadow>
+      <block type="type_group" id="QE3Qtq6sClp0Th-V*Qh:">
+        <mutation types="2"></mutation>
+        <value name="TYPE0">
+          <block type="type_other" id="yf!K*h-U=k4iE;PAj/DT">
+            <field name="TYPE">float</field>
+          </block>
+        </value>
+        <value name="TYPE1">
+          <block type="type_number" id="/^G[@;K.Mpj8yI`2F55C"></block>
+        </value>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="{mEq`6IK@{~,GbhPjc+x">
+        <mutation colour="#5ba593"></mutation>
+        <field name="HUE">165</field>
+      </block>
+    </value>
+  </block></xml>
