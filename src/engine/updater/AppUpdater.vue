@@ -135,15 +135,21 @@
           }
         });
       },
-      ignoreUpdate(type, version) {
-        this.$global.setting.ignoreUpdateVersion = version;
+      ignoreUpdate(type,version) {
+        if(type === "app"){
+          this.$global.setting.ignoreUpdateVersion = version;
+        }else if(type === "platform"){
+          this.$global.setting.ignorePlatformVersion = version;
+        }else if(type === "board"){
+          //not support yet!
+        }
         this.updateDialog = false;
       },
       updateApp() {
         this.updateStatus = "UPDATING";
         this.updateText = "Downloading ... ";
         //======== app update ========//
-        if (this.data.type === "app") {
+        if (this.update.type === "app") {
           EAU.progress(mother.progress);
           EAU.download(function(error) {
             if (error) {
@@ -158,7 +164,7 @@
               electron.remote.app.exit(0);
             }, 2000);
           });
-        } else if (this.data.type === "platform") {
+        } else if (this.update.type === "platform") {
           Updater.progress(mother.progress);
           Updater.process(util.platformDir).then(() => {
             console.log("Update platform success");
