@@ -7,10 +7,10 @@ const path = require("path");
 const request = require("request");
 const progress = require("request-progress");
 
-var localBoardName = "";
-var localPlugins = {};
+let localBoardName = "";
+let localPlugins = {};
 
-var listPlugin = function(dir) {
+let listPlugin = function(dir) {
   var plugins = {};
   let blockFiles = fs.readdirSync(dir);
   if (blockFiles.length > 0) {

@@ -23,7 +23,7 @@ ${plugins_includes_code}
 
 #define KBSERIAL "${kbmac_addr}"
 #define CLIENTID "${kbmac_addr}"
-#define USERNAME "${md5_mac_addr}"
+#define USERNAME "${md5_mac_addr}" //replace with md5(K:your_board_mac_without_colon)
 #define PASSWORD ""
 #define CONFIG_WIFI_SSID "${sta_ssid}"
 #define CONFIG_WIFI_PASSWORD "${sta_password}"

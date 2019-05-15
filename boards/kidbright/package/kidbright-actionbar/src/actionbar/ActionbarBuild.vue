@@ -7,81 +7,77 @@
             <span>Compile &#x26; Run</span>
         </v-tooltip>
 
-        <v-widget title="Basic Usage">
-            <div slot="widget-content">
-                <v-dialog v-model="compileDialog" persistent max-width="450px">
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">Compile &#x26; Run</span>
-                        </v-card-title>
+        <v-dialog v-model="compileDialog" persistent max-width="450px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Compile &#x26; Run</span>
+                </v-card-title>
 
-                        <v-card-text>
-                            <v-container>
-                                <v-layout align-center column>
-                                    <v-flex xs12>
-                                        <v-progress-circular v-if="compileStep <= 3"
-                                                             :size="80"
-                                                             :width="8"
-                                                             color="primary"
-                                                             indeterminate>
-                                        </v-progress-circular>
-                                        <v-fade-transition :hide-on-leave="true">
-                                            <v-icon color="green" size="110" v-if="compileStep > 3">
-                                                check_circle_outline
-                                            </v-icon>
-                                        </v-fade-transition>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
+                <v-card-text>
+                    <v-container>
+                        <v-layout align-center column>
                             <v-flex xs12>
-                                <v-stepper v-model="compileStep" vertical class="elevation-0 pb-0">
-                                    <v-stepper-step step="1" :complete="compileStep > 1"
-                                                    :rules="[()=>{ return stepResult['1'].result }]">
-                                        Find KidBright
-                                        <small v-if="compileStep > 1">{{stepResult["1"].msg}}</small>
-                                    </v-stepper-step>
-                                    <v-stepper-content step="1" v-if="compileStep >= 1">
-                                        {{stepResult["1"].msg}}
-                                    </v-stepper-content>
-
-                                    <v-stepper-step step="2" :complete="compileStep > 2"
-                                                    :rules="[()=>{ return stepResult['2'].result }]">
-                                        Compile the code
-                                        <small v-if="compileStep > 2">{{stepResult["2"].msg}}</small>
-                                    </v-stepper-step>
-                                    <v-stepper-content step="2" v-if="compileStep >= 2">
-                                        {{stepResult["2"].msg}}
-                                    </v-stepper-content>
-
-                                    <v-stepper-step step="3" :complete="compileStep > 3"
-                                                    :rules="[()=>{ return stepResult['3'].result }]">
-                                        Upload program and Run
-                                        <small v-if="compileStep > 3">{{stepResult["3"].msg}}</small>
-                                    </v-stepper-step>
-                                    <v-stepper-content step="3" v-if="compileStep >= 3">
-                                        {{stepResult["3"].msg}}
-                                        <v-progress-linear
-                                                height="2"
-                                                :active="compileStep < 4"
-                                                :indeterminate="true"
-                                        ></v-progress-linear>
-                                    </v-stepper-content>
-                                </v-stepper>
+                                <v-progress-circular v-if="compileStep <= 3"
+                                                     :size="80"
+                                                     :width="8"
+                                                     color="primary"
+                                                     indeterminate>
+                                </v-progress-circular>
+                                <v-fade-transition :hide-on-leave="true">
+                                    <v-icon color="green" size="110" v-if="compileStep > 3">
+                                        check_circle_outline
+                                    </v-icon>
+                                </v-fade-transition>
                             </v-flex>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" flat @click="rebuild"
-                                   :disabled="compileStep < 4 && failed === false">Compile
-                            </v-btn>
-                            <v-btn color="blue darken-1" flat @click="compileDialog = false"
-                                   :disabled="compileStep < 4 && failed === false">Close
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </div>
-        </v-widget>
+                        </v-layout>
+                    </v-container>
+                    <v-flex xs12>
+                        <v-stepper v-model="compileStep" vertical class="elevation-0 pb-0">
+                            <v-stepper-step step="1" :complete="compileStep > 1"
+                                            :rules="[()=>{ return stepResult['1'].result }]">
+                                Find KidBright
+                                <small v-if="compileStep > 1">{{stepResult["1"].msg}}</small>
+                            </v-stepper-step>
+                            <v-stepper-content step="1" v-if="compileStep >= 1">
+                                {{stepResult["1"].msg}}
+                            </v-stepper-content>
+
+                            <v-stepper-step step="2" :complete="compileStep > 2"
+                                            :rules="[()=>{ return stepResult['2'].result }]">
+                                Compile the code
+                                <small v-if="compileStep > 2">{{stepResult["2"].msg}}</small>
+                            </v-stepper-step>
+                            <v-stepper-content step="2" v-if="compileStep >= 2">
+                                {{stepResult["2"].msg}}
+                            </v-stepper-content>
+
+                            <v-stepper-step step="3" :complete="compileStep > 3"
+                                            :rules="[()=>{ return stepResult['3'].result }]">
+                                Upload program and Run
+                                <small v-if="compileStep > 3">{{stepResult["3"].msg}}</small>
+                            </v-stepper-step>
+                            <v-stepper-content step="3" v-if="compileStep >= 3">
+                                {{stepResult["3"].msg}}
+                                <v-progress-linear
+                                        height="2"
+                                        :active="compileStep < 4"
+                                        :indeterminate="true"
+                                ></v-progress-linear>
+                            </v-stepper-content>
+                        </v-stepper>
+                    </v-flex>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="rebuild"
+                           :disabled="compileStep < 4 && failed === false">Compile
+                    </v-btn>
+                    <v-btn color="blue darken-1" flat @click="compileDialog = false"
+                           :disabled="compileStep < 4 && failed === false">Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
