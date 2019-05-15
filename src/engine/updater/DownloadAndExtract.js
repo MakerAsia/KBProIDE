@@ -102,7 +102,7 @@ var Updater = {
     }
 
     return new Promise((resolve, reject) => { //download zip
-      if (!this.setup.git) { reject("no git found"); }
+      if (!this.setup.zip) { reject("no zip url found"); }
       const zipFile = `${os.tmpdir()}/${util.randomString(10)}.zip`;
       const file = fs.createWriteStream(zipFile);
       let targetUrl = "";
@@ -140,8 +140,11 @@ var Updater = {
           reject("Upload failed! Sha1 code mismatch.");
         }
       }
+      process.noAsar = true;
       const zip = new admZip(zipFile);
-      return zip.extractAllTo(targetDir, true);
+      let unzipRes = zip.extractAllTo(targetDir, true);
+      process.noAsar = true;
+      return unzipRes;
     }).then(() => { //install platform
       return Promise.resolve();
     });
