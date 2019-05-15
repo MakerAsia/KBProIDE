@@ -53,4 +53,38 @@ static const uint8_t T9 = 32;
 static const uint8_t DAC1 = 25;
 static const uint8_t DAC2 = 26;
 
+
+static const uint8_t KB_LDR_PIN = 36;
+
+static const uint8_t KB_BUTTON1 = 16;
+static const uint8_t KB_BUTTON2 = 14;
+
+
+static const uint8_t KB_LED_BT = 17;
+static const uint8_t KB_LED_WIFI = 2;
+static const uint8_t KB_LED_NTP = 15;
+static const uint8_t KB_LED_IOT = 12;
+
+static const uint8_t KB_BUZZER = 13;
+
+static const uint8_t KB_INPUT1 = 32;
+static const uint8_t KB_INPUT2 = 33;
+static const uint8_t KB_INPUT3 = 34;
+static const uint8_t KB_INPUT4 = 35;
+
+static const uint8_t KB_OUTPUT1= 26;
+static const uint8_t KB_OUTPUT2 = 27;
+static const uint8_t KB_USB = 25;
+
+static const uint8_t KB_SDA0 = 21;
+static const uint8_t KB_SCL0 = 22;
+
+static const uint8_t KB_SDA1 = 4;
+static const uint8_t KB_SCL1 = 5;
+
+static const uint8_t KB_GPIO18 = 18;
+static const uint8_t KB_GPIO19 = 19;
+static const uint8_t KB_GPIO23= 23;
+
+
 #endif /* Pins_Arduino_h */

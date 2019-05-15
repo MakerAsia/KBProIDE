@@ -1,3 +1,6 @@
+#ifndef KB_HT16K33_h
+#define KB_HT16K33_h
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -26,3 +29,5 @@ class KB_8x16Matrix
 
  private:
 };
+
+#endif /* KB_HT16K33_h */

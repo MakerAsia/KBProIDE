@@ -1440,7 +1440,11 @@ Blockly.Blocks["output_write"] = {
 			.appendField(Blockly.Msg.OUTPUT_WRITE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
 				["1", "1"],
-				["2", "2"]
+				["2", "2"],
+				["LED_BT", "KB_LED_BT"],
+                ["LED_WIFI", "KB_LED_WIFI"],
+                ["LED_NTP", "KB_LED_NTP"],
+                ["LED_IOT", "KB_LED_IOT"]
 			]), 'OUTPUT')
 			.appendField(Blockly.Msg.STATUS)
 			.appendField(new Blockly.FieldDropdown([
@@ -1548,10 +1552,10 @@ Blockly.Blocks["input_read"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.INPUT_READ_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				["1", "1"],
-				["2", "2"],
-				["3", "3"],
-				["4", "4"]
+				["1", "KB_INPUT1"],
+				["2", "KB_INPUT2"],
+				["3", "KB_INPUT3"],
+				["4", "KB_INPUT4"]
 			]), 'INPUT');
 		this.setOutput(true, 'Number');
 		this.setInputsInline(true);
