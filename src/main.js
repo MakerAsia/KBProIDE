@@ -48,7 +48,7 @@ var watcherHandler = {};
 //--------------------------------------//
 
 let addWatcher = function(name, ghandler, deep) {
-  if(global.config.persistence === "false"){
+  if (global.config.persistence === "false") {
     console.log("persistence disabled");
     return;
   }
@@ -66,8 +66,7 @@ let addWatcher = function(name, ghandler, deep) {
   };
 };
 
-let parseConfig = function()
-{
+let parseConfig = function() {
   let params = global.location.hash && global.location.hash.split('?');
   let res = {};
   if(params && params.length === 2){
@@ -77,7 +76,7 @@ let parseConfig = function()
       let p=paramsString[i].split('=', 2);
       if (p.length === 1){
         res[p[0]] = "";
-      }else{
+      } else {
         res[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
       }
     }
@@ -112,15 +111,16 @@ componentAllData.data["board"]["package"] = {};
 Object.keys(boardPackage).forEach(packageName => {
   componentAllData.data.board.package[packageName] = {};
   let boardPackageData = util.loadCofigComponents(
-      boardPackage[packageName].config, "board.package." + packageName);
+    boardPackage[packageName].config,
+    "board.package." + packageName
+  );
   componentAllData.data.board.package[packageName] = boardPackageData.data;
-  componentAllData.persistence["board.package." +
-  packageName] = boardPackageData.persistence;
+  componentAllData.persistence["board.package." + packageName] = boardPackageData.persistence;
 });
 
 addWatcher("board.board", function(val) { //listen board name change we need to reload everything
   console.log("board changed to : " + val);
-  localStorage["board.board"] = JSON.stringify(val);
+    localStorage["board.board"] = JSON.stringify(val);
 }, false);
 
 //console.log(process.platform);
