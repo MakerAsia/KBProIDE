@@ -93,9 +93,11 @@ export default {
     checkUpdate(showNotification = false, forceShowUpdate = false) {
       this.$db
         .collection("update")
+        .orderBy("date","desc")
+        .limit(1)
         .get()
         .then(appData => {
-          if (appData.size === 1) {
+          if (appData.size >= 1) {
             let data = appData.docs[0].data();
             mother.update = data;
             if (this.update.type === "app") {
@@ -124,31 +126,20 @@ export default {
                   return false;
                 }
               });
-            } else if (this.update.type === "platform") {
-              Updater.init(this.update);
-              let pinfoFile = `${util.platformDir}/${
-                mother.$global.board.board_info.platform
-              }/config.js`;
+            } else if (mother.update.type === "platform") {
+              Updater.init(mother.update);
+              let pinfoFile = `${util.platformDir}/${mother.$global.board.board_info.platform}/config.js`;
               if (!fs.existsSync(pinfoFile)) {
                 return;
               }
-              let currentPlatformInfo = eval(
-                fs.readFileSync(pinfoFile, "utf8")
-              );
-              if (
-                mother.update.platform !==
-                mother.$global.board.board_info.platform
-              ) {
+              let currentPlatformInfo = eval(fs.readFileSync(pinfoFile, "utf8"));
+              if (mother.update.platform !== mother.$global.board.board_info.platform) {
                 return;
               }
               if (mother.update.version <= currentPlatformInfo.version) {
                 return;
               }
-              if (
-                mother.$global.setting.ignorePlatformVersion ===
-                  mother.update.version &&
-                forceShowUpdate === false
-              ) {
+              if (mother.$global.setting.ignorePlatformVersion === mother.update.version && forceShowUpdate === false) {
                 console.log("User ignored this platform update popup");
                 return;
               }
@@ -190,9 +181,7 @@ export default {
         });
       } else if (this.update.type === "platform") {
         Updater.progress(mother.progress);
-        let currentPlatformDir = `${util.platformDir}/${
-          mother.$global.board.board_info.platform
-        }`;
+        let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
         Updater.process(currentPlatformDir)
           .then(() => {
             console.log("Update platform success");
@@ -227,7 +216,7 @@ export default {
       mother.updateText = error;
       setTimeout(() => {
         mother.updateStatus = "IDLE";
-      }, 2000);
+      }, 3000);
     }
   },
   watch: {
