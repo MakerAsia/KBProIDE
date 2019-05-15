@@ -6,11 +6,11 @@ class KB_LDR
 {
  public:
   void begin(void);
-  int getRawLDR();
-  int getLDR();
+  uint16_t mapLDR();
+  uint16_t getLDR();
 
  protected:
-  int ldr;
+  uint16_t ldr;
 
  private:
 };
