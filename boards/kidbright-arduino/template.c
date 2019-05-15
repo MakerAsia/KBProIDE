@@ -4,10 +4,12 @@
 
 ${EXTINC}
 
+#include "KB_LDR.h"
 #include "KB_LM73.h"
-KB_LM73 lm73 = KB_LM73();
-
 #include "KB_ht16k33.h"
+
+KB_LDR ldr = KB_LDR();
+KB_LM73 lm73 = KB_LM73();
 KB_8x16Matrix matrix = KB_8x16Matrix();
 
 typedef int Number;
@@ -21,10 +23,7 @@ ${FUNCTION}
 
 void setup()
 {
-  Serial.begin(115200);
-
   lm73.begin();
-
   matrix.displayBegin();
 
   ${SETUP_CODE}
@@ -32,12 +31,6 @@ void setup()
 }
 void loop()
 {
-  //Serial.print("temp: ");
-  //Serial.println(lm73.readTemp());
-  //matrix.printNumber(0, 0, lm73.readTemp());
-  //delay(100);
-
   ${LOOP_CODE}
   ${LOOP_EXT_CODE}
-
 }

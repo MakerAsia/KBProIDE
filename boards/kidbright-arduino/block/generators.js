@@ -364,8 +364,8 @@ Blockly.JavaScript['sensor_lm73'] = function(block) {
 };
 
 Blockly.JavaScript['sensor_ldr'] = function(block) {
-	var code = 'map(analogRead(36), 0, 500, 100, 0)\n';
-	return code;
+	var code = 'ldr.getLDR();\n';
+	return code;s
 	// return [
 	// 	'ldr.get()',
 	// 	Blockly.JavaScript.ORDER_ATOMIC
