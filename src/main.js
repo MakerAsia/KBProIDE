@@ -62,8 +62,9 @@ unhandled({
             showDialog : true
           });
 
-//------------------------//
-
+//----------Tour--------------//
+import VueTour from "vue-tour";
+Vue.use(VueTour);
 
 //---- load data to global variable ----//
 var componentAllData = {

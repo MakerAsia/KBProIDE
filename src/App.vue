@@ -116,25 +116,30 @@
             </v-btn>
         </v-snackbar>
         <app-updater></app-updater>
+        <v-tour name="ideTour" :steps="tourStep" :callbacks="tourCallbacks"></v-tour>
     </div>
 </template>
 <script>
-  import Vue from 'vue';
-  import AppToolbar from '@/engine/views/AppToolbar';
-  import AppFooter from '@/engine/views/AppFooter';
-  import {Multipane, MultipaneResizer} from 'vue-multipane';
-  import draggable from 'vuedraggable';
+  import Vue from "vue";
+  import AppToolbar from "@/engine/views/AppToolbar";
+  import AppFooter from "@/engine/views/AppFooter";
+  import {Multipane, MultipaneResizer} from "vue-multipane";
+  import draggable from "vuedraggable";
 
-  const electron = require('electron');
+  const electron = require("electron");
   //========= load manager ==========//
-  import bm from '@/engine/BoardManager';
-  import AsyncComponent from '@/engine/AsyncComponent';
-  import AppEvents from './event';
-  import util from '@/engine/utils';
-  import {stat} from 'fs';
-  import {spread} from 'q';
+  import bm from "@/engine/BoardManager";
+  import AsyncComponent from "@/engine/AsyncComponent";
+  import AppEvents from "./event";
+  import util from "@/engine/utils";
+  import {stat} from "fs";
+  import {spread} from "q";
   //========= updating =========//
-  import AppUpdater from '@/engine/updater/AppUpdater';
+  import AppUpdater from "@/engine/updater/AppUpdater";
+
+  import TourSteps from "./tour";
+
+  require("vue-tour/dist/vue-tour.css");
 
   export default {
     components: {
@@ -146,10 +151,21 @@
       AppFooter,
       AppUpdater,
     },
-    data: () => ({
-      expanded: true,
-    }),
+    data() {
+      return {
+        expanded: true,
+        tourStep: TourSteps.th,
+        tourCallbacks: {
+          onPreviousStep: this.tourPreviousStep,
+          onNextStep: this.tourNextStep,
+          onStop: this.tourStop,
+        },
+      }
+    },
     computed: {},
+    mounted: function() {
+      this.$tours["ideTour"].start();
+    },
     created() {
       AppEvents.forEach(item => {
         this.$on(item.name, item.callback);
@@ -160,22 +176,21 @@
       this.$vuetify.theme.primary = this.$global.setting.color;
       //----- load external plugin -----//
       this.reloadBoardPackage();
-      this.$global.$on('board-change', this.reloadBoardPackage);
+      this.$global.$on("board-change", this.reloadBoardPackage);
       //----- check for update -----//
-      this.$global.$on('check-update', this.checkUpdate);
-      electron.ipcRenderer.on('file-board-folder', () => {
+      this.$global.$on("check-update", this.checkUpdate);
+      electron.ipcRenderer.on("file-board-folder", () => {
         electron.shell.openItem(util.boardDir);
       });
-      electron.ipcRenderer.on('file-platform-folder', () => {
+      electron.ipcRenderer.on("file-platform-folder", () => {
         electron.shell.openItem(util.platformDir);
       });
-      electron.ipcRenderer.on('file-plugin-folder', () => {
-        electron.shell.openItem(util.boardDir + '/' + window.getApp.$global.board.board + '/plugin');
+      electron.ipcRenderer.on("file-plugin-folder", () => {
+        electron.shell.openItem(util.boardDir + "/" + window.getApp.$global.board.board + "/plugin");
       });
-      this.$track.pageview('/', '/home',document.title)
-      .then((response) => {
+      this.$track.pageview("/", "/home", document.title).then((response) => {
         window.getApp.$track.clientID = response.clientID;
-        window.getApp.$track.set('clientID',response.clientID);
+        window.getApp.$track.set("clientID", response.clientID);
         return response;
       }).catch((err) => {
         return err;
@@ -188,7 +203,7 @@
       reloadBoardPackage() {
         var boardName = this.$global.board.board;
         var boardPackage = bm.packages(boardName);
-        console.log('--------- bp ---------');
+        console.log("--------- bp ---------");
         console.log(boardPackage);
 
         var bp = {};
@@ -196,7 +211,7 @@
         Object.keys(boardPackage).forEach(packageName => {
           bp[packageName] = {};
           let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,
-              'board.package.' + packageName);
+                                                          "board.package." + packageName);
           bp[packageName] = boardPackageData.data;
         });
 
@@ -204,8 +219,8 @@
           let targetJsFile = boardPackage[packageName].js;
           let targetLinkFile = `file:///${targetJsFile}`;
           if (util.fs.existsSync(targetJsFile)) {
-            let script = document.createElement('script');
-            script.setAttribute('src', targetLinkFile);
+            let script = document.createElement("script");
+            script.setAttribute("src", targetLinkFile);
             script.onload = function() {
               if (packageName in window) {
                 Vue.use(window[packageName]);
@@ -221,10 +236,63 @@
         });
       },
       onResizePanel(pane, container, size) {
-        this.$global.$emit('panel-resize', size);
+        this.$global.$emit("panel-resize", size);
         if (this.$refs.rtabs) {
           this.$refs.rtabs.onResize();
         }
+      },
+      tourNextStep: function(step) {
+        try {
+          switch (step) {
+            case 3:
+              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              break;
+            case 4:
+              document.querySelector(
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__text > div > div > div > div:nth-child(2) > div > div")
+              .click();
+              break;
+            case 5:
+              document.querySelector(this.tourStep[step].target).click();
+              break;
+            case 6:
+              document.querySelector(
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light > div.v-card__actions > span > button:nth-child(2)")
+              .click();
+              break;
+            case 7:
+              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              break;
+            case 8:
+              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)")
+              .click();
+              break;
+            case 9:
+              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              break;
+            case 10:
+              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button")
+              .click();
+              break;
+            case 11:
+              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              break;
+            case 12:
+              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").click();
+              break;
+            case 13:
+              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              break;
+          }
+        }catch (e) {
+          console.log(e);
+        }
+      },
+      tourPreviousStep : function(step) {
+
+      },
+      tourStop : function(step) {
+
       },
     },
   };
@@ -283,5 +351,15 @@
 
     .v-tabs__slider {
         height: 4px !important;
+    }
+
+</style>
+<style>
+    .v-step {
+        z-index: 99999 !important;
+    }
+
+    .v-tour-highlight {
+        pointer-events: none !important;
     }
 </style>
