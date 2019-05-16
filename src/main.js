@@ -57,6 +57,7 @@ unhandled({
                                       board : Vue.prototype.$global.board.board_info.name,
                                       //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
                                  });
+              Vue.prototype.$dialog.notify.info("Thank you ... to help us improve ^^");
             },
             showDialog : true
           });
