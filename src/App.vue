@@ -172,6 +172,14 @@
       electron.ipcRenderer.on('file-plugin-folder', () => {
         electron.shell.openItem(util.boardDir + '/' + window.getApp.$global.board.board + '/plugin');
       });
+      this.$track.pageview('/', '/home',document.title)
+      .then((response) => {
+        window.getApp.$track.clientID = response.clientID;
+        window.getApp.$track.set('clientID',response.clientID);
+        return response;
+      }).catch((err) => {
+        return err;
+      });
     },
     methods: {
       closeTab(name) {

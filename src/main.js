@@ -13,13 +13,14 @@ import ui from "@/engine/UIManager";
 import pfm from "@/engine/PlatformManager";
 import compiler from "@/engine/Compiler";
 import util from "@/engine/utils";
+import Analytics from "electron-google-analytics";
 
 import SmoothScrollbar from "vue-smooth-scrollbar";
 
+Vue.use(SmoothScrollbar);
+
 const fs = require("fs");
 
-
-Vue.use(SmoothScrollbar);
 //---- firebase database ----//
 //import firebase from 'firebase';
 //require('firebase/firestore');
@@ -36,6 +37,32 @@ firebase.initializeApp(config);
 Vue.prototype.$db = firebase.firestore();
 
 Vue.config.productionTip = false;
+//---- Google Analytic ----//
+const analytics = new Analytics("UA-140229781-1");
+Vue.prototype.$track = analytics;
+
+//-----bug tracking ------//
+const unhandled = require("electron-unhandled");
+const {openNewGitHubIssue, debugInfo} = require("electron-util");
+unhandled({
+            reportButton: error => {
+              Vue.prototype.$db.collection("bugs").add(
+                                    {
+                                      stack : error.stack,
+                                      info : debugInfo(),
+                                      date : new Date(),
+                                      mode : Vue.prototype.$global.editor.mode,
+                                      //code : Vue.prototype.$global.editor.sourceCode,
+                                      //block : Vue.prototype.$global.editor.blockCode,
+                                      board : Vue.prototype.$global.board.board_info.name,
+                                      //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
+                                 });
+            },
+            showDialog : true
+          });
+
+//------------------------//
+
 
 //---- load data to global variable ----//
 var componentAllData = {
@@ -67,14 +94,13 @@ let addWatcher = function(name, ghandler, deep) {
 };
 
 let parseConfig = function() {
-  let params = global.location.hash && global.location.hash.split('?');
+  let params = global.location.hash && global.location.hash.split("?");
   let res = {};
-  if(params && params.length === 2){
+  if (params && params.length === 2) {
     let paramsString = params[1].split("&");
-    for (let i = 0; i < paramsString.length; ++i)
-    {
-      let p=paramsString[i].split('=', 2);
-      if (p.length === 1){
+    for (let i = 0; i < paramsString.length; ++i) {
+      let p = paramsString[i].split("=", 2);
+      if (p.length === 1) {
         res[p[0]] = "";
       } else {
         res[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
@@ -111,16 +137,17 @@ componentAllData.data["board"]["package"] = {};
 Object.keys(boardPackage).forEach(packageName => {
   componentAllData.data.board.package[packageName] = {};
   let boardPackageData = util.loadCofigComponents(
-    boardPackage[packageName].config,
-    "board.package." + packageName
+      boardPackage[packageName].config,
+      "board.package." + packageName,
   );
   componentAllData.data.board.package[packageName] = boardPackageData.data;
-  componentAllData.persistence["board.package." + packageName] = boardPackageData.persistence;
+  componentAllData.persistence["board.package." +
+  packageName] = boardPackageData.persistence;
 });
 
 addWatcher("board.board", function(val) { //listen board name change we need to reload everything
   console.log("board changed to : " + val);
-    localStorage["board.board"] = JSON.stringify(val);
+  localStorage["board.board"] = JSON.stringify(val);
 }, false);
 
 //console.log(process.platform);
@@ -155,21 +182,22 @@ Vue.prototype.$global = new Vue({
                                 });
 
 //=========== load form config ==============//
-if(global.config.mode){
+if (global.config.mode) {
   global.config.mode = parseInt(global.config.mode);
   Vue.prototype.$global.editor.mode = global.config.mode;
 }
-if(global.config.file && fs.existsSync(global.config.file)) {
- let targetFile = global.config.file;
+if (global.config.file && fs.existsSync(global.config.file)) {
+  let targetFile = global.config.file;
   if (targetFile.endsWith(".bly")) {
     let contentFile = fs.readFileSync(targetFile, "utf8");
     Vue.prototype.$global.editor.blockCode = util.b64DecodeUnicode(contentFile);
   } else if (global.config.file.endsWith(".ino")) {
-    Vue.prototype.$global.editor.sourceCode = fs.readFileSync(targetFile,'utf8');
+    Vue.prototype.$global.editor.sourceCode = fs.readFileSync(targetFile,
+                                                              "utf8");
   }
 }
-if(global.config.persistence === "false"){
-  document.title += " << Example Mode :: this mode will not save persistence data >>"
+if (global.config.persistence === "false") {
+  document.title += " << Example Mode :: this mode will not save persistence data >>";
 }
 //---- setup $engine ----//
 var engineData = {

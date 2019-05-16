@@ -23,6 +23,7 @@
     "codemirror-advanceddialog": "git+https://github.com/comdet/CodeMirror-AdvancedDialog.git",
     "codemirror-revisedsearch": "git+https://github.com/comdet/CodeMirror-RevisedSearch.git",
     "electron-asar-hot-updater": "git+https://github.com/comdet/electron-asar-hot-updater.git",
+    "electron-google-analytics": "^0.1.0",
     "electron-unhandled": "^2.2.0",
     "electron-util": "^0.11.0",
     "external-loader": "^0.1.1",

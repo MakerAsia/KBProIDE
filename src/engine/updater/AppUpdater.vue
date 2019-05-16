@@ -153,8 +153,12 @@ export default {
     ignoreUpdate(type, version) {
       if (type === "app") {
         this.$global.setting.ignoreUpdateVersion = version;
+        //--tracking--//
+        this.$track.event("update", "ignore", {evLabel: "app_version_" + version, evValue: 1, clientID : this.$track.clientID});
       } else if (type === "platform") {
         this.$global.setting.ignorePlatformVersion = version;
+        //--tracking--//
+        this.$track.event("update", "ignore", {evLabel: "platform_"+this.update.platform+"_version_"+version, evValue: 1, clientID : this.$track.clientID});
       } else if (type === "board") {
         //not support yet!
       }
@@ -178,6 +182,8 @@ export default {
             electron.remote.app.relaunch();
             electron.remote.app.exit(0);
           }, 2000);
+          //--tracking--//
+          this.$track.event("update", "success", {evLabel: "app_"+this.update.version, evValue: 1, clientID : this.$track.clientID});
         });
       } else if (this.update.type === "platform") {
         Updater.progress(mother.progress);
@@ -189,8 +195,12 @@ export default {
             setTimeout(() => {
               document.location.reload();
             }, 2000);
+          //--tracking--//
+          this.$track.event("update", "success", {evLabel: "platform_"+this.update.platform+"_version_"+this.update.version, evValue: 1, clientID : this.$track.clientID});
           })
           .catch(err => {
+          //--tracking--//
+          this.$track.event("update", "failed", {evLabel: this.update.name+"_"+this.update.version, evValue: 1, clientID : this.$track.clientID});
             console.log("update platform error : " + err);
             mother.errorAndReset(err);
             return false;
