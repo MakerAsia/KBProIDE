@@ -13,7 +13,8 @@ class KB_music
   void stop(void);
 
  protected:
-  uint16_t ldr;
+  uint16_t channel;
+  uint16_t bit;
 
  private:
 };
