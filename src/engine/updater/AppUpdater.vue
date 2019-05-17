@@ -164,7 +164,8 @@
           this.$global.setting.ignoreUpdateVersion = version;
           //--tracking--//
           this.$track.event("update", "ignore",
-                            {evLabel: "app_version_" + version, evValue: 1, clientID: this.$track.clientID});
+                            {evLabel: "app_version_" + version, evValue: 1, clientID: this.$track.clientID})
+                    .catch(err=>{ console.log(err)});
         } else if (type === "platform") {
           this.$global.setting.ignorePlatformVersion = version;
           //--tracking--//
@@ -172,7 +173,7 @@
             evLabel: "platform_" + this.update.platform + "_version_" + version,
             evValue: 1,
             clientID: this.$track.clientID,
-          });
+          }).catch(err=>{ console.log(err)});
         } else if (type === "board") {
           //not support yet!
         }
@@ -198,7 +199,8 @@
             }, 2000);
             //--tracking--//
             this.$track.event("update", "success",
-                              {evLabel: "app_" + this.update.version, evValue: 1, clientID: this.$track.clientID});
+                              {evLabel: "app_" + this.update.version, evValue: 1, clientID: this.$track.clientID})
+                        .catch(err=>{ console.log(err)});
           });
         } else if (this.update.type === "platform") {
           Updater.progress(mother.progress);
@@ -214,14 +216,14 @@
               evLabel: "platform_" + this.update.platform + "_version_" + this.update.version,
               evValue: 1,
               clientID: this.$track.clientID,
-            });
+            }).catch(err=>{ console.log(err)});
           }).catch(err => {
             //--tracking--//
             this.$track.event("update", "failed", {
               evLabel: this.update.name + "_" + this.update.version,
               evValue: 1,
               clientID: this.$track.clientID,
-            });
+            }).catch(err=>{ console.log(err)});
             console.log("update platform error : " + err);
             mother.errorAndReset(err);
             return false;

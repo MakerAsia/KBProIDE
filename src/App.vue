@@ -116,7 +116,7 @@
             </v-btn>
         </v-snackbar>
         <app-updater></app-updater>
-        <v-dialog persistent v-model="firstUseDialog" max-width="400">
+        <v-dialog persistent v-model="firstUseDialog" max-width="450">
             <v-card>
                 <v-card-title>
                     <span class="headline">Welcome to KBIDE</span>

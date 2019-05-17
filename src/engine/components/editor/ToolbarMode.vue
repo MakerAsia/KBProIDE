@@ -146,7 +146,7 @@
           });
         }
         //--tracking--//
-        this.$track.event("editor", "mode_change", {evLabel: "mode_" + mode, evValue: 1,clientID : this.$track.clientID});
+        this.$track.event("editor", "mode_change", {evLabel: "mode_" + mode, evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
       },
     },
     watch: {

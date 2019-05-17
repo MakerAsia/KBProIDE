@@ -348,7 +348,7 @@
         win.loadURL(`${document.location.href}?persistence=false&mode=1&file=${file}`);
         win.show();
         //--tracking--//
-        this.$track.event("examples", "open", {evLabel: exampleInfo+"_block", evValue: 1, clientID : this.$track.clientID});
+        this.$track.event("examples", "open", {evLabel: exampleInfo+"_block", evValue: 1, clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
       },
       openCode(file,exampleInfo) {
         let win = new remote.BrowserWindow({
@@ -364,7 +364,7 @@
         win.loadURL(`${document.location.href}?persistence=false&mode=3&file=${file}`);
         win.show();
         //--tracking--//
-        this.$track.event("examples", "open", {evLabel: exampleInfo+"_code", evValue: 1,clientID : this.$track.clientID});
+        this.$track.event("examples", "open", {evLabel: exampleInfo+"_code", evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
       },
     },
     watch: {

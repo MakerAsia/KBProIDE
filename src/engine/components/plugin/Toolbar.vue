@@ -294,7 +294,7 @@
           this.$dialog.notify.info("Install success");
           this.$global.$emit("board-change", this.$global.board.board_info);
           //--tracking--//
-          this.$track.event("plugin", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID });
+          this.$track.event("plugin", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
         }).catch(err => {
           console.log(err);
           this.statusText = `Error : ${err}`;
@@ -322,7 +322,7 @@
             this.listAllPlugins();
             this.$global.$emit("board-change", this.$global.board.board_info);
             //--tracking--//
-            this.$track.event("plugin", "remove", { evLabel: name, evValue: 1, clientID : this.$track.clientID });
+            this.$track.event("plugin", "remove", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
           }).catch(err => {
             this.$dialog.notify.error("Cannot remove plugin : " + err);
             console.log("Error : cannot remove plugin");
@@ -372,7 +372,7 @@
                 );
               }, 1000);
               //--tracking--//
-              Vue.prototype.$track.event("plugin", "update", { evLabel: name, evValue: 1, clientID : this.$track.clientID });
+              Vue.prototype.$track.event("plugin", "update", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
             });
 
           }).catch(err => {

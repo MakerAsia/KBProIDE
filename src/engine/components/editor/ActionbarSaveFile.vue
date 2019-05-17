@@ -39,7 +39,7 @@
             let writeRes = fs.writeFileSync(res, util.b64EncodeUnicode(bCode), "utf8");
             this.$global.ui.snackbar("Save file success");
             //--track--//
-            this.$track.event("editor", "save", {evLabel: path.extname(res), evValue: 1});
+            this.$track.event("editor", "save", {evLabel: path.extname(res), evValue: 1}).catch(err=>{ console.log(err)});
           }
         } else {
           let codeOption = {
@@ -54,7 +54,7 @@
             let writeRes = fs.writeFileSync(res, source, "utf8");
             this.$global.ui.snackbar("Save file success");
             //--track--//
-            this.$track.event("editor", "save", {evLabel: path.extname(res), evValue: 1,clientID : this.$track.clientID});
+            this.$track.event("editor", "save", {evLabel: path.extname(res), evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
           }
         }
       },
