@@ -20,7 +20,7 @@ void KB_board::begin(void) {
 }
 
 void KB_board::pinWrite(int pin, bool state) {
-    digitalWrite(pin, state);
+    digitalWrite(pin, !state);
 }
 
 //uint16_t KB_board::pinReadDigital(int pin) {
