@@ -1,0 +1,11 @@
+{
+	"title": "Display",
+	"color": 160,
+	"author" : "nectec",
+	"description" : "ปลั๊กอินสำหรับการแสดงผลหน้าจอ SPI และ I2C",
+	"git" : "http://www.github.com/comdet/data",
+	"image" : "https://www.rhydolabz.com/images/29/DIS2905.jpg",
+	"name" : "display",
+	"board" : "kidbright",
+	"version" : "1.0.0"
+}
