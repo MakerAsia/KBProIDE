@@ -1,3 +1,6 @@
+#ifndef KB_LDR_h
+#define KB_LDR_h
+
 #include <Arduino.h>
 
 #define LDR_PIN 36
@@ -14,3 +17,5 @@ class KB_LDR
 
  private:
 };
+
+#endif /* KB_LDR_h */

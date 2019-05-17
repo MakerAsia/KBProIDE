@@ -1,3 +1,6 @@
+#ifndef KB_LM73_h
+#define KB_LM73_h
+
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -12,3 +15,5 @@ class KB_LM73
 
  private:
 };
+
+#endif /* KB_LM73_h */

@@ -371,14 +371,14 @@ Blockly.JavaScript['sensor_ldr'] = function(block) {
 };
 
 Blockly.JavaScript['sensor_switch1'] = function(block) {
-	return [ '((int)get_B1stateClicked() || button12.sw1_get())',
+	return [ '((int)digitalRead(KB_BUTTON1))',
 		// 'button12.sw1_get()',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
 
 Blockly.JavaScript['sensor_switch2'] = function(block) {
-	return [ '((int)get_B2stateClicked() || button12.sw2_get())',
+	return [ '((int)digitalRead(KB_BUTTON2))',
 		// 'button12.sw2_get()',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
@@ -452,12 +452,18 @@ Blockly.JavaScript['rtc_cal_coarse'] = function(block) {
 // I/O
 // =============================================================================
 Blockly.JavaScript['output_write'] = function(block) {
-	return 'ports.output' + block.getFieldValue('OUTPUT') + '_write(' + block.getFieldValue('STATUS') + ');\n';
+    var code = 'board.pinWrite('+ block.getFieldValue('OUTPUT') + ',' + block.getFieldValue('STATUS') + ');\n';
+    return code;
+
+	//return 'ports.output' + block.getFieldValue('OUTPUT') + '_write(' + block.getFieldValue('STATUS') + ');\n';
 };
 Blockly.JavaScript['output_toggle'] = function(block) {
 	return 'ports.output' + block.getFieldValue('OUTPUT') + '_toggle();\n';
 };
 Blockly.JavaScript['output_read'] = function(block) {
+	// var code = 'board.pinReadDigital('+ block.getFieldValue('OUTPUT') + ');\n';
+	// return code
+
 	return [
 		'ports.output' + block.getFieldValue('OUTPUT') + '_read()',
 		Blockly.JavaScript.ORDER_ATOMIC
@@ -476,8 +482,11 @@ Blockly.JavaScript['usbsw_read'] = function(block) {
 	];
 };
 Blockly.JavaScript['input_read'] = function(block) {
+	// var code = 'board.pinReadDigital('+ block.getFieldValue('INPUT') + ');\n';
+	// return code;
+
 	return [
-		'ports.input' + block.getFieldValue('INPUT') + '_read()',
+		'digitalRead(' + block.getFieldValue('INPUT') + ')',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
