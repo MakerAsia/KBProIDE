@@ -434,25 +434,25 @@ Blockly.Blocks["music_duration_opt"] = [
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
-	}, "0"],
+	}, "255"],
 	[{
 		'src': '/static/block_icons/notes/half.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
-	}, "1"],
+	}, "192"],
 	[{
 		'src': '/static/block_icons/notes/quarter.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
-	}, "2"],
+	}, "129"],
 	[{
 		'src': '/static/block_icons/notes/eighth.svg',
 		'width': 20,
 		'height': 20,
 		'alt': 'Whole'
-	}, "3"],
+	}, "63"],
 	[{
 		'src': '/static/block_icons/notes/sixteenth.svg',
 		'width': 20,
@@ -467,8 +467,8 @@ Blockly.Blocks["music_note"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/buzzer.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.MUSIC_NOTE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				[Blockly.Msg.MUSIC_NOTE_C7, "36"],
-				[Blockly.Msg.MUSIC_NOTE_B6, "35"],
+				[Blockly.Msg.MUSIC_NOTE_C7, "2093"],
+				[Blockly.Msg.MUSIC_NOTE_B6, "1976"],
 				[Blockly.Msg.MUSIC_NOTE_BB6, "34"],
 				[Blockly.Msg.MUSIC_NOTE_A6, "33"],
 				[Blockly.Msg.MUSIC_NOTE_GS6, "32"],

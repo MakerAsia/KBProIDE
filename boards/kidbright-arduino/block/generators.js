@@ -315,12 +315,14 @@ Blockly.JavaScript['wait_sw2_released'] = function(block) {
 // music
 // =============================================================================
 Blockly.JavaScript['music_note'] = function(block) {
-	var ret =
-		'sound.note(' + block.getFieldValue('NOTE') + ');\n' +
-		'sound.rest(' + block.getFieldValue('DURATION') + ');\n' +
-		'sound.off();\n';
-
-	return ret;
+	var code = 'music.note('+ block.getFieldValue('NOTE') + ',' + block.getFieldValue('DURATION') + ');\n';
+	return code;
+	// var ret =
+	// 	'sound.note(' + block.getFieldValue('NOTE') + ');\n' +
+	// 	'sound.rest(' + block.getFieldValue('DURATION') + ');\n' +
+	// 	'sound.off();\n';
+	//
+	// return ret;
 };
 
 Blockly.JavaScript['music_rest'] = function(block) {
