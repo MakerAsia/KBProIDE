@@ -8,7 +8,8 @@ export default {
         rightSeparator : 80,
         devMode : false,
         ignoreUpdateVersion : '',
-        ignorePlatformVersion : ''
+        ignorePlatformVersion : '',
+        firstUse : true
     },
     data:{
         rightDrawer : false,

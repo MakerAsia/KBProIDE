@@ -116,7 +116,54 @@
             </v-btn>
         </v-snackbar>
         <app-updater></app-updater>
-        <v-tour name="ideTour" :steps="tourStep" :callbacks="tourCallbacks"></v-tour>
+        <v-dialog persistent v-model="firstUseDialog" max-width="400">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Welcome to KBIDE</span>
+                </v-card-title>
+                <v-card-text>
+                    <p class="title">
+                        New IDE for everyone.
+                    </p>
+                    <p class="subtitle">
+                        It look like you just open this IDE for first time.
+                        There are some important features that you need to know in here.
+                        Let us introduce new features of KBIDE.<br/><br/>
+                    </p>
+                    <p style="color:red">*Note : 'Click' are disabled util the tour end.</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" color="blue darken-1" flat @click="skipTour">Skip it</v-btn>
+                        </template>
+                        <span>You can start again in Help > IDE Tour</span>
+                    </v-tooltip>
+                    <v-btn color="blue darken-1" flat @click="startTour('en')">Start tour</v-btn>
+                    <v-btn color="blue darken-1" flat @click="startTour('th')">แสดงคำแนะนำภาษาไทย</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog persistent v-model="endDialog" max-width="400">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">{{endDialogTitle}}</span>
+                </v-card-title>
+                <v-card-text v-html="endDialogText">
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn v-on="on" color="blue darken-1" flat @click="endDialog = false">OK</v-btn>
+                        </template>
+                        <span>You can start again in Help > IDE Tour</span>
+                    </v-tooltip>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-tour name="ideTour" :steps="tourStep" :callbacks="tourCallbacks" :options="tourOptions"></v-tour>
     </div>
 </template>
 <script>
@@ -154,17 +201,25 @@
     data() {
       return {
         expanded: true,
-        tourStep: TourSteps.th,
+        firstUseDialog: this.$global.setting.firstUse,
+        endDialog: false,
+        endDialogText: TourSteps.endDialog.content.en,
+        endDialogTitle: TourSteps.endDialog.title.en,
+        tourStep: TourSteps.en,
         tourCallbacks: {
           onPreviousStep: this.tourPreviousStep,
           onNextStep: this.tourNextStep,
           onStop: this.tourStop,
         },
-      }
+        tourOptions: {
+          labels: TourSteps.button.en,
+        },
+        tourLang: "en",
+      };
     },
     computed: {},
     mounted: function() {
-      this.$tours["ideTour"].start();
+
     },
     created() {
       AppEvents.forEach(item => {
@@ -187,6 +242,9 @@
       });
       electron.ipcRenderer.on("file-plugin-folder", () => {
         electron.shell.openItem(util.boardDir + "/" + window.getApp.$global.board.board + "/plugin");
+      });
+      electron.ipcRenderer.on("help-tour", () => {
+        window.getApp.firstUseDialog = true;
       });
       this.$track.pageview("/", "/home", document.title).then((response) => {
         window.getApp.$track.clientID = response.clientID;
@@ -241,6 +299,22 @@
           this.$refs.rtabs.onResize();
         }
       },
+      skipTour: function() {
+        this.firstUseDialog = false;
+
+      },
+      startTour: function(lang) {
+        this.firstUseDialog = false;
+        if (lang === "th") {
+          this.tourOptions.labels = TourSteps.button.th;
+          this.tourStep = TourSteps.th;
+        }else{
+          this.tourOptions.labels = TourSteps.button.en;
+          this.tourStep = TourSteps.en;
+        }
+        this.tourLang = lang;
+        this.$tours["ideTour"].start();
+      },
       tourNextStep: function(step) {
         try {
           switch (step) {
@@ -249,50 +323,105 @@
               break;
             case 4:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__text > div > div > div > div:nth-child(2) > div > div")
-              .click();
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__text > div > div > div > div:nth-child(2) > div > div").
+              click();
               break;
             case 5:
               document.querySelector(this.tourStep[step].target).click();
               break;
             case 6:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light > div.v-card__actions > span > button:nth-child(2)")
-              .click();
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light > div.v-card__actions > span > button:nth-child(2)").
+              click();
               break;
             case 7:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 8:
-              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)")
-              .click();
+              document.querySelector(
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)").
+              click();
               break;
             case 9:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 10:
-              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button")
-              .click();
+              document.querySelector(
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").
+              click();
               break;
             case 11:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 12:
-              document.querySelector("#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").click();
+              document.querySelector(
+                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").
+              click();
               break;
             case 13:
-              document.querySelector(this.tourStep[step].target + " > span > span > button").click();
+              document.querySelector(
+                  "#inspire > div.application--wrap > nav > div > span:nth-child(6) > span > button",
+              ).click();
               break;
           }
-        }catch (e) {
+        } catch (e) {
           console.log(e);
         }
       },
-      tourPreviousStep : function(step) {
-
+      tourPreviousStep: function(step) {
+        console.log(step);
+        switch (step) {
+          case 4:
+            document.querySelector(
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)",
+            ).click();
+            break;
+          case 6:
+            document.querySelector(
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light.v-tour-highlight.v-tour-position > div.v-card__actions > span > button:nth-child(1)",
+            ).click();
+            break;
+          case 8:
+            document.querySelector(
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)",
+            ).click();
+            break;
+          case 9:
+            document.querySelector(this.tourStep[7].target + " > span > span > button").click();
+            break;
+          case 10:
+            document.querySelector(
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button",
+            ).click();
+            break;
+          case 11:
+            document.querySelector(this.tourStep[9].target + " > span > span > button").click();
+            break;
+          case 12:
+            document.querySelector(
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button",
+            ).click();
+            break;
+          case 13:
+            document.querySelector(this.tourStep[11].target + " > span > span > button").click();
+            break;
+          case 14:
+            this.$global.ui.rightDrawer();
+            break;
+        }
       },
-      tourStop : function(step) {
-
+      tourStop: function() {
+        if (this.tourLang === "th") {
+          this.endDialogTitle = TourSteps.endDialog.title.th;
+          this.endDialogText = TourSteps.endDialog.content.th;
+        }else{
+          this.endDialogTitle = TourSteps.endDialog.title.en;
+          this.endDialogText = TourSteps.endDialog.content.en;
+        }
+        this.endDialog = true;
+        this.$global.editor.mode = 1;
+        this.$global.$emit("editor-mode-change", 1);
+        this.$global.setting.firstUse = false;
       },
     },
   };

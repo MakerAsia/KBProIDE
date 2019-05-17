@@ -6,7 +6,7 @@
             </v-btn>
             <span>User Level</span>
         </v-tooltip>
-        <v-dialog v-model="modeDialog" max-width="800px">
+        <v-dialog v-model="modeDialog" max-width="800px" persistent>
             <v-card>
                 <v-card-title>
                     <span class="headline">Select programming level</span>
