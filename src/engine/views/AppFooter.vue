@@ -3,7 +3,7 @@
         <v-layout row wrap>
             <v-flex xs4>
                 <v-card>
-                    <v-card-text class="px-0 text-xs-left pl-3">
+                    <v-card-text class="px-0 text-xs-left pl-3 pt-0 pb-0 ma-0">
                         <v-icon>fa-microchip</v-icon>
                         <span class="caption">
                             Board : {{$global.board.board_info.title}} ({{$global.board.board_info.name}})
@@ -13,7 +13,7 @@
             </v-flex>
             <v-flex xs2>
                 <v-card>
-                    <v-card-text class="px-0 text-xs-center">
+                    <v-card-text class="px-0 text-xs-center pa-0 ma-0">
                         <span class="caption">
                             Mode : {{$global.editor.mode}}
                         </span>
@@ -22,7 +22,7 @@
             </v-flex>
             <v-flex xs6>
                 <v-card>
-                    <v-card-text class="px-0 text-xs-right pr-3">
+                    <v-card-text class="px-0 text-xs-right pr-3 pt-0 pb-0 ma-0">
                         <v-icon v-if="$global.editor.mode >= 3">fa-code</v-icon>
                         <v-icon v-else>fa-puzzle-piece</v-icon>
                         <span class="caption">

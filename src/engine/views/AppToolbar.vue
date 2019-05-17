@@ -17,21 +17,21 @@
     <!-- dynamic left toolbar -->
     <template v-for="(comp,compName) in toolbars">
       <template v-for="(toobarTarget,tbName) in comp">
-        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>        
+        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
       </template>
     </template>
-    <!-- dynamic left toolbar -->    
-    
+    <!-- dynamic left toolbar -->
+
     <!-- load board package toolbar -->
     <v-divider class="mx-1" inset vertical></v-divider>
     <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in (boardToolbar())[packageName]">        
+      <template v-for="(comp,index) in (boardToolbar())[packageName]">
         <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
       </template>
     </template>
 
     <v-spacer></v-spacer>
-    
+
     <template v-for="(comp,compName) in actionbar">
       <template v-for="(toobarTarget,tbName) in comp">
         <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
@@ -39,10 +39,10 @@
     </template>
 
     <v-divider class="mx-1" inset vertical></v-divider>
-    
+
     <!-- load board package actionbar -->
     <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in (boardActionbar())[packageName]">        
+      <template v-for="(comp,index) in (boardActionbar())[packageName]">
         <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
       </template>
     </template>

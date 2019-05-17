@@ -200,7 +200,7 @@
                                                                     small
                                                                     color="primary"
                                                                     @click.stop=""
-                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
+                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')),examples.name+'_'+example.name)">
                                                                 <v-icon>fa-puzzle-piece</v-icon>
                                                                 &nbsp;&nbsp;Open Block
                                                             </v-btn>
@@ -209,7 +209,7 @@
                                                                     small
                                                                     color="primary"
                                                                     @click.stop=""
-                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
+                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')),examples.name+'_'+example.name)">
                                                                 <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
                                                             </v-btn>
                                                         </v-flex>
@@ -334,7 +334,7 @@
         }
         return false;
       },
-      openBlock(file) {
+      openBlock(file,exampleInfo) {
         let win = new remote.BrowserWindow({
                                              width: 800,
                                              height: 600,
@@ -347,8 +347,10 @@
         //"http://localhost:8080/#/editor?persistance=false&mode=1&file=file
         win.loadURL(`${document.location.href}?persistence=false&mode=1&file=${file}`);
         win.show();
+        //--tracking--//
+        this.$track.event("examples", "open", {evLabel: exampleInfo+"_block", evValue: 1, clientID : this.$track.clientID});
       },
-      openCode(file) {
+      openCode(file,exampleInfo) {
         let win = new remote.BrowserWindow({
                                              width: 800,
                                              height: 600,
@@ -361,6 +363,8 @@
         //"http://localhost:8080/#/editor?persistance=false&mode=3&file=file
         win.loadURL(`${document.location.href}?persistence=false&mode=3&file=${file}`);
         win.show();
+        //--tracking--//
+        this.$track.event("examples", "open", {evLabel: exampleInfo+"_code", evValue: 1,clientID : this.$track.clientID});
       },
     },
     watch: {

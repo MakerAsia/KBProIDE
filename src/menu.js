@@ -148,6 +148,10 @@ const template = [
         label: 'About',
         click () { shell.openExternal('https://www.kbide.org/about'); }
       },
+      {
+        label: 'IDE Tour',
+        click () { BrowserWindow.getFocusedWindow().webContents.send('help-tour'); }
+      },
       { type: 'separator' },
       {
         label: 'Update',
