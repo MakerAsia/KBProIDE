@@ -298,7 +298,7 @@
           this.$global.$emit("board-change", this.$global.board.board_info);
           this.$global.$emit("editor-mode-change", this.$global.editor.mode);
           //--tracking--//
-          this.$track.event("board", "change", {evLabel: boardname, evValue: 1,clientID : this.$track.clientID});
+          this.$track.event("board", "change", {evLabel: boardname, evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
         }
       },
       isOnline() {
@@ -370,7 +370,7 @@
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID });
+            mother.$track.event("board", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
           }).catch(err => {
             this.statusText = `Error : ${err}`;
             b.status = "ERROR";
@@ -392,7 +392,7 @@
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "remove", { evLabel: board, evValue: 1, clientID : this.$track.clientID });
+            mother.$track.event("board", "remove", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
           }).catch(err => {
             console.log("Error : cannot remove board");
             console.log(err);
@@ -434,7 +434,7 @@
                 this.listAllBoard();
               }, 1000);
               //--tracking--//
-              mother.$track.event("board", "update", { evLabel: board, evValue: 1, clientID : this.$track.clientID });
+              mother.$track.event("board", "update", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
             });
           }).catch(err => {
             this.statusText = `Error : ${err}`;

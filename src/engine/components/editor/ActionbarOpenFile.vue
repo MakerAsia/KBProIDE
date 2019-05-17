@@ -55,7 +55,7 @@
               this.$global.editor.blockCode = text;
               this.$global.$emit("editor-mode-change", this.$global.editor.mode);
               //--track--//
-              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1, clientID : this.$track.clientID});
+              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1, clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
             }
           }
         } else {
@@ -80,7 +80,7 @@
               this.$global.editor.sourceCode = fs.readFileSync(file, "utf8");
               //this.$global.$emit('editor-mode-change',this.$global.editor.mode);
               //--track--//
-              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1});
+              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1}).catch(err=>{ console.log(err)});
             }
           }
         }
