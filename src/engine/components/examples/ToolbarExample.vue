@@ -20,67 +20,7 @@
                         </v-subheader>
 
                         <div>
-                            <v-list>
-                                <v-list-group
-                                        v-for="(item,index) in platformExample"
-                                        :key="index"
-                                >
-                                    <template v-slot:activator>
-                                        <v-list-tile
-                                                avatar
-                                                @click=""
-                                        >
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
-                                        </v-list-tile>
-                                    </template>
-
-                                    <v-expansion-panel popout>
-                                        <v-expansion-panel-content
-                                                v-for="(example,index) in item.examples"
-                                                :key="index"
-                                        >
-                                            <template v-slot:header>
-                                                <div>
-                                                    <v-layout row wrap align-center>
-                                                        <v-flex xs12 sm3>
-                                                            <v-icon>fa-play</v-icon>&nbsp;&nbsp;{{example.name}}
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.bly'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
-                                                                <v-icon>fa-puzzle-piece</v-icon>
-                                                                &nbsp;&nbsp;Open Block
-                                                            </v-btn>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.ino'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
-                                                                <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
-                                                            </v-btn>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </div>
-                                            </template>
-                                            <v-card>
-                                                <v-card-text v-if="example.files.find(obj=>obj.endsWith('.md'))">
-                                                    <div class="vue-markdown">
-                                                        <vue-markdown v-on:rendered="editTag">{{getMarkdown(example)}}
-                                                        </vue-markdown>
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
-                                </v-list-group>
-                            </v-list>
+                            <tree-menu :nodes="platformExample" v-on:open="openExample"></tree-menu>
                         </div>
 
                         <v-divider></v-divider>
@@ -89,67 +29,7 @@
                             Board Examples
                         </v-subheader>
                         <div>
-                            <v-list>
-                                <v-list-group
-                                        v-for="(item,index) in boardExample"
-                                        :key="index"
-                                >
-                                    <template v-slot:activator>
-                                        <v-list-tile
-                                                avatar
-                                                @click=""
-                                        >
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
-                                        </v-list-tile>
-                                    </template>
 
-                                    <v-expansion-panel popout>
-                                        <v-expansion-panel-content
-                                                v-for="(example,index) in item.examples"
-                                                :key="index"
-                                        >
-                                            <template v-slot:header>
-                                                <div>
-                                                    <v-layout row wrap align-center>
-                                                        <v-flex xs12 sm3>
-                                                            <v-icon>fa-play</v-icon>&nbsp;&nbsp;{{example.name}}
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.bly'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
-                                                                <v-icon>fa-puzzle-piece</v-icon>
-                                                                &nbsp;&nbsp;Open Block
-                                                            </v-btn>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.ino'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
-                                                                <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
-                                                            </v-btn>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </div>
-                                            </template>
-                                            <v-card>
-                                                <v-card-text v-if="example.files.find(obj=>obj.endsWith('.md'))">
-                                                    <div class="vue-markdown">
-                                                        <vue-markdown v-on:rendered="editTag">{{getMarkdown(example)}}
-                                                        </vue-markdown>
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
-                                </v-list-group>
-                            </v-list>
                         </div>
 
                         <v-divider></v-divider>
@@ -241,100 +121,68 @@
 </template>
 
 <script>
-  import VueMarkdown from "vue-markdown";
   import {remote} from "electron";
-    import util from "@/engine/utils";
+  import util from "@/engine/utils";
+  import TreeMenu from "@/engine/views/widgets/list/TreeMenu";
+
   let mother = null;
   const fs = require("fs");
   const path = require("path");
   export default {
     name: "example-dialog",
     components: {
-      "vue-markdown": VueMarkdown,
+      "tree-menu": TreeMenu,
     },
     data() {
       return {
         exampleDialog: false,
         searchText: "",
-        platformExample : [],
-        boardExample : [],
-        pluginInfo : this.$global.plugin.pluginInfo.categories,
+        platformExample: [],
+        boardExample: [],
+        pluginInfo: this.$global.plugin.pluginInfo.categories,
       };
     },
     created() {
       mother = this;
     },
+    mounted() {
+
+    },
     methods: {
-      listExample(targetDir){
+      createMenu(root, dir) {
         let res = [];
-        if(fs.existsSync(targetDir)){
-          let examples = fs.readdirSync(targetDir);
-          examples.forEach(exampleName => {
-            let exampleDirName = `${targetDir}/${exampleName}`;
-            if(fs.statSync(exampleDirName).isDirectory()){ //level 1 example/filesystem
-              let dirContent = fs.readdirSync(exampleDirName);
-              let insideContent = [];
-              dirContent.forEach(contentExample =>{
-                let fullContentDir = `${exampleDirName}/${contentExample}`; //level 2 example/filesyemte/01-example
-                if(fs.statSync(fullContentDir).isDirectory()){
-                  insideContent.push({
-                                        name : contentExample,
-                                        dir : fullContentDir,
-                                        files : fs.readdirSync(fullContentDir)
-                                     });
-                }
-              });
-              res.push({
-                         name: exampleName,
-                         dir: targetDir,
-                         examples: insideContent,
-                       });
-            }
-          });
+        let fullPath = `${root}/${dir}`;
+        if (!fs.existsSync(fullPath)) {
+          return res;
         }
-        return res;
-      },
-      listPlatformExample(){
-        let platformExampleDir = `${util.platformDir}/${this.$global.board.board_info.platform}/examples`;
-        return this.listExample(platformExampleDir);
-      },
-      listBoardExample(){
-        let boardExampleDir = `${util.boardDir}/${this.$global.board.board_info.name}/examples`;
-        console.log(boardExampleDir);
-        return this.listExample(boardExampleDir);
-      },
-      getMarkdown(files) {
-        let mdFile = files.files.find(obj => obj.endsWith(".md"));
-        return mdFile && fs.readFileSync(files.dir + "/" + mdFile, "utf8");
-      },
-      editTag() {
-        if (document.readyState !== "complete") {
-          document.addEventListener("DOMContentLoaded", function() {
-            mother.prepareTags();
-          }, false);
+        let examples = fs.readdirSync(fullPath);
+        if (examples.find(el => el.endsWith(".md") || el.endsWith(".ino") || el.endsWith(".bly"))) {
+          return examples;
         } else {
-          mother.prepareTags();
-        }
-      },
-      prepareTags() {
-        let markdowns = document.getElementsByClassName("vue-markdown");
-        for (let inx = 0; inx < markdowns.length; inx++) {
-          let markdownSection = markdowns.item(inx);
-          let aTags = markdownSection.getElementsByTagName("a");
-          if (aTags && aTags.length > 0) {
-            for (let i = 0; i < aTags.length; i++) {
-              let originalHref = aTags.item(i).href.slice(0);
-              if (originalHref.indexOf("#") < 0) {
-                //console.log(originalHref);
-                aTags[i].setAttribute("onclick", "require('electron').shell.openExternal('" + originalHref + "')");
-                aTags[i].href = "#";
-              }
+          for (let i in examples) {
+            let name = examples[i];
+            let fullDir = `${fullPath}/${name}`;
+            if (fs.statSync(fullDir).isDirectory()) {
+              let rRes = mother.createMenu(fullPath, name);
+              res.push({
+                         title: name,
+                         dir: fullDir,
+                         examples: rRes,
+                       });
             }
           }
         }
-        return false;
+        return res;
       },
-      openBlock(file,exampleInfo) {
+      listPlatformExample() {
+        let platformExampleDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
+        return this.createMenu(platformExampleDir, "examples");
+      },
+      listBoardExample() {
+        let boardExampleDir = `${util.boardDir}/${this.$global.board.board_info.name}`;
+        return this.createMenu(boardExampleDir, "examples");
+      },
+      openExample(type,file){
         let win = new remote.BrowserWindow({
                                              width: 800,
                                              height: 600,
@@ -345,36 +193,29 @@
                                            });
         win.on("close", function() { win = null; });
         //"http://localhost:8080/#/editor?persistance=false&mode=1&file=file
-        win.loadURL(`${document.location.href}?persistence=false&mode=1&file=${file}`);
+        let mode = type === "block" ? "1" : "3";
+        win.loadURL(`${document.location.href}?persistence=false&mode=${mode}&file=${file}`);
         win.show();
         //--tracking--//
-        this.$track.event("examples", "open", {evLabel: exampleInfo+"_block", evValue: 1, clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
-      },
-      openCode(file,exampleInfo) {
-        let win = new remote.BrowserWindow({
-                                             width: 800,
-                                             height: 600,
-                                             icon: path.join(__static, "icon.png"),
-                                             webPreferences: { //TODO check here!
-                                               webSecurity: false,
-                                             },
-                                           });
-        win.on("close", function() { win = null; });
-        //"http://localhost:8080/#/editor?persistance=false&mode=3&file=file
-        win.loadURL(`${document.location.href}?persistence=false&mode=3&file=${file}`);
-        win.show();
-        //--tracking--//
-        this.$track.event("examples", "open", {evLabel: exampleInfo+"_code", evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
-      },
+        //this.$track.event("examples", "open",
+        //                  {evLabel: exampleInfo + "_code", evValue: 1, clientID: this.$track.clientID}).
+        //catch(err => { console.log(err);});
+      }
     },
     watch: {
       exampleDialog: function(value) {
         if (value) {
           this.pluginInfo = this.$global.plugin.pluginInfo.categories;
-          this.boardExample = this.listBoardExample();
           this.platformExample = this.listPlatformExample();
+          this.boardExample = this.listBoardExample();
         }
       },
     },
   };
 </script>
+<style>
+    .v-list__group__items {
+        background-color: #DDD;
+        padding-left: 20px;
+    }
+</style>
