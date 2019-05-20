@@ -44,7 +44,7 @@ Vue.prototype.$track = analytics;
 //-----bug tracking ------//
 const unhandled = require("electron-unhandled");
 const {openNewGitHubIssue, debugInfo} = require("electron-util");
-/*
+
 unhandled({
             reportButton: error => {
               Vue.prototype.$db.collection("bugs").add(
@@ -62,7 +62,7 @@ unhandled({
             },
             showDialog : true
           });
-*/
+
 //----------Tour--------------//
 import VueTour from "vue-tour";
 Vue.use(VueTour);

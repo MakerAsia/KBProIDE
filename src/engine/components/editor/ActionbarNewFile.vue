@@ -21,9 +21,10 @@ export default {
         newFile : async function(){
             if(this.$global.editor.mode < 3){
                 var blockCode = this.$global.editor.blockCode;
-                let rexEmptyBlock = /<xml.*?><variables><\/variables><block type="arduino_init\".*?><\/block><block type="arduino_loop\".*?><\/block><\/xml>/g;
-                if(blockCode == "" || 
-                blockCode == '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables></xml>' ||
+                //console.log(blockCode);
+                let rexEmptyBlock = /<xml.*?><variables><\/variables><block type="arduino_init\".*?><\/block><block type="arduino_loop\" id=\".*?\" x=\".*?\" y=\".*?\"><\/block><\/xml>/g;
+                if(blockCode === "" ||
+                blockCode === '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables></xml>' ||
                 rexEmptyBlock.test(blockCode)){ //it empty workspace
                     this.$global.ui.snackbar("Workspace already empty.");
                 }else{ //non-empty workspace

@@ -12,7 +12,7 @@
   const electron = require("electron");
   const fs = require("fs");
   import util from "@/engine/utils";
-
+  const path = require("path");
   export default {
     data() {
       return {
