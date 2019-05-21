@@ -15,7 +15,7 @@
                 <v-divider></v-divider>
                 <smooth-scrollbar>
                     <v-card-text>
-                        <v-subheader>
+                        <v-subheader class="title">
                             Platform Examples
                         </v-subheader>
 
@@ -25,11 +25,11 @@
 
                         <v-divider></v-divider>
 
-                        <v-subheader>
+                        <v-subheader class="title">
                             Board Examples
                         </v-subheader>
                         <div>
-
+                            <tree-menu :nodes="boardExample" v-on:open="openExample"></tree-menu>
                         </div>
 
                         <v-divider></v-divider>
