@@ -38,7 +38,7 @@ export default {
                     });
                     if(res){
                         this.$global.editor.blockCode = "";
-                        this.$global.$emit('editor-mode-change',this.$global.editor.mode);
+                        this.$global.$emit('editor-mode-change',this.$global.editor.mode); //mode 1 no need to convert code
                     }
                 }
             }else{
@@ -48,12 +48,16 @@ export default {
                     actions : [
                         { text : 'Cancel', key : false },
                         { text : 'Clear' , key : true},
-                        { text : 'Convert Block' ,key : 'convert'}
+                        { text : 'Convert from Block' ,key : 'convert'}
                     ]
                 });
+
                 if(res){
-                    this.$global.editor.sourceCode = "";
-                    this.$global.$emit('editor-mode-change',this.$global.editor.mode,res === 'convert');
+                    if(res === "convert"){
+                      this.$global.$emit('editor-mode-change',this.$global.editor.mode,true);
+                    }else{
+                      this.$global.$emit('editor-mode-change',this.$global.editor.mode,false,true); //dont convert just create new
+                    }
                 }
             }
         }

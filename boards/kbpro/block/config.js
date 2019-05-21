@@ -355,6 +355,16 @@ module.exports = {
                         </value>
                     </block>`
                 },
+                {
+                    xml :
+                        `<block type="time_delay_microsec">
+                        <value name="delay">
+                            <shadow type="math_number">
+                                <field name="NUM">1000</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                },
                 'time_wait_btn_press',
                 'time_sync',
                 'time_get_year',

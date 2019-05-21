@@ -387,7 +387,7 @@ export default {
         //---- render editor fontsize
         this.onEditorFontsizeChange(this.$global.editor.fontSize);
         //---- render editor mode change
-        this.onEditorModeChange(this.$global.editor.mode);
+        this.onEditorModeChange(this.$global.editor.mode,false);
         //---- load code ----//
         this.$global.editor.Blockly = Blockly;
         this.$global.editor.workspace = this.workspace;
@@ -422,20 +422,20 @@ export default {
                 cm.setOption("theme", value);
             }
         },
-        onEditorModeChange(mode,convert = true){
+        onEditorModeChange(mode,convert = false,create_new = false){
             if(mode < 3){
                 var xml = '';
-                if(this.$global.editor.blockCode != '' &&
-                   this.$global.editor.blockCode != '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables></xml>'){
-                        var text = this.$global.editor.blockCode;
+                if(myself.$global.editor.blockCode !== "" &&
+                    myself.$global.editor.blockCode !== '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables></xml>'){
+                        var text = myself.$global.editor.blockCode;
                         xml = Blockly.Xml.textToDom(text);                    
                 }else{
-                    var blocks = loadBlock(this.$global.board.board);
+                    var blocks = loadBlock(myself.$global.board.board);
                     if(blocks.initial_blocks){
                         xml = Blockly.Xml.textToDom(blocks.initial_blocks);     
                     }
                 }
-                this.workspace.clear();
+                myself.workspace.clear();
                 Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
                 setTimeout(() => {
                     Blockly.svgResize(this.workspace);
@@ -444,15 +444,21 @@ export default {
                 //------ generate template here ------//                
                 const boardDirectory = `${util.boardDir}/${this.$global.board.board}`;
                 const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
+                let codegen = null;
                 if(fs.existsSync(`${boardDirectory}/codegen.js`)){
-                    var codegen = util.requireFunc(`${boardDirectory}/codegen`);
+                    codegen = util.requireFunc(`${boardDirectory}/codegen`);
                 }else{
-                    var codegen = util.requireFunc(`${platformDir}/codegen`);
+                    codegen = util.requireFunc(`${platformDir}/codegen`);
                 }
-                //passing empty string if won't convert
-                var {sourceCode,codeContext} = codegen.generate(convert?this.$global.editor.rawCode : "");
-                if(global.config.mode !== 3){
-                  this.$global.editor.sourceCode = sourceCode;
+                if(convert){
+                  const respCode = codegen.generate(this.$global.editor.rawCode);
+                  myself.$global.editor.sourceCode = respCode.sourceCode;
+                }else if(create_new) {
+                  const codeRes = codegen.generate("");
+                  myself.$global.editor.sourceCode = codeRes.sourceCode;
+                }else{
+                    //if user not convert just switch and leave create new (เอาไว้ให้ user กด new เองค่ะ
+                    //this.$global.editor.sourceCode = this.$global.editor.sourceCode;
                 }
             }
             if('cm' in this.$refs){

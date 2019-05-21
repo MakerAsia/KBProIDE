@@ -119,16 +119,20 @@
                                                    title: "Warning",
                                                    actions: [
                                                      {text: "Cancel", key: false},
-                                                     {text: "Create new", key: true},
                                                      {text: "Clear & Convert", key: "convert"},
+                                                     {text: "Just switch", key: true}
                                                    ],
                                                  });
-          if (res === true || res === "convert") {
+
+          if(res === "convert"){ //convert from block
             this.$global.editor.mode = mode;
-            this.$global.editor.sourceCode = "";
-            //this.$global.$emit('editor-mode-change',this.$global.editor.mode,res === 'convert');
             this.$nextTick(function() { //wait for element changed before fire event
-              this.$global.$emit("editor-mode-change", mode, res === "convert");
+              this.$global.$emit("editor-mode-change", mode, true);
+            });
+          }else if(res === true){ //just switch
+            this.$global.editor.mode = mode;
+            this.$nextTick(function() { //wait for element changed before fire event
+              this.$global.$emit("editor-mode-change", mode);
             });
           }
         } else {
