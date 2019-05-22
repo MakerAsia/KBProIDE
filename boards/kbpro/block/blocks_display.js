@@ -76,7 +76,7 @@ module.exports = function(Blockly){
           }, true));
       this.appendDummyInput().appendField("image size 128 x 64");
 
-      this.setOutput(true, "vector<uint8_t>");
+      this.setOutput(true, "std::vector<uint8_t>");
       this.setColour(230);
    this.setTooltip("create image from PNG file (for best quality result please use size within 128x64 pixel otherwise, it'll resize)");
    this.setHelpUrl("");
@@ -86,7 +86,7 @@ module.exports = function(Blockly){
   Blockly.Blocks['i2c128x64_display_image'] = {
     init: function() {
       this.appendValueInput("img")
-          .setCheck("vector<uint8_t>")
+          .setCheck("std::vector<uint8_t>")
           .appendField("draw image");
       this.appendValueInput("x")
           .setCheck("Number")

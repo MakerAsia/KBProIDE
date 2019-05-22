@@ -301,7 +301,7 @@
       },
       skipTour: function() {
         this.firstUseDialog = false;
-
+        this.$global.setting.firstUse = false;
       },
       startTour: function(lang) {
         this.firstUseDialog = false;

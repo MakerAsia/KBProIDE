@@ -8,24 +8,15 @@
 #include "BME280.h"
 #include "BMX055.h"
 #include "BH1745NUC.h"
-#include "KBProTime.h"
-#include "BluetoothSerial.h"
 #include "MusicDefinitions.h"
 #include "XT_DAC_Audio.h"
 
 ${EXTINC}
 
-typedef int Number;
-typedef int Boolean;
-
-using namespace std;
-
 SH1106 display(0x3c, 21, 22);
 BME280 bme280 = BME280();
 BMX055 bmx055;
 BH1745NUC bh1745;
-KBProTime kbprotime;
-BluetoothSerial SerialBT;
 XT_DAC_Audio_Class DacAudio(26,3);
 
 ${VARIABLE}

@@ -40,7 +40,7 @@ module.exports = function(Blockly){
     if(hexStringArr.endsWith(',')){
       hexStringArr = hexStringArr.substring(0,hexStringArr.length - 1);
     }
-    var code = `(vector<uint8_t>{${hexStringArr}})`;
+    var code = `(std::vector<uint8_t>{${hexStringArr}})`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
