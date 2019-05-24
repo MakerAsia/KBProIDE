@@ -68,19 +68,24 @@
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.1",
+    "braces": "^3.0.2",
     "electron": "^4.1.4",
     "electron-builder": "^20.38.5",
     "electron-icon-builder": "^1.0.0",
     "electron-rebuild": "^1.8.4",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "fstream": "^1.0.12",
+    "js-yaml": "^3.13.1",
     "nwjs-builder-phoenix": "^1.15.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "tar": "^4.4.8",
     "vue-cli-plugin-electron-builder": "^1.0.0-rc.11",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.21",
-    "vuetify-loader": "^1.0.5"
+    "vuetify-loader": "^1.0.5",
+    "webpack-bundle-analyzer": "^3.3.2"
   },
   "main": "background.js"
 }
