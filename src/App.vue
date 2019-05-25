@@ -418,10 +418,10 @@
           this.endDialogTitle = TourSteps.endDialog.title.en;
           this.endDialogText = TourSteps.endDialog.content.en;
         }
+        this.$global.setting.firstUse = false;
         this.endDialog = true;
         this.$global.editor.mode = 1;
         this.$global.$emit("editor-mode-change", 1);
-        this.$global.setting.firstUse = false;
       },
     },
   };

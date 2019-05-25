@@ -19,6 +19,7 @@
     "postuninstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.0.1",
     "codemirror": "^5.43.0",
     "codemirror-advanceddialog": "git+https://github.com/comdet/CodeMirror-AdvancedDialog.git",
     "codemirror-revisedsearch": "git+https://github.com/comdet/CodeMirror-RevisedSearch.git",
