@@ -22,8 +22,8 @@ first run CMD as Administrator and install build tool first
 - npm run electron:rebuild
 - npm run electron:rebuild-serial
 
-## Linux (we test on x64)
-- git clone --recursive 
+## Linux Install
+- git clone --recursive https://github.com/MakerAsia/KBProIDE
 - cd KBProIDE 
 - git submodule update
 - sudo npm uninstall -g vue-cli
