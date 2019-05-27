@@ -1,0 +1,372 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="nQfwfD0;Y2^q;:iU;4)O" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">wifi_connect</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="RvfHk:Ft9F7-lvdaO]gK">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="I+/sm/#r(0sM)7L`f55t">
+            <field name="TEXT">connect WiFi ssid</field>
+            <next>
+              <block type="field_input" id="mHmMz;h$yX$,+exz`{|w">
+                <field name="TEXT"></field>
+                <field name="FIELDNAME">ssid</field>
+                <next>
+                  <block type="field_static" id="[|x,il(hHR]8VQ~oZ?k%">
+                    <field name="TEXT">password</field>
+                    <next>
+                      <block type="field_input" id="9[D4;HLaV+Z.u^o}V*n-">
+                        <field name="TEXT"></field>
+                        <field name="FIELDNAME">password</field>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="=oe:*6l9.o78md8B7u9." deletable="false" movable="false">
+        <field name="TEXT">connect WiFi</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Ddq[a@*!]9FngeERu_rp" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="orL!tVW3DgI-y1STM#K}"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="spA-P5#4S_epOGG1ou^0"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="RU].V9;;xXJ*@kp(NS-g">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=",kSQGbNJZm~E3#kKP9*t" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">wifi_http_get</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="._9f}eoi,7Y|e)Ivy%1u">
+        <field name="INPUTNAME">url</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="#p_1vhnPSwCrVr]8!XcE">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="NW3TpBNtQWyuY..f|%)X">
+                <field name="TEXT">http GET url : </field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="Eq[Pl3QAzfv|Je0vaeK?"></shadow>
+          <block type="type_string" id="s#w,Y#VI9rCXDTc_nShh"></block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="73Uui/O4.XBE3Q$Bk?6b" deletable="false" movable="false">
+        <field name="TEXT">send HTTP GET</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="R0h+dm-N5%`]q@,+U}hC" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="z%E8DY0:|G{krD{Nt(b7"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="f]%@jQ?)_HU@gn=6IW]f">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="t`J6*KxGY.6jG%,OeUh$" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">wifi_http_post</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="._9f}eoi,7Y|e)Ivy%1u">
+        <field name="INPUTNAME">url</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_image" id="#p_1vhnPSwCrVr]8!XcE">
+            <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+            <field name="WIDTH">15</field>
+            <field name="HEIGHT">15</field>
+            <field name="ALT">*</field>
+            <field name="FLIP_RTL">FALSE</field>
+            <next>
+              <block type="field_static" id="NW3TpBNtQWyuY..f|%)X">
+                <field name="TEXT">http POST url : </field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="Eq[Pl3QAzfv|Je0vaeK?"></shadow>
+          <block type="type_string" id="s#w,Y#VI9rCXDTc_nShh"></block>
+        </value>
+        <next>
+          <block type="input_value" id="pP7;e;1W#5Cc)l1SrYwl">
+            <field name="INPUTNAME">data</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="3:J|V]oZq##zqyd+%!ZO">
+                <field name="TEXT">data</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="~v#BjN9[`Z{i,jRqivQo"></shadow>
+              <block type="type_string" id="Y,RA{ixf/vWoB%+AH!}m"></block>
+            </value>
+            <next>
+              <block type="input_dummy" id="y!YwD3sGCj]*HFxNtn`i">
+                <field name="ALIGN">LEFT</field>
+                <statement name="FIELDS">
+                  <block type="field_static" id="1+JhN+^TA#$Bg!iDenJd">
+                    <field name="TEXT">content-type</field>
+                    <next>
+                      <block type="field_dropdown" id="O4g+B;=`S$,Tm.X~k`Eb">
+                        <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                        <field name="FIELDNAME">content_type</field>
+                        <field name="USER0">text/html</field>
+                        <field name="CPU0">text/html</field>
+                        <field name="USER1">application/json</field>
+                        <field name="CPU1">application/json</field>
+                        <field name="USER2">application/x-www-form-urlencoded</field>
+                        <field name="CPU2">application/x-www-form-urlencoded</field>
+                        <field name="USER3">application/xml</field>
+                        <field name="CPU3">application/xml</field>
+                        <field name="USER4">multipart/form-data</field>
+                        <field name="CPU4">multipart/form-data</field>
+                        <field name="USER5">text/plain</field>
+                        <field name="CPU5">text/plain</field>
+                        <field name="USER6">text/xml</field>
+                        <field name="CPU6">text/xml</field>
+                        <field name="USER7">image/jpeg</field>
+                        <field name="CPU7">image/jpeg</field>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="QAfvi|HU)id8cW[};9}7" deletable="false" movable="false">
+        <field name="TEXT">sent http POST to server</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="k[x.VbC*ds8(5?f{?Q[i" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="`GL^p|V^I^h5rbXBl[(G"></shadow>
+      <block type="type_string" id="qPzamMKxCA1cumarqiGa"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=".J?`%J9m7Ih^b{*{g#ma">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="dL.+8UF7v*czNT5AeQ-)" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">wifi_start_server</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="M,dK(FAFt]z)9$l3$Sry">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="XxF:iYa8,exU~:t-7O5M">
+            <field name="TEXT">start HTTP server port</field>
+            <next>
+              <block type="field_input" id="O~E@q.nL,9BASvvZmkG~">
+                <field name="TEXT">80</field>
+                <field name="FIELDNAME">port</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=",aqP4b0X+!cp(pFGb.+X" deletable="false" movable="false">
+        <field name="TEXT">start HTTP server</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=".P!}p]n^7L_t!CI%#zYq" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="9f[~q3#n]XKARb7x$^.v"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="9^#727[])PqJA]k$pxM]"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="eI|]yTHWAaR^=9-r1O#p">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Yg(WtDY6gc01Q=00DCEk" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">wifi_server_on</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="6{9M+hBpYP7(K!R4L*a6">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="^@72;d,@Rz-h(+Ia))Jq">
+            <field name="TEXT">server on</field>
+            <next>
+              <block type="field_input" id="[/a-7yb)R]f#|DqGpSu7">
+                <field name="TEXT">/</field>
+                <field name="FIELDNAME">event_name</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_statement" id="ax3!dLZs7=|/zE]I|*h:">
+            <field name="INPUTNAME">event_do</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="gK_R6l!I*z0)Np0Na:Bp"></shadow>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="v$w,P-,S8Ra`D+3YhF)x" deletable="false" movable="false">
+        <field name="TEXT">event when server got event</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=").I{5bGke!VN*y`jQjJT" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="FzHP0A;`(ub`aTD5k}}+"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="m1?/Y_+Cq1uU=zux`a7-"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="7tgSM2bi@s[jXW!p~?jl">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="/{FYiK6no=dE`x47A4(a" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">wifi_get_ip_addr</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="7:s[7`KWLC(0PSZ$3U}`">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="wt*}rW{LT@@MjUx]n1d(">
+            <field name="TEXT">get IP address</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="d/38,MD3q**GOQ{S25ex" deletable="false" movable="false">
+        <field name="TEXT">get client IP address</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="}Vlxvx?0sfZ!FT7LhA|F" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="BLLe?av~zy`-,`/NoC}o"></shadow>
+      <block type="type_string" id="RkIFVl(@7N(@vA~C{l{8"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="dnbw$%*rHuYK(-F,Hy{=">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="3Avp7lED/9`ca$`R+G}/" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">block_wifi_ap</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="zJ_!gwy.`s*u~pMzc1Pa">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="?W?$030OZ`e$mha?oCy}">
+            <field name="TEXT">start WiFi access point name</field>
+            <next>
+              <block type="field_input" id="#^A8%UNmNaCU-((VuhFA">
+                <field name="TEXT">kbpro</field>
+                <field name="FIELDNAME">ssid</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=",@Nx_}d%hl%fhKstmj-5" deletable="false" movable="false">
+        <field name="TEXT">start wifi access point</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="P|kc;)B^}G-{Q|(t8DcA" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="Vi4ET.H6tR6zffjff_#j"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="cV?HVo.8hAM]A5bGX$*t"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Ma|K-+FhFX:{TGv!Fn?2">
+        <mutation colour="#805ba5"></mutation>
+        <field name="HUE">270</field>
+      </block>
+    </value>
+  </block></xml>
