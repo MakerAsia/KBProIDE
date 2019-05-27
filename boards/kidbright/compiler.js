@@ -78,7 +78,7 @@ function compile(rawCode, boardName, config, cb) {
     var {sourceCode, codeContext} = codegen.codeGenerate(rawCode, template,
                                                          config);
     //!fs.existsSync(app_dir) && fs.mkdirSync(app_dir, {recursive: true}); //create app_dir if not existing
-    mkdirp(app_dir);
+    mkdirp.sync(app_dir);
 
     fs.writeFileSync(`${app_dir}/user_app.cpp`, sourceCode, "utf8");
     //--- step 3 load variable and flags ---//
