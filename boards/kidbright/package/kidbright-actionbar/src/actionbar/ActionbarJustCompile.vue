@@ -133,7 +133,6 @@
           resolve({mac: "ff:ff:ff:ff:ff:ff"});
         });
         p.then(boardMac => {
-          console.log("hey.. ", boardMac);
           //this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
           boardName = mac.replace(/:/g, "-");
@@ -151,7 +150,6 @@
           };
 
           let compileCb = (status) => {
-            console.log("hello...");
             this.stepResult["2"].msg = status;
           };
           return boardCompiler.compile(rawCode, boardName, config, compileCb);

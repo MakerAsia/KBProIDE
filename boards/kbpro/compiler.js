@@ -69,7 +69,7 @@ function compile(rawCode, boardName, config, cb) {
     if (fs.existsSync(app_dir)) {
       engine.util.rmdirf(app_dir);
     }
-    mkdirp(app_dir);
+    mkdirp.sync(app_dir);
     //-----------------------------------------------------//
     fs.writeFileSync(`${app_dir}/user_app.cpp`, sourceCode, "utf8");
     //--- step 3 load variable and flags ---//
