@@ -70,8 +70,9 @@ Blockly.Blocks['speaker_music_note'] = {
     init: function() {
       let f = new Blockly.FieldTextInput("HELLO");
       f.onMouseDown_ = (e)=>{
-        Blockly.tts(f.getValue(),function(newNote){
-          f.setValue(newNote.join(" "));
+        Blockly.tts(f.getValue(),function(newWords){
+          f.setValue(newWords.join(" "));
+          f.onMouseDown_ = null;
           f.init();
         });
         return e;

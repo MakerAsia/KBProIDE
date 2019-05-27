@@ -367,6 +367,7 @@ export default {
             }
             myself.$refs.musicNotes.$on('result',function(n){
                 myself.musicDialog = false;
+                myself.$refs.musicNotes.$off('result');
                 cb(n);
             });
             myself.musicDialog = true;
@@ -378,6 +379,7 @@ export default {
           myself.$refs.ttsWords.$on('result',function(n){
             //console.log(n);
             myself.ttsDialog = false;
+            myself.$refs.ttsWords.$off('result');
             cb(n);
           });
           myself.ttsDialog = true;
