@@ -151,7 +151,6 @@
           };
 
           let compileCb = (status) => {
-            console.log("hello...");
             this.stepResult["2"].msg = status;
           };
           return boardCompiler.compile(rawCode, boardName, config, compileCb);
