@@ -15,10 +15,6 @@ var config = require("./config");
 var platformDir = `${engine.util.platformDir}/${config.platform}`;
 var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 
-function is_not_null(val) {
-  return (!((val == null) || (typeof (val) == "undefined")));
-}
-
 function compile(rawCode, boardName, config, cb) {
   return new Promise((resolve, reject) => {
     //--- init ---//
@@ -100,24 +96,21 @@ function compile(rawCode, boardName, config, cb) {
     //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
     engine.util.promiseTimeout(1000).then(() => {
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
-    }).then(() => {
+    }).then(engine.util.promiseTimeout(1000)).
+    then(() => {
       return platformCompiler.archiveProgram(inc_src);
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
-    }).then(() => {
+    }).then(engine.util.promiseTimeout(1000)).
+    then(() => {
       return platformCompiler.linkObject(ldflags, libflags);
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
-    }).then(() => {
+    }).then(engine.util.promiseTimeout(1000)).
+    then(() => {
       return platformCompiler.createBin();
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
-    }).then(() => {
+    }).then(engine.util.promiseTimeout(1000)).
+    then(() => {
       resolve();
     }).catch(msg => {
-      console.log("[kbpro] error msg : " + msg);
+      console.log("[kbpro] error msg : ", msg);
+      msg.kbpro = true;
       reject(msg);
     });
   });
@@ -125,10 +118,8 @@ function compile(rawCode, boardName, config, cb) {
 
 var exp = {};
 Object.assign(exp, platformCompiler);
-Object.assign(exp,
-              {
-                compile,
-              },
-);
+Object.assign(exp, {
+  compile,
+});
 //console.log(exp);
 module.exports = exp;
