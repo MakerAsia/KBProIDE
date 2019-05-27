@@ -95,25 +95,26 @@ function compile(rawCode, boardName, config, cb) {
     inc_src.push(`${app_dir}/user_app.cpp`);
     platformCompiler.setConfig(contextBoard);
 
-    //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
     engine.util.promiseTimeout(1000).then(() => {
-      console.log(`[kbpro] platformCompiler.compileFiles`);
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
-    }).then(engine.util.promiseTimeout(2000)).
-    then(() => {
+    }).then(() => {
+      return engine.util.promiseTimeout(2000);
+    }).then(() => {
       return platformCompiler.archiveProgram(inc_src);
-    }).then(engine.util.promiseTimeout(1000)).
-    then(() => {
+    }).then(() => {
+      return engine.util.promiseTimeout(1000);
+    }).then(() => {
       return platformCompiler.linkObject(ldflags, libflags);
-    }).then(engine.util.promiseTimeout(1000)).
-    then(() => {
+    }).then(() => {
+      return engine.util.promiseTimeout(1000);
+    }).then(() => {
       return platformCompiler.createBin();
-    }).then(engine.util.promiseTimeout(1000)).
-    then(() => {
+    }).then(() => {
+      return engine.util.promiseTimeout(1000);
+    }).then(() => {
       resolve();
     }).catch(msg => {
-      console.log("[kbpro] error msg : ", msg);
-      msg.kbpro = true;
+      console.log("error msg : " + msg);
       reject(msg);
     });
   });
