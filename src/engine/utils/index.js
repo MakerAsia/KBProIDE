@@ -7,6 +7,7 @@ const rootDir = __dirname; // require('electron-root-path').rootPath;
 const os = require("os");
 
 import unzip from "./unzip";
+import compiler from "./compiler";
 
 var baseDir = "";
 console.log("app dirname = " + rootDir);
@@ -271,15 +272,16 @@ export default {
   os: os,
   rootDir: rootDir,
   baseDir: baseDir,
-  componentDir: baseDir + "/components",
+  componentDir: `${baseDir}/components`,
   staticComponentWebpackDir: "./components",
-  pluginDir: baseDir + "/plugins",
-  packageDir: baseDir + "/packages",
-  boardDir: baseDir + "/boards",
-  platformDir: baseDir + "/platforms",
+  pluginDir: `${baseDir}/plugins`,
+  packageDir: `${baseDir}/packages`,
+  boardDir: `${baseDir}/boards`,
+  platformDir: `${baseDir}/platforms`,
   //------- plugin -----//
   vueLoader,
   vueRuntimeComponent,
   //------- zip --------//
   unzip: unzip.unzip,
+  compiler,
 };
