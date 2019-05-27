@@ -133,7 +133,6 @@
           resolve({mac: "ff:ff:ff:ff:ff:ff"});
         });
         p.then(boardMac => {
-          console.log("hey.. ", boardMac);
           //this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
           boardName = mac.replace(/:/g, "-");
