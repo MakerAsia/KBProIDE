@@ -15,16 +15,16 @@ if (process.env.NODE_ENV === "development") {
     baseDir = rootDir + "/../../../../../..";
   } else if (process.platform === "darwin") {
     baseDir = rootDir + "/../../../../../../../..";
-  } else if (process.platform === "linux") { //TODO : didnot defined yet
-    baseDir = rootDir + "/../../../../../../../..";
+  } else if (process.platform === "linux") {
+    baseDir = rootDir + "/../../../../../..";
   }
 } else {
   if (process.platform === "win32") {
     baseDir = rootDir + "/../..";
   } else if (process.platform === "darwin") {
     baseDir = rootDir + "/../..";
-  } else if (process.platform === "linux") { //TODO : didnot defined yet
-    baseDir = rootDir + "/../..";
+  } else if (process.platform === "linux") {
+    baseDir = rootDir + "/..";
   }
 }
 baseDir = path.resolve(baseDir);
