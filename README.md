@@ -23,6 +23,7 @@ first run CMD as Administrator and install build tool first
 - npm run electron:rebuild-serial
 
 ## Linux Install
+- sudo pip install pyserial
 - git clone --recursive https://github.com/MakerAsia/KBProIDE
 - cd KBProIDE 
 - git submodule update

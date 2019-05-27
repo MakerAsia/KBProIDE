@@ -40,6 +40,52 @@ Blockly.Blocks['speaker_music_note'] = {
   }
 };
 
+  Blockly.Blocks['speaker_tts_speak'] = {
+    init: function() {
+      this.appendValueInput("words")
+      .setCheck("std::vector<const uint8_t *>")
+      .appendField("Speak ");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(315);
+      this.setTooltip("speak");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['speaker_tts_speak_number'] = {
+    init: function() {
+      this.appendValueInput("number")
+      .setCheck(["Number","int","float","double","long"])
+      .appendField("Speak number");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(315);
+      this.setTooltip("speak number");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['speaker_tts_word'] = {
+    init: function() {
+      let f = new Blockly.FieldTextInput("HELLO");
+      f.onMouseDown_ = (e)=>{
+        Blockly.tts(f.getValue(),function(newNote){
+          f.setValue(newNote.join(" "));
+          f.init();
+        });
+        return e;
+      };
+      this.appendDummyInput()
+      .appendField(new Blockly.FieldImage("/static/icons/icons8_move_24px.png", 15, 15, "move"))
+      .appendField(f, "words");
+      this.setOutput(true, "std::vector<const uint8_t *>");
+      this.setColour(315);
+      this.setTooltip("create text to speech");
+      this.setHelpUrl("");
+    }
+  };
+
 Blockly.Blocks['speaker_set_volume'] = {
   init: function() {
     this.appendDummyInput()

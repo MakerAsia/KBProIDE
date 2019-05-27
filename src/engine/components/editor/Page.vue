@@ -39,6 +39,9 @@
                 <v-dialog v-model="musicDialog" max-width="785px">
                     <piano-dialog ref="musicNotes" @close="()=>{musicDialog = false}"></piano-dialog>
                 </v-dialog>
+                <v-dialog v-model="ttsDialog" max-width="600px">
+                    <t-t-s-dialog ref="ttsWords" @close="()=>{ttsDialog = false}"></t-t-s-dialog>
+                </v-dialog>
             </div>
             <!-- end --> 
             <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
@@ -95,6 +98,8 @@ import plug from '@/engine/PluginManager';
 // === dialog ===
 import VariableNamingDialog from '@/engine/views/dialog/VariableNamingDialog';
 import PianoDialog from '@/engine/views/dialog/PianoDialog';
+import TTSDialog from '@/engine/views/dialog/TTSDialog';
+
 import { connect } from 'net';
 var renderBlock = function(blocks,level = 1){
     let res = '';
@@ -126,7 +131,7 @@ var renderBlock = function(blocks,level = 1){
                 let objKey = [];
                 Object.keys(element.mutation).forEach(key=>{
                     objKey.push(`${key}="${element.mutation[key]}"`);
-                })
+                });
                 res += `<mutation ${objKey.join(' ')}></mutation>`;
             }else if(typeof(element) === 'object'){
                 let insideBlock = renderBlock(element.blocks,level+1);
@@ -169,7 +174,7 @@ var loadAndRenderPluginsBlock = function(Blockly,boardInfo,pluginInfo)
         catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
-}
+};
 var loadBlock = function(boardName,target){
     //look for board first
     var blockFile = `${util.boardDir}/${boardName}/block/config.js`;    
@@ -221,7 +226,8 @@ export default {
         MultipaneResizer,
         CodeMirror,
         VariableNamingDialog,
-        PianoDialog
+        PianoDialog,
+        TTSDialog
     },
     data(){
      return {
@@ -250,6 +256,7 @@ export default {
             return this.validated || 'Invalid variable name';
         },
         musicDialog : false,
+        ttsDialog : false,
      }
    },
    created(){
@@ -313,7 +320,7 @@ export default {
         Blockly.Msg = Blockly.Msg();
         Blockly.utils.getMessageArray_ = function () {
             return Blockly.Msg
-        }
+        };
         this.toolbox = document.getElementById('toolbox');
         this.workspace = Blockly.inject('blocklyDiv', {
             grid: {
@@ -364,6 +371,17 @@ export default {
             });
             myself.musicDialog = true;
         };
+        Blockly.tts = function(words,cb){
+          if(words){
+            myself.$refs.ttsWords.tags = words.split(" ").map(el => {return {text : el}});
+          }
+          myself.$refs.ttsWords.$on('result',function(n){
+            //console.log(n);
+            myself.ttsDialog = false;
+            cb(n);
+          });
+          myself.ttsDialog = true;
+        };
         console.log('blocly mounted');        
         //---- global event
         this.$global.$on('theme-change',this.onThemeChange);
@@ -372,7 +390,7 @@ export default {
         this.$global.$on('editor-mode-change',this.onEditorModeChange);
         this.$global.$on('editor-theme-change',this.onEditorThemeChange);
         this.$global.$on('editor-fontsize-change',this.onEditorFontsizeChange);
-        if(this.$vuetify.theme.primary == ""){
+        if(this.$vuetify.theme.primary === ""){
             this.$vuetify.theme.primary = '#009688';
         }
         
