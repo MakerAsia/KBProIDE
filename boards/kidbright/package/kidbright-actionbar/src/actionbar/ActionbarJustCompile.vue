@@ -126,13 +126,15 @@
       },
       run() { //find port and mac
         console.log("---> step 1 <---");
-        this.stepResult["1"].msg = "Find KidBright ";
-        boardCompiler.listPort().then(comp => {
-          comport = comp[0];
-          this.stepResult["1"].msg += ` at ${comport}`;
-          return boardCompiler.readMac(comport);
-        }).then(boardMac => {
-          this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
+        this.compileStep = 1;
+        this.stepResult["1"].msg = "Compiling..";
+        //this.stepResult["1"].msg += ` at ${comport}`;
+        const p = new Promise((resolve, rejecf) => {
+          resolve({mac: "ff:ff:ff:ff:ff:ff"});
+        });
+        p.then(boardMac => {
+          console.log("hey.. ", boardMac);
+          //this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
           boardName = mac.replace(/:/g, "-");
           console.log(`[STEP 1] got it boardName = ${boardName} mac = ${mac}`);
@@ -155,6 +157,7 @@
           return boardCompiler.compile(rawCode, boardName, config, compileCb);
         }).then(() => {
           this.stepResult["2"].msg += "done!";
+          this.compileStep = 3;
         }).catch(err => {
           console.log("------ process error ------");
           console.log(err);

@@ -1,4 +1,5 @@
 const codegen = require("./codegen");
+const mkdirp = require("mkdirp");
 const path = require("path");
 const fs = require("fs");
 const log = require("./log");
@@ -76,7 +77,9 @@ function compile(rawCode, boardName, config, cb) {
     var template = fs.readFileSync(`${boardDirectory}/template.c`, "utf8");
     var {sourceCode, codeContext} = codegen.codeGenerate(rawCode, template,
                                                          config);
-    !fs.existsSync(app_dir) && fs.mkdirSync(app_dir, {recursive: true}); //create app_dir if not existing
+    //!fs.existsSync(app_dir) && fs.mkdirSync(app_dir, {recursive: true}); //create app_dir if not existing
+    mkdirp(app_dir);
+
     fs.writeFileSync(`${app_dir}/user_app.cpp`, sourceCode, "utf8");
     //--- step 3 load variable and flags ---//
     var cflags = context.cflags.map(
