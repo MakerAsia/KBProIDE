@@ -117,7 +117,7 @@ function compile(rawCode, boardName, config, cb) {
     }).then(() => {
       resolve();
     }).catch(msg => {
-      console.log("error msg : " + msg);
+      console.log("[kbpro] error msg : " + msg);
       reject(msg);
     });
   });
