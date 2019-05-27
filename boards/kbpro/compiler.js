@@ -16,6 +16,7 @@ var platformDir = `${engine.util.platformDir}/${config.platform}`;
 var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 
 function compile(rawCode, boardName, config, cb) {
+  console.log(`[kbpro] compiler.compile platformDir = ${platformDir}`);
   return new Promise((resolve, reject) => {
     //--- init ---//
     if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
@@ -93,10 +94,12 @@ function compile(rawCode, boardName, config, cb) {
 
     inc_src.push(`${app_dir}/user_app.cpp`);
     platformCompiler.setConfig(contextBoard);
+
     //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
     engine.util.promiseTimeout(1000).then(() => {
+      console.log(`[kbpro] platformCompiler.compileFiles`);
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
-    }).then(engine.util.promiseTimeout(1000)).
+    }).then(engine.util.promiseTimeout(2000)).
     then(() => {
       return platformCompiler.archiveProgram(inc_src);
     }).then(engine.util.promiseTimeout(1000)).
