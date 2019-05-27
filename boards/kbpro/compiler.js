@@ -1,4 +1,5 @@
 const fs = require("fs");
+const mkdirp = require("mkdirp");
 const path = require("path");
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
@@ -68,7 +69,7 @@ function compile(rawCode, boardName, config, cb) {
     if (fs.existsSync(app_dir)) {
       engine.util.rmdirf(app_dir);
     }
-    fs.mkdirSync(app_dir, {recursive: true});
+    mkdirp(app_dir);
     //-----------------------------------------------------//
     fs.writeFileSync(`${app_dir}/user_app.cpp`, sourceCode, "utf8");
     //--- step 3 load variable and flags ---//
