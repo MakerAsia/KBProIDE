@@ -14,7 +14,7 @@
 class KB_TFT
 {
  public:
-  void tftBegin(void);
+  void begin(void);
   void printText(int x, int y, String text, int color);
   void setTextSize(int size);
   void fillScreen(int color);
