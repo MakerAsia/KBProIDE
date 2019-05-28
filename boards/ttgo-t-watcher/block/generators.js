@@ -35,6 +35,11 @@ Blockly.JavaScript['basic_led16x8'] = function(block) {
 Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
 	var code = 'matrix.printText(0, 0, " ");\n';
 	return code;
+};
+
+Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
+	var code = 'matrix.printText(0, 0, " ");\n';
+	return code;
 	//return 'ht16k33.show((uint8_t *)"\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0");\n';
 };
 
