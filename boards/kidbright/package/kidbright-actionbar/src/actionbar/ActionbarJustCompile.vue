@@ -172,6 +172,7 @@
             }
           }).catch(errors => {
             console.log("errors", errors);
+            //G.$emit("compiler-error", errors);
           });
           this.failed = true;
         });

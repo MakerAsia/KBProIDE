@@ -117,7 +117,11 @@ function compile(rawCode, boardName, config, cb) {
     }).then(() => {
       resolve();
     }).catch(msg => {
-      console.log("error msg : " + msg);
+      //console.log("error msg : " + msg);
+      if (msg.error)
+        console.error("[ttgo-t1 compiler.js] ", msg.error.stderr);
+      else
+        console.error(`unknown error`);
       reject(msg);
     });
   });
