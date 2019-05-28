@@ -135,7 +135,7 @@
         boardCompiler.listPort().then(comp => {
           comport = comp[0];
           this.stepResult["1"].msg += ` at ${comport}`;
-          return boardCompiler.readMac(comport);
+          return boardCompiler.readMac({portName: comport});
         }).then(boardMac => {
           this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
@@ -175,7 +175,7 @@
             this.stepResult["1"].msg = "Cannot find KidBright : " + err;
             this.stepResult["1"].result = false;
           } else if (this.compileStep == 2) {
-            this.stepResult["2"].msg = "Compile error : " + err;
+            this.stepResult["2"].msg = "Compile error : "  err;
             this.stepResult["2"].result = false;
           } else if (this.compileStep == 3) {
             this.stepResult["3"].msg = "Cannot upload program : " + err;

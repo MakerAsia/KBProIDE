@@ -8,7 +8,7 @@ export default {
         map(v => v.split("user_app.cpp:")[1]);
         setTimeout(() => {
           resolve(errors);
-        }, 500);
+        }, 1000);
       } else {
         reject(`no err.error`, err);
       }
