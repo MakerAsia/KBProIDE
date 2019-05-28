@@ -14,7 +14,6 @@ export default {
             mode : '',
             text : 'Hello I\'m sneakbar',
         },
-        bottomPanel : false,        
         rightDrawerComponent : false,
         leftDrawerComponent : false,
         /* tab */
