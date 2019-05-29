@@ -48,23 +48,25 @@ const {openNewGitHubIssue, debugInfo} = require("electron-util");
 unhandled({
             reportButton: error => {
               Vue.prototype.$db.collection("bugs").add(
-                                    {
-                                      stack : error.stack,
-                                      info : debugInfo(),
-                                      date : new Date(),
-                                      mode : Vue.prototype.$global.editor.mode,
-                                      //code : Vue.prototype.$global.editor.sourceCode,
-                                      //block : Vue.prototype.$global.editor.blockCode,
-                                      board : Vue.prototype.$global.board.board_info.name,
-                                      //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
-                                 });
-              Vue.prototype.$dialog.notify.info("Thank you ... to help us improve ^^");
+                  {
+                    stack: error.stack,
+                    info: debugInfo(),
+                    date: new Date(),
+                    mode: Vue.prototype.$global.editor.mode,
+                    //code : Vue.prototype.$global.editor.sourceCode,
+                    //block : Vue.prototype.$global.editor.blockCode,
+                    board: Vue.prototype.$global.board.board_info.name,
+                    //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
+                  });
+              Vue.prototype.$dialog.notify.info(
+                  "Thank you ... to help us improve ^^");
             },
-            showDialog : true
+            showDialog: true,
           });
 
 //----------Tour--------------//
 import VueTour from "vue-tour";
+
 Vue.use(VueTour);
 
 //---- load data to global variable ----//
@@ -211,9 +213,7 @@ var engineData = {
   platformManager: pfm,
   uiManager: ui,
 };
-Vue.prototype.$engine = new Vue({
-                                  data: engineData,
-                                });
+Vue.prototype.$engine = new Vue({data: engineData});
 //=======================================================//
 new Vue({
           router,

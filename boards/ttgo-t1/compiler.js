@@ -101,7 +101,7 @@ function compile(rawCode, boardName, config, cb) {
     engine.util.promiseTimeout(1000).then(() => {
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
     }).then(() => {
-      return engine.util.promiseTimeout(1000);
+      return engine.util.promiseTimeout(2000);
     }).then(() => {
       return platformCompiler.archiveProgram(inc_src);
     }).then(() => {
@@ -117,7 +117,11 @@ function compile(rawCode, boardName, config, cb) {
     }).then(() => {
       resolve();
     }).catch(msg => {
-      console.log("error msg : " + msg);
+      //console.log("error msg : " + msg);
+      if (msg.error)
+        console.error("[ttgo-t1 compiler.js] ", msg.error.stderr);
+      else
+        console.error(`unknown error`);
       reject(msg);
     });
   });

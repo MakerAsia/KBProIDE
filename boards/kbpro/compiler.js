@@ -15,11 +15,8 @@ var config = require("./config");
 var platformDir = `${engine.util.platformDir}/${config.platform}`;
 var platformCompiler = engine.util.requireFunc(`${platformDir}/compiler`);
 
-function is_not_null(val) {
-  return (!((val == null) || (typeof (val) == "undefined")));
-}
-
 function compile(rawCode, boardName, config, cb) {
+  console.log(`[kbpro] compiler.compile platformDir = ${platformDir}`);
   return new Promise((resolve, reject) => {
     //--- init ---//
     if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
@@ -97,11 +94,11 @@ function compile(rawCode, boardName, config, cb) {
 
     inc_src.push(`${app_dir}/user_app.cpp`);
     platformCompiler.setConfig(contextBoard);
-    //(sources, boardCppOptions, boardcflags, plugins_includes_switch -Ixxx/xxx)
+
     engine.util.promiseTimeout(1000).then(() => {
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
     }).then(() => {
-      return engine.util.promiseTimeout(1000);
+      return engine.util.promiseTimeout(2000);
     }).then(() => {
       return platformCompiler.archiveProgram(inc_src);
     }).then(() => {
@@ -117,7 +114,7 @@ function compile(rawCode, boardName, config, cb) {
     }).then(() => {
       resolve();
     }).catch(msg => {
-      console.log("[kbpro] error msg : " + msg);
+      console.log("error msg : " + msg);
       reject(msg);
     });
   });
@@ -125,10 +122,8 @@ function compile(rawCode, boardName, config, cb) {
 
 var exp = {};
 Object.assign(exp, platformCompiler);
-Object.assign(exp,
-              {
-                compile,
-              },
-);
+Object.assign(exp, {
+  compile,
+});
 //console.log(exp);
 module.exports = exp;

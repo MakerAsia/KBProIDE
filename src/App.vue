@@ -53,7 +53,7 @@
                             <multipane-resizer v-if="$global.ui.bottomTab.length > 0"></multipane-resizer>
 
                             <!--lower pane -->
-                            <div :style="[{ flexGrow: 1 }, ($global.ui.rightTab.length > 0 ? ({'min-width':'15%'}) : ({}))]"
+                            <div class="bottom-tab" :style="[{ flexGrow: 1 }, ($global.ui.rightTab.length > 0 ? ({'min-width':'15%'}) : ({}))]"
                                  v-if="$global.ui.bottomTab.length > 0">
                                 <v-tabs color="primary" dark slider-color="yellow" v-model="bottomTabModel">
                                     <draggable :options="{group: 'tab-group'}" class="v-tabs__container"
@@ -481,13 +481,14 @@
     .v-tabs__slider {
         height: 4px !important;
     }
-
 </style>
 <style>
     .v-step {
         z-index: 99999 !important;
     }
-
+    .bottom-tab .v-tabs__container {
+        height: 26px !important;
+    }
     .v-tour-highlight {
         pointer-events: none !important;
     }
