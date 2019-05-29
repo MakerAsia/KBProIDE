@@ -1,4 +1,4 @@
-ILI9341_BLACK/*!
+/*!
 * @file Adafruit_ILI9341.h
 *
 * This is the documentation for Adafruit's ILI9341 driver for the

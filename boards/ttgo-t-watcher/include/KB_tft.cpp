@@ -1,9 +1,9 @@
 #include "KB_tft.h"
 
-
 void KB_TFT::begin(void) {
     pinMode(T4_TFT_BL, OUTPUT);
     digitalWrite(T4_TFT_BL, HIGH);
+    
     tft.begin();
     tft.fillScreen(ILI9341_BLACK);
     tft.setTextColor(ILI9341_WHITE);

@@ -10,6 +10,7 @@ Blockly.JavaScript.resetTaskNumber = function(block) {
 // =============================================================================
 // basic
 // =============================================================================
+
 Blockly.JavaScript['basic_led16x8'] = function(block) {
 	var buf = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
 	for (var x = 0; x < 16; x++) {
@@ -32,15 +33,10 @@ Blockly.JavaScript['basic_led16x8'] = function(block) {
 	return 'matrix.printText(0, 0, " ");\n';
 };
 
-Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
-	var code = 'matrix.printText(0, 0, " ");\n';
-	return code;
-};
 
 Blockly.JavaScript['basic_led16x8_clr'] = function(block) {
 	var code = 'matrix.printText(0, 0, " ");\n';
 	return code;
-	//return 'ht16k33.show((uint8_t *)"\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0\\x0");\n';
 };
 
 Blockly.JavaScript['basic_led16x8_2chars'] = function(block) {
@@ -79,6 +75,27 @@ Blockly.JavaScript['basic_string'] = function(block) {
 		'(char *)"' + block.getFieldValue('VALUE') + '"',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
+};
+
+Blockly.JavaScript['basic_TFT_setRotation'] = function(block) {
+	var code = 'display.setRotation('+block.getFieldValue('rotation')+');\n';
+	return code;
+};
+
+Blockly.JavaScript['basic_TFT_fillScreen'] = function(block) {
+	var code = 'display.fillScreen('+block.getFieldValue('COLOR')+');\n';
+	return code;
+};
+
+Blockly.JavaScript['basic_TFT_setTextSize'] = function(block) {
+	var code = 'display.setTextSize('+block.getFieldValue('textSize')+');\n';
+	return code;
+};
+
+Blockly.JavaScript['basic_TFT_print'] = function(block) {
+	var argument = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
+	var code = 'display.printText('+block.getFieldValue('X')+', '+block.getFieldValue('Y')+', String('+argument+'), '+block.getFieldValue('COLOR')+');\n';
+	return code;
 };
 
 // =============================================================================
@@ -378,17 +395,21 @@ Blockly.JavaScript['sensor_ldr'] = function(block) {
 };
 
 Blockly.JavaScript['sensor_switch1'] = function(block) {
-	return [ '((int)digitalRead(KB_BUTTON1))',
-		// 'button12.sw1_get()',
+	return [ '((int)digitalRead(T4_BUTTON1))',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
 
 Blockly.JavaScript['sensor_switch2'] = function(block) {
-	return [ '((int)digitalRead(KB_BUTTON2))',
-		// 'button12.sw2_get()',
-		Blockly.JavaScript.ORDER_ATOMIC
+	return [ '((int)digitalRead(T4_BUTTON2))',
+        Blockly.JavaScript.ORDER_ATOMIC
 	];
+};
+
+Blockly.JavaScript['sensor_switch3'] = function(block) {
+    return [ '((int)digitalRead(T4_BUTTON3))',
+        Blockly.JavaScript.ORDER_ATOMIC
+    ];
 };
 
 // =============================================================================

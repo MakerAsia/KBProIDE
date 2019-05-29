@@ -6,13 +6,17 @@ module.exports = {
             color : '230',
             icon : '/static/icons/SVG/c1.svg',
             blocks : [
-                'basic_led16x8',
-                'basic_led16x8_clr',
-                'basic_led16x8_2chars',
-                'basic_led16x8_scroll',
-                'basic_led16x8_scroll_when_ready',
-                'basic_delay',
+                // 'basic_led16x8',
+                // 'basic_led16x8_clr',
+                // 'basic_led16x8_2chars',
+                // 'basic_led16x8_scroll',
+                // 'basic_led16x8_scroll_when_ready',
+                'basic_TFT_setRotation',
+                'basic_TFT_fillScreen',
+                'basic_TFT_setTextSize',
+                'basic_TFT_print',
                 'basic_forever',
+                'basic_delay',
                 'basic_string'
             ]
         },
@@ -98,10 +102,11 @@ module.exports = {
             color : '58',
             icon : '/static/icons/SVG/c7.svg',
             blocks : [
-                'sensor_ldr',
-                'sensor_lm73',
+                //'sensor_ldr',
+                //'sensor_lm73',
                 'sensor_switch1',
-                'sensor_switch2'
+                'sensor_switch2',
+                'sensor_switch3'
             ]
         },
         {

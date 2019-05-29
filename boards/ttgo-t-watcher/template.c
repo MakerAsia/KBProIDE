@@ -6,17 +6,9 @@ ${EXTINC}
 
 #include "KB_initBoard.h"
 #include "KB_tft.h"
-#include "KB_music.h"
-#include "KB_LDR.h"
-#include "KB_LM73.h"
-#include "KB_ht16k33.h"
 
 KB_board board = KB_board();
-KB_TFT tft = KB_TFT();
-KB_music music = KB_music();
-KB_LDR ldr = KB_LDR();
-KB_LM73 lm73 = KB_LM73();
-KB_8x16Matrix matrix = KB_8x16Matrix();
+KB_TFT display = KB_TFT();
 
 typedef int Number;
 typedef int Boolean;
@@ -30,10 +22,7 @@ ${FUNCTION}
 void setup()
 {
   board.begin();
-  tft.begin();
-  music.begin();
-  lm73.begin();
-  matrix.displayBegin();
+  display.begin();
 
   ${SETUP_CODE}
   ${BLOCKSETUP}
@@ -42,4 +31,6 @@ void loop()
 {
   ${LOOP_CODE}
   ${LOOP_EXT_CODE}
+
+  while(1);
 }

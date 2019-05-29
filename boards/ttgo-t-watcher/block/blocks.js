@@ -74,7 +74,19 @@ Blockly.Blocks["basic_led16x8"] = {
 	}
 };
 
-Blockly.Blocks["basic_led16x8_clr"] = {
+Blockly.Blocks["basic_led16x8_2chars"] = {
+	init: function() {
+		this.appendValueInput('VALUE')
+			.appendField(Blockly.Msg.BASIC_LED16X8_2CHARS_TITLE)
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setColour(basic_colour);
+		this.setTooltip(Blockly.Msg.BASIC_LED16X8_2CHARS_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.BASIC_LED16X8_2CHARS_HELPURL);
+	}
+};
+
+	Blockly.Blocks["basic_led16x8_clr"] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.BASIC_LED16X8_CLR_TITLE);
@@ -176,6 +188,84 @@ Blockly.Blocks["basic_string"] = {
 		this.setTooltip(Blockly.Msg.BASIC_STRING_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.BASIC_STRING_HELPURL);
 	}
+};
+
+Blockly.Blocks['basic_TFT_setRotation'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField("set Rotaion")
+			.appendField(new Blockly.FieldDropdown([
+				["TOP","0"],
+				["RIGHT","1"],
+				["DOWN","2"],
+				["LEFT","3"]]),
+				"rotation");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(160);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+};
+
+Blockly.Blocks['basic_TFT_fillScreen'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField("set fillScreen")
+			.appendField(new Blockly.FieldDropdown([
+				["BLACK","0x0000"],
+				["WHITE","0xFFFF"],
+				["RED","0xF800"],
+				["GREEN","0x07E0"],
+				["BLUE","0x001F"]]),
+				"COLOR");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(160);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+};
+
+Blockly.Blocks['basic_TFT_setTextSize'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField("set Text Size")
+			.appendField(new Blockly.FieldDropdown([
+				["6x8","1"],
+				["12x16","2"],
+				["18x24","3"]]),
+				"textSize");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(160);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+};
+
+Blockly.Blocks['basic_TFT_print'] = {
+    init: function() {
+        this.appendValueInput("TEXT")
+            // .setCheck("String")
+            .appendField("x")
+            .appendField(new Blockly.FieldNumber(0, 0, 320), "X")
+            .appendField("y")
+            .appendField(new Blockly.FieldNumber(0, 0, 240), "Y")
+            .appendField("color")
+            .appendField(new Blockly.FieldDropdown([
+                ["BLACK","0x0000"],
+                ["WHITE","0xFFFF"],
+                ["RED","0xF800"],
+                ["GREEN","0x07E0"],
+                ["BLUE","0x001F"]]),
+                "COLOR");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(160);
+        this.setTooltip("display string at x,y");
+        this.setHelpUrl("");
+    }
 };
 
 // =============================================================================
@@ -1254,6 +1344,20 @@ Blockly.Blocks["sensor_switch1"] = {
 };
 
 Blockly.Blocks["sensor_switch2"] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
+			.appendField(Blockly.Msg.SENSOR_SWITCH2_TITLE);
+		this.setOutput(true, 'Number');
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setColour(sensor_colour);
+		this.setTooltip(Blockly.Msg.SENSOR_SWITCH2_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.SENSOR_SWITCH2_HELPURL);
+	}
+};
+
+Blockly.Blocks["sensor_switch3"] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
