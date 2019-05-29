@@ -1,10 +1,18 @@
 #include <Arduino.h>
 #include <vector>
 #include <WiFi.h>
+#include "pins_arduino.h"
+#include "KB_initBoard.h"
+
+#include "SPI.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_ILI9341.h>
+
+Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC);
 
 ${EXTINC}
 
-#include "KB_initBoard.h"
+
 #include "KB_tft.h"
 
 KB_board board = KB_board();
@@ -23,6 +31,7 @@ void setup()
 {
   board.begin();
   display.begin();
+  tft.begin();
 
   ${SETUP_CODE}
   ${BLOCKSETUP}

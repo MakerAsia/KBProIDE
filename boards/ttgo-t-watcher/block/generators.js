@@ -98,12 +98,70 @@ Blockly.JavaScript['basic_TFT_print'] = function(block) {
 	return code;
 };
 
+
+const nativeImage = require('electron').nativeImage;
+var createBuffer = function(pixels,width,height){
+    var depth = 4,
+        pixelsLen = pixels.length,
+        unpackedBuffer = [],
+        threshold = 120;
+
+    var buffer = new Buffer((width *  (Math.ceil(height / 8) * 8)) / 8);
+    buffer.fill(0x00);// filter pixels to create monochrome image data
+    for (var i = 0; i < pixelsLen; i += depth) { // just take the red value
+        var pixelVal = pixels[i + 1] = pixels[i + 2] = pixels[i];
+        pixelVal = (pixelVal > threshold)? 1 : 0;
+        unpackedBuffer[i/depth] = pixelVal; // push to unpacked buffer list
+    }
+    for(var x = 0;x < width; x++){
+        for(var y = 0; y < height; y+=8){
+            for(var cy = 0; cy < 8; cy++){
+                var iy = y+cy;
+                if(iy >= height){ break; }
+                buffer[x*Math.ceil(height/8) + Math.floor(y/8)] |= unpackedBuffer[iy*width + x] << cy;
+            }
+        }
+    }
+    return buffer;
+};
+
+Blockly.JavaScript['i2c128x64_create_image'] = function(block) {
+    var dataurl = block.inputList[1].fieldRow["0"].src_;
+    var image = nativeImage.createFromDataURL(dataurl);
+    var size = image.getSize();
+    var buff = createBuffer(image.getBitmap(),size.width,size.height);
+    var hexStringArr = '';
+    for(let i=1;i<=buff.length;i++){
+        hexStringArr += (buff[i-1] < 16)? `0x0${buff[i-1].toString(16)},` : `0x${buff[i-1].toString(16)},`;
+        if(i % 20 == 0){ hexStringArr += '\n'; }
+    }
+    hexStringArr = hexStringArr.trim();
+    if(hexStringArr.endsWith(',')){
+        hexStringArr = hexStringArr.substring(0,hexStringArr.length - 1);
+    }
+    var code = `(std::vector<uint8_t>{${hexStringArr}})`;
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['i2c128x64_display_image'] = function(block) {
+    var value_img = Blockly.JavaScript.valueToCode(block, 'img', Blockly.JavaScript.ORDER_ATOMIC);
+    var value_x = Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC);
+    var value_y = Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC);
+    var value_width = Blockly.JavaScript.valueToCode(block, 'width', Blockly.JavaScript.ORDER_ATOMIC);
+    var value_height = Blockly.JavaScript.valueToCode(block, 'height', Blockly.JavaScript.ORDER_ATOMIC);
+    // var code = `display.drawFastImage(${value_x}, ${value_y}, ${value_width},${value_height},${value_img}.data());\n`;
+	var code = `tft.drawRGBBitmap(${value_x}, ${value_y}, ${value_img}, ${value_width},${value_height});\n`;
+	return code;
+};
+
+    // tft.drawRGBBitmap(0, 0, dustboyImage, 320, 240);
+
 // =============================================================================
 // math
 // =============================================================================
 Blockly.JavaScript['math_number'] = function(block) {
 	return [
-		'(double)' + block.getFieldValue('VALUE'),
+		'(int16_t)' + block.getFieldValue('VALUE'),
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
@@ -246,7 +304,6 @@ Blockly.JavaScript['logic_negate'] = function(block) {
 Blockly.JavaScript['logic_boolean'] = function(block) {
 	// Boolean values true and false.
 	var code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
-
 	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -255,19 +312,33 @@ Blockly.JavaScript['logic_led16x8_scroll_ready'] = function(block) {
 }
 
 Blockly.JavaScript['logic_sw1_pressed'] = function(block) {
-	return ['get_B1stateClicked() || button12.is_sw1_pressed()', Blockly.JavaScript.ORDER_ATOMIC];
+	var code = ['digitalRead(T4_BUTTON1) == 0', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
 }
 
 Blockly.JavaScript['logic_sw1_released'] = function(block) {
-	return ['(get_B1state() == 0 ) || button12.is_sw1_released()', Blockly.JavaScript.ORDER_ATOMIC];
+	var code = ['digitalRead(T4_BUTTON1) == 1', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
 }
 
 Blockly.JavaScript['logic_sw2_pressed'] = function(block) {
-	return ['get_B2stateClicked() || button12.is_sw2_pressed()', Blockly.JavaScript.ORDER_ATOMIC];
+	var code = ['digitalRead(T4_BUTTON2) == 0', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
 }
 
 Blockly.JavaScript['logic_sw2_released'] = function(block) {
-	return ['(get_B2state() == 0 ) || button12.is_sw2_released()', Blockly.JavaScript.ORDER_ATOMIC];
+	var code = ['digitalRead(T4_BUTTON2) == 1', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
+}
+
+Blockly.JavaScript['logic_sw3_pressed'] = function(block) {
+	var code = ['digitalRead(T4_BUTTON3) == 0', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
+}
+
+Blockly.JavaScript['logic_sw3_released'] = function(block) {
+	var code = ['digitalRead(T4_BUTTON3) == 1', Blockly.JavaScript.ORDER_ATOMIC];
+	return code;
 }
 
 // =============================================================================

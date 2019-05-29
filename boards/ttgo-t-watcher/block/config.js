@@ -17,7 +17,51 @@ module.exports = {
                 'basic_TFT_print',
                 'basic_forever',
                 'basic_delay',
-                'basic_string'
+                'basic_string',
+                //'i2c128x64_create_image',
+                'i2c128x64_display_image',
+                {
+                    xml : `<block type="variables_set">
+                                <field name="VAR">img1</field>
+                                <value name="VALUE">
+                                    <block type="i2c128x64_create_image" inline="false"></block>
+                                </value>
+                            </block>`
+                },{
+                    xml :
+                        `<block type="i2c128x64_display_image">
+                        <value name="img">
+                            <block type="variables_get">
+                                <field name="VAR">img1</field>
+                            </block>
+                        </value>
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="width">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                        <value name="height">
+                            <shadow type="math_number">
+                                <field name="NUM">10</field>
+                            </shadow>
+                        </value>
+                    </block>`
+                }
             ]
         },
         {
@@ -60,7 +104,9 @@ module.exports = {
                 'logic_sw1_pressed',
                 'logic_sw1_released',
                 'logic_sw2_pressed',
-                'logic_sw2_released'
+                'logic_sw2_released',
+                'logic_sw3_pressed',
+                'logic_sw3_released'
             ]
         },
         {

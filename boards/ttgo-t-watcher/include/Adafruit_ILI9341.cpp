@@ -14,7 +14,7 @@
 * Adafruit 2.4" TFT LCD with Touchscreen Breakout w/MicroSD Socket - ILI9341
 *    https://www.adafruit.com/product/2478
 *
-* 2.8" TFT LCD with Touchscreen Breakout Board w/MicroSD Socket - ILI9341
+* 2.8" TFT LCD with Touchscreen Breakout Board w/MicroSD Socket - ILI934clearDisplay1
 *    https://www.adafruit.com/product/1770
 *
 * 2.2" 18-bit color TFT LCD display with microSD card breakout - ILI9340

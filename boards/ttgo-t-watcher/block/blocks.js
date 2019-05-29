@@ -268,6 +268,142 @@ Blockly.Blocks['basic_TFT_print'] = {
     }
 };
 
+const app = require('electron').remote;
+const nativeImage = require('electron').nativeImage;
+const dialog = app.dialog;
+
+function floyd_steinberg(imageData,w) {
+	var imageDataLength = imageData.length;
+	var lumR = [],
+		lumG = [],
+		lumB = [];
+	var newPixel, err;
+	for (var i = 0; i < 256; i++) {
+		lumR[i] = i * 0.299;
+		lumG[i] = i * 0.587;
+		lumB[i] = i * 0.110;
+	}
+	// Greyscale luminance (sets r pixels to luminance of rgb)
+	for (var i = 0; i <= imageDataLength; i += 4) {
+		imageData[i] = Math.floor(lumR[imageData[i]] + lumG[imageData[i+1]] + lumB[imageData[i+2]]);
+	}
+	for (var currentPixel = 0; currentPixel <= imageDataLength; currentPixel += 4) {
+		// threshold for determining current pixel's conversion to a black or white pixel
+		newPixel = imageData[currentPixel] < 150 ? 0 : 255;
+		err = Math.floor((imageData[currentPixel] - newPixel) / 23);
+		imageData[currentPixel + 0 * 1 - 0 ] = newPixel;
+		imageData[currentPixel + 4 * 1 - 0 ] += err * 7;
+		imageData[currentPixel + 4 * w - 4 ] += err * 3;
+		imageData[currentPixel + 4 * w - 0 ] += err * 5;
+		imageData[currentPixel + 4 * w + 4 ] += err * 1;
+		// Set g and b values equal to r (effectively greyscales the image fully)
+		imageData[currentPixel + 1] = imageData[currentPixel + 2] = imageData[currentPixel];
+	}
+	return imageData;
+}
+
+Blockly.Blocks['i2c128x64_create_image'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("create image from PNG file");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABACAIAAABdtOgoAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ/SURBVHhe7ZbbdQIxDES3LgraeqiGZiiG2JLWHhmbx08Gkrk/kWU9GR/IdhNUJAAZCUBGApCRAGQkABkJQEYCkJEAZCQAGQlARgKQkQBkJAAZCUBGApCRAGQkABkJQEYCkJEAZCQAGQlARgKQkQBkJACZFwW47Nu2nc7XOP4ZbK9tv8SRgASQAP+bhQDX86k+jYo9jxDgbA+mAG/GH5GDEs393dtLQLNRZL9qTnwHs/oeHpUh18xjfHzvkBAxF/NUirf16DnQts+KsxTiwos7PXZgKkDesxrRweZw20dCGxZe+aHw9bzH33obC9p92A4WhfRF/VTszj+UrkBCxKT4sVfxm+s+8a492pO9GjMB+p6N5OqHHOk96/Ghv18U0pzTSWfdVvVTte5GMwMJKSYVyt2CPAymQbW2iUW3EzIRYMg10gztkGaGi5X/MB3rAOfGMGiqalWW9dPoEJX8CFykoikBxh/m7cUH65W9nKUA0TDAGeCQ3DD1yn/QW+TIORaznU5tu2X91Kk3mUwQwAWEDwmtG3r7CO4NjqFe2cuYfQWlUeA3YFIc/fPx0F+s8PV7s45VF7QVI/tJX7fd9CAMScCFm5OavZl5PcKrD04EJnnI9Ef4GKAC/Y4u6dAjC9Bv7gdvj/VZG5OhIw3XXPVtxeIfGsvx4GVhu3AzWqQE2LePuu/FHJ1Ga/N8r8JCgE8DPoNPI422VHrJdwjgb+mdvX6N/JG/P+g3COA7fubnX8lfNW+O+SVfQX8XCUBGApCRAGQkABkJQEYCkJEAZCQAGQlARgKQkQBkJAAZCUBGApCRAGQkABkJQEYCkJEAZCQAGQlARgKQkQBkJACV2+0HImEfdtax+UEAAAAASUVORK5CYII=",
+                128, 64, "click to upload", function(e) {
+                let myself = this;
+                let id = this.sourceBlock_.id.toUpperCase();
+                const dialogOptions = {
+                    filters: [ { name: "Images PNG", extensions: ["png"] } ],
+                    properties: ["openFile"]
+                };
+                dialog.showOpenDialog(dialogOptions,imageFileName => {
+                    console.log(imageFileName);
+                    if(imageFileName != undefined){
+                        imageFileName = imageFileName[0];
+                        //--- resize image ---//
+                        let image = nativeImage.createFromPath(imageFileName);
+                        let size = image.getSize();
+                        if(size.width > 128){
+                            image = image.resize({width : 128});
+                            size = image.getSize();
+                        }
+                        if(size.height > 64){
+                            image = image.resize({height : 64});
+                            size = image.getSize();
+                        }
+                        var buff = image.getBitmap();
+                        //---- dithering image ----//
+                        floyd_steinberg(buff,size.width);
+                        //---- display image ----//
+                        myself.sourceBlock_.inputList[2].fieldRow[0].setValue(`image size ${size.width} x ${size.height}`);
+                        myself.sourceBlock_.inputList[2].fieldRow[0].init();
+                        myself.setValue(image.toDataURL());
+                        myself.init();
+                    }
+                })
+                }, true));
+        this.appendDummyInput().appendField("image size 128 x 64");
+
+        this.setOutput(true, "std::vector<uint8_t>");
+        this.setColour(230);
+        this.setTooltip("create image from PNG file (for best quality result please use size within 128x64 pixel otherwise, it'll resize)");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['i2c128x64_display_image'] = {
+    init: function() {
+        this.appendValueInput("img")
+            .setCheck("std::vector<uint8_t>")
+            .appendField("draw image");
+        this.appendValueInput("x")
+            .setCheck("Number")
+            .appendField(" at (X");
+        this.appendValueInput("y")
+            .setCheck("Number")
+            .appendField(",Y");
+        this.appendValueInput("width")
+            .setCheck("Number")
+            .appendField(") width");
+        this.appendValueInput("height")
+            .setCheck("Number")
+               .appendField("height");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip("display image to display");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['i2c128x64_display_image'] = {
+	init: function() {
+		this.appendValueInput("img")
+			.setCheck("std::vector<uint8_t>")
+			.appendField("draw image");
+		this.appendValueInput("x")
+			.setCheck("Number")
+			.appendField(" at (X");
+		this.appendValueInput("y")
+			.setCheck("Number")
+			.appendField(",Y");
+		this.appendValueInput("width")
+			.setCheck("Number")
+			.appendField(") width");
+		this.appendValueInput("height")
+			.setCheck("Number")
+			.appendField("height");
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(230);
+		this.setTooltip("display image to tft display");
+		this.setHelpUrl("");
+	}
+};
+
+
+
 // =============================================================================
 // math
 // =============================================================================
@@ -415,6 +551,33 @@ Blockly.Blocks['logic_sw2_released'] = {
 	}
 };
 
+Blockly.Blocks['logic_sw3_pressed'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
+			.appendField("Switch 3 pressed");
+		this.setOutput(true, 'Boolean');
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setColour(logic_colour);
+		this.setTooltip(Blockly.Msg.LOGIC_SW2_PRESSED_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.LOGIC_SW2_PRESSED_HELPURL);
+	}
+};
+
+Blockly.Blocks['logic_sw3_released'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
+			.appendField("Switch 3 released");
+		this.setOutput(true, 'Boolean');
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setColour(logic_colour);
+		this.setTooltip(Blockly.Msg.LOGIC_SW2_RELEASED_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.LOGIC_SW2_RELEASED_HELPURL);
+	}
+};
 // =============================================================================
 // loop
 // =============================================================================

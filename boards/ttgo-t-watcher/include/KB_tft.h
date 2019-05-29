@@ -6,10 +6,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 
-#define T4_TFT_CS   27
-#define T4_TFT_DC   32
-#define T4_TFT_BL   4
-
 // Color definitions
 #define ILI9341_BLACK       0x0000  ///<   0,   0,   0
 #define ILI9341_NAVY        0x000F  ///<   0,   0, 123
@@ -39,7 +35,6 @@ class KB_TFT
   void setTextSize(int size);
   void fillScreen(int color);
   void setRotation(int rotation);
-
 
  protected:
   Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC);
