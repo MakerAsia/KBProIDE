@@ -23,11 +23,12 @@ first run CMD as Administrator and install build tool first
 - npm run electron:rebuild-serial
 
 ## Linux Install
+- sudo apt-get install python-pip git nodejs npm
 - sudo pip install pyserial
 - git clone --recursive https://github.com/MakerAsia/KBProIDE
 - cd KBProIDE 
 - git submodule update
-- sudo npm uninstall -g vue-cli
+- sudo npm uninstall -g vue-cli //if new install no need this command
 - sudo npm install -g @vue/cli
 - npm install
 - npm run electron:rebuild

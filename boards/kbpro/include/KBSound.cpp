@@ -1,15 +1,30 @@
 #include "KBSound.h"
 #include <Math.h>
 #include "tts.h"
-                            //0     1     2     3       4       5     6      7       8      9      10     11       12        13          14        15        16        17          18         19
+#include "sf.h"
+
+#define DAC_PIN 26
+#define FS 8000 // Speech engine sample rate
+
+                                          //0     1     2     3       4       5     6      7       8      9      10     11       12        13          14        15        16        17          18         19
 const uint8_t *speakNumberOrder[20] = { spZERO,spONE,spTWO,spTHREE,spFOUR,spFIVE,spSIX,spSEVEN,spEIGHT,spNINE,spTEN,spELEVEN,spTWELVE,spTHIRTEEN,spFOURTEEN,spFIFTEEN,spSIXTEEN,spSEVENTEEN,spEIGHTEEN,spNINETEEN};
 const uint8_t *speakNumberOrderTh[7] = { spTWENTY,spTHIRTY,spFOURTY,spFIFTY,spSIXTY,spSEVENTY,spNINETY };
+//---- for interrupt timing sound ----//
+volatile boolean kbsound_sampling = false;
+portMUX_TYPE soundTimerMux = portMUX_INITIALIZER_UNLOCKED;
+uint8_t kbsound_volume = 6;
+static void timerInterrupt();
 
-void KBSound::speak(String words)
+void soundDacWrite(uint8_t val)
 {
-
+  //uint8_t factor = (10 - kbsound_volume) * 25;
+  //int v = (int)val - factor; 
+  int v = val * (kbsound_volume/7.0f);
+  if(v < 0){ v = 0; };
+  if(v > 255){ v = 255; };
+  dacWrite(DAC_PIN,v);
 }
-
+//------------------------------------//
 void KBSound::speak(std::vector<const uint8_t *> words){
 	for(auto ptr : words){
 		speak(ptr);
@@ -70,7 +85,9 @@ void KBSound::speak(double number,int deep){
 	if(n1 != 0 || n2 != 0){
 		speak(spPOINT);
 		speak(speakNumberOrder[n1]);
-		speak(speakNumberOrder[n2]);
+    if(n2 != 0){
+      speak(speakNumberOrder[n2]);
+    }
 	}
 }
 
@@ -86,17 +103,49 @@ void KBSound::speak(const uint8_t *word)
 
 void KBSound::setVolume(int level)
 {
+  if(level < 0){
+    level = 0;
+  }
+  if(level > 10){
+    level = 10;
+  }
+  kbsound_volume = level;
+}
+int KBSound::getVolume()
+{
+  return kbsound_volume;
+}
+bool KBSound::begin(int timerCh)
+{
+  if(!setup){
+    timer = timerBegin(0, 80, true);
+    timerAttachInterrupt(timer, &timerInterrupt, true);
+    timerAlarmWrite(timer, 125, true); // sampling frequency 8kHz
+    timerAlarmEnable(timer);
+    //-----init mini generator -------//
+    midi.begin();
+  }
+  return true;
+}
+
+void KBSound::playNote(int track,int note,float duration,int bpm)
+{
+  midi.playNote(track,note,duration,bpm);
+}
+
+void KBSound::playNote(int track,std::vector<std::pair<int,float>> notes,int bpm)
+{
 
 }
 
+void IRAM_ATTR timerInterrupt()
+{
+  portENTER_CRITICAL_ISR(&soundTimerMux);
+  kbsound_sampling = true;
+  portEXIT_CRITICAL_ISR(&soundTimerMux);
+}
+
 //==== Talkie ====//
-#define DAC_PIN 26
-#define FS 8000 // Speech engine sample rate
-
-static void timerInterrupt();
-static void sayisr();
-void waitOnTimer(void);
-
 static uint8_t synthPeriod;
 static uint16_t synthEnergy;
 static int16_t synthK1,synthK2;
@@ -107,20 +156,18 @@ static uint8_t nextData=0;
 // This is a special sound to cleanly: Silence the synthesiser
 const uint8_t spStopSay[]    PROGMEM = { 0x0F};	
 
-volatile boolean sampling = false;
-portMUX_TYPE soundTimerMux = portMUX_INITIALIZER_UNLOCKED;
 
 static const uint8_t tmsEnergy[0x10]  = {0x00,0x02,0x03,0x04,0x05,0x07,0x0a,0x0f,0x14,0x20,0x29,0x39,0x51,0x72,0xa1,0xff};
 static const uint8_t tmsPeriod[0x40]  = {0x00,0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,0x1E,
-										 0x1F,0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2D,0x2F,0x31,
-										 0x33,0x35,0x36,0x39,0x3B,0x3D,0x3F,0x42,0x45,0x47,0x49,0x4D,0x4F,0x51,0x55,0x57,
-										 0x5C,0x5F,0x63,0x66,0x6A,0x6E,0x73,0x77,0x7B,0x80,0x85,0x8A,0x8F,0x95,0x9A,0xA0};
+										                     0x1F,0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2D,0x2F,0x31,
+										                     0x33,0x35,0x36,0x39,0x3B,0x3D,0x3F,0x42,0x45,0x47,0x49,0x4D,0x4F,0x51,0x55,0x57,
+										                     0x5C,0x5F,0x63,0x66,0x6A,0x6E,0x73,0x77,0x7B,0x80,0x85,0x8A,0x8F,0x95,0x9A,0xA0};
 static const uint16_t tmsK1[0x20]     = {0x82C0,0x8380,0x83C0,0x8440,0x84C0,0x8540,0x8600,0x8780,0x8880,0x8980,0x8AC0,0x8C00,
-										 0x8D40,0x8F00,0x90C0,0x92C0,0x9900,0xA140,0xAB80,0xB840,0xC740,0xD8C0,0xEBC0,0x0000,
-										 0x1440,0x2740,0x38C0,0x47C0,0x5480,0x5EC0,0x6700,0x6D40};
+										                     0x8D40,0x8F00,0x90C0,0x92C0,0x9900,0xA140,0xAB80,0xB840,0xC740,0xD8C0,0xEBC0,0x0000,
+										                     0x1440,0x2740,0x38C0,0x47C0,0x5480,0x5EC0,0x6700,0x6D40};
 static const uint16_t tmsK2[0x20]     = {0xAE00,0xB480,0xBB80,0xC340,0xCB80,0xD440,0xDDC0,0xE780,0xF180,0xFBC0,0x0600,0x1040,
-										 0x1A40,0x2400,0x2D40,0x3600,0x3E40,0x45C0,0x4CC0,0x5300,0x5880,0x5DC0,0x6240,0x6640,
-										 0x69C0,0x6CC0,0x6F80,0x71C0,0x73C0,0x7580,0x7700,0x7E80};
+										                     0x1A40,0x2400,0x2D40,0x3600,0x3E40,0x45C0,0x4CC0,0x5300,0x5880,0x5DC0,0x6240,0x6640,
+										                     0x69C0,0x6CC0,0x6F80,0x71C0,0x73C0,0x7580,0x7700,0x7E80};
 static const uint8_t tmsK3[0x10]      = {0x92,0x9F,0xAD,0xBA,0xC8,0xD5,0xE3,0xF0,0xFE,0x0B,0x19,0x26,0x34,0x41,0x4F,0x5C};
 static const uint8_t tmsK4[0x10]      = {0xAE,0xBC,0xCA,0xD8,0xE6,0xF4,0x01,0x0F,0x1D,0x2B,0x39,0x47,0x55,0x63,0x71,0x7E};
 static const uint8_t tmsK5[0x10]      = {0xAE,0xBA,0xC5,0xD1,0xDD,0xE8,0xF4,0xFF,0x0B,0x17,0x22,0x2E,0x39,0x45,0x51,0x5C};
@@ -132,9 +179,11 @@ static const uint8_t tmsK10[0x08]     = {0xCD,0xDF,0xF1,0x04,0x16,0x20,0x3B,0x4D
 
 #define CHIRP_SIZE 41
 static uint8_t chirp[CHIRP_SIZE]      = {0x00,0x2a,0xd4,0x32,0xb2,0x12,0x25,0x14,0x02,0xe1,0xc5,0x02,0x5f,0x5a,0x05,0x0f,
-										 0x26,0xfc,0xa5,0xa5,0xd6,0xdd,0xdc,0xfc,0x25,0x2b,0x22,0x21,0x0f,0xff,0xf8,0xee,
-										 0xed,0xef,0xf7,0xf6,0xfa,0x00,0x03,0x02,0x01};
+										                     0x26,0xfc,0xa5,0xa5,0xd6,0xdd,0xdc,0xfc,0x25,0x2b,0x22,0x21,0x0f,0xff,0xf8,0xee,
+										                     0xed,0xef,0xf7,0xf6,0xfa,0x00,0x03,0x02,0x01};
 
+static void sayisr();
+void waitOnTimer(void);
 
 bool Talkie::setPtr(const uint8_t * addr) 
 {
@@ -223,16 +272,11 @@ int8_t Talkie::sayQ(const uint8_t * addr)
 		head = 0;
 		tail = 0;
 		free = SAY_BUFFER_SIZE;
-	    // ESP-32
-        // ~~~~~~
-        // 200 samples/frame
-        #define ISR_RATIO (25000/ (1000000.0f / (float)FS) )
-        
-        hw_timer_t* timer = timerBegin(0, 80, true);
-        timerAttachInterrupt(timer, &timerInterrupt, true);
-        timerAlarmWrite(timer, 125, true); // sampling frequency 8kHz
-        timerAlarmEnable(timer);
-        // ~~~~~~
+    // ESP-32
+    // ~~~~~~
+    // 200 samples/frame
+    #define ISR_RATIO (25000/ (1000000.0f / (float)FS) )
+    // ~~~~~~
 		setup = 1;
 	}
 	if ( 0 == addr  ) 
@@ -260,15 +304,6 @@ int8_t Talkie::sayQ(const uint8_t * addr)
 	return(free);	// return free count after adding
 }
 
-// ESP-32
-// ~~~~~~
-void IRAM_ATTR timerInterrupt()
-{
-  portENTER_CRITICAL_ISR(&soundTimerMux);
-  sampling = true;
-  portEXIT_CRITICAL_ISR(&soundTimerMux);
-}
-
 void waitOnTimer(void) 
 {
     // ~~~~~~
@@ -279,17 +314,16 @@ void waitOnTimer(void)
 
 	int16_t u0,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10;
 
-    while (!sampling);
-    
-    portENTER_CRITICAL(&soundTimerMux);
-    sampling = false;
-    portEXIT_CRITICAL(&soundTimerMux);
+  while (!kbsound_sampling);
+  portENTER_CRITICAL(&soundTimerMux);
+  kbsound_sampling = false;
+  portEXIT_CRITICAL(&soundTimerMux);
 
-    // ESP-32
-    // ~~~~~~
+  // ESP-32
+  // ~~~~~~
 	// This is the output of DAC1
-    dacWrite(DAC_PIN, nextPwm);		
-    // ~~~~~~	
+  soundDacWrite(nextPwm);		
+  // ~~~~~~	
     
 	if (synthPeriod) {
 		// Voiced source
@@ -356,7 +390,6 @@ void waitOnTimer(void)
 
 static void sayisr() 
 {
-
 	uint8_t energy;
 	Talkie *o = isrTalkptr;
 
@@ -420,3 +453,227 @@ static void sayisr()
 		}
 	}	
 }
+
+
+//====== MIDI =======//
+//=== audio source ===//
+
+AudioFileSourcePROGMEM::AudioFileSourcePROGMEM()
+{
+  opened = false;
+  progmemData = NULL;
+  progmemLen = 0;
+  filePointer = 0;
+}
+
+AudioFileSourcePROGMEM::AudioFileSourcePROGMEM(const void *data, uint32_t len)
+{
+  open(data, len);
+}
+
+AudioFileSourcePROGMEM::~AudioFileSourcePROGMEM()
+{
+
+}
+
+bool AudioFileSourcePROGMEM::open(const void *data, uint32_t len)
+{
+  if (!data || !len) return false;
+
+  opened = true;
+  progmemData = data;
+  progmemLen = len;
+  filePointer = 0;
+  return true;
+}
+
+uint32_t AudioFileSourcePROGMEM::getSize()
+{
+  if (!opened) return 0;
+  return progmemLen;
+}
+
+bool AudioFileSourcePROGMEM::isOpen()
+{
+  return opened;
+}
+
+bool AudioFileSourcePROGMEM::close()
+{
+  opened = false;
+  progmemData = NULL;
+  progmemLen = 0;
+  filePointer = 0;
+  return true;
+}  
+
+bool AudioFileSourcePROGMEM::seek(int32_t pos, int dir)
+{
+  if (!opened) return false;
+  uint32_t newPtr;
+  switch (dir) {
+    case SEEK_SET: newPtr = pos; break;
+    case SEEK_CUR: newPtr = filePointer + pos; break;
+    case SEEK_END: newPtr = progmemLen - pos; break;
+    default: return false;
+  }
+  if (newPtr > progmemLen) return false;
+  filePointer = newPtr;
+  return true;
+}
+
+uint32_t AudioFileSourcePROGMEM::read(void *data, uint32_t len)
+{
+  if (!opened) return 0;
+  if (filePointer >= progmemLen) return 0;
+
+  uint32_t toRead = progmemLen - filePointer;
+  if (toRead > len) toRead = len;
+
+  memcpy_P(data, reinterpret_cast<const uint8_t*>(progmemData)+filePointer, toRead);
+  filePointer += toRead;
+  return toRead;
+}
+
+
+//====== midi ======//
+
+#pragma GCC optimize ("O3")
+
+#define TSF_NO_STDIO
+#define TSF_IMPLEMENTATION
+#include "tsf.h"
+
+//portMUX_TYPE midiTimerMux = portMUX_INITIALIZER_UNLOCKED;
+//volatile boolean midi_sampling = false;
+static uint16_t nextBuff = 0;
+static int prev_note = -1;
+//static void midiTimerInterrupt();
+bool waitOnMIDITimer(short *buffer,uint16_t buff_size);
+
+/****************  utility routines  **********************/
+
+void MIDIGenerator::playNote(int track,int note,float duration,int bpm)
+{ //quarter = 1.0,dotted_quarter=1.5,whole=4,dottedhalf=2,eighth=0.5,sixteenth=0.25
+  int volocity = (1000.0*duration)*(60.0/bpm);
+  int sampleSize = volocity * (freq/1000.0);
+  //printf("duration = %d , sampleSize = %d\n", volocity,sampleSize);
+  if(prev_note != -1){
+    tsf_note_off(g_tsf,track,prev_note);
+  }
+  //// Start playing a note
+  //   preset: preset index >= 0 and < tsf_get_presetcount()
+  //   key: note value between 0 and 127 (60 being middle C)
+  //   vel: velocity as a float between 0.0 (equal to note off) and 1.0 (full)
+  //tsf_note_on(tsf* f, int preset, int key, float vel);
+  if(note == -1){
+    tsf_note_off(g_tsf, track,prev_note); //preset 0, middle C
+  }else{
+    tsf_note_on(g_tsf, track, note, duration/4.0); //preset 0, middle C
+  }
+  short *bufferSound = (short *)malloc(sampleSize * sizeof(short)); // heap_caps_malloc() [sampleSize]; //synthesize 0.5 seconds
+  tsf_render_short(g_tsf, bufferSound, sampleSize, 0);
+  nextBuff = 0;
+  /*
+  short max = -999999;
+  short min = 999999;
+  for(int i = 0;i<sampleSize;i++){
+    max = (bufferSound[i]>max)? bufferSound[i] : max;
+    min = (bufferSound[i]<min)? bufferSound[i] : min;
+    //printf("%d\n", bufferSound[i]);
+  }
+  printf("max = %d, min = %d\n",max,min);
+  */
+  while(waitOnMIDITimer(bufferSound,sampleSize));
+  free(bufferSound);
+  prev_note = note;
+  return;
+}
+
+bool MIDIGenerator::stop()
+{
+	running = false;
+  return running;
+}
+
+bool MIDIGenerator::begin()
+{
+  //--- setup soundfront
+  if (isRunning()) return false;
+  sf2 = new AudioFileSourcePROGMEM(sf,sizeof(sf));
+  MakeStreamFromAFS(sf2, &afsSF2);
+  g_tsf = tsf_load(&afsSF2);
+  if (!g_tsf) return false;
+  tsf_set_output (g_tsf, TSF_MONO, freq, -35 /* dB gain -10 */ );
+  return true;
+}
+
+bool waitOnMIDITimer(short *buffer,uint16_t buff_size)
+{
+  while (!kbsound_sampling);
+  portENTER_CRITICAL(&soundTimerMux);
+  kbsound_sampling = false;
+  portEXIT_CRITICAL(&soundTimerMux);
+
+  int16_t data = buffer[nextBuff];
+  if (data > 127) data = 127;
+  if (data < -128) data = -128;
+  //data = data >> 2;
+  //if (data > 511) data = 511;
+  //if (data < -512) data = -512;
+  //printf("sampling = %d data=%d next = %d , size = %d\n",midi_sampling,data,nextBuff,buff_size);
+  //uint8_t pwm = (data>>2)+0x80; //half 256 = 0x80
+  uint8_t pwm = data + 0x80;
+  soundDacWrite(pwm);
+  nextBuff++;
+  return nextBuff < buff_size; 
+}
+
+//======= cast rein pointer =======//
+int MIDIGenerator::afs_read(void *data, void *ptr, unsigned int size)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->read(ptr, size);
+}
+
+int MIDIGenerator::afs_tell(void *data)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->getPos();
+}
+
+int MIDIGenerator::afs_skip(void *data, unsigned int count)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->seek(count, SEEK_CUR);
+}
+
+int MIDIGenerator::afs_seek(void *data, unsigned int pos)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->seek(pos, SEEK_SET);
+}
+
+int MIDIGenerator::afs_close(void *data)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->close();
+}
+
+int MIDIGenerator::afs_size(void *data)
+{
+  AudioFileSource *s = reinterpret_cast<AudioFileSource *>(data);
+  return s->getSize();
+}
+
+void MIDIGenerator::MakeStreamFromAFS(AudioFileSource *src, tsf_stream *afs)
+{
+  afs->data = reinterpret_cast<void*>(src);
+  afs->read = &afs_read;
+  afs->tell = &afs_tell;
+  afs->skip = &afs_skip;
+  afs->seek = &afs_seek;
+  afs->close = &afs_close;
+  afs->size = &afs_size;
+}
+
