@@ -121,6 +121,7 @@ class KBSound
     	void speak(uint8_t *word);
     	void speak(const uint8_t *word);
     	void setVolume(int level);
+    	int  getVolume(void);
     	void playNote(int track,int note,float duration,int bpm);
     	void playNote(int track,std::vector<std::pair<int,float>> notes,int bpm);
     	bool begin(int timerPort);

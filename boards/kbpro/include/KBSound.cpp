@@ -10,9 +10,20 @@
 const uint8_t *speakNumberOrder[20] = { spZERO,spONE,spTWO,spTHREE,spFOUR,spFIVE,spSIX,spSEVEN,spEIGHT,spNINE,spTEN,spELEVEN,spTWELVE,spTHIRTEEN,spFOURTEEN,spFIFTEEN,spSIXTEEN,spSEVENTEEN,spEIGHTEEN,spNINETEEN};
 const uint8_t *speakNumberOrderTh[7] = { spTWENTY,spTHIRTY,spFOURTY,spFIFTY,spSIXTY,spSEVENTY,spNINETY };
 //---- for interrupt timing sound ----//
-volatile boolean sampling = false;
+volatile boolean kbsound_sampling = false;
 portMUX_TYPE soundTimerMux = portMUX_INITIALIZER_UNLOCKED;
+uint8_t kbsound_volume = 6;
 static void timerInterrupt();
+
+void soundDacWrite(uint8_t val)
+{
+  //uint8_t factor = (10 - kbsound_volume) * 25;
+  //int v = (int)val - factor; 
+  int v = val * (kbsound_volume/7.0f);
+  if(v < 0){ v = 0; };
+  if(v > 255){ v = 255; };
+  dacWrite(DAC_PIN,v);
+}
 //------------------------------------//
 void KBSound::speak(std::vector<const uint8_t *> words){
 	for(auto ptr : words){
@@ -92,9 +103,18 @@ void KBSound::speak(const uint8_t *word)
 
 void KBSound::setVolume(int level)
 {
-
+  if(level < 0){
+    level = 0;
+  }
+  if(level > 10){
+    level = 10;
+  }
+  kbsound_volume = level;
 }
-
+int KBSound::getVolume()
+{
+  return kbsound_volume;
+}
 bool KBSound::begin(int timerCh)
 {
   if(!setup){
@@ -121,7 +141,7 @@ void KBSound::playNote(int track,std::vector<std::pair<int,float>> notes,int bpm
 void IRAM_ATTR timerInterrupt()
 {
   portENTER_CRITICAL_ISR(&soundTimerMux);
-  sampling = true;
+  kbsound_sampling = true;
   portEXIT_CRITICAL_ISR(&soundTimerMux);
 }
 
@@ -294,15 +314,15 @@ void waitOnTimer(void)
 
 	int16_t u0,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10;
 
-  while (!sampling);
+  while (!kbsound_sampling);
   portENTER_CRITICAL(&soundTimerMux);
-  sampling = false;
+  kbsound_sampling = false;
   portEXIT_CRITICAL(&soundTimerMux);
 
   // ESP-32
   // ~~~~~~
 	// This is the output of DAC1
-  dacWrite(DAC_PIN, nextPwm);		
+  soundDacWrite(nextPwm);		
   // ~~~~~~	
     
 	if (synthPeriod) {
@@ -590,9 +610,9 @@ bool MIDIGenerator::begin()
 
 bool waitOnMIDITimer(short *buffer,uint16_t buff_size)
 {
-  while (!sampling);
+  while (!kbsound_sampling);
   portENTER_CRITICAL(&soundTimerMux);
-  sampling = false;
+  kbsound_sampling = false;
   portEXIT_CRITICAL(&soundTimerMux);
 
   int16_t data = buffer[nextBuff];
@@ -604,7 +624,7 @@ bool waitOnMIDITimer(short *buffer,uint16_t buff_size)
   //printf("sampling = %d data=%d next = %d , size = %d\n",midi_sampling,data,nextBuff,buff_size);
   //uint8_t pwm = (data>>2)+0x80; //half 256 = 0x80
   uint8_t pwm = data + 0x80;
-  dacWrite(DAC_PIN,pwm);
+  soundDacWrite(pwm);
   nextBuff++;
   return nextBuff < buff_size; 
 }
