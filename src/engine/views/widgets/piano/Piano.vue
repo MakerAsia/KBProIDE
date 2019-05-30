@@ -1,6 +1,8 @@
 <template>
   <div id="piano">
+    <piano-key tone="SIL"></piano-key>
     <piano-key v-for="tone in tones" :tone="tone.text" :key="tone.text"></piano-key>
+    <piano-key tone="SIL"></piano-key>
   </div>
 </template>
 

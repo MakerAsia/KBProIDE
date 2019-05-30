@@ -4,8 +4,15 @@ module.exports = function(Blockly){
 Blockly.Blocks['speaker_play_note'] = {
   init: function() {
     this.appendValueInput("note")
-        .setCheck("XT_MusicScore_Class *")
-        .appendField("play music note");    
+        .setCheck("std::vector<int>")
+        .appendField("play music note");
+
+    this.appendDummyInput()
+      .appendField("tempo (bpm)")
+      .appendField(new Blockly.FieldNumber(70, 50, 300), "tempo")
+      .appendField("instrument")
+      .appendField(new Blockly.FieldDropdown([["Piano","1"], ["Harpsichord","2"], ["Organ","3"], ["Saxophone","4"]]), "instrument");
+
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(315);
@@ -19,7 +26,6 @@ Blockly.Blocks['speaker_music_note'] = {
     let f = new Blockly.FieldTextInput("C4,D4,E4");
     f.onMouseDown_ = (e)=>{
       Blockly.music(f.getValue(),function(newNote){
-        console.log(newNote);
         f.setValue(newNote.join(","));
         f.init();
       });
@@ -28,13 +34,8 @@ Blockly.Blocks['speaker_music_note'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("/static/icons/icons8_move_24px.png", 15, 15, "move"))
         .appendField(f, "notes");
-    this.appendDummyInput()
-        .appendField("tempo (bpm)")
-        .appendField(new Blockly.FieldNumber(70, 30, 300), "tempo")
-        .appendField("instrument")
-        .appendField(new Blockly.FieldDropdown([["Piano","1"], ["Harpsichord","2"], ["Organ","3"], ["Saxophone","4"], ["None","0"]]), "instrument");
     this.setInputsInline(true);
-    this.setOutput(true, "XT_MusicScore_Class *");
+    this.setOutput(true, "std::vector<int>");
     this.setColour(315);
     this.setTooltip("create music notes from B0-DS8");
     this.setHelpUrl("");

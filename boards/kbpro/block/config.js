@@ -411,7 +411,7 @@ module.exports = {
                                     </block>
                                 </value>
                             </block>`
-                },*/
+                },
                 {
                     xml : 
                     `<block type="speaker_play_note">
@@ -421,7 +421,7 @@ module.exports = {
                             </block>
                         </value>
                     </block>`
-                },
+                },*/
                 'speaker_music_note',
                 {
                     xml : 

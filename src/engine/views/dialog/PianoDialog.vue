@@ -64,11 +64,10 @@
     },
     methods: {
       pressedNote: function(note) {
-        this.synth.triggerAttackRelease(note, "8n");
+        if(note !== "SIL"){
+          this.synth.triggerAttackRelease(note, "8n");
+        }
         this.tags.push({text : note});
-      },
-      clickedNote: function(note) {
-        this.synth.triggerAttackRelease(note, "8n");
       },
       close() {
         this.$emit("close");

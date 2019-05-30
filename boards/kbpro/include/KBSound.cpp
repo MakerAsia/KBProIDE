@@ -133,9 +133,20 @@ void KBSound::playNote(int track,int note,float duration,int bpm)
   midi.playNote(track,note,duration,bpm);
 }
 
-void KBSound::playNote(int track,std::vector<std::pair<int,float>> notes,int bpm)
+void KBSound::playNotes(int track,std::vector<std::pair<int,float>> notes,int bpm)
 {
+  for(auto v : notes)
+  {
+    midi.playNote(track,v.first,v.second,bpm);
+  }
+}
 
+void KBSound::playNotes(int track,std::vector<int> notes,int bpm)
+{
+  for(int note : notes)
+  {
+    midi.playNote(track,note,0.5f,bpm);
+  }
 }
 
 void IRAM_ATTR timerInterrupt()

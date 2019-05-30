@@ -123,7 +123,8 @@ class KBSound
     	void setVolume(int level);
     	int  getVolume(void);
     	void playNote(int track,int note,float duration,int bpm);
-    	void playNote(int track,std::vector<std::pair<int,float>> notes,int bpm);
+    	void playNotes(int track,std::vector<std::pair<int,float>> notes,int bpm);
+    	void playNotes(int track,std::vector<int> notes,int bpm);
     	bool begin(int timerPort);
     private:
     	Talkie voice;
