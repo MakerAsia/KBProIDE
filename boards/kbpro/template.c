@@ -8,8 +8,6 @@
 #include "BME280.h"
 #include "BMX055.h"
 #include "BH1745NUC.h"
-#include "MusicDefinitions.h"
-#include "XT_DAC_Audio.h"
 
 ${EXTINC}
 
@@ -17,7 +15,6 @@ SH1106 display(0x3c, 21, 22);
 BME280 bme280 = BME280();
 BMX055 bmx055;
 BH1745NUC bh1745;
-XT_DAC_Audio_Class DacAudio(26,3);
 
 ${VARIABLE}
 

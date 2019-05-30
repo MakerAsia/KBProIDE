@@ -19,7 +19,8 @@ Blockly.Blocks['speaker_music_note'] = {
     let f = new Blockly.FieldTextInput("C4,D4,E4");
     f.onMouseDown_ = (e)=>{
       Blockly.music(f.getValue(),function(newNote){
-        f.setValue(newNote);
+        console.log(newNote);
+        f.setValue(newNote.join(","));
         f.init();
       });
       return e;

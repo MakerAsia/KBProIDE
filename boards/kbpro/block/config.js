@@ -379,7 +379,7 @@ module.exports = {
             ]
         },        
         {
-            name : 'Music',
+            name : 'Sound',
             color : '230',
             icon : '/static/icons/icons8_musical_notes_96px.png',
             blocks : [
@@ -393,7 +393,7 @@ module.exports = {
                                 </value>
                             </block>`
                 },
-                {
+                /*{
                     xml : `<block type="speaker_tts_speak_number">
                                 <value name="number">
                                     <shadow type="math_number">
@@ -402,7 +402,7 @@ module.exports = {
                                 </value>
                             </block>`
                 },
-                /*{
+                {
                     xml : `<block type="variables_set">
                                 <field name="VAR">music1</field>
                                 <value name="VALUE">
@@ -411,7 +411,7 @@ module.exports = {
                                     </block>
                                 </value>
                             </block>`
-                },
+                },*/
                 {
                     xml : 
                     `<block type="speaker_play_note">
@@ -421,8 +421,8 @@ module.exports = {
                             </block>
                         </value>
                     </block>`
-                },*/
-                /*'speaker_music_note',
+                },
+                'speaker_music_note',
                 {
                     xml : 
                     `<block type="speaker_play_note">
@@ -432,7 +432,7 @@ module.exports = {
                             </block>
                         </value>
                     </block>`
-                },*/
+                },
                 'speaker_set_volume',
                 'speaker_get_volume'
             ]

@@ -375,7 +375,7 @@
       };
       Blockly.music = function(notes, cb) {
         if (notes) {
-          myself.$refs.musicNotes.select = notes.split(",");
+          myself.$refs.musicNotes.tags = notes.split(",").map(el => {return {text: el};});
         }
         myself.$refs.musicNotes.$on("result", function(n) {
           myself.musicDialog = false;
