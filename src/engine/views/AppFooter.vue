@@ -1,5 +1,5 @@
 <template>
-    <v-footer height="23" min-height="10" class="grey lighten-3">
+    <v-footer height="23" style="z-index: 99999" min-height="10" class="grey lighten-3">
         <v-layout row wrap>
             <v-flex xs4>
                 <v-card>

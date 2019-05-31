@@ -53,8 +53,7 @@
                             <multipane-resizer v-if="$global.ui.bottomTab.length > 0"></multipane-resizer>
 
                             <!--lower pane -->
-                            <div class="bottom-tab" :style="[{ flexGrow: 1 }, ($global.ui.rightTab.length > 0 ? ({'min-width':'15%'}) : ({}))]"
-                                 v-if="$global.ui.bottomTab.length > 0">
+                            <div class="bottom-tab" v-if="$global.ui.bottomTab.length > 0">
                                 <v-tabs color="primary" dark slider-color="yellow" v-model="bottomTabModel">
                                     <draggable :options="{group: 'tab-group'}" class="v-tabs__container"
                                                v-model="$global.ui.bottomTab">
@@ -78,7 +77,6 @@
                             </div>
                         </multipane>
                     </div>
-                    <app-footer></app-footer>
                 </v-content>
                 <!-- left drawer -->
                 <v-navigation-drawer class="setting-drawer" fixed hide-overlay left temporary
@@ -90,6 +88,8 @@
                                      v-model="$global.ui.rightDrawerComponent">
                     <async-component :target="$global.ui.rightDrawerComponent"/>
                 </v-navigation-drawer>
+
+                <app-footer></app-footer>
             </v-app>
         </template>
         <template v-else>
@@ -308,7 +308,7 @@
         if (lang === "th") {
           this.tourOptions.labels = TourSteps.button.th;
           this.tourStep = TourSteps.th;
-        }else{
+        } else {
           this.tourOptions.labels = TourSteps.button.en;
           this.tourStep = TourSteps.en;
         }
@@ -414,7 +414,7 @@
         if (this.tourLang === "th") {
           this.endDialogTitle = TourSteps.endDialog.title.th;
           this.endDialogText = TourSteps.endDialog.content.th;
-        }else{
+        } else {
           this.endDialogTitle = TourSteps.endDialog.title.en;
           this.endDialogText = TourSteps.endDialog.content.en;
         }
@@ -471,7 +471,14 @@
     }
 
     .v-tabs {
-        height: 100%;
+        display: flex;
+        flex-direction column;
+        width : 100%;
+    }
+
+    .bottom-tab {
+        display: flex;
+        flex-grow: 1;
     }
 
     .close-tab-btn-control {
@@ -483,12 +490,30 @@
     }
 </style>
 <style>
+    .v-window{
+        display: flex;
+        width : 100%;
+        flex: 1 1 auto;
+    }
+    .v-window__container
+    {
+        display: flex;
+        width : 100%;
+    }
+    .v-window-item
+    {
+        display: flex;
+        width : 100%;
+    }
+
     .v-step {
         z-index: 99999 !important;
     }
+
     .bottom-tab .v-tabs__container {
         height: 26px !important;
     }
+
     .v-tour-highlight {
         pointer-events: none !important;
     }
