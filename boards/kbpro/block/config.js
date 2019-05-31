@@ -388,12 +388,12 @@ module.exports = {
                     xml : `<block type="speaker_tts_speak">
                                 <value name="words">                    
                                     <block type="speaker_tts_word">
-                                        <field name="words">HELLO WORLD</field>
+                                        <field name="words">HELLO</field>
                                     </block>
                                 </value>
                             </block>`
                 },
-                /*{
+                {
                     xml : `<block type="speaker_tts_speak_number">
                                 <value name="number">
                                     <shadow type="math_number">
@@ -402,7 +402,7 @@ module.exports = {
                                 </value>
                             </block>`
                 },
-                {
+                /*{
                     xml : `<block type="variables_set">
                                 <field name="VAR">music1</field>
                                 <value name="VALUE">

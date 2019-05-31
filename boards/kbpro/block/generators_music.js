@@ -28,7 +28,7 @@ kbsound.playNotes(${dropdown_instrument},${value_note},${number_tempo});
     let keyNote = text_notes.map(e => {
       let ind = notes.indexOf(e);
       if(ind === 0){ return -1;}
-      return ind + 24;
+      return ind + 34; //should minus 2 key start at 0 and note started at 1
     });
     let code = `(std::vector<int>{${keyNote}})`;
     return [code, Blockly.JavaScript.ORDER_NONE];
@@ -48,7 +48,7 @@ kbsound.playNotes(${dropdown_instrument},${value_note},${number_tempo});
 #EXTINC#include <tts.h>#END
 #EXTINC#include <KBSound.h>#END
 #VARIABLEKBSound kbsound;#END
-#SETUP kbsound.begin(0);
+#SETUP kbsound.begin(0);#END
 kbsound.speak(${value_words});
 `;
     return code;
@@ -59,6 +59,7 @@ kbsound.speak(${value_words});
 #EXTINC#include <tts.h>#END
 #EXTINC#include <KBSound.h>#END
 #VARIABLEKBSound kbsound;#END
+#SETUP kbsound.begin(0);#END
 kbsound.speak(${value_words});
 `;
     return code;

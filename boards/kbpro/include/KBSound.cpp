@@ -12,14 +12,14 @@ const uint8_t *speakNumberOrderTh[7] = { spTWENTY,spTHIRTY,spFOURTY,spFIFTY,spSI
 //---- for interrupt timing sound ----//
 volatile boolean kbsound_sampling = false;
 portMUX_TYPE soundTimerMux = portMUX_INITIALIZER_UNLOCKED;
-uint8_t kbsound_volume = 6;
+uint8_t kbsound_volume = 5;
 static void timerInterrupt();
 
 void soundDacWrite(uint8_t val)
 {
   //uint8_t factor = (10 - kbsound_volume) * 25;
   //int v = (int)val - factor; 
-  int v = val * (kbsound_volume/7.0f);
+  int v = val * (kbsound_volume/10.0f);
   if(v < 0){ v = 0; };
   if(v > 255){ v = 255; };
   dacWrite(DAC_PIN,v);
