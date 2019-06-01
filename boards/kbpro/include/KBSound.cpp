@@ -1,5 +1,5 @@
 #include "KBSound.h"
-#include <Math.h>
+#include <math.h>
 #include "tts.h"
 #include "sf.h"
 

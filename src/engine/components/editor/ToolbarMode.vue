@@ -17,7 +17,7 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <template v-for="(mode,index) in modes">
-                                    <template v-if="$global.setting.devMode == false && (index+1) == 2">
+                                    <template v-if="$global.setting.devMode === false && (index+1) === 2">
                                     </template>
                                     <template v-else>
                                         <v-flex xs12 :class="`md${$global.setting.devMode? '4' : '6'}`" :key="index">
