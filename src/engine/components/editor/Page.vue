@@ -408,6 +408,9 @@
       this.$global.$on("compile-begin",this.clearError);
       this.$global.$on("compile-error",this.addError);
       //this.$global.$on("compile-success",_);
+      if(Vue.prototype.$vuetify.theme.primary === ""){
+        Vue.prototype.$vuetify.theme.primary = '#009688';
+      }
       let theme = this.$vuetify.theme.primary;
       var lighter = util.ui.colorLuminance(theme, 0.2);
       document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = lighter;

@@ -23,7 +23,3 @@ Vue.use(Vuetify, {
 
 
 Vue.use(VuetifyDialog);
-
-if(Vue.prototype.$vuetify.theme.primary === ""){
-  Vue.prototype.$vuetify.theme.primary = '#009688';
-}
