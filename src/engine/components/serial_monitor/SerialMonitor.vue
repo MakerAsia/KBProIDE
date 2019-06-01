@@ -39,20 +39,20 @@
                                         <v-container fluid grid-list>
                                             <v-layout col wrap>
                                                 <v-flex xs12>
-                                                    <v-header class="title">Serial control</v-header>
+                                                    <div class="title">Serial control</div>
                                                 </v-flex>
                                             </v-layout>
                                             <v-layout col wrap>
                                                 <v-flex xs4>
                                                     <v-subheader class="pl-0">Data Bit</v-subheader>
-                                                    <v-btn-toggle v-model="s">
+                                                    <v-btn-toggle v-model="serial_data_bit">
                                                         <v-btn flat>8</v-btn>
                                                         <v-btn flat>7</v-btn>
                                                     </v-btn-toggle>
                                                 </v-flex>
                                                 <v-flex xs6>
                                                     <v-subheader class="pl-0">Parity bit</v-subheader>
-                                                    <v-btn-toggle v-model="s">
+                                                    <v-btn-toggle v-model="serial_parity_bit">
                                                         <v-btn flat>NONE</v-btn>
                                                         <v-btn flat>ODD</v-btn>
                                                         <v-btn flat>EVEN</v-btn>
@@ -62,14 +62,14 @@
                                             <v-layout col wrap>
                                                 <v-flex xs4>
                                                     <v-subheader class="pl-0">Stop bit</v-subheader>
-                                                    <v-btn-toggle v-model="s">
+                                                    <v-btn-toggle v-model="serial_stop_bit">
                                                         <v-btn flat>1</v-btn>
                                                         <v-btn flat>2</v-btn>
                                                     </v-btn-toggle>
                                                 </v-flex>
                                                 <v-flex xs6>
                                                     <v-subheader class="pl-0">Flow Control</v-subheader>
-                                                    <v-btn-toggle v-model="s">
+                                                    <v-btn-toggle v-model="serial_flow_ctrl">
                                                         <v-btn flat>NONE</v-btn>
                                                         <v-btn flat>CTS/RTS</v-btn>
                                                     </v-btn-toggle>
@@ -83,11 +83,12 @@
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex xs9 class="pa-1" style="display: flex; flex-direction: column">
+            <v-flex xs9 class="pa-1" style="display: flex; width: 100%; flex-direction: column">
                 <v-flex style="display: flex; flex: 1 1 auto;">
-                    <v-card style="font-size:13px;overflow-y: scroll; width: 100%;">
+                    <v-card v-if="showMode==='text'" style="font-size:13px;overflow-y: scroll; width: 100%;">
                         123456
                     </v-card>
+                    <line-chart v-else :chartData="p_data" :options="p_options" ref="line_chart" style="width: 100%"></line-chart>
                 </v-flex>
                 <div class="mt-2" style="display:flex;flex-direction: row">
                     <v-flex style="flex:1 1 auto; height: 45px;">
@@ -177,8 +178,12 @@
     </v-card>
 </template>
 <script>
+  import LineChart from "./LineChart";
   export default {
-    name: "SerialMonitor.vue",
+    name: "SerialMonitor",
+    components: {
+      "line-chart": LineChart,
+    },
     data() {
       return {
         fab: false,
@@ -193,7 +198,13 @@
           {label: "CR", value: "\r", content: "\\r"},
           {label: "CRLF", value: "\r\n", content: "\\r\\n"},
         ],
+        serial_data_bit : 0,
+        serial_stop_bit : 0,
+        serial_parity_bit : 0,
+        serial_flow_ctrl : 0,
+
         current_postfix : 3,
+
         send_time : 1,
         send_delay : 50,
         infos: {
@@ -219,8 +230,75 @@
           send_is_sending: false,
           btn_send_disabled: false,
         },
+        p_data: {
+          labels: [],
+          datasets: []
+        },
+        p_options: {
+          responsive: true,
+          fill : false,
+          maintainAspectRatio: false,
+          animation: { duration: 0 },
+          hover: { animationDuration: 0 },
+          responsiveAnimationDuration: 0,
+          elements: {
+            line: {
+              tension: 0 // disables bezier curves
+            }
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Tick(IDs)",
+                fontColor: "black"
+              },
+              ticks: {
+                autoskip: true,
+                autoSkipPadding: 30
+              }
+            }],
+            yAxes: [{
+              gridLines: {
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Value",
+                fontColor: "black"
+              }
+            }]
+          }
+        }
       };
     },
+    mounted () {
+      this.fillData()
+    },
+    methods : {
+      fillData () {
+        this.p_data = {
+          labels: [this.getRandomInt(), this.getRandomInt()],
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }, {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }
+          ]
+        }
+      },
+      getRandomInt () {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      }
+    }
   };
 
 </script>
