@@ -19,6 +19,67 @@
                                     label="Serial upload baudrate"
                             ></v-combobox>
                         </div>
+                        <v-layout col>
+                            <v-flex xs12>
+                                <v-btn color="primary">
+                                    connect
+                                </v-btn>
+                                <v-menu top :offset-y="true">
+                                    <template #activator="{ on: menu }">
+                                        <v-tooltip top>
+                                            <template #activator="{ on: tooltip }">
+                                                <v-btn fab color="primary" style="width:36px; height: 36px;" v-on="{ ...tooltip, ...menu }">
+                                                    <v-icon>fa-cog</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>setup sending</span>
+                                        </v-tooltip>
+                                    </template>
+                                    <v-card>
+                                        <v-container fluid grid-list>
+                                            <v-layout col wrap>
+                                                <v-flex xs12>
+                                                    <v-header class="title">Serial control</v-header>
+                                                </v-flex>
+                                            </v-layout>
+                                            <v-layout col wrap>
+                                                <v-flex xs4>
+                                                    <v-subheader class="pl-0">Data Bit</v-subheader>
+                                                    <v-btn-toggle v-model="s">
+                                                        <v-btn flat>8</v-btn>
+                                                        <v-btn flat>7</v-btn>
+                                                    </v-btn-toggle>
+                                                </v-flex>
+                                                <v-flex xs6>
+                                                    <v-subheader class="pl-0">Parity bit</v-subheader>
+                                                    <v-btn-toggle v-model="s">
+                                                        <v-btn flat>NONE</v-btn>
+                                                        <v-btn flat>ODD</v-btn>
+                                                        <v-btn flat>EVEN</v-btn>
+                                                    </v-btn-toggle>
+                                                </v-flex>
+                                            </v-layout>
+                                            <v-layout col wrap>
+                                                <v-flex xs4>
+                                                    <v-subheader class="pl-0">Stop bit</v-subheader>
+                                                    <v-btn-toggle v-model="s">
+                                                        <v-btn flat>1</v-btn>
+                                                        <v-btn flat>2</v-btn>
+                                                    </v-btn-toggle>
+                                                </v-flex>
+                                                <v-flex xs6>
+                                                    <v-subheader class="pl-0">Flow Control</v-subheader>
+                                                    <v-btn-toggle v-model="s">
+                                                        <v-btn flat>NONE</v-btn>
+                                                        <v-btn flat>CTS/RTS</v-btn>
+                                                    </v-btn-toggle>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-container>
+                                    </v-card>
+                                </v-menu>
+                            </v-flex>
+                        </v-layout>
                     </v-flex>
                 </v-layout>
             </v-flex>
@@ -28,21 +89,64 @@
                         123456
                     </v-card>
                 </v-flex>
-                <div class="d-flex mt-2">
-                    <v-flex xs11 style="height: 45px;">
-                        <v-text-field :height="25"
+                <div class="mt-2" style="display:flex;flex-direction: row">
+                    <v-flex style="flex:1 1 auto; height: 45px;">
+                        <v-text-field :height="25" clearable
                                       label="Message"
                         ></v-text-field>
                     </v-flex>
-                    <v-flex xs1>
+                    <div style="padding: 5px; flex: 0 1 auto;">
+                        <v-tooltip top>
+                            <v-btn-toggle v-model="current_postfix" slot="activator">
+                                <v-btn flat>RAW</v-btn>
+                                <v-btn flat>LF</v-btn>
+                                <v-btn flat>CR</v-btn>
+                                <v-btn flat>CRLF</v-btn>
+                            </v-btn-toggle>
+                            <span>Send postfix</span>
+                        </v-tooltip>
+                    </div>
+                    <div style="flex: 0 1 auto;">
+                        <v-menu top :offset-y="true">
+                            <template #activator="{ on: menu }">
+                                <v-tooltip top>
+                                    <template #activator="{ on: tooltip }">
+                                        <v-btn fab color="primary" style="width:36px; height: 36px;" v-on="{ ...tooltip, ...menu }">
+                                            <v-icon>fa-cog</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>setup sending</span>
+                                </v-tooltip>
+                            </template>
+                            <v-card>
+                            <v-container fluid grid-list>
+                                <v-layout col wrap>
+                                    <v-flex xs12>
+                                        <v-subheader class="pl-0">Send : {{send_time}} time{{send_time>1?'s':''}}</v-subheader>
+                                        <v-slider v-model="send_time" min="1" max="100" thumb-label></v-slider>
+                                    </v-flex>
+
+                                    <v-flex xs12>
+                                        <v-subheader class="pl-0">Delay : {{send_delay}} ms</v-subheader>
+                                        <v-slider v-model="send_delay" min="100" max="10000" step="50" thumb-label></v-slider>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                            </v-card>
+                        </v-menu>
+
+                    </div>
+                    <v-flex style="flex: 0 1 auto;">
                         <v-btn block color="primary">
-                            Send
-                            <v-icon right dark>fa-paper-plane</v-icon>
+                            Send{{send_time>1?' ('+send_time+') ':''}}
+                            <v-icon v-if="send_time===1" right dark>fa-paper-plane</v-icon>
+                            <v-icon v-else dark>loop</v-icon>
                         </v-btn>
                     </v-flex>
                 </div>
             </v-flex>
         </v-layout>
+
         <v-speed-dial
                 v-model="fab"
                 :top="true"
@@ -89,6 +193,9 @@
           {label: "CR", value: "\r", content: "\\r"},
           {label: "CRLF", value: "\r\n", content: "\\r\\n"},
         ],
+        current_postfix : 3,
+        send_time : 1,
+        send_delay : 50,
         infos: {
           rx_bytes: 0,
           tx_bytes: 0,
