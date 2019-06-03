@@ -351,7 +351,16 @@
       };
     },
     mounted() {
+      let self = this;
       this.listPort();
+      this.$global.$on('compile-begin',_=>{
+        if(self.port && self.port.isOpen){
+          self.port.close();
+        }
+      });
+      this.$global.$on('upload-success',_=>{
+        self.connect();
+      });
     },
     updated() {
 
