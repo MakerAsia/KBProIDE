@@ -13,9 +13,9 @@ export default {
     this.renderChart(this.chartData, this.options);
   },
   watch: {
-    "data.labels": {
+    "chartData.labels": {
       deep: false, handler: function() {
-        this._chart.update();
+        this.$data._chart.update();
       },
     },
     "options": {

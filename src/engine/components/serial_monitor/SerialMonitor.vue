@@ -1,108 +1,163 @@
 <template class="absolute">
     <v-card flat class="serial-console">
-        <v-layout row wrap fill-height class="pa-2">
+        <v-layout row wrap fill-height class="pa-2" style="width: 100%;">
             <v-flex xs3>
-                <v-layout wrap>
-                    <v-flex xs12>
-                        <div class="d-flex">
-                            <v-combobox
-                                    dense
-                                    class="mr-3"
-                                    v-model="currentPort"
-                                    :items="comports"
-                                    label="Select COM port"
-                            ></v-combobox>
-                            <v-combobox
-                                    dense
-                                    v-model="baudrate"
-                                    :items="baudrates"
-                                    label="Serial upload baudrate"
-                            ></v-combobox>
-                        </div>
-                        <v-layout col>
-                            <v-flex xs12>
-                                <v-btn color="primary">
-                                    connect
+                <v-flex style="display: flex; flex-direction: column; height: 100%; width: 100%">
+                    <div class="d-flex" style="flex-grow: 1">
+                        <v-combobox
+                                dense
+                                class="mr-3"
+                                v-model="currentPort"
+                                :items="comports"
+                                label="Select COM port"
+                        ></v-combobox>
+                        <v-combobox
+                                dense
+                                v-model="baudrate"
+                                :items="baudrates"
+                                label="Serial upload baudrate"
+                        ></v-combobox>
+                    </div>
+                    <!--v-layout col style="display: flex; flex: 0 1 auto;">
+                        <v-flex xs12>
+
+                        </v-flex>
+                    </v-layout>
+                    <v-layout style="flex-grow: 1; overflow: hidden">
+                        <div>
+                            <div class="text-xs-center">
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
                                 </v-btn>
-                                <v-menu top :offset-y="true">
-                                    <template #activator="{ on: menu }">
-                                        <v-tooltip top>
-                                            <template #activator="{ on: tooltip }">
-                                                <v-btn fab color="primary" style="width:36px; height: 36px;" v-on="{ ...tooltip, ...menu }">
-                                                    <v-icon>fa-cog</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span>setup sending</span>
-                                        </v-tooltip>
-                                    </template>
-                                    <v-card>
-                                        <v-container fluid grid-list>
-                                            <v-layout col wrap>
-                                                <v-flex xs12>
-                                                    <div class="title">Serial control</div>
-                                                </v-flex>
-                                            </v-layout>
-                                            <v-layout col wrap>
-                                                <v-flex xs4>
-                                                    <v-subheader class="pl-0">Data Bit</v-subheader>
-                                                    <v-btn-toggle v-model="serial_data_bit">
-                                                        <v-btn flat>8</v-btn>
-                                                        <v-btn flat>7</v-btn>
-                                                    </v-btn-toggle>
-                                                </v-flex>
-                                                <v-flex xs6>
-                                                    <v-subheader class="pl-0">Parity bit</v-subheader>
-                                                    <v-btn-toggle v-model="serial_parity_bit">
-                                                        <v-btn flat>NONE</v-btn>
-                                                        <v-btn flat>ODD</v-btn>
-                                                        <v-btn flat>EVEN</v-btn>
-                                                    </v-btn-toggle>
-                                                </v-flex>
-                                            </v-layout>
-                                            <v-layout col wrap>
-                                                <v-flex xs4>
-                                                    <v-subheader class="pl-0">Stop bit</v-subheader>
-                                                    <v-btn-toggle v-model="serial_stop_bit">
-                                                        <v-btn flat>1</v-btn>
-                                                        <v-btn flat>2</v-btn>
-                                                    </v-btn-toggle>
-                                                </v-flex>
-                                                <v-flex xs6>
-                                                    <v-subheader class="pl-0">Flow Control</v-subheader>
-                                                    <v-btn-toggle v-model="serial_flow_ctrl">
-                                                        <v-btn flat>NONE</v-btn>
-                                                        <v-btn flat>CTS/RTS</v-btn>
-                                                    </v-btn-toggle>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-container>
-                                    </v-card>
-                                </v-menu>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                            </div>
+                            <div class="text-xs-center">
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                            </div>
+                            <div class="text-xs-center">
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                                <v-btn fab dark small color="primary">
+                                    <v-icon dark>remove</v-icon>
+                                </v-btn>
+                            </div>
+                        </div>
+                    </v-layout-->
+                    <v-layout col style="display: flex; flex: 0 1 auto;">
+                        <v-flex xs12>
+                            <v-btn :color="isOpened?'error':'primary'" @click="connect">
+                                {{isOpened?"Disconnect" : "Connect"}}
+                            </v-btn>
+                            <v-btn fab @click="pausePlaySerial" :disabled="!isOpened" :color="isPause?'warning':'primary'"
+                                   style="width:36px; height: 36px;">
+                                <v-icon v-if="!isPause">fa-pause</v-icon>
+                                <v-icon v-else>fa-play</v-icon>
+                            </v-btn>
+                            <v-btn fab color="primary" :disabled="!isOpened" style="width:36px; height: 36px;">
+                                <v-icon>fa-repeat</v-icon>
+                            </v-btn>
+                            <v-menu top :offset-y="true">
+                                <template #activator="{ on: menu }">
+                                    <v-tooltip top>
+                                        <template #activator="{ on: tooltip }">
+                                            <v-btn fab color="primary" style="width:36px; height: 36px;"
+                                                   v-on="{ ...tooltip, ...menu }">
+                                                <v-icon>fa-cog</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>setup sending</span>
+                                    </v-tooltip>
+                                </template>
+                                <v-card>
+                                    <v-container fluid grid-list>
+                                        <v-layout col wrap>
+                                            <v-flex xs12>
+                                                <div class="title">Serial control</div>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout col wrap>
+                                            <v-flex xs4>
+                                                <v-subheader class="pl-0">Data Bit</v-subheader>
+                                                <v-btn-toggle v-model="serial_data_bit">
+                                                    <v-btn flat>8</v-btn>
+                                                    <v-btn flat>7</v-btn>
+                                                </v-btn-toggle>
+                                            </v-flex>
+                                            <v-flex xs6>
+                                                <v-subheader class="pl-0">Parity bit</v-subheader>
+                                                <v-btn-toggle v-model="serial_parity_bit">
+                                                    <v-btn flat>NONE</v-btn>
+                                                    <v-btn flat>ODD</v-btn>
+                                                    <v-btn flat>EVEN</v-btn>
+                                                </v-btn-toggle>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout col wrap>
+                                            <v-flex xs4>
+                                                <v-subheader class="pl-0">Stop bit</v-subheader>
+                                                <v-btn-toggle v-model="serial_stop_bit">
+                                                    <v-btn flat>1</v-btn>
+                                                    <v-btn flat>2</v-btn>
+                                                </v-btn-toggle>
+                                            </v-flex>
+                                            <v-flex xs6>
+                                                <v-subheader class="pl-0">Flow Control</v-subheader>
+                                                <v-btn-toggle v-model="serial_flow_ctrl">
+                                                    <v-btn flat>NONE</v-btn>
+                                                    <v-btn flat>CTS/RTS</v-btn>
+                                                </v-btn-toggle>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-card>
+                            </v-menu>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
             </v-flex>
             <v-flex xs9 class="pa-1" style="display: flex; width: 100%; flex-direction: column">
-                <v-flex style="display: flex; flex: 1 1 auto;">
+                <v-flex style="display: flex; flex: 1 1 auto; flex-basis: 50%">
                     <v-card v-if="showMode==='text'" style="font-size:13px;overflow-y: scroll; width: 100%;">
-                        123456
+                        <ol ref="monitor" class="monitor-line">
+                            <li v-for="(line,inx) in serial_data" :key="inx" class="serial-line">
+                                {{line}}
+                            </li>
+                        </ol>
                     </v-card>
-                    <line-chart v-else :chartData="p_data" :options="p_options" ref="line_chart" style="width: 100%"></line-chart>
+                    <line-chart v-else :chartData="graph_data" :options="graph_options" ref="line_chart"
+                                style="width: 100%"></line-chart>
                 </v-flex>
                 <div class="mt-2" style="display:flex;flex-direction: row">
                     <v-flex style="flex:1 1 auto; height: 45px;">
-                        <v-text-field :height="25" clearable
-                                      label="Message"
+                        <v-text-field
+                                v-model="send_string"
+                                :height="25"
+                                clearable
+                                :disabled="!isOpened"
+                                label="Message"
                         ></v-text-field>
                     </v-flex>
                     <div style="padding: 5px; flex: 0 1 auto;">
                         <v-tooltip top>
                             <v-btn-toggle v-model="current_postfix" slot="activator">
-                                <v-btn flat>RAW</v-btn>
-                                <v-btn flat>LF</v-btn>
-                                <v-btn flat>CR</v-btn>
-                                <v-btn flat>CRLF</v-btn>
+                                <v-btn flat v-for="(msg,ind) in send_postfix" :key="ind">{{msg.label}}</v-btn>
                             </v-btn-toggle>
                             <span>Send postfix</span>
                         </v-tooltip>
@@ -112,7 +167,8 @@
                             <template #activator="{ on: menu }">
                                 <v-tooltip top>
                                     <template #activator="{ on: tooltip }">
-                                        <v-btn fab color="primary" style="width:36px; height: 36px;" v-on="{ ...tooltip, ...menu }">
+                                        <v-btn fab color="primary" style="width:36px; height: 36px;"
+                                               v-on="{ ...tooltip, ...menu }">
                                             <v-icon>fa-cog</v-icon>
                                         </v-btn>
                                     </template>
@@ -120,26 +176,28 @@
                                 </v-tooltip>
                             </template>
                             <v-card>
-                            <v-container fluid grid-list>
-                                <v-layout col wrap>
-                                    <v-flex xs12>
-                                        <v-subheader class="pl-0">Send : {{send_time}} time{{send_time>1?'s':''}}</v-subheader>
-                                        <v-slider v-model="send_time" min="1" max="100" thumb-label></v-slider>
-                                    </v-flex>
+                                <v-container fluid grid-list>
+                                    <v-layout col wrap>
+                                        <v-flex xs12>
+                                            <v-subheader class="pl-0">Send : {{send_time}} time{{send_time>1?"s":""}}
+                                            </v-subheader>
+                                            <v-slider v-model="send_time" min="1" max="100" thumb-label></v-slider>
+                                        </v-flex>
 
-                                    <v-flex xs12>
-                                        <v-subheader class="pl-0">Delay : {{send_delay}} ms</v-subheader>
-                                        <v-slider v-model="send_delay" min="100" max="10000" step="50" thumb-label></v-slider>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
+                                        <v-flex xs12>
+                                            <v-subheader class="pl-0">Delay : {{send_delay}} ms</v-subheader>
+                                            <v-slider v-model="send_delay" min="100" max="10000" step="50"
+                                                      thumb-label></v-slider>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
                             </v-card>
                         </v-menu>
 
                     </div>
                     <v-flex style="flex: 0 1 auto;">
-                        <v-btn block color="primary">
-                            Send{{send_time>1?' ('+send_time+') ':''}}
+                        <v-btn @click="sendData(send_string,send_time,send_delay)" block color="primary" :disabled="!isOpened">
+                            Send{{send_time>1?" ("+send_time+") ":""}}
                             <v-icon v-if="send_time===1" right dark>fa-paper-plane</v-icon>
                             <v-icon v-else dark>loop</v-icon>
                         </v-btn>
@@ -147,7 +205,9 @@
                 </div>
             </v-flex>
         </v-layout>
-
+        <div v-if="showMode==='text'" class="auto-scroll-switch">
+            <v-switch color="primary" v-model="auto_scroll" :label="`auto scroll`"></v-switch>
+        </div>
         <v-speed-dial
                 v-model="fab"
                 :top="true"
@@ -178,7 +238,12 @@
     </v-card>
 </template>
 <script>
+  import util from "@/engine/utils";
+
+  const SerialPort = util.requireFunc("serialport");
+  const Readline = util.requireFunc("@serialport/parser-readline");
   import LineChart from "./LineChart";
+
   export default {
     name: "SerialMonitor",
     components: {
@@ -187,118 +252,274 @@
     data() {
       return {
         fab: false,
-        currentPort: "COM3",
+        currentPort: "",
         comports: [],
+        port: null,
+        isOpened: false,
+        isPause: false,
         showMode: "text",
         baudrate: 115200,
         baudrates: [300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 74880, 115200, 230400, 250000, 500000, 921600],
+
+        serial_data_bit: 0,
+        serial_stop_bit: 0,
+        serial_parity_bit: 0,
+        serial_flow_ctrl: 0,
+        serial_connect_info: {
+          data_bit: [8, 7],
+          stop_bit: [1, 2],
+          parity_bit: ["none", "even", "odd"],
+          flow_control: [false, true],
+        },
+
+        current_postfix: 3,
+        send_time: 1,
+        send_delay: 50,
+        send_string : "",
         send_postfix: [
           {label: "RAW", value: "", content: ""},
           {label: "LF", value: "\n", content: "\\n"},
           {label: "CR", value: "\r", content: "\\r"},
           {label: "CRLF", value: "\r\n", content: "\\r\\n"},
         ],
-        serial_data_bit : 0,
-        serial_stop_bit : 0,
-        serial_parity_bit : 0,
-        serial_flow_ctrl : 0,
 
-        current_postfix : 3,
+        serial_data: [],
+        received_count: 0,
+        max_line: 1000,
+        auto_scroll: true,
 
-        send_time : 1,
-        send_delay : 50,
-        infos: {
-          rx_bytes: 0,
-          tx_bytes: 0,
-          current_port: "None",
-          current_baudrate: 115200,
-          current_data_length: "eight",
-          current_parity_bit: "no",
-          current_stop_bit: "one",
-          current_flow_ctrl: false,//false
-          string_show_time: false,
-          string_show_send: false,
-          t_con_msg: [],
-          is_connected: false,
-          connect_id: null,
-          paused: false,
-          current_send_type: "TEXT",
-          current_send_postfix: "\n",
-          current_send_loop_ms: 0,
-          current_send_times: 1,
-          send_min_loop_ms: 10,
-          send_is_sending: false,
-          btn_send_disabled: false,
-        },
-        p_data: {
+        graph_data: {
           labels: [],
-          datasets: []
+          datasets: [],
         },
-        p_options: {
+        graph_dataset_labels: "var1",
+        graph_dataset_count: 0,
+        max_graph_len: 100,
+
+        colors: [
+          "#02ff00",
+          "#fef000",
+          "#fd7600",
+          "#fd1200",
+          "#fc004f",
+          "#ef00b3",
+          "#7200d7",
+          "#1800b3",
+          "#00a5ff"],
+
+        graph_options: {
           responsive: true,
-          fill : false,
+          fill: false,
           maintainAspectRatio: false,
-          animation: { duration: 0 },
-          hover: { animationDuration: 0 },
+          animation: {duration: 0},
+          hover: {animationDuration: 0},
           responsiveAnimationDuration: 0,
           elements: {
             line: {
-              tension: 0 // disables bezier curves
-            }
+              tension: 0, // disables bezier curves
+            },
           },
           scales: {
-            xAxes: [{
-              gridLines: {
-                display: true
-              },
-              scaleLabel: {
-                display: true,
-                labelString: "Tick(IDs)",
-                fontColor: "black"
-              },
-              ticks: {
-                autoskip: true,
-                autoSkipPadding: 30
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true
-              },
-              scaleLabel: {
-                display: true,
-                labelString: "Value",
-                fontColor: "black"
-              }
-            }]
-          }
-        }
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "Tick(IDs)",
+                  fontColor: "black",
+                },
+                ticks: {
+                  autoskip: true,
+                  autoSkipPadding: 30,
+                },
+              }],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "Value",
+                  fontColor: "black",
+                },
+              }],
+          },
+        },
       };
     },
-    mounted () {
-      this.fillData()
+    mounted() {
+      this.listPort();
     },
-    methods : {
-      fillData () {
-        this.p_data = {
-          labels: [this.getRandomInt(), this.getRandomInt()],
-          datasets: [
-            {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }, {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }
-          ]
+    updated() {
+
+    },
+    beforeDestroy(){
+      if(this.port && this.port.isOpen){
+        this.port.close();
+      }
+    },
+    methods: {
+      listPort: function() {
+        let self = this;
+        SerialPort.list().then(ports => {
+          self.comports = ports.map(obj => obj.comName);
+          //this.comports = this.comports.filter(port => !excludePorts.includes(port));
+          if (self.comports.length > 0) {
+            self.currentPort = self.comports[0];
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      connect: function() {
+        if (this.port && this.port.isOpen) {
+          console.log("disconnect serial port");
+          this.port.close();
+        } else {
+          console.log("connecting serial : " + this.currentPort);
+          let comPort = this.currentPort;
+          let baudRate = this.baudrate;
+          let dataBit = this.serial_connect_info.data_bit[this.serial_data_bit];
+          let stopBit = this.serial_connect_info.stop_bit[this.serial_stop_bit];
+          let partityBit = this.serial_connect_info.parity_bit[this.serial_parity_bit];
+          let flowCtrl = this.serial_connect_info.flow_control[this.serial_flow_ctrl];
+          this.port = new SerialPort(comPort, {
+            baudRate: baudRate,
+            dataBits: dataBit,
+            stopBits: stopBit,
+            parity: partityBit,
+            rtscts: flowCtrl,
+          });
+          this.port.on("open", this.onSerialOpen);
+          this.port.on("data", this.onSerialData);
+          this.port.on("error", this.onSerialError);
+          this.port.on("close", this.onSerialClose);
         }
       },
-      getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      }
-    }
+      onSerialClose: function() {
+        console.log("port closed");
+        this.isPause = false;
+        this.isOpened = this.port.isOpen;
+      },
+      onSerialOpen: function() {
+        this.isOpened = this.port.isOpen;
+        this.serial_data = [];
+      },
+      onSerialData: function(data) {
+        this.add_data(data.toString("utf8"));
+      },
+      onSerialError: function(err) {
+        console.log(err);
+        this.$dialog.notify.error(err);
+        this.isOpened = this.port.isOpen;
+      },
+      pausePlaySerial: function() {
+        if (!this.port) {
+          console.log("no port found");
+          return;
+        }
+        if (!this.isPause) {
+          this.port.pause();
+          this.isPause = true;
+          console.log("paused");
+        } else {
+          this.port.resume();
+          this.isPause = false;
+          console.log("resumed");
+        }
+      },
+      sendData: function(send_message, send_times,send_delay) {
+        if(send_times === undefined){
+          send_times = this.send_time;
+        }
+        if(send_delay === undefined){
+          send_delay = this.send_delay;
+        }
+        if(send_message === undefined){
+          send_message = this.send_string + this.send_postfix[this.current_postfix].content;
+        }
+        if(this.port && this.port.isOpen){
+          console.log("send : "+send_message);
+          this.port.write(send_message);
+          this.send_time = send_times;
+        }
+        if(send_times > 1){
+          let self = this;
+          send_times--;
+          setTimeout(_=>{ self.sendData(send_message,send_times,send_delay) },send_delay);
+        }
+      },
+      add_test: function(line) {
+        setTimeout(_ => {
+          this.add_data(line);
+          this.add_test(line);
+        }, 100);
+      },
+      add_data: function(line) {
+        //--- add to serial monitor ---//
+        this.serial_data.push(line);
+        if (this.serial_data.length > this.max_line) {
+          this.serial_data.shift();
+        }
+
+        if (this.auto_scroll) {
+          let m = this.$refs.monitor;
+          if (m) {
+            this.$nextTick(_ => {
+              m.scrollIntoView(false);// = m.scrollHeight;
+            });
+          }
+        }
+        //--- process graph ---//
+        let data_ids = line.split(":");
+        let data_id = (data_ids.length === 2) ? data_ids[0] : this.received_count;
+        let numberArr = (data_ids.length === 2) ? data_ids[1] : line;
+        numberArr = numberArr.split(",");
+        numberArr = numberArr.map(o => parseInt(o));
+        numberArr = numberArr.filter(o => !Number.isNaN(o));
+        if (numberArr.length <= 0) {
+          return;
+        }
+        if (numberArr.length > this.graph_dataset_count) { //add new dataset if new data column
+          let data_labels = this.graph_dataset_labels.split(",");
+          let labels = numberArr.map((el, ind) => (ind < data_labels.length) ? data_labels[ind] : "Var " + (ind + 1));
+          for (let j = this.graph_dataset_count; j < numberArr.length; j++) {
+            this.graph_data.datasets.push(
+                {
+                  label: labels[j],
+                  fill: false,
+                  borderColor: this.get_random_color(),
+                  borderWidth: 1,
+                  data: [numberArr[j]],
+                },
+            );
+          }
+          this.graph_dataset_count = numberArr.length;
+        }
+        if (numberArr.length === this.graph_dataset_count) { //ensure number column eq to dataset
+          for (let i = 0; i < numberArr.length; i++) {
+            if (this.graph_data.datasets[i].data.length > this.max_graph_len) {
+              this.graph_data.datasets[i].data.shift();
+            }
+            this.graph_data.datasets[i].data.push(numberArr[i]);
+          }
+          if (this.graph_data.labels.length > this.max_graph_len) {
+            this.graph_data.labels.shift();
+          }
+          this.graph_data.labels.push(data_id);
+        }
+        this.received_count++;
+      },
+      getRandomInt() {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+      },
+      get_random_color: function() {
+        return this.colors[Math.random() * this.colors.length | 0];
+      },
+    },
   };
 
 </script>
@@ -311,6 +532,34 @@
     }
 </style>
 <style>
+    .auto-scroll-switch{
+        position: absolute;
+        right: 75px;
+        top: 10px;
+    }
+    ol.monitor-line {
+        padding-left: 5px;
+        counter-reset: li;
+        list-style: none;
+    }
+
+    ol.monitor-line:before {
+        background-color: #42aa2a;
+    }
+
+    ol.monitor-line > li {
+        padding-left: 0.5em;
+        border-left: 2px solid #aeabaf;
+        /*counter-increment: line;
+        content: counter(line);
+        display: inline-block;
+        color: #888;*/
+    }
+
+    ol.monitor-line > li:before {
+
+    }
+
     .serial-console .v-speed-dial {
         position: absolute;
     }
@@ -318,6 +567,7 @@
     .serial-console .v-btn--floating {
         position: relative;
     }
+
     /*
     .v-tabs .v-window-item .v-window__container{
         position: absolute !important;
