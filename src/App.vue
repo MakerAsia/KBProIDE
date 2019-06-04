@@ -466,8 +466,8 @@
     }
 
     .vertical-panes {
-        min-height: 400px;
-        height: 75%;
+        min-height: 200px;
+        height: 65%;
     }
 
     .v-tabs {
