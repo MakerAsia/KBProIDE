@@ -90,7 +90,7 @@
   var comport = "";
   var mac = "";
   var boardName = "";
-
+  const baudrate = 921600;
   export default {
     data() {
       return {
@@ -131,11 +131,12 @@
       },
       run() { //find port and mac
         console.log("---> step 1 <---");
+        G.$emit("compile-begin");
         this.stepResult["1"].msg = "Find KidBright ";
         boardCompiler.listPort().then(comp => {
           comport = comp[0];
           this.stepResult["1"].msg += ` at ${comport}`;
-          return boardCompiler.readMac({portName: comport});
+          return boardCompiler.readMac({portName: comport,baudrate});
         }).then(boardMac => {
           this.stepResult["1"].msg += ` MAC ${boardMac.mac}`;
           mac = boardMac.mac;
@@ -159,28 +160,37 @@
           };
           return boardCompiler.compile(rawCode, boardName, config, compileCb);
         }).then(() => {
+          G.$emit("compile-success"); //<<<<< fire event
           this.stepResult["2"].msg += "done!";
           this.compileStep = 3;
           this.stepResult["3"].msg = "Uploading ... ";
           console.log("---> step 3 <---");
-          return boardCompiler.flash(comport);
+          G.$emit("upload-begin"); //<<<<< fire event
+          return boardCompiler.flash(comport,baudrate);
         }).then(() => {
           this.stepResult["3"].msg = "Upload success";
           this.compileStep = 4;
+          G.$emit("upload-success"); //<<<<< fire event
         }).catch(err => {
           console.log("------ process error ------");
-          console.log(err);
-          this.failed = true;
-          if (this.compileStep == 1) {
-            this.stepResult["1"].msg = "Cannot find KidBright : " + err;
+          engine.util.compiler.parseError(err).then(errors => {
+            console.error(`errors:`, errors);
+            G.$emit("compile-error",errors);
+            if (this.compileStep == 1) {
+              this.stepResult["1"].msg = "Cannot find KidBright : " + err;
+              this.stepResult["1"].result = false;
+            } else if (this.compileStep == 2) {
+              this.stepResult["2"].msg = `${errors.join("\n")}`;
+              this.stepResult["2"].result = false;
+            } else if (this.compileStep == 3) {
+              this.stepResult["3"].msg = "Cannot upload program : " + err;
+              this.stepResult["3"].result = false;
+            }
+          }).catch(errors => {
+            this.stepResult["1"].msg = `${err}`;
             this.stepResult["1"].result = false;
-          } else if (this.compileStep == 2) {
-            this.stepResult["2"].msg = "Compile error : "  err;
-            this.stepResult["2"].result = false;
-          } else if (this.compileStep == 3) {
-            this.stepResult["3"].msg = "Cannot upload program : " + err;
-            this.stepResult["3"].result = false;
-          }
+            this.failed = true;
+          });
         });
       },
     },

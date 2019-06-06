@@ -17,14 +17,14 @@
                     <v-container>
                         <v-layout align-center column>
                             <v-flex xs12>
-                                <v-progress-circular v-if="compileStep <= 3"
+                                <v-progress-circular v-if="compileStep < 3"
                                                      :size="80"
                                                      :width="8"
                                                      color="primary"
                                                      indeterminate>
                                 </v-progress-circular>
                                 <v-fade-transition :hide-on-leave="true">
-                                    <v-icon color="green" size="110" v-if="compileStep > 3">
+                                    <v-icon color="green" size="110" v-if="compileStep >= 3">
                                         check_circle_outline
                                     </v-icon>
                                 </v-fade-transition>
@@ -49,15 +49,6 @@
                             </v-stepper-step>
                             <v-stepper-content step="2" v-if="compileStep >= 2">
                                 {{stepResult["2"].msg}}
-                            </v-stepper-content>
-
-                            <v-stepper-content step="3" v-if="compileStep >= 3">
-                                {{stepResult["3"].msg}}
-                                <v-progress-linear
-                                        height="2"
-                                        :active="compileStep < 3"
-                                        :indeterminate="true"
-                                ></v-progress-linear>
                             </v-stepper-content>
                         </v-stepper>
                     </v-flex>
@@ -126,6 +117,7 @@
       },
       run() { //find port and mac
         console.log("---> step 1 <---");
+        G.$emit("compile-begin");
         this.compileStep = 1;
         this.stepResult["1"].msg = "Compiling..";
         //this.stepResult["1"].msg += ` at ${comport}`;
@@ -156,10 +148,12 @@
         }).then(() => {
           this.stepResult["2"].msg += "done!";
           this.compileStep = 3;
+          G.$emit("compile-success");
         }).catch(err => {
           console.log("------ process error ------");
           engine.util.compiler.parseError(err).then(errors => {
             console.error(`errors:`, errors);
+            G.$emit("compile-error",errors);
             if (this.compileStep == 1) {
               this.stepResult["1"].msg = "Cannot find KidBright : " + err;
               this.stepResult["1"].result = false;
@@ -173,6 +167,7 @@
           }).catch(errors => {
             console.log("errors", errors);
             //G.$emit("compiler-error", errors);
+            this.failed = true;
           });
           this.failed = true;
         });
