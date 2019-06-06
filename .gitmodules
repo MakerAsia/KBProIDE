@@ -4,3 +4,6 @@
 [submodule "platforms/arduino-esp32"]
 	path = platforms/arduino-esp32
 	url = https://github.com/MakerAsia/kbpro-arduino-platfrom
+[submodule "boards/kidbright"]
+	path = boards/kidbright
+	url = https://github.com/comdet/kidbright-board-kbide
