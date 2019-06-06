@@ -92,5 +92,8 @@
     "vuetify-loader": "^1.0.5",
     "webpack-bundle-analyzer": "^3.3.2"
   },
-  "main": "background.js"
+  "main": "background.js",
+  "build": {
+
+  }
 }

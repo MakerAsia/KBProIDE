@@ -116,7 +116,7 @@ export default {
     },
     {//10
       target: "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.smooth-scrollbar > div.scroll-content > div > div:nth-child(5)",
-      content: `เหมือนว่าตอนนี้คุณยังไม่ปลั๊กอิน แต่ไม่เป็นไร! หากเชื่อมต่ออินเตอร์เน็คคุณสามารถเลือกติดตั้งได้ที่นี่`,
+      content: `เหมือนว่าตอนนี้คุณยังไม่ปลั๊กอิน แต่ไม่เป็นไร! หากเชื่อมต่ออินเตอร์เน็ตคุณสามารถเลือกติดตั้งได้ที่นี่`,
       params: {
         highlight: true,
       },
@@ -170,7 +170,7 @@ we'll take a look later`,
       },
     },
     {//2
-      target: "#inspire > div.application--wrap > main > div > footer",
+      target: "#inspire > div.application--wrap > footer",
       content: `A little space here is StatusBar, to monitoring what's going on in IDE`,
       params: {
         highlight: true,
