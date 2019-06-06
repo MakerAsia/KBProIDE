@@ -51,6 +51,17 @@ module.exports = {
             "to": "../platforms",
           },
         ],
+        "win": {
+          "target": [
+            {
+              "target": "nsis",
+              "arch": ["x64", "ia32"]
+            }
+          ]
+        },
+        "nsis" : {
+          "oneClick" : false
+        }
         // options placed here will be merged with default configuration and passed to electron-builder
       },
       chainWebpackMainProcess: config => {

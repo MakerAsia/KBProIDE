@@ -1,5 +1,5 @@
 {
-  "name": "KBIDE",
+  "name": "kbide",
   "author": "Khomdet Phueadphut",
   "git": "https://github.com/MakerAsia/KBProIDE",
   "version": "0.3.0",
@@ -92,8 +92,5 @@
     "vuetify-loader": "^1.0.5",
     "webpack-bundle-analyzer": "^3.3.2"
   },
-  "main": "background.js",
-  "build": {
-
-  }
+  "main": "background.js"
 }
