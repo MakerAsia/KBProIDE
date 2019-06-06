@@ -7,3 +7,6 @@
 [submodule "boards/kidbright"]
 	path = boards/kidbright
 	url = https://github.com/comdet/kidbright-board-kbide
+[submodule "boards/kbpro"]
+	path = boards/kbpro
+	url = https://github.com/MakerAsia/kbpro-board
