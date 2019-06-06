@@ -249,7 +249,6 @@
                                 </v-container>
                             </v-card>
                         </v-menu>
-
                     </div>
                     <v-flex style="flex: 0 1 auto;">
                         <v-btn @click="sendData(send_string,send_time,send_delay)" block color="primary"
