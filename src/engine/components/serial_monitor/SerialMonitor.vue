@@ -323,7 +323,7 @@
         port: null,
         isOpened: false,
         isPause: false,
-        showMode: "graph",
+        showMode: "text",
         baudrate: 115200,
         baudrates: [300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 74880, 115200, 230400, 250000, 500000, 921600],
 
