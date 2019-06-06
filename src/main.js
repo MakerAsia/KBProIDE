@@ -76,7 +76,12 @@ var componentAllData = {
 };
 var watcher = {};
 var watcherHandler = {};
-
+//---------------- first run -----------//
+const appVersion = require('electron').remote.app.getVersion();
+if(!fs.existsSync(util.baseDir+"/INSTALLED")){
+  fs.writeFileSync(util.baseDir+"/INSTALLED",appVersion);
+  localStorage.clear();
+}
 //--------------------------------------//
 
 let addWatcher = function(name, ghandler, deep) {

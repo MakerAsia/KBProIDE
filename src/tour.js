@@ -49,7 +49,7 @@ export default {
       },
     },
     {//2
-      target: "#inspire > div.application--wrap > main > div > footer",
+      target: "#inspire > div.application--wrap > footer",
       content: `พื้นที่ด้านล่างเล็ก ๆ นี้มีไว้สำหรับแสดงสถานะต่าง ๆ`,
       params: {
         highlight: true,
