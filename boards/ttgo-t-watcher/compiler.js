@@ -1,8 +1,8 @@
 const fs = require("fs");
-const mkdirp = require("mkdirp");
 const path = require("path");
 var engine = Vue.prototype.$engine;
 var G = Vue.prototype.$global;
+const mkdirp = engine.util.requireFunc("mkdirp");
 //---- setup dir and config ----//
 var boardDirectory = `${engine.util.boardDir}/${G.board.board}`;
 var pluginDir = `${boardDirectory}/plugin`;
