@@ -37,7 +37,9 @@ module.exports = {
           ]
         },
         "nsis" : {
-          "oneClick" : false
+          "oneClick" : false,
+          "perMachine" : false,
+          "allowElevation" : false,
         }
         // options placed here will be merged with default configuration and passed to electron-builder
       },
