@@ -39,7 +39,6 @@ first run CMD as Administrator and install build tool first
 
 ## Build
 - npm run electron:build
-- npm run build-mac # copy boards and platforms for macOS
 
 ## License
 
