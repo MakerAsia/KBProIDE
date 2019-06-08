@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === "development") {
   } else if (process.platform === "darwin") {
     baseDir = rootDir + "/../..";
   } else if (process.platform === "linux") {
-    baseDir = rootDir + "/..";
+    baseDir = rootDir + "/../..";
   }
 }
 baseDir = path.resolve(baseDir);
