@@ -1,0 +1,4 @@
+{
+    "cflags": ["-I\"{board}/include\"","-DBOARD_HAS_PSRAM","-DESP_PLATFORM"],
+    "libflags" : []
+}

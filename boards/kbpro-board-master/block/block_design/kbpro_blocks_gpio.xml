@@ -1,0 +1,747 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="@xj3Wcfr*.B4uEM]X#N}" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">io_board_read</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="R0W{Q!_+e+2EL~OAn[@,">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="YN}EQ+GH]~%p]_WHv5d`">
+            <field name="TEXT">read input pin </field>
+            <next>
+              <block type="field_dropdown" id="$hFureRn_+U@2$a+VQRF">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">pin</field>
+                <field name="USER0">PIN_0</field>
+                <field name="CPU0">25</field>
+                <field name="USER1">PIN_1</field>
+                <field name="CPU1">32</field>
+                <field name="USER2">PIN_2</field>
+                <field name="CPU2">33</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="T:]J10jgo3AGz(:!UZn=" deletable="false" movable="false">
+        <field name="TEXT">read input pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="G[!{717#ThZ#URJt9T@H" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="+]1/QX$mhD$@d[Ryl|#w"></shadow>
+      <block type="type_number" id="WMCoQ:A_6STS!r$A9?=9"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="T@F/#4dVEIj/WX+WTJqE">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="dz98C|4n;rX5]$0s7isk" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_board_write</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="R0W{Q!_+e+2EL~OAn[@,">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="YN}EQ+GH]~%p]_WHv5d`">
+            <field name="TEXT">write output to pin </field>
+            <next>
+              <block type="field_image" id="`ZnCmrEjQNLV-qK~NBj|">
+                <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+                <field name="WIDTH">15</field>
+                <field name="HEIGHT">15</field>
+                <field name="ALT">*</field>
+                <field name="FLIP_RTL">FALSE</field>
+                <next>
+                  <block type="field_dropdown" id="$hFureRn_+U@2$a+VQRF">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">pin</field>
+                    <field name="USER0">PIN_0</field>
+                    <field name="CPU0">25</field>
+                    <field name="USER1">PIN_1</field>
+                    <field name="CPU1">32</field>
+                    <field name="USER2">PIN_2</field>
+                    <field name="CPU2">33</field>
+                    <next>
+                      <block type="field_static" id="d#`gY8Mp,jyH=$I(gLD.">
+                        <field name="TEXT"> value </field>
+                        <next>
+                          <block type="field_dropdown" id="5+rqR3c[=)a221M@SO$[">
+                            <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                            <field name="FIELDNAME">value</field>
+                            <field name="USER0">HIGH</field>
+                            <field name="CPU0">1</field>
+                            <field name="USER1">LOW</field>
+                            <field name="CPU1">0</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="cQ5*n;`d6H4e835(9P[P" deletable="false" movable="false">
+        <field name="TEXT">write output</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="_++RzxqE:,_+N`%af:c5" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="sldN:}u$C2j45@+I!_5F"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="ba!Q$.N}ts[EVQd2[4@L"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="c{IW_6QG0a)lEsz0Nl7B">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="-V@x+:GY%a-NI9|e1lX5" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_board_write_value</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="R0W{Q!_+e+2EL~OAn[@,">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="YN}EQ+GH]~%p]_WHv5d`">
+            <field name="TEXT">write output to pin </field>
+            <next>
+              <block type="field_image" id="`ZnCmrEjQNLV-qK~NBj|">
+                <field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+                <field name="WIDTH">15</field>
+                <field name="HEIGHT">15</field>
+                <field name="ALT">*</field>
+                <field name="FLIP_RTL">FALSE</field>
+                <next>
+                  <block type="field_dropdown" id="$hFureRn_+U@2$a+VQRF">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">pin</field>
+                    <field name="USER0">PIN_0</field>
+                    <field name="CPU0">25</field>
+                    <field name="USER1">PIN_1</field>
+                    <field name="CPU1">32</field>
+                    <field name="USER2">PIN_2</field>
+                    <field name="CPU2">33</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="S4Yr$eF)hS=~NvIz)*7Z">
+            <field name="INPUTNAME">value</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="d#`gY8Mp,jyH=$I(gLD.">
+                <field name="TEXT"> value </field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="[lLcVlK!ka;#JfVCEjR."></shadow>
+              <block type="type_number" id="_6s89L;HYG=PRXTwAc/-"></block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="C(qb-K;g+!Kzr(dfOx04" deletable="false" movable="false">
+        <field name="TEXT">write output to pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="syVIcq@W8=p]DWpj8Adg" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="!vRjF]/05j@-;6K?yLf."></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="1xYqi*M/$4Av3~:bsPa3"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="V!M}H]vt-awu$-Fm1;~8">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="x~v{;q/Y8d:Q}g:le`fB" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_setpin</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="axIURi[@@Jzif_bBUs;e">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="i*xop,oXRj:}9x~zZ[f^">
+            <field name="TEXT">set pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id=",XmS{m-Rv:0CY`h0fpL9"></shadow>
+          <block type="type_number" id="NM@#!AsmDw.-vctD5F@C"></block>
+        </value>
+        <next>
+          <block type="input_dummy" id="-KM-G@Lp/.*Khx}`cHx/">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="_ET35xVWo{Z7=,,+2g#O">
+                <field name="TEXT">as</field>
+                <next>
+                  <block type="field_dropdown" id="om7kRR+z5D:^g?e`CBy$">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">mode</field>
+                    <field name="USER0">OUTPUT</field>
+                    <field name="CPU0">OUTPUT</field>
+                    <field name="USER1">INPUT</field>
+                    <field name="CPU1">INPUT</field>
+                    <field name="USER2">INPUT_PULLUP</field>
+                    <field name="CPU2">INPUT_PULLUP</field>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="p5|R3)f8U_^If?[Y}eyR" deletable="false" movable="false">
+        <field name="TEXT">set pin mode</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="2y$[yvze%kUl%`Ul6@JF" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="^6yax##OhLmwCX3HFWy)"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="{dt/M*hh44`lFM8W@UJ_"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="zmSOk{sOpC%y*~x+!:ZV">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="li}FegMK3Nj;Pi7QmK%K" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">io_digital_read</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="n+;cU4fD7I9I./44?op.">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}AMY(HFRn=rV[uF$l/rh">
+            <field name="TEXT">digital read pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="$0BCsHh0D3ch)fa#9nqG"></shadow>
+          <block type="type_number" id=";rLK;5P5p~s)yu=HxCC-"></block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="AS$0|TE+(4#B84|a[~av" deletable="false" movable="false">
+        <field name="TEXT">digital read in</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="]3zEvNoUeDpb14xxZe4]" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="8*rj(0wQW?se,UgG!*e,"></shadow>
+      <block type="type_number" id=")KS_G,gJ)Q(Ka#rp);%["></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="iq1[VV,;vY8=pxjW(Hnm">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Q8CH;/3O3LLDb:`vxi)Y" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_digital_write</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="n+;cU4fD7I9I./44?op.">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}AMY(HFRn=rV[uF$l/rh">
+            <field name="TEXT">digital write pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="$0BCsHh0D3ch)fa#9nqG"></shadow>
+          <block type="type_number" id=";rLK;5P5p~s)yu=HxCC-"></block>
+        </value>
+        <next>
+          <block type="input_value" id="H;-?4XuP-ZJqj%]WoVD0">
+            <field name="INPUTNAME">value</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="J[okl=q)mQpnu}`0cjqP">
+                <field name="TEXT">value</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="|Y1+[F885k7jtxs#dAsO"></shadow>
+              <block type="type_number" id="HI[Rff]pKNZnkC7}~jDu"></block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="mO/7ds#M9@dGMwP}o(Ky" deletable="false" movable="false">
+        <field name="TEXT">digital write pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="!KjY/IThuUP502bX4WkW" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="86;44a@!HnSb8*fxUTp5"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="MyFin9[}0sm|45+t6z/k"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="i#!4G/j^U?L{~qegsc,_">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="yS{j!Iz!G,@K+E}`xLI!" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_analog_read</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="g/1xzK?nCk])]vF;l}^i">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="YN}EQ+GH]~%p]_WHv5d`">
+            <field name="TEXT">read analog input pin </field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="hE/.IEbViC%}FxPMK}{-"></shadow>
+          <block type="type_number" id="u=DRhkzv.T[.%`?s3$iY"></block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="w;?zO0zpvO;HL#OMu;#~" deletable="false" movable="false">
+        <field name="TEXT">read analog value from pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="a~~t9MYg-xT*xyMy#)1K" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="zqW5A%eSO0UVMu/GP`O("></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="s$6PA`hnUSp7bz1SK{bM"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="1TT#_R9.7F]_XwLLe._-">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=".bA!9}sWzT?^VC(}P7rT" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_analog_write</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="n+;cU4fD7I9I./44?op.">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}AMY(HFRn=rV[uF$l/rh">
+            <field name="TEXT">analog write pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="$0BCsHh0D3ch)fa#9nqG"></shadow>
+          <block type="type_number" id=";rLK;5P5p~s)yu=HxCC-"></block>
+        </value>
+        <next>
+          <block type="input_value" id="H;-?4XuP-ZJqj%]WoVD0">
+            <field name="INPUTNAME">value</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="J[okl=q)mQpnu}`0cjqP">
+                <field name="TEXT">value</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="|Y1+[F885k7jtxs#dAsO"></shadow>
+              <block type="type_number" id="HI[Rff]pKNZnkC7}~jDu"></block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="WH0x:h8BEU_[4[~uQuxq" deletable="false" movable="false">
+        <field name="TEXT">analog write to pin , value from 0-1023</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="0)7]I;g`/7*#PNZ[I0%`" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="F82dm-GB^{tH3hL95mIL"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="C=bNRV61huTAoQAtCA9H"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="D?bTOUA]@Dyojh=FHO*h">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="YfgXyr3xVXG~+LgTsfQT" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_pwm_write</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="n+;cU4fD7I9I./44?op.">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}AMY(HFRn=rV[uF$l/rh">
+            <field name="TEXT">PWM write pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="$0BCsHh0D3ch)fa#9nqG"></shadow>
+          <block type="type_number" id=";rLK;5P5p~s)yu=HxCC-"></block>
+        </value>
+        <next>
+          <block type="input_value" id="H;-?4XuP-ZJqj%]WoVD0">
+            <field name="INPUTNAME">value</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="J[okl=q)mQpnu}`0cjqP">
+                <field name="TEXT">value</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="|Y1+[F885k7jtxs#dAsO"></shadow>
+              <block type="type_number" id="HI[Rff]pKNZnkC7}~jDu"></block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="ho^,M{:zil]c0b3Ha9t(" deletable="false" movable="false">
+        <field name="TEXT">write PWM to pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Z}ikLeEY5IgBR7BGf0-{" deletable="false" movable="false">
+        <field name="TEXT">https://en.wikipedia.org/wiki/Pulse-width_modulation</field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="PtM)m5`3=(dRbq7WCtD*"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="SAEX-o_Y({RS)#~u@/|;"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="mV/3`os7{c|LPDQ/GW-Q">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="BZ^GWCx/M6e}-6}pAJzY" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">io_pulse_in</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="n+;cU4fD7I9I./44?op.">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}AMY(HFRn=rV[uF$l/rh">
+            <field name="TEXT">read pulse in from pin</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="$0BCsHh0D3ch)fa#9nqG"></shadow>
+          <block type="type_number" id=";rLK;5P5p~s)yu=HxCC-"></block>
+        </value>
+        <next>
+          <block type="input_dummy" id="kCU3QZ6oT{mpcg4IB^UC">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="fMFK$oX9;,;`IU;86HDK">
+                <field name="TEXT">state</field>
+                <next>
+                  <block type="field_dropdown" id="5+rqR3c[=)a221M@SO$[">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">state</field>
+                    <field name="USER0">HIGH</field>
+                    <field name="CPU0">1</field>
+                    <field name="USER1">LOW</field>
+                    <field name="CPU1">0</field>
+                    <next>
+                      <block type="field_static" id="Vo(k23.Qcoc.]AN1F%`C">
+                        <field name="TEXT">timeout (ms)</field>
+                        <next>
+                          <block type="field_number" id="Pu0i[k`G+!Dg{$X~$/QU">
+                            <field name="VALUE">1000</field>
+                            <field name="FIELDNAME">timeout</field>
+                            <field name="MIN">1</field>
+                            <field name="MAX">Infinity</field>
+                            <field name="PRECISION">0</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="$LR;;p}u3eyI;]#nPbjo" deletable="false" movable="false">
+        <field name="TEXT">read pulse in from pin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=":NH]m4,^m3h7ddYy9FgW" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="5%1@bg-OhzPCMmIQ=D#1"></shadow>
+      <block type="type_number" id="L)Dmd6/X_e@;+wk(wR14"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="d_vu/Cqnez0c}tyqPupa">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="uRfbu}vqavSB/gPVFC3p" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">io_shift_in</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="6Vad]CO26X~0;J7Q5Zj%">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="NnsfkgAWTB*8/xk7bcY8">
+            <field name="TEXT">read shift in data from pin (data</field>
+            <next>
+              <block type="field_number" id="p;r*;gExRkYsAtIgWAn3">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">data_pin</field>
+                <field name="MIN">0</field>
+                <field name="MAX">50</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="Zc4lEV.!Z85hzkD^UlCr">
+                    <field name="TEXT">clock pin</field>
+                    <next>
+                      <block type="field_number" id="}Q828nwBmh+yS@K4K]!h">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">clock_pin</field>
+                        <field name="MIN">0</field>
+                        <field name="MAX">50</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="~OJ[vrBOsA7KKruJdIF]">
+                            <field name="TEXT">) bit order</field>
+                            <next>
+                              <block type="field_dropdown" id="@E:PVY)@`_AP85GSSzr!">
+                                <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                                <field name="FIELDNAME">bit_order</field>
+                                <field name="USER0">MSB_first</field>
+                                <field name="CPU0">MSBFIRST</field>
+                                <field name="USER1">LSB_first</field>
+                                <field name="CPU1">LSBFIRST</field>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="[uP=BANb6w`Ex$_gj?Sg" deletable="false" movable="false">
+        <field name="TEXT">read shift in</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="%+[;!wuJ]h.btLIs(2}l" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="e+Wg*8h)94%KU;m_R1/^"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="SBZ*}?kk-:cUWoy^QOSK">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="uRfbu}vqavSB/gPVFC3p" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">io_shift_out</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="0l(9|ZQa3g!xL?W;}t@^">
+        <field name="INPUTNAME">data</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="NnsfkgAWTB*8/xk7bcY8">
+            <field name="TEXT">shift out data</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="]eRn#SHl[qI!66I=Fz~c"></shadow>
+          <block type="type_number" id="d9mqgVQAvvr}]9C:taWI"></block>
+        </value>
+        <next>
+          <block type="input_dummy" id="6Vad]CO26X~0;J7Q5Zj%">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="hirll{(uFgqhK83D+O-5">
+                <field name="TEXT">  from pin (data</field>
+                <next>
+                  <block type="field_number" id="p;r*;gExRkYsAtIgWAn3">
+                    <field name="VALUE">0</field>
+                    <field name="FIELDNAME">data_pin</field>
+                    <field name="MIN">0</field>
+                    <field name="MAX">50</field>
+                    <field name="PRECISION">0</field>
+                    <next>
+                      <block type="field_static" id="Zc4lEV.!Z85hzkD^UlCr">
+                        <field name="TEXT">clock pin</field>
+                        <next>
+                          <block type="field_number" id="}Q828nwBmh+yS@K4K]!h">
+                            <field name="VALUE">0</field>
+                            <field name="FIELDNAME">clock_pin</field>
+                            <field name="MIN">0</field>
+                            <field name="MAX">50</field>
+                            <field name="PRECISION">0</field>
+                            <next>
+                              <block type="field_static" id="~OJ[vrBOsA7KKruJdIF]">
+                                <field name="TEXT">) bit order</field>
+                                <next>
+                                  <block type="field_dropdown" id="@E:PVY)@`_AP85GSSzr!">
+                                    <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                                    <field name="FIELDNAME">bit_order</field>
+                                    <field name="USER0">MSB_first</field>
+                                    <field name="CPU0">MSBFIRST</field>
+                                    <field name="USER1">LSB_first</field>
+                                    <field name="CPU1">LSBFIRST</field>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="[uP=BANb6w`Ex$_gj?Sg" deletable="false" movable="false">
+        <field name="TEXT">shift out data</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="%+[;!wuJ]h.btLIs(2}l" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="y7Tn1Gha6JToq7s+eOSc"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="*Ah}NqG+aq$n2m#Zvv[_"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="SBZ*}?kk-:cUWoy^QOSK">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block></xml>
