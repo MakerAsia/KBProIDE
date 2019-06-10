@@ -78,23 +78,23 @@ Blockly.JavaScript['basic_string'] = function(block) {
 };
 
 Blockly.JavaScript['basic_TFT_setRotation'] = function(block) {
-	var code = 'display.setRotation('+block.getFieldValue('rotation')+');\n';
+	var code = 'tft.setRotation('+block.getFieldValue('rotation')+');\n';
 	return code;
 };
 
 Blockly.JavaScript['basic_TFT_fillScreen'] = function(block) {
-	var code = 'display.fillScreen('+block.getFieldValue('COLOR')+');\n';
+	var code = 'tft.fillScreen('+block.getFieldValue('COLOR')+');\n';
 	return code;
 };
 
 Blockly.JavaScript['basic_TFT_setTextSize'] = function(block) {
-	var code = 'display.setTextSize('+block.getFieldValue('textSize')+');\n';
+	var code = 'tft.setTextSize('+block.getFieldValue('textSize')+');\n';
 	return code;
 };
 
 Blockly.JavaScript['basic_TFT_print'] = function(block) {
-	var argument = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
-	var code = 'display.printText('+block.getFieldValue('X')+', '+block.getFieldValue('Y')+', String('+argument+'), '+block.getFieldValue('COLOR')+');\n';
+	var argument0 = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
+	var code = 'tft.setCursor('+block.getFieldValue('X')+', '+block.getFieldValue('Y')+');\n tft.setTextColor('+block.getFieldValue('COLOR')+');\n tft.println(String('+argument0+'));\n';
 	return code;
 };
 

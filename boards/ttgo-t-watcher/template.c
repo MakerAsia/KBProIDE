@@ -1,17 +1,17 @@
 #include <Arduino.h>
 #include <vector>
 #include <WiFi.h>
+#include "SPI.h"
+
 #include "pins_arduino.h"
 #include "KB_initBoard.h"
 
-#include "SPI.h"
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC, T4_TFT_MOSI, T4_TFT_CLK, T4_TFT_RST, T4_TFT_MISO);
 
 ${EXTINC}
-
 
 #include "KB_tft.h"
 
@@ -26,6 +26,7 @@ using namespace std;
 ${VARIABLE}
 
 ${FUNCTION}
+
 
 void setup()
 {

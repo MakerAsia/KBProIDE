@@ -14,13 +14,17 @@
 static const uint8_t TXD0 = 1;
 static const uint8_t RXD0 = 3;
 
-static const uint8_t T4_TFT_CLK = 18;
-static const uint8_t T4_TFT_RST = 5;
-static const uint8_t T4_TFT_MOSI = 23;
-static const uint8_t T4_TFT_MISO = 12;
-static const uint8_t T4_TFT_BL = 4;
-static const uint8_t T4_TFT_CS = 27;
-static const uint8_t T4_TFT_DC = 32;
+static const uint8_t KB_LED_BT = 17;
+static const uint8_t KB_LED_WIFI = 2;
+static const uint8_t KB_LED_NTP = 15;
+static const uint8_t KB_LED_IOT = 12;
+
+static const uint8_t T4_TFT_CLK = 22;
+static const uint8_t T4_TFT_RST = 27;
+static const uint8_t T4_TFT_MOSI = 21;
+static const uint8_t T4_TFT_MISO = 32;
+static const uint8_t T4_TFT_CS = 19;
+static const uint8_t T4_TFT_DC = 18;
 
 static const uint8_t T4_SD_CLK = 14;
 static const uint8_t T4_SD_MOSI = 15;

@@ -32,12 +32,12 @@ class KB_TFT
  public:
   void begin(void);
   void printText(int x, int y, String text, int color);
-  void setTextSize(int size);
-  void fillScreen(int color);
-  void setRotation(int rotation);
+//   void setTextSize(int size);
+//   void fillScreen(int color);
+//   void setRotation(int rotation);
 
  protected:
-  Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC);
+  Adafruit_ILI9341 tft = Adafruit_ILI9341(T4_TFT_CS, T4_TFT_DC, T4_TFT_MOSI, T4_TFT_CLK, T4_TFT_RST, T4_TFT_MISO);
 
 
  private:

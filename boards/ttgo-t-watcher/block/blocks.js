@@ -247,7 +247,6 @@ Blockly.Blocks['basic_TFT_setTextSize'] = {
 Blockly.Blocks['basic_TFT_print'] = {
     init: function() {
         this.appendValueInput("TEXT")
-            // .setCheck("String")
             .appendField("x")
             .appendField(new Blockly.FieldNumber(0, 0, 320), "X")
             .appendField("y")
