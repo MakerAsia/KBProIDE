@@ -28,6 +28,10 @@ module.exports = {
             "from": "packages",
             "to": "../packages",
           },
+          {
+            "from": "plugins",
+            "to": "../plugins",
+          },
         ],
         "win": {
           "target": [

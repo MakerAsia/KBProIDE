@@ -6,7 +6,7 @@ export default {
     },
     content: {
       th: `เราได้แนะนำคุณสมบัติที่สำคัญของ IDE ไปแล้ว ส่วนอื่นที่เหลือเราให้คุณได้ทดลองได้ตามใจชอบและหวังว่าคุณจะถูกใจ
-      <br/><br/>   หากมีข้อสงสัยสอบหรือคำชี้แนะเพิ่มเติมสามารถเข้ามาแจ้งได้ที่
+      <br/><br/>   หากมีข้อสงสัยหรือคำชี้แนะเพิ่มเติมสามารถแจ้งเข้ามาได้ที่
       <a href="#"
          onclick="require('electron').shell.openExternal('https://github.com/MakerAsia/KBProIDE/issues')">
           <strong> Github </strong> </a>  ได้เลย  `,
