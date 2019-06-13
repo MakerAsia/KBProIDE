@@ -13,3 +13,6 @@
 [submodule "boards/kbx"]
 	path = boards/kbx
 	url = https://github.com/cmmakerclub/kbx-board.git
+[submodule "boards/kidbright-arduino"]
+	path = boards/kidbright-arduino
+	url = https://github.com/MakerAsia/kidbright-arduino-board.git
