@@ -97,10 +97,18 @@
               let data = appData.docs[0].data();
               mother.update = data;
               mother.update.type = "app";
+              if (process.platform === "win32") {
+                data.asar =  data.asar + "-win32.zip";
+              } else if (process.platform === "darwin") {
+                data.asar = data.asar + "-darwin.zip";
+              } else if (process.platform === "linux") {
+                data.asar = data.asar + "-linux.zip";
+              }
               EAU.init({
                          server: false, // Where to check. true: server side, false: client side, default: true.
                          debug: false, // Default: false.
                        });
+
               EAU.process(data, function(error, last, body) {
                 if (!error) {
                   if (
