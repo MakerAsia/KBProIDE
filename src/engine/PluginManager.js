@@ -136,7 +136,7 @@ let listExamples = function(exampleDir) {
   }
   return exampleInfo;
 };
-var listCategoryPlugins = function(pluginDir) {
+var listCategoryPlugins = function(pluginDir,boardInfo) {
   var categories = [];
   var allPlugin = {};
   if (fs.existsSync(pluginDir)) {
@@ -151,6 +151,25 @@ var listCategoryPlugins = function(pluginDir) {
       if (fs.existsSync(infoFile) && fs.existsSync(srcDir) &&
           fs.existsSync(blockDir)) {
         let pluginInfo = JSON.parse(fs.readFileSync(infoFile, "utf8"));
+        //----- check correct platform -----//
+        if(boardInfo !== undefined){
+          if(typeof(pluginInfo.platform) === "string"
+              && !pluginInfo.platform.includes(",")
+              && pluginInfo.platform !== boardInfo.platform){
+            return;
+          }else if(typeof(pluginInfo.platform) === "string"
+              && pluginInfo.platform.includes(",")){
+            let supportedPlugins = pluginInfo.platform.split(",").map(el=>el.trim());
+            if(!supportedPlugins.includes(boardInfo.platform)){
+              return;
+            }
+          }else if(typeof(pluginInfo.platform) === pluginInfo.constructor === Array){
+            if(!pluginInfo.platform.includes(boardInfo.platform)){
+              return;
+            }
+          }
+        }
+        //---------------------//
         let plugins = listPlugin(blockDir);
         let srcFile = fs.readdirSync(srcDir);
         let exampleInfo = [];
@@ -185,21 +204,30 @@ var listCategoryPlugins = function(pluginDir) {
 
 var loadPlugin = function(boardInfo) {
   if ((Object.entries(localPlugins).length === 0 && localPlugins.constructor ===
-      Object) || (boardInfo.name != localBoardName)) { // check empty object !!!
+      Object) || (boardInfo.name !== localBoardName)) { // check empty object !!!
     //load mother platform
     //TODO : implement look up in mother of platform again
     //load from platform
     let platformPlugins = listCategoryPlugins(
-        `${util.platformDir}/${boardInfo.platform}/plugin`);
+        `${util.platformDir}/${boardInfo.platform}/plugin`,
+        boardInfo);
     //load from board
     let boardPlugins = listCategoryPlugins(
-        `${util.boardDir}/${boardInfo.name}/plugin`);
+        `${util.boardDir}/${boardInfo.name}/plugin`,
+        boardInfo);
+    //load global plugin
+    let globalPlugins = listCategoryPlugins(
+        util.pluginDir,
+        boardInfo
+    )
     //join all together
     let allPlugins = {};
     Object.assign(allPlugins, platformPlugins.plugins);
     Object.assign(allPlugins, boardPlugins.plugins);
+    Object.assign(allPlugins, globalPlugins.plugins);
+    let allPluginsCat = globalPlugins.categories.concat(platformPlugins.categories,boardPlugins.categories);
     localPlugins = {
-      categories: platformPlugins.categories.concat(boardPlugins.categories),
+      categories: allPluginsCat,
       plugins: allPlugins,
     };
   }
@@ -214,11 +242,11 @@ var plugins = function(boardInfo) {
   let lpg = loadPlugin(boardInfo);
   return lpg.categories;
 };
-var performPluginSearch = function(name, value, start = 0) {
+var performPluginSearch = function(name,queryMode, value, start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
     Vue.prototype.$db.collection("plugins").
-    where(name, "==", value).
+    where(name, queryMode, value).
     orderBy("name").
     startAfter(start).
     limit(50).
@@ -264,9 +292,9 @@ var listOnlinePlugin = function(boardInfo, name = "", start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
     if (name == "") { //list all
-      performPluginSearch("board", boardInfo.name).then(res => {
+      performPluginSearch("board","==", boardInfo.name).then(res => {
         onlinePlugins = onlinePlugins.concat(res.plugins);
-        return performPluginSearch("platform", boardInfo.platform);
+        return performPluginSearch("platform","array-contains",boardInfo.platform);
       }).then(res => {
         onlinePlugins = onlinePlugins.concat(res.plugins);
         resolve({plugins: onlinePlugins});
