@@ -8,5 +8,5 @@ module.exports = {
   email: "makerasia@gmail.com",
   git: "",
   image: "/static/display.jpg",
-  version: "1.0.0",
+  version: "1.0.1",
 };

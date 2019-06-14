@@ -101,19 +101,11 @@ function compile(rawCode, boardName, config, cb) {
     engine.util.promiseTimeout(1000).then(() => {
       return platformCompiler.compileFiles(inc_src, [], cflags, inc_switch);
     }).then(() => {
-      return engine.util.promiseTimeout(2000);
-    }).then(() => {
       return platformCompiler.archiveProgram(inc_src);
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
     }).then(() => {
       return platformCompiler.linkObject(ldflags, libflags);
     }).then(() => {
-      return engine.util.promiseTimeout(1000);
-    }).then(() => {
       return platformCompiler.createBin();
-    }).then(() => {
-      return engine.util.promiseTimeout(1000);
     }).then(() => {
       resolve();
     }).catch(msg => {
