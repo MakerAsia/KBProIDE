@@ -33,7 +33,7 @@ first run CMD as Administrator and install build tool first
 - npm install
 - npm run electron:rebuild
 - npm run electron:rebuild-serial
-- (add Serial permission to user) $sudo adduser <username> dialout
+- (add Serial permission to user) $sudo adduser $USER dialout
 ## Run
 - npm run electron:serve
 
