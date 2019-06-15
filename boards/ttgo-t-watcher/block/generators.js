@@ -381,26 +381,32 @@ Blockly.JavaScript['wait_led_matrix_ready'] = function(block) {
 };
 
 Blockly.JavaScript['wait_sw1_pressed'] = function(block) {
-	var code = 'while(1){if ((get_B1state() == 1 ) || (get_B1state() == 2 ) || button12.is_sw1_pressed()){if(get_B1state() == 2){set_B1release();} break;}}\n';
-	// button12.wait_sw1_pressed();\n
+	var code = 'while(digitalRead(T4_BUTTON1) == 1) { delay(1); }\n';
 	return code;
 };
 
 Blockly.JavaScript['wait_sw1_released'] = function(block) {
-	var code = 'while(1){if ((get_B1state() == 0 ) || button12.is_sw1_released()){break;}}\n';
-	// return 'button12.wait_sw1_released();\n';
+	var code = 'while(digitalRead(T4_BUTTON1) == 0) { delay(1); }\n';
 	return code;
 };
 
 Blockly.JavaScript['wait_sw2_pressed'] = function(block) {
-	var code = 'while(1){if ((get_B2state() == 1 ) || (get_B2state() == 2 ) || button12.is_sw2_pressed()){if(get_B2state() == 2){set_B2release();} break;}}\n';
-	// return 'button12.wait_sw2_pressed();\n';
+	var code = 'while(digitalRead(T4_BUTTON2) == 1) { delay(1); }\n';
 	return code;
 };
 
 Blockly.JavaScript['wait_sw2_released'] = function(block) {
-	var code = 'while(1){if ((get_B2state() == 0 ) || button12.is_sw2_released()){break;}}\n';
-	// return 'button12.wait_sw2_released();\n';
+	var code = 'while(digitalRead(T4_BUTTON2) == 0) { delay(1); }\n';
+	return code;
+};
+
+Blockly.JavaScript['wait_sw3_pressed'] = function(block) {
+	var code = 'while(digitalRead(T4_BUTTON3) == 1) { delay(1); }\n';
+	return code;
+};
+
+Blockly.JavaScript['wait_sw3_released'] = function(block) {
+	var code = 'while(digitalRead(T4_BUTTON3) == 0) { delay(1); }\n';
 	return code;
 };
 
@@ -551,39 +557,36 @@ Blockly.JavaScript['rtc_cal_coarse'] = function(block) {
 // I/O
 // =============================================================================
 Blockly.JavaScript['output_write'] = function(block) {
-    var code = 'board.pinWrite('+ block.getFieldValue('OUTPUT') + ',' + block.getFieldValue('STATUS') + ');\n';
+    var code = 'digitalWrite('+ block.getFieldValue('OUTPUT') + ',' + block.getFieldValue('STATUS') + ');\n';
     return code;
 
 	//return 'ports.output' + block.getFieldValue('OUTPUT') + '_write(' + block.getFieldValue('STATUS') + ');\n';
 };
 Blockly.JavaScript['output_toggle'] = function(block) {
-	return 'ports.output' + block.getFieldValue('OUTPUT') + '_toggle();\n';
+	var code = 'digitalWrite('+ block.getFieldValue('OUTPUT') + ', !digitalRead(' + block.getFieldValue('OUTPUT') + '));\n';
+	return code;
 };
 Blockly.JavaScript['output_read'] = function(block) {
-	// var code = 'board.pinReadDigital('+ block.getFieldValue('OUTPUT') + ');\n';
-	// return code
-
 	return [
-		'ports.output' + block.getFieldValue('OUTPUT') + '_read()',
+		'digitalRead('+ block.getFieldValue('OUTPUT') + ')',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
 Blockly.JavaScript['usbsw_write'] = function(block) {
-	return 'ports.usbsw_write(' + block.getFieldValue('STATUS') + ');\n';
+	var code = 'digitalWrite(KB_USB,' + block.getFieldValue('STATUS') + ');\n';
+	return code;
 };
 Blockly.JavaScript['usbsw_toggle'] = function(block) {
-	return 'ports.usbsw_toggle();\n';
+	var code = 'digitalWrite(KB_USB, !digitalRead(KB_USB));\n';
+    return code;
 };
 Blockly.JavaScript['usbsw_read'] = function(block) {
-	return [
-		'ports.usbsw_read()',
+	return [ 
+		'((int)digitalRead(KB_USB))',
 		Blockly.JavaScript.ORDER_ATOMIC
 	];
 };
 Blockly.JavaScript['input_read'] = function(block) {
-	// var code = 'board.pinReadDigital('+ block.getFieldValue('INPUT') + ');\n';
-	// return code;
-
 	return [
 		'digitalRead(' + block.getFieldValue('INPUT') + ')',
 		Blockly.JavaScript.ORDER_ATOMIC

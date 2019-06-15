@@ -17,51 +17,51 @@ module.exports = {
                 'basic_TFT_print',
                 'basic_forever',
                 'basic_delay',
-                'basic_string',
+                'basic_string'
                 //'i2c128x64_create_image',
-                'i2c128x64_display_image',
-                {
-                    xml : `<block type="variables_set">
-                                <field name="VAR">img1</field>
-                                <value name="VALUE">
-                                    <block type="i2c128x64_create_image" inline="false"></block>
-                                </value>
-                            </block>`
-                },{
-                    xml :
-                        `<block type="i2c128x64_display_image">
-                        <value name="img">
-                            <block type="variables_get">
-                                <field name="VAR">img1</field>
-                            </block>
-                        </value>
-                        <value name="x">
-                            <shadow type="math_number">
-                                <field name="NUM">0</field>
-                            </shadow>
-                        </value>
-                        <value name="x">
-                            <shadow type="math_number">
-                                <field name="NUM">0</field>
-                            </shadow>
-                        </value>
-                        <value name="y">
-                            <shadow type="math_number">
-                                <field name="NUM">0</field>
-                            </shadow>
-                        </value>
-                        <value name="width">
-                            <shadow type="math_number">
-                                <field name="NUM">10</field>
-                            </shadow>
-                        </value>
-                        <value name="height">
-                            <shadow type="math_number">
-                                <field name="NUM">10</field>
-                            </shadow>
-                        </value>
-                    </block>`
-                }
+                // 'i2c128x64_display_image',
+                // {
+                //     xml : `<block type="variables_set">
+                //                 <field name="VAR">img1</field>
+                //                 <value name="VALUE">
+                //                     <block type="i2c128x64_create_image" inline="false"></block>
+                //                 </value>
+                //             </block>`
+                // },{
+                //     xml :
+                //         `<block type="i2c128x64_display_image">
+                //         <value name="img">
+                //             <block type="variables_get">
+                //                 <field name="VAR">img1</field>
+                //             </block>
+                //         </value>
+                //         <value name="x">
+                //             <shadow type="math_number">
+                //                 <field name="NUM">0</field>
+                //             </shadow>
+                //         </value>
+                //         <value name="x">
+                //             <shadow type="math_number">
+                //                 <field name="NUM">0</field>
+                //             </shadow>
+                //         </value>
+                //         <value name="y">
+                //             <shadow type="math_number">
+                //                 <field name="NUM">0</field>
+                //             </shadow>
+                //         </value>
+                //         <value name="width">
+                //             <shadow type="math_number">
+                //                 <field name="NUM">10</field>
+                //             </shadow>
+                //         </value>
+                //         <value name="height">
+                //             <shadow type="math_number">
+                //                 <field name="NUM">10</field>
+                //             </shadow>
+                //         </value>
+                //     </block>`
+                // }
             ]
         },
         {
@@ -129,20 +129,22 @@ module.exports = {
                 'wait_sw1_released',
                 'wait_sw2_pressed',
                 'wait_sw2_released',
+                'wait_sw3_pressed',
+                'wait_sw3_released',
             ]
         },
-        {
-            name : 'Music',
-            color : '330',
-            icon : '/static/icons/SVG/c6.svg',
-            blocks : [
-                'music_note',
-                'music_rest',
-                'music_scale',
-                'music_set_volume',
-                'music_get_volume'
-            ]
-        },
+        // {
+        //     name : 'Music',
+        //     color : '330',
+        //     icon : '/static/icons/SVG/c6.svg',
+        //     blocks : [
+        //         'music_note',
+        //         'music_rest',
+        //         'music_scale',
+        //         'music_set_volume',
+        //         'music_get_volume'
+        //     ]
+        // },
         {
             name : 'Sensor',
             color : '58',
@@ -155,22 +157,22 @@ module.exports = {
                 'sensor_switch3'
             ]
         },
-        {
-            name : 'Clock',
-            color : '19',
-            icon : '/static/icons/SVG/c8.svg',
-            blocks : [
-                'rtc_get',
-                'rtc_get_date',
-                'rtc_get_time',
-                'rtc_get_day',
-                'rtc_get_month',
-                'rtc_get_year',
-                'rtc_get_hour',
-                'rtc_get_minute',
-                'rtc_get_second',
-            ]
-        },
+        // {
+        //     name : 'Clock',
+        //     color : '19',
+        //     icon : '/static/icons/SVG/c8.svg',
+        //     blocks : [
+        //         'rtc_get',
+        //         'rtc_get_date',
+        //         'rtc_get_time',
+        //         'rtc_get_day',
+        //         'rtc_get_month',
+        //         'rtc_get_year',
+        //         'rtc_get_hour',
+        //         'rtc_get_minute',
+        //         'rtc_get_second',
+        //     ]
+        // },
         {
             name : 'I/O',
             color : '19',
@@ -179,9 +181,9 @@ module.exports = {
                 'output_write',
                 'output_toggle',
                 'output_read',
-                'usbsw_write',
-                'usbsw_toggle',
-                'usbsw_read',
+                // 'usbsw_write',
+                // 'usbsw_toggle',
+                // 'usbsw_read',
                 'input_read'
             ]
         },
@@ -193,43 +195,43 @@ module.exports = {
                 'advance_task'
             ]
         },
-        {
-            name : 'IoT',
-            color : '195',
-            icon : '/static/icons/SVG/c11.svg',
-            blocks : [
-                {
-                    type : 'category',
-                    name : 'Gauge',
-                    icon : '/static/icons/SVG/13.svg',
-                    blocks : [
-                        'gauge_iot',
-                        'gauge_title',
-                        'gauge_unit',
-                        'gauge_color',
-                        'gauge_minmax'
-                    ]
-                },
-                {
-                    type : 'category',
-                    name : 'Graph',
-                    icon : '/static/icons/SVG/13.svg',
-                    blocks : [
-                        'feed_iot',
-                        'feed_main_title',
-                        'feed_title',
-                        'feed_color'
-                    ]
-                },
-                {
-                    type : 'category',
-                    name : 'Messaging',
-                    icon : '/static/icons/SVG/13.svg',
-                    blocks : [
-                        'push_notification',
-                    ]
-                }
-            ]
-        }
+        // {
+        //     name : 'IoT',
+        //     color : '195',
+        //     icon : '/static/icons/SVG/c11.svg',
+        //     blocks : [
+        //         {
+        //             type : 'category',
+        //             name : 'Gauge',
+        //             icon : '/static/icons/SVG/13.svg',
+        //             blocks : [
+        //                 'gauge_iot',
+        //                 'gauge_title',
+        //                 'gauge_unit',
+        //                 'gauge_color',
+        //                 'gauge_minmax'
+        //             ]
+        //         },
+        //         {
+        //             type : 'category',
+        //             name : 'Graph',
+        //             icon : '/static/icons/SVG/13.svg',
+        //             blocks : [
+        //                 'feed_iot',
+        //                 'feed_main_title',
+        //                 'feed_title',
+        //                 'feed_color'
+        //             ]
+        //         },
+        //         {
+        //             type : 'category',
+        //             name : 'Messaging',
+        //             icon : '/static/icons/SVG/13.svg',
+        //             blocks : [
+        //                 'push_notification',
+        //             ]
+        //         }
+        //     ]
+        // }
     ]
 }

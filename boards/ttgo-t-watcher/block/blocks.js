@@ -675,6 +675,32 @@ Blockly.Blocks["wait_sw2_released"] = {
 	}
 };
 
+Blockly.Blocks["wait_sw3_pressed"] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
+			.appendField("Wait Switch 3 pressed");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setColour(wait_colour);
+		this.setTooltip("Switch 3 Tooltip");
+		this.setHelpUrl("Switch 3 HelpUrl");
+	}
+};
+
+Blockly.Blocks["wait_sw3_released"] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldImage("/static/block_icons/sw12x12.png", 20, 20, "*"))
+			.appendField("Wait Switch 3 released");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		this.setColour(wait_colour);
+		this.setTooltip("Switch 3 Tooltip");
+		this.setHelpUrl("Switch 3 HelpUrl");
+	}
+};
+
 // =============================================================================
 // music
 // =============================================================================
@@ -1705,12 +1731,12 @@ Blockly.Blocks["output_write"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_WRITE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				["1", "1"],
-				["2", "2"],
-				["LED_BT", "KB_LED_BT"],
-                ["LED_WIFI", "KB_LED_WIFI"],
-                ["LED_NTP", "KB_LED_NTP"],
-                ["LED_IOT", "KB_LED_IOT"]
+				["GPIO0", "0"],
+				["GPIO4", "4"],
+				["GPIO19", "19"],
+                ["GPIO25", "25"],
+                ["GPIO33", "33"],
+                ["GPIO34", "34"]
 			]), 'OUTPUT')
 			.appendField(Blockly.Msg.STATUS)
 			.appendField(new Blockly.FieldDropdown([
@@ -1732,8 +1758,12 @@ Blockly.Blocks["output_toggle"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_TOGGLE_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				["1", "1"],
-				["2", "2"]
+				["GPIO0", "0"],
+				["GPIO4", "4"],
+				["GPIO19", "19"],
+                ["GPIO25", "25"],
+                ["GPIO33", "33"],
+                ["GPIO34", "34"]
 			]), 'OUTPUT')
 			.appendField(Blockly.Msg.STATUS);
 		this.setInputsInline(true);
@@ -1751,8 +1781,12 @@ Blockly.Blocks["output_read"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.OUTPUT_READ_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				["1", "1"],
-				["2", "2"]
+				["GPIO0", "0"],
+				["GPIO4", "4"],
+				["GPIO19", "19"],
+                ["GPIO25", "25"],
+                ["GPIO33", "33"],
+                ["GPIO34", "34"]
 			]), 'OUTPUT');
 		this.setOutput(true, 'Number');
 		this.setInputsInline(true);
@@ -1818,10 +1852,9 @@ Blockly.Blocks["input_read"] = {
 			.appendField(new Blockly.FieldImage("/static/block_icons/banana.png", 20, 20, "*"))
 			.appendField(Blockly.Msg.INPUT_READ_TITLE)
 			.appendField(new Blockly.FieldDropdown([
-				["1", "KB_INPUT1"],
-				["2", "KB_INPUT2"],
-				["3", "KB_INPUT3"],
-				["4", "KB_INPUT4"]
+				["BUTTON1", "38"],
+				["BUTTON2", "37"],
+				["BUTTON3", "39"]
 			]), 'INPUT');
 		this.setOutput(true, 'Number');
 		this.setInputsInline(true);
