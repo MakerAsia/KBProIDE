@@ -41,7 +41,8 @@
                                         <!-- tab body -->
                                         <v-tab-item :key="`rtab-${tab.name}`" :value="`rtab-${tab.name}`"
                                                     v-for="(tab, index) in $global.ui.rightTab">
-                                            <async-component :key='index' :target="tab.component"/>
+                                            <component v-if="!tab.component.startsWith('.')" :is="tab.component" :key="index"></component>
+                                            <async-component v-else :key='index' :target="tab.component"/>
                                         </v-tab-item>
                                         <!-- end -->
                                     </v-tabs>
@@ -70,7 +71,8 @@
                                     <!-- tab body -->
                                     <v-tab-item :key="`btab-${tab.name}`" :value="`btab-${tab.name}`"
                                                 v-for="(tab, index) in $global.ui.bottomTab">
-                                        <async-component :key='index' :target="tab.component"/>
+                                        <component v-if="!tab.component.startsWith('.')" :is="tab.component" :key="index"></component>
+                                        <async-component v-else :key='index' :target="tab.component"/>
                                     </v-tab-item>
                                     <!-- end -->
                                 </v-tabs>
