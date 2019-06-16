@@ -40,30 +40,18 @@
                                             </template>
                                             <v-img contain v-else src="/static/images/noimage.jpg"/>
                                         </v-list-tile-avatar>
-                                        <template v-if='data.category.name && typeof(data.category.name) === "string"'>
+                                        <template>
                                             <v-list-tile-content class="ml-2">
                                                 <v-list-tile-title>
-                                                    <strong>{{data.category.title}}</strong>
+                                                    <strong v-if="data.category.title || data.category.name">{{data.category.title ? data.category.title : typeof(data.category.name) === "string" ? data.category.name : typeof(data.category.name.en) === "string" ? data.category.name.en : data.dirName}}</strong>
+                                                    <strong v-else>{{data.dirName}}</strong>
                                                     <span class="body-1">
-                                                        [ v{{data.category.version}} by {{data.category.author}} ]
-                                                        [ <a v-if="data.category.git"
-                                                             @click="openLink(data.category.git)"> git </a> ]
+                                                        <span v-if='data.category.version || data.category.author'> [ {{data.category.version ? 'v' + data.category.version + ' ' : ''}}{{data.category.author ? 'by ' + data.category.author : ''}} ] </span>
+                                                        <span v-if='data.category.git'>[ <a @click="openLink(data.category.git)"> git </a> ]</span>
                                                     </span>
                                                 </v-list-tile-title>
                                                 <v-list-tile-sub-title
                                                         v-html="data.category.description"></v-list-tile-sub-title>
-                                            </v-list-tile-content>
-                                        </template>
-                                        <template v-else-if='data.category.name && typeof(data.category.name.en) === "string"'>
-                                            <v-list-tile-content class="ml-2">
-                                                <strong>{{data.category.name.en}}</strong>
-                                                <span class="body-1"></span>
-                                            </v-list-tile-content>
-                                        </template>
-                                        <template v-else>
-                                            <v-list-tile-content class="ml-2">
-                                                <strong>Please migrate your json file to use this feature</strong>
-                                                <span class="body-1">Plugin : {{data.category.name.en}} <br/>Tutorial : https://kbide.org/tutorials/plugin </span>
                                             </v-list-tile-content>
                                         </template>
                                         <v-list-tile-action
