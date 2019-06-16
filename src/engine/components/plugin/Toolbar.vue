@@ -393,7 +393,7 @@
                                             });
         var json = null;
         if (
-            /^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g.test(
+            /^http(s)?:\/\/(www\.)?github\.com\/[\-\_0-9A-Za-z]+\/[\-\_0-9A-Za-z]+\/$/g.test(
                 res,
             )
         ) {
