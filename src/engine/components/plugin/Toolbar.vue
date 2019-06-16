@@ -54,8 +54,7 @@
                                                         v-html="data.category.description"></v-list-tile-sub-title>
                                             </v-list-tile-content>
                                         </template>
-                                        <v-list-tile-action
-                                                v-if='data.category.name && typeof(data.category.name) === "string"'>
+                                        <v-list-tile-action>
                                             <v-btn v-if="data.status != 'UPDATABLE'"
                                                    icon fab small dark
                                                    class="red"
@@ -310,7 +309,7 @@
         if (res === true) {
           console.log("removing plugin : " + name);
           let b = this.getPluginByName(name);
-          pm.removePlugin(b.category).then(() => {
+          pm.removePlugin(b).then(() => {
             this.$global.blockCode = "";
             this.$dialog.notify.info("Remove plugin success");
             this.listAllPlugins();

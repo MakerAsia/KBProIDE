@@ -382,15 +382,8 @@ var installOnlinePlugin = function(info, cb) {
 };
 
 var removePlugin = function(pluginInfo, isBackupRemove = false) {
-  if (pluginInfo.board) {
-    var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
-  } else if (pluginInfo.platform) {
-    var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
-  } else {
-    throw "no target defined";
-  }
   return new Promise((resolve, reject) => {
-    let target = `${targetDir}/${pluginInfo.name}`;
+    let target = pluginInfo.directory;
     if (isBackupRemove) {
       target += "-backup-plugin";
     }
