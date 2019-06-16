@@ -54,6 +54,12 @@
                                                         v-html="data.category.description"></v-list-tile-sub-title>
                                             </v-list-tile-content>
                                         </template>
+                                        <template v-else-if='data.category.name && typeof(data.category.name.en) === "string"'>
+                                            <v-list-tile-content class="ml-2">
+                                                <strong>{{data.category.name.en}}</strong>
+                                                <span class="body-1"></span>
+                                            </v-list-tile-content>
+                                        </template>
                                         <template v-else>
                                             <v-list-tile-content class="ml-2">
                                                 <strong>Please migrate your json file to use this feature</strong>
