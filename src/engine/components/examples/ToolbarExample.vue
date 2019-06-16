@@ -80,7 +80,7 @@
                                                                     small
                                                                     color="primary"
                                                                     @click.stop=""
-                                                                    @click="openBlock(example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')),examples.name+'_'+example.name)">
+                                                                    @click="openExample('block',example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
                                                                 <v-icon>fa-puzzle-piece</v-icon>
                                                                 &nbsp;&nbsp;Open Block
                                                             </v-btn>
@@ -89,7 +89,7 @@
                                                                     small
                                                                     color="primary"
                                                                     @click.stop=""
-                                                                    @click="openCode(example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')),examples.name+'_'+example.name)">
+                                                                    @click="openExample('code',example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
                                                                 <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
                                                             </v-btn>
                                                         </v-flex>
