@@ -100,10 +100,11 @@ const vueRuntimeComponent = function(file) {
   let component = eval(res.js);
   return component;
 };
-var camel = function(str) {
-  const camel = (str || "").replace(/-([^-])/g, g => g[1].toUpperCase());
-  return capitalize(camel);
-};
+
+//var camel = function(str) {
+//  const camel = (str || "").replace(/-([^-])/g, g => g[1].toUpperCase());
+//  return capitalize(camel);
+//};
 
 var camelActual = function(str) {
   return (str || "").replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ""));
@@ -238,7 +239,7 @@ function b64DecodeUnicode(str) {
 }
 
 export default {
-  camel,
+  //camel,
   camelActual,
   randomString,
   randomElement,

@@ -28,7 +28,7 @@ export default {
         return {
             fontSize : ['10','12','14','16','18','20','24','28','32','64','78'],
             editorTheme : [ 
-                'default','3024-day','3024-night','abcdef','ambiance','base16-dark',
+                '3024-day','3024-night','abcdef','ambiance','base16-dark',
                 'base16-light','bespin','blackboard','cobalt','colorforth','darcula',
                 'dracula','duotone-dark','duotone-light','eclipse','elegant','erlang-dark',
                 'gruvbox-dark','hopscotch','icecoder','idea','isotope','lesser-dark','liquibyte',
