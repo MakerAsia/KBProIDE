@@ -3,6 +3,7 @@ sudo: false
 node_js:
   - 10
 cache:
+  yarn: true
   directories:
     - node_modules
 script:
