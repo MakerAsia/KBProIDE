@@ -6,6 +6,10 @@ cache:
   yarn: true
   directories:
     - node_modules
-script:
+install:
   - npm install
+#  - npm i -g npm@5.7.1
+scripts:
+# run tests, build, ...
+script:
   - npm run test:unit
