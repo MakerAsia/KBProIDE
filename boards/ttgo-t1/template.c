@@ -1,15 +1,10 @@
 #include <Arduino.h>
-#include <vector>
 #include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiAP.h>
+#include <WebServer.h>
 
 ${EXTINC}
-
-
-
-typedef int Number;
-typedef int Boolean;
-
-using namespace std;
 
 ${VARIABLE}
 
@@ -17,7 +12,6 @@ ${FUNCTION}
 
 void setup()
 {
-
   ${SETUP_CODE}
   ${BLOCKSETUP}
 }

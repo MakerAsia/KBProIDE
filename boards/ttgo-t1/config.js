@@ -6,7 +6,7 @@ module.exports = {
   author: "Maker Asia",
   website: "",
   email: "makerasia@gmail.com",
-  git: "",
+  git: "https://github.com/MakerAsia/KBProIDE/tree/master/boards/ttgo-t1/",
   image: "/static/display.jpg",
-  version: "1.0.1",
+  version: "1.0.0",
 };
