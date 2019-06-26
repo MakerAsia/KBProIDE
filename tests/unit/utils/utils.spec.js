@@ -33,4 +33,20 @@ describe("@engine/utils/regex-parser.js with slash ending", () => {
     expect(utils.regex.isValidGithubUrl(url)).toBeFalsy();
   });
 
+  it(`parse all underscore repo name ${url} to be true`, () => {
+    url = "https://github.com/cmmakerclub/ttgo_t8_v1_3_board/";
+    expect(utils.regex.isValidGithubUrl(url)).toBeTruthy();
+  });
+
+  it(`must be true when using https://www.github....`, () => {
+    url = "https://www.github.com/cmmakerclub/ttgo_t8_v1_3_board/";
+    expect(utils.regex.isValidGithubUrl(url)).toBeTruthy();
+  });
+
+  it(`must be failed when using do not use http://www.github or http://github`,
+      () => {
+        url = "https://ww.github.com/cmmakerclub/ttgo_t8_v1_3_board/";
+        expect(utils.regex.isValidGithubUrl(url)).toBeFalsy();
+      });
+
 });
