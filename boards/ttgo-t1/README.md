@@ -1,1 +1,0 @@
-# TTGO T1 board for KBPro IDE
