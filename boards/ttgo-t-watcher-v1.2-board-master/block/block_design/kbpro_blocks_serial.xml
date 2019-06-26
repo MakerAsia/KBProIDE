@@ -1,0 +1,465 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="6v.R]lz}5E[YssgKt_/U" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">serial_usb_init</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="dDLc8c-I7b^,Tuh%1~!G">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="nCjaF?3ODPKxH+s/eIbl">
+            <field name="TEXT">Initial USB Serial baud rate</field>
+            <next>
+              <block type="field_dropdown" id="UOG?`QaR:|O@2A4@Sf0H">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">baudrate</field>
+                <field name="USER0">115200</field>
+                <field name="CPU0">115200</field>
+                <field name="USER1">300</field>
+                <field name="CPU1">300</field>
+                <field name="USER2">600</field>
+                <field name="CPU2">600</field>
+                <field name="USER3">1200</field>
+                <field name="CPU3">1200</field>
+                <field name="USER4">2400</field>
+                <field name="CPU4">2400</field>
+                <field name="USER5">4800</field>
+                <field name="CPU5">4800</field>
+                <field name="USER6">9600</field>
+                <field name="CPU6">9600</field>
+                <field name="USER7">14400</field>
+                <field name="CPU7">14400</field>
+                <field name="USER8">19200</field>
+                <field name="CPU8">19200</field>
+                <field name="USER9">28800</field>
+                <field name="CPU9">28800</field>
+                <field name="USER10">38400</field>
+                <field name="CPU10">38400</field>
+                <field name="USER11">57600</field>
+                <field name="CPU11">57600</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=";qJ3ne3zXrc6pgppfpbd" deletable="false" movable="false">
+        <field name="TEXT">use USB serial port</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="P-P.Qa//oYVxc}XiK7F~" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id=")^!w0cwOhAscULU.EWX^"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="}lKC+Sz4c4:b=6i;Wb2)"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="MU-gEc*X!60|KW~/_pVR">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="*:guB9U$gZ`aF2soq%]A" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">serial_hardware_init</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="dDLc8c-I7b^,Tuh%1~!G">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="nCjaF?3ODPKxH+s/eIbl">
+            <field name="TEXT">Initial Serial baud rate</field>
+            <next>
+              <block type="field_dropdown" id="UOG?`QaR:|O@2A4@Sf0H">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">baudrate</field>
+                <field name="USER0">115200</field>
+                <field name="CPU0">115200</field>
+                <field name="USER1">300</field>
+                <field name="CPU1">300</field>
+                <field name="USER2">600</field>
+                <field name="CPU2">600</field>
+                <field name="USER3">1200</field>
+                <field name="CPU3">1200</field>
+                <field name="USER4">2400</field>
+                <field name="CPU4">2400</field>
+                <field name="USER5">4800</field>
+                <field name="CPU5">4800</field>
+                <field name="USER6">9600</field>
+                <field name="CPU6">9600</field>
+                <field name="USER7">14400</field>
+                <field name="CPU7">14400</field>
+                <field name="USER8">19200</field>
+                <field name="CPU8">19200</field>
+                <field name="USER9">28800</field>
+                <field name="CPU9">28800</field>
+                <field name="USER10">38400</field>
+                <field name="CPU10">38400</field>
+                <field name="USER11">57600</field>
+                <field name="CPU11">57600</field>
+                <next>
+                  <block type="field_static" id="_K*Nv_K%8pv#jsB!=[$J">
+                    <field name="TEXT">RX pin</field>
+                    <next>
+                      <block type="field_number" id=";D|Og;Spkw=0Zfl~0Vw7">
+                        <field name="VALUE">9</field>
+                        <field name="FIELDNAME">rx</field>
+                        <field name="MIN">0</field>
+                        <field name="MAX">50</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="cG}kh?2#3:PVk4/$-%`E">
+                            <field name="TEXT">TX pin</field>
+                            <next>
+                              <block type="field_number" id="qK/Do$=*[,.mrtsu^o1J">
+                                <field name="VALUE">10</field>
+                                <field name="FIELDNAME">tx</field>
+                                <field name="MIN">0</field>
+                                <field name="MAX">50</field>
+                                <field name="PRECISION">0</field>
+                                <next>
+                                  <block type="field_dropdown" id="3;WpnFkc_nz@?jr/z^.%">
+                                    <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                                    <field name="FIELDNAME">type</field>
+                                    <field name="USER0">Serial1</field>
+                                    <field name="CPU0">Serial1</field>
+                                    <field name="USER1">Serial2</field>
+                                    <field name="CPU1">Serial2</field>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=".pNCj5lw#)c(4(+qRRzr" deletable="false" movable="false">
+        <field name="TEXT">begin using Hardware Serial1 or Serial2</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="RR3Ve#CkCC-oGn5H_c!I" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="*uTe|kw`!o$*dS@3nin-"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="4ys8IEAbjus3WKsbM*F`"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="B5:jyK9O?O26BzLo;]z(">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="$~qm0pWS0:MT-[K6@cF_" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">serial_available</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="vX4k]P0Emy*1G6GD@_in">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="~f~}fg@Dv%lar,7$h`}[">
+            <field name="TEXT">Serial available  type</field>
+            <next>
+              <block type="field_dropdown" id="%zfU2aNzTEdYmlW$h55X">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">type</field>
+                <field name="USER0">UsbSerial</field>
+                <field name="CPU0">Serial</field>
+                <field name="USER1">Serial1</field>
+                <field name="CPU1">Serial1</field>
+                <field name="USER2">Serial2</field>
+                <field name="CPU2">Serial2</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="ZzDwKZNoZ=~2a12u`GTa" deletable="false" movable="false">
+        <field name="TEXT">check if Serial data available</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="-DTm{)tq=FPdOjynBvm$" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="fs[9O^fRrL)[u%qi8;e/"></shadow>
+      <block type="type_boolean" id="=7E!^Lwh9{9v]]TN_F]]"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="r^ZLZU*yHTWw}#+!,E!5">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="?hRa1Us8(ICjb^Sry`P;" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">serial_write_data</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="#6v.G()sXz:F@DYAP9vV">
+        <field name="INPUTNAME">number</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="H+C4mERwg=C.OV)Cje1E">
+            <field name="TEXT">Serial write</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id=".m8dl[cJVl9F4^d4dE*|"></shadow>
+          <block type="type_group" id="EesKUCQ(]p`apR_?qB[m">
+            <mutation types="3"></mutation>
+            <value name="TYPE0">
+              <block type="type_string" id="Lo)]?[mcTw)rff!S{DkY"></block>
+            </value>
+            <value name="TYPE1">
+              <block type="type_boolean" id="r}bo9[})+]3al5TV^fLL"></block>
+            </value>
+            <value name="TYPE2">
+              <block type="type_number" id="7-KC4.12sN-P-XPsD*d|"></block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="input_dummy" id="vX4k]P0Emy*1G6GD@_in">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="~f~}fg@Dv%lar,7$h`}[">
+                <field name="TEXT">port</field>
+                <next>
+                  <block type="field_dropdown" id="%zfU2aNzTEdYmlW$h55X">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">type</field>
+                    <field name="USER0">UsbSerial</field>
+                    <field name="CPU0">Serial</field>
+                    <field name="USER1">Serial1</field>
+                    <field name="CPU1">Serial1</field>
+                    <field name="USER2">Serial2</field>
+                    <field name="CPU2">Serial2</field>
+                    <next>
+                      <block type="field_static" id="D]ys6bEoC=iLujqb.wJU">
+                        <field name="TEXT">with new line</field>
+                        <next>
+                          <block type="field_checkbox" id="OMs]-`,EJYWkS%7Vc9nj">
+                            <field name="CHECKED">TRUE</field>
+                            <field name="FIELDNAME">newline</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="`I%3eq1JlHe{}S+(=(l:" deletable="false" movable="false">
+        <field name="TEXT">write data to Serial</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="6R;m]E6czcqsga:^+gqn" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="yNI.kL-;!9.)=9fP3$VP"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Cy4g-fV{2NLRVV~rL0hA"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Y|(R#oo$:.6/jL}/3rHB">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="+;E+[ru}R~48B(F/TQ~8" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">serial_write_newline</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="vX4k]P0Emy*1G6GD@_in">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="JuBCB*MzXc_mVkZHk![]">
+            <field name="TEXT">Serial write new line,</field>
+            <next>
+              <block type="field_static" id="~f~}fg@Dv%lar,7$h`}[">
+                <field name="TEXT">port</field>
+                <next>
+                  <block type="field_dropdown" id="%zfU2aNzTEdYmlW$h55X">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">type</field>
+                    <field name="USER0">UsbSerial</field>
+                    <field name="CPU0">Serial</field>
+                    <field name="USER1">Serial1</field>
+                    <field name="CPU1">Serial1</field>
+                    <field name="USER2">Serial2</field>
+                    <field name="CPU2">Serial2</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="lP,0vPKDsdA8G?f7A-Rv" deletable="false" movable="false">
+        <field name="TEXT">write newline (\n) to serial</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="J*8g-WipG]cu]rVOT`8d" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="CJfeP]71g(Tgo]d[q8K4"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Y%mO(~%ayJBK)yV^t^t("></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="4E2]dEu+-@@1Wh#)nbvd">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=":9qC@q?QvT)j]AbE?w_5" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">serial_read_line</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="V|hi0LzurUJ?()Ujk%V9">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="e]yk{B=`vnim?FoLT?re">
+            <field name="TEXT">Serial read line, port</field>
+            <next>
+              <block type="field_dropdown" id="%zfU2aNzTEdYmlW$h55X">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">type</field>
+                <field name="USER0">UsbSerial</field>
+                <field name="CPU0">Serial</field>
+                <field name="USER1">Serial1</field>
+                <field name="CPU1">Serial1</field>
+                <field name="USER2">Serial2</field>
+                <field name="CPU2">Serial2</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="6#TNOC49=/(+5xBbFAYw" deletable="false" movable="false">
+        <field name="TEXT">serial wait until got new line</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=":q$*frr2lOzv-DgsT|EN" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="M-w/pF#PAf%S]|CaRe!r"></shadow>
+      <block type="type_string" id="9bMoBCbCvBe|-kGcJ)08"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="9i6T%ao6Gmk1P?2r#%NV">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Ky7N+[z5!BwHAiZz}nIn" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">serial_read_until</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="V|hi0LzurUJ?()Ujk%V9">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="e]yk{B=`vnim?FoLT?re">
+            <field name="TEXT">Serial read until get</field>
+            <next>
+              <block type="field_input" id="!%lj)^h(2i`oO-n+(Pj8">
+                <field name="TEXT">\n</field>
+                <field name="FIELDNAME">endstring</field>
+                <next>
+                  <block type="field_static" id="Rp-2iDf;{m-oo5.3f@B.">
+                    <field name="TEXT">, port</field>
+                    <next>
+                      <block type="field_dropdown" id="%zfU2aNzTEdYmlW$h55X">
+                        <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                        <field name="FIELDNAME">type</field>
+                        <field name="USER0">UsbSerial</field>
+                        <field name="CPU0">Serial</field>
+                        <field name="USER1">Serial1</field>
+                        <field name="CPU1">Serial1</field>
+                        <field name="USER2">Serial2</field>
+                        <field name="CPU2">Serial2</field>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="G@V#a#CZVSZ95/k866;C" deletable="false" movable="false">
+        <field name="TEXT">read string from serial until get terminator char</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="_p:k}g8vWjO$RC.h0YtC" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="D,y64?.tD+B/w:er@}g$"></shadow>
+      <block type="type_string" id="PRQhRDGF+,-]xZ:6Wjal"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="sAEIkQj}Ua^0;Pv;a80z">
+        <mutation colour="#5ba5a5"></mutation>
+        <field name="HUE">180</field>
+      </block>
+    </value>
+  </block></xml>

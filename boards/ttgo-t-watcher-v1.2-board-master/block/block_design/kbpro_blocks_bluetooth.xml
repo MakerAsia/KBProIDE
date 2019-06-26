@@ -1,0 +1,167 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="PLocEGs`zR@l+1b9ziEg" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">bt_start</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="nH[#WB)]N[V9InfL*/2;">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="hddt!49oOEz_)DI`J6?4">
+            <field name="TEXT">start bluetooth name</field>
+            <next>
+              <block type="field_input" id="A%[7#tgWlP!H`cEog+]T">
+                <field name="TEXT">KB-Pro</field>
+                <field name="FIELDNAME">name</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="^-0%Cb+(V(iW2!CQUuW@" deletable="false" movable="false">
+        <field name="TEXT">start Bluetooth</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id=";Hk%6)eGx{A6u@hjG}9+" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="+wr/erY7G78)PuLx5CxB"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id=".kgJl.3Y%5CotA5qtg3Z"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=")5r?w_W0H%X+156}.*70">
+        <mutation colour="#5b6da5"></mutation>
+        <field name="HUE">225</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Taj-82d6j!t{h[S=LPln" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">bt_send_string</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="|%)vt$)6_iYOR1T0x)]`">
+        <field name="INPUTNAME">text</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=".~LtV}glJLRlQG84ckai">
+            <field name="TEXT">Bluetooth send text</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="7fyrLSIfPuxR:2S5P-}-"></shadow>
+          <block type="type_string" id="iHv1{=:?InIyaa0AGfsk"></block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="K~KS6D!f;3t[B;p@cI$8" deletable="false" movable="false">
+        <field name="TEXT">send string to client</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="6kH*,iG(DvN6cJO,J^JB" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="F=E(RuVyFkAB(Wdydxq^"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="mrr|Yk!d7$SV]@cnP8/H"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="gQB4Skvkadu1nOCS5wlV">
+        <mutation colour="#5b6da5"></mutation>
+        <field name="HUE">225</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=")4m#/S2bR4kyPka//}O|" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">bt_on_receive</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="cEaqsha0d5HTfl.Oh3)V">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="Y,_plD,dnt5Y[uK2dQ*m">
+            <field name="TEXT">on Bluetooth received data</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_statement" id="E*MK{xDw{0$BaeF=zq#w">
+            <field name="INPUTNAME">receiver_code</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="te8bcmw6P:)-FbB#rgr/"></shadow>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="jfU)qnLA3q?uE?I6qK^/" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Y=6?0PDs}5D`ON:e7!lU" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="[XE*#zLFp$sK8xQ{5ux="></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="fgI,cE=TwnCq/Tt@`[Hy"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="#;3,j0)93+zP$]Kl=%_s">
+        <mutation colour="#5b6da5"></mutation>
+        <field name="HUE">225</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="zGpzdjF~?6e5SRvC:c?." deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">bt_read_data</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="|zo@}XBltx#mJoiW.q4j">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="hAnfn2t01}GW=4S5wK,U">
+            <field name="TEXT">read Bluetooth received data</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="{Z[ir+WfR(g3jKb-yqo2" deletable="false" movable="false">
+        <field name="TEXT">read Bluetooth received data</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="U/646$gEEy1q^(Abamq4" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="`(iv;g+I^,lT.]VOV46="></shadow>
+      <block type="type_string" id="CJLR~0L(.`?I;Zz=v~KE"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="q/}tqB10eW$?nmH=n+28">
+        <mutation colour="#5b6da5"></mutation>
+        <field name="HUE">225</field>
+      </block>
+    </value>
+  </block></xml>
