@@ -83,7 +83,15 @@ Blockly.JavaScript['basic_TFT_setRotation'] = function(block) {
 };
 
 Blockly.JavaScript['basic_TFT_fillScreen'] = function(block) {
-	var code = 'tft.fillScreen('+block.getFieldValue('COLOR')+');\n';
+	let color = block.getFieldValue('COLOR');
+	color = color.replace("#", "0x");
+	let sourceColor = parseInt(color, 16);
+	let red = (sourceColor & 0x00FF0000) >> 16;
+	let green = (sourceColor & 0x0000FF00) >> 8;
+	let blue =  sourceColor & 0x000000FF;
+	let out = (red >> 3 << 11) + (green >> 2 << 5) + (blue >> 3);
+	out = out.toString(16);
+	var code = 'tft.fillScreen(0x'+out+');\n';
 	return code;
 };
 
@@ -92,9 +100,20 @@ Blockly.JavaScript['basic_TFT_setTextSize'] = function(block) {
 	return code;
 };
 
+function rgbto16bit(colorIN) {
+	let color = colorIN.replace("#", "0x");
+	let sourceColor = parseInt(color, 16);
+	let red = (sourceColor & 0x00FF0000) >> 16;
+	let green = (sourceColor & 0x0000FF00) >> 8;
+	let blue =  sourceColor & 0x000000FF;
+	let out = (red >> 3 << 11) + (green >> 2 << 5) + (blue >> 3);
+	out = out.toString(16)
+	return out;   // The function returns the product of p1 and p2
+  }
+
 Blockly.JavaScript['basic_TFT_print'] = function(block) {
 	var argument0 = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
-	var code = 'tft.setCursor('+block.getFieldValue('X')+', '+block.getFieldValue('Y')+');\n tft.setTextColor('+block.getFieldValue('COLOR')+');\n tft.println(String('+argument0+'));\n';
+	var code = 'tft.setCursor('+block.getFieldValue('X')+', '+block.getFieldValue('Y')+');\n tft.setTextColor(0x'+rgbto16bit(block.getFieldValue('COLOR'))+');\n tft.println(String('+argument0+'));\n';
 	return code;
 };
 

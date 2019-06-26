@@ -211,14 +211,8 @@ Blockly.Blocks['basic_TFT_setRotation'] = {
 Blockly.Blocks['basic_TFT_fillScreen'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("set fillScreen")
-			.appendField(new Blockly.FieldDropdown([
-				["BLACK","0x0000"],
-				["WHITE","0xFFFF"],
-				["RED","0xF800"],
-				["GREEN","0x07E0"],
-				["BLUE","0x001F"]]),
-				"COLOR");
+			.appendField("TFT fillScreen:")
+			.appendField(new Blockly.FieldColour('#000000'), 'COLOR')
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(160);
@@ -251,14 +245,9 @@ Blockly.Blocks['basic_TFT_print'] = {
             .appendField(new Blockly.FieldNumber(0, 0, 320), "X")
             .appendField("y")
             .appendField(new Blockly.FieldNumber(0, 0, 240), "Y")
-            .appendField("color")
-            .appendField(new Blockly.FieldDropdown([
-                ["BLACK","0x0000"],
-                ["WHITE","0xFFFF"],
-                ["RED","0xF800"],
-                ["GREEN","0x07E0"],
-                ["BLUE","0x001F"]]),
-                "COLOR");
+		this.appendDummyInput()
+			.appendField("color")
+			.appendField(new Blockly.FieldColour('#000000'), 'COLOR')
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(160);
