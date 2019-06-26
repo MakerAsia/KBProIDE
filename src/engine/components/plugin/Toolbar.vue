@@ -294,7 +294,7 @@
           this.$dialog.notify.info("Install success");
           this.$global.$emit("board-change", this.$global.board.board_info);
           //--tracking--//
-          this.$track.event("plugin", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+          this.$track.event("plugin", "install", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
         }).catch(err => {
           console.log(err);
           this.statusText = `Error : ${err}`;
@@ -307,12 +307,12 @@
       },
       removePlugin: async function(name) {
         const res = await this.$dialog.confirm({
-                                                 text:
-                                                     "Do you really want to remove " +
-                                                     name +
-                                                     "? , this process will clear your code.",
-                                                 title: "Warning",
-                                               });
+          text:
+              "Do you really want to remove " +
+              name +
+              "? , this process will clear your code.",
+          title: "Warning",
+        });
         if (res === true) {
           console.log("removing plugin : " + name);
           let b = this.getPluginByName(name);
@@ -322,7 +322,7 @@
             this.listAllPlugins();
             this.$global.$emit("board-change", this.$global.board.board_info);
             //--tracking--//
-            this.$track.event("plugin", "remove", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+            this.$track.event("plugin", "remove", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
           }).catch(err => {
             this.$dialog.notify.error("Cannot remove plugin : " + err);
             console.log("Error : cannot remove plugin");
@@ -332,9 +332,9 @@
       },
       updatePlugin: async function(name) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you want to update " + name + " plugin?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you want to update " + name + " plugin?",
+          title: "Warning",
+        });
         if (res === true) {
           var p = this.getPluginByName(name);
           var st = p.status;
@@ -372,7 +372,7 @@
                 );
               }, 1000);
               //--tracking--//
-              Vue.prototype.$track.event("plugin", "update", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+              Vue.prototype.$track.event("plugin", "update", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
             });
 
           }).catch(err => {
@@ -388,15 +388,11 @@
       },
       publishNewPlugin: async function() {
         let res = await this.$dialog.prompt({
-                                              text: "https://github.com/user/repo/",
-                                              title: "Input Board Repository",
-                                            });
+          text: "https://github.com/user/repo/",
+          title: "Input Board Repository",
+        });
         var json = null;
-        if (
-            /^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g.test(
-                res,
-            )
-        ) {
+        if (util.regex.isValidGithubUrl(res)) {
           this.$dialog.notify.info("Please wait...");
           request(res + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
           .then(res => {
