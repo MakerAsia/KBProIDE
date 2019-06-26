@@ -16,3 +16,6 @@
 [submodule "boards/kidbright-arduino"]
 	path = boards/kidbright-arduino
 	url = https://github.com/MakerAsia/kidbright-arduino-board.git
+[submodule "boards/ttgo-t1"]
+	path = boards/ttgo-t1
+	url = https://github.com/cmmakerclub/TTGO-T1-board.git
