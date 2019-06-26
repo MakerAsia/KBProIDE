@@ -22,3 +22,6 @@
 [submodule "boards/ttgo-t-watcher-v1.2"]
 	path = boards/ttgo-t-watcher-v1.2
 	url = https://github.com/cmmakerclub/ttgo-t-watcher-v1.2-board.git
+[submodule "boards/ttgo-t-watcher-v1.3"]
+	path = boards/ttgo-t-watcher-v1.3
+	url = https://github.com/cmmakerclub/ttgo-t-watcher-v1.3-board
