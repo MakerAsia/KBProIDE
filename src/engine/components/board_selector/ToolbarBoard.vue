@@ -456,7 +456,7 @@
                                               title: "Input Board Repository",
                                             });
         var json = null;
-        if ((/^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g).test(res)) {
+        if ((/^http(s)?:\/\/(www\.)?github\.com\/[\.\_\-0-9A-Za-z]+\/[\.\_\-0-9A-Za-z]+\/$/g).test(res)) {
           this.$dialog.notify.info("Please wait...");
           request(res + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
           .then(res => {
