@@ -8,6 +8,7 @@ const os = require("os");
 
 import unzip from "./unzip";
 import compiler from "./compiler";
+import regex_parser from "./regex-parser";
 
 var baseDir = "";
 console.log("app dirname = " + rootDir);
@@ -63,10 +64,10 @@ const vueLoader = function(file) { //this section from https://www.npmjs.com/pac
 
     let script = vue.replace(
         new RegExp("^[^]*<script>([^]*)export default[^]+<\/script>[^]*$",
-                   "gm"), "$1");
+            "gm"), "$1");
     let component = vue.replace(
         new RegExp("^[^]*export default[\s\n]*(\{[^]*\})[^]*<\/script>[^]*$",
-                   "gm"), "$1");
+            "gm"), "$1");
 
     let style = null;
     if (new RegExp("<style[^]*>[^]*<\/style>", "gm").test(vue)) {
@@ -285,4 +286,5 @@ export default {
   //------- zip --------//
   unzip: unzip.unzip,
   compiler,
+  regex: regex_parser,
 };

@@ -284,13 +284,13 @@
       changeBoard: async function(boardname) {
         this.boardDialog = false;
         const res = await this.$dialog.confirm({
-                                                 text: "Changing board will clear your workspace. please confirm.",
-                                                 title: "Warning",
-                                                 actions: [
-                                                   {text: "Cancel", key: false},
-                                                   {text: "Clear", key: true},
-                                                 ],
-                                               });
+          text: "Changing board will clear your workspace. please confirm.",
+          title: "Warning",
+          actions: [
+            {text: "Cancel", key: false},
+            {text: "Clear", key: true},
+          ],
+        });
         if (res === true) {
           this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
           this.$global.board.board = boardname;
@@ -299,7 +299,7 @@
           this.$global.$emit("board-change", this.$global.board.board_info);
           this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
           //--tracking--//
-          this.$track.event("board", "change", {evLabel: boardname, evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
+          this.$track.event("board", "change", {evLabel: boardname, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
         }
       },
       isOnline() {
@@ -346,9 +346,9 @@
       },
       installOnlineBoard: async function(name) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you really want to install " + name + "?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you really want to install " + name + "?",
+          title: "Warning",
+        });
         if (res === true) {
           let b = this.getOnlineBoardByName(name);
           b.status = "DOWNLOAD";
@@ -371,7 +371,7 @@
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+            mother.$track.event("board", "install", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
           }).catch(err => {
             this.statusText = `Error : ${err}`;
             b.status = "ERROR";
@@ -384,16 +384,16 @@
       },
       removeBoard: async function(board) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you really want to remove " + board + "?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you really want to remove " + board + "?",
+          title: "Warning",
+        });
         if (res === true) {
           console.log("removing board : " + board);
           bm.removeBoard(board).then(() => {
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "remove", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+            mother.$track.event("board", "remove", {evLabel: board, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
           }).catch(err => {
             console.log("Error : cannot remove board");
             console.log(err);
@@ -402,9 +402,9 @@
       },
       updateBoard: async function(board) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you want to update " + board + " board?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you want to update " + board + " board?",
+          title: "Warning",
+        });
         if (res === true) {
           var b = this.getBoardByName(board);
           var st = b.status;
@@ -435,7 +435,7 @@
                 this.listAllBoard();
               }, 1000);
               //--tracking--//
-              mother.$track.event("board", "update", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+              mother.$track.event("board", "update", {evLabel: board, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
             });
           }).catch(err => {
             this.statusText = `Error : ${err}`;
@@ -452,11 +452,11 @@
       },
       publishNewBoard: async function() {
         let res = await this.$dialog.prompt({
-                                              text: "https://github.com/user/repo/",
-                                              title: "Input Board Repository",
-                                            });
+          text: "https://github.com/user/repo/",
+          title: "Input Board Repository",
+        });
         var json = null;
-        if ((/^http(s)?:\/\/(www\.)?github\.com\/[\.\_\-0-9A-Za-z]+\/[\.\_\-0-9A-Za-z]+\/$/g).test(res)) {
+        if (util.regex.isValidGithubUrl(res)) {
           this.$dialog.notify.info("Please wait...");
           request(res + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
           .then(res => {
