@@ -25,3 +25,9 @@
 [submodule "boards/ttgo-t8-v1.1"]
 	path = boards/ttgo-t8-v1.1
 	url = https://github.com/cmmakerclub/ttgo-t8-v1.1-board
+[submodule "boards/ttgo-t8-v1.3"]
+	path = boards/ttgo-t8-v1.3
+	url = https://github.com/cmmakerclub/ttgo-t8-v1.3-board
+[submodule "boards/ttgo-t8-v1.7"]
+	path = boards/ttgo-t8-v1.7
+	url = https://github.com/cmmakerclub/ttgo-t8-v1.7-board
