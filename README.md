@@ -43,6 +43,9 @@ first run CMD as Administrator and install build tool first
 ## Build
 - npm run electron:build
 
+## Test
+- npm run test:unit
+
 ## License
 
 [MIT]
