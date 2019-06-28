@@ -1,5 +1,5 @@
 
-# KBProIDE
+# KBProIDE [![Build Status](https://travis-ci.com/MakerAsia/KBProIDE.svg?branch=master)](https://travis-ci.com/MakerAsia/KBProIDE)
 
 ## Windows Install
 use node v10.15.0 (but v8 also work too) and need Anaconda python2
