@@ -45,6 +45,7 @@ first run CMD as Administrator and install build tool first
 
 ## Test
 - npm run test:unit
+- npx vue-cli-service test:unit --watchAll
 
 ## License
 
