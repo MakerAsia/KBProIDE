@@ -1,1 +1,0 @@
-# kidbright-arduino-board

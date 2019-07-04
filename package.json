@@ -1,28 +1,29 @@
 {
   "name": "kbide",
-  "author": "Khomdet Phueadphut",
-  "git": "https://github.com/MakerAsia/KBProIDE",
   "version": "0.3.1",
   "private": true,
+  "author": "Khomdet Phueadphut",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:build": "electron-rebuild & vue-cli-service electron:build",
+    "_comment": "electron-rebuild --python 'C:/ProgramData/Anaconda3/envs/python2/python.exe'",
+    "build-linux32": "electron-rebuild & vue-cli-service electron:build --linux --ia32",
+    "build-linux64": "electron-rebuild & vue-cli-service electron:build --linux --x64",
+    "build-mac": "cp -R boards platforms dist_electron/mac/kbide.app/Contents/",
+    "build-macos": "electron-rebuild & vue-cli-service electron:build --mac",
     "build-win32": "electron-rebuild & vue-cli-service electron:build --win --ia32",
     "build-win64": "electron-rebuild & vue-cli-service electron:build --win --x64",
-    "build-macos": "electron-rebuild & vue-cli-service electron:build --mac",
-    "build-linux64": "electron-rebuild & vue-cli-service electron:build --linux --x64",
-    "build-linux32": "electron-rebuild & vue-cli-service electron:build --linux --ia32",
-    "electron:rebuild": "electron-rebuild",
+    "electron:build": "electron-rebuild & vue-cli-service electron:build",
     "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten",
+    "electron:rebuild": "electron-rebuild",
     "electron:rebuild-serial": "electron-rebuild -f -w serialport",
-    "_comment": "electron-rebuild --python 'C:/ProgramData/Anaconda3/envs/python2/python.exe'",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "build-mac": "cp -R boards platforms dist_electron/mac/kbide.app/Contents/",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "test:unit": "vue-cli-service test:unit"
   },
+  "main": "background.js",
   "dependencies": {
     "@johmun/vue-tags-input": "^2.0.1",
     "chart.js": "^2.8.0",
@@ -75,9 +76,13 @@
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
     "@vue/cli-plugin-pwa": "^3.2.0",
+    "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
     "braces": "^3.0.2",
     "electron": "^4.1.4",
     "electron-builder": "^20.38.5",
@@ -97,5 +102,5 @@
     "vuetify-loader": "^1.0.5",
     "webpack-bundle-analyzer": "^3.3.2"
   },
-  "main": "background.js"
+  "git": "https://github.com/MakerAsia/KBProIDE"
 }
