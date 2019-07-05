@@ -200,12 +200,15 @@
     var platformBlockDir = `${util.platformDir}/${platformName}/block`;
     //lookup platform first
     var platformBlockFile = util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
+    platformBlockFile.sort(function(a, b) {
+      return a.length - b.length;
+    });
     var blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
+    blocklyFile.sort(function(a, b) {
+      return a.length - b.length;
+    });
     var blocks = platformBlockFile.concat(blocklyFile);
     if (blocks.length > 0) {
-      blocks.sort(function(a, b) {
-        return a.length - b.length;
-      });
       blocks.forEach(element => {
         if (element.includes("config.js")) { //skip config.js file
           return;
