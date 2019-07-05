@@ -34,3 +34,6 @@
 [submodule "platforms/arduino-avr"]
 	path = platforms/arduino-avr
 	url = https://github.com/MakerAsia/kbide-arduino-avr-platform
+[submodule "boards/arduino-uno"]
+	path = boards/arduino-uno
+	url = https://github.com/KhonKaenMakerClub/kbide-arduino-uno
