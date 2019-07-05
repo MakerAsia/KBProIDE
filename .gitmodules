@@ -37,3 +37,6 @@
 [submodule "boards/arduino-uno"]
 	path = boards/arduino-uno
 	url = https://github.com/KhonKaenMakerClub/kbide-arduino-uno
+[submodule "boards/ipst-wifi"]
+	path = boards/ipst-wifi
+	url = https://github.com/MakerAsia/ipst-wifi-board
