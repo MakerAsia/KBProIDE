@@ -31,3 +31,6 @@
 [submodule "boards/ttgo-t8-v1.7"]
 	path = boards/ttgo-t8-v1.7
 	url = https://github.com/cmmakerclub/ttgo-t8-v1.7-board
+[submodule "platforms/arduino-avr"]
+	path = platforms/arduino-avr
+	url = https://github.com/MakerAsia/kbide-arduino-avr-platform
