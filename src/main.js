@@ -11,6 +11,7 @@ import cm from "@/engine/ComponentManager";
 import bm from "@/engine/BoardManager";
 import ui from "@/engine/UIManager";
 import pfm from "@/engine/PlatformManager";
+import pm from "@/engine/PluginManager";
 import compiler from "@/engine/Compiler";
 import util from "@/engine/utils";
 import Analytics from "electron-google-analytics";
@@ -217,6 +218,7 @@ var engineData = {
   boardManager: bm,
   platformManager: pfm,
   uiManager: ui,
+  pluginManager : pm,
 };
 Vue.prototype.$engine = new Vue({data: engineData});
 //=======================================================//
