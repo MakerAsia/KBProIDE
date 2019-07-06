@@ -14,6 +14,7 @@ import pfm from "@/engine/PlatformManager";
 import pm from "@/engine/PluginManager";
 import compiler from "@/engine/Compiler";
 import util from "@/engine/utils";
+import blockly_utils from "@/engine/utils/blockly";
 import Analytics from "electron-google-analytics";
 
 import SmoothScrollbar from "vue-smooth-scrollbar";
@@ -32,7 +33,7 @@ var config = {
   databaseURL: "https://kbproide.firebaseio.com",
   projectId: "kbproide",
   storageBucket: "kbproide.appspot.com",
-  messagingSenderId: "1046722656270",
+  messagingSenderId: "1046722656270"
 };
 firebase.initializeApp(config);
 Vue.prototype.$db = firebase.firestore();
@@ -44,26 +45,26 @@ Vue.prototype.$track = analytics;
 
 //-----bug tracking ------//
 const unhandled = require("electron-unhandled");
-const {openNewGitHubIssue, debugInfo} = require("electron-util");
+const { openNewGitHubIssue, debugInfo } = require("electron-util");
 
 unhandled({
-            reportButton: error => {
-              Vue.prototype.$db.collection("bugs").add(
-                  {
-                    stack: error.stack,
-                    info: debugInfo(),
-                    date: new Date(),
-                    mode: Vue.prototype.$global.editor.mode,
-                    //code : Vue.prototype.$global.editor.sourceCode,
-                    //block : Vue.prototype.$global.editor.blockCode,
-                    board: Vue.prototype.$global.board.board_info.name,
-                    //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
-                  });
-              Vue.prototype.$dialog.notify.info(
-                  "Thank you ... to help us improve ^^");
-            },
-            showDialog: true,
-          });
+  reportButton: error => {
+    Vue.prototype.$db.collection("bugs").add(
+      {
+        stack: error.stack,
+        info: debugInfo(),
+        date: new Date(),
+        mode: Vue.prototype.$global.editor.mode,
+        //code : Vue.prototype.$global.editor.sourceCode,
+        //block : Vue.prototype.$global.editor.blockCode,
+        board: Vue.prototype.$global.board.board_info.name
+        //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
+      });
+    Vue.prototype.$dialog.notify.info(
+      "Thank you ... to help us improve ^^");
+  },
+  showDialog: true
+});
 
 //----------Tour--------------//
 import VueTour from "vue-tour";
@@ -73,14 +74,14 @@ Vue.use(VueTour);
 //---- load data to global variable ----//
 var componentAllData = {
   data: {},
-  persistence: {},
+  persistence: {}
 };
 var watcher = {};
 var watcherHandler = {};
 //---------------- first run -----------//
-const appVersion = require('electron').remote.app.getVersion();
-if(!fs.existsSync(util.baseDir+"/INSTALLED")){
-  fs.writeFileSync(util.baseDir+"/INSTALLED",appVersion);
+const appVersion = require("electron").remote.app.getVersion();
+if (!fs.existsSync(util.baseDir + "/INSTALLED")) {
+  fs.writeFileSync(util.baseDir + "/INSTALLED", appVersion);
   localStorage.clear();
 }
 //--------------------------------------//
@@ -100,7 +101,7 @@ let addWatcher = function(name, ghandler, deep) {
         h(val);
       });
     },
-    deep: deep,
+    deep: deep
   };
 };
 
@@ -148,8 +149,8 @@ componentAllData.data["board"]["package"] = {};
 Object.keys(boardPackage).forEach(packageName => {
   componentAllData.data.board.package[packageName] = {};
   let boardPackageData = util.loadCofigComponents(
-      boardPackage[packageName].config,
-      "board.package." + packageName,
+    boardPackage[packageName].config,
+    "board.package." + packageName
   );
   componentAllData.data.board.package[packageName] = boardPackageData.data;
   componentAllData.persistence["board.package." +
@@ -188,9 +189,9 @@ console.log("===========================");
 
 //---- setup $global ----//
 Vue.prototype.$global = new Vue({
-                                  data: componentAllData.data,
-                                  watch: watcher,
-                                });
+  data: componentAllData.data,
+  watch: watcher
+});
 
 //=========== load form config ==============//
 if (global.config.mode) {
@@ -204,7 +205,7 @@ if (global.config.file && fs.existsSync(global.config.file)) {
     Vue.prototype.$global.editor.blockCode = util.b64DecodeUnicode(contentFile);
   } else if (global.config.file.endsWith(".ino")) {
     Vue.prototype.$global.editor.sourceCode = fs.readFileSync(targetFile,
-                                                              "utf8");
+      "utf8");
   }
 }
 if (global.config.persistence === "false") {
@@ -218,13 +219,18 @@ var engineData = {
   boardManager: bm,
   platformManager: pfm,
   uiManager: ui,
-  pluginManager : pm,
+  pluginManager: pm
 };
-Vue.prototype.$engine = new Vue({data: engineData});
+Vue.prototype.$engine = new Vue({ data: engineData });
 //=======================================================//
 new Vue({
-          router,
-          store,
-          render: h => h(App),
-        }).$mount("#app");
+  router,
+  store,
+  render: h => h(App)
+}).$mount("#app");
 //=======================================================//
+
+var utils = require;
+const u = require("electron").remote.getGlobal("blockly_utils");
+u.blockly_utils = blockly_utils;
+
