@@ -36,15 +36,16 @@ export default {
   },
   hexToRgbA: function(hex) {
     var c;
-
+    console.log(`hexToRgbA called with ${hex}`);
     if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-      c = hex.substring(1)
-        .split("");
+      c = hex.substring(1).split("");
       if (c.length == 3) {
         c = [c[0], c[0], c[1], c[1], c[2], c[2]];
       }
       c = "0x" + c.join("");
-      return [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",");
+      return [(c >> 16) & 255, (c >> 8) & 255, c & 255];
+    } else {
+      console.error(`${hex} is invalid.`);
     }
   }
 };
