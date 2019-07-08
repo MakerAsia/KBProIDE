@@ -54,9 +54,10 @@ export default {
     },
     methods : {
         mountCm : function(){
-            if(this.$global.editor.CodeMirror){
-                this.cm = this.$global.editor.CodeMirror;
-                this.$global.editor.CodeMirror.on('cursorActivity',this.updateEditorStatus);
+            if(this.$global.editor.Editor){
+                this.cm = this.$global.editor.Editor;
+                //this.$global.editor.Editor.model.onDidChangeContent(this.updateEditorStatus);
+                this.$global.editor.Editor.onDidChangeCursorPosition(this.updateEditorStatus,'',true);
             }else{
                 setTimeout(this.mountCm,1000);
             }
@@ -69,10 +70,9 @@ export default {
                 setTimeout(this.mountBly,1000);
             }
         },
-        updateEditorStatus : function(cm){
+        updateEditorStatus : function(e){
             if(this.$global.editor.mode >= 3){
-                let pos = cm.getCursor();
-                let text = ` Ln ${pos.line}, Col ${pos.ch}`;
+                let text = ` Ln ${e.position.lineNumber}, Col ${e.position.column}`;
                 this.editorStatus = text;
             }
         },
