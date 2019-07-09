@@ -550,12 +550,7 @@
       },
       clearError() {
         let cm = this.getCm();
-        this.lineError.forEach(el=>{
-          cm.clearGutter(CmLint.GUTTER_ID);
-          //cm.removeLineClass(el.line);
-          el.marker.clear();
-        });
-        this.lineError = [];
+        monaco.editor.setModelMarkers(cm.getModel(),'error',[]);
       },
       addError:function(errors) {
         try {
@@ -563,30 +558,25 @@
           this.clearError();
           if (!Array.isArray(errors)) { return; }
           if (errors.length === 0) { return; }
+          let markers = [];
           errors.forEach(err => {
             if (typeof err !== 'string') {return;}
             let rex = /^([0-9]+):([0-9]+):(.*)/g;
             let res = rex.exec(err);
             if (!res || res.length !== 4) { return; }
-            let line = parseInt(res[1]) - 1
+            let line = parseInt(res[1]);
             let col = parseInt(res[2]);
-            let div = document.createElement('span');
-            div.innerHTML = htmlEntities(err);
-            let gutter =
-                cm.setGutterMarker(line, CmLint.GUTTER_ID, CmLint.makeMarker(cm, div, "error", false, err));
-            //let marker = cm.addLineClass(line, 'background', 'line-error');
-            let marker = cm.markText(
-                {line: line, ch: 0},
-                {line: line, ch: 9999},
-                {className: 'line-error', title: err}
-            );
-            myself.lineError.push({
-                                    line: line,
-                                    col: col,
-                                    gutter: gutter,
-                                    marker: marker
-                                  });
+            let marker = {
+              startLineNumber : line,
+              startColumn : 0,
+              endLineNumber:line,
+              endColumn : 9999,
+              message : htmlEntities(err),
+              severity: monaco.MarkerSeverity.Error
+            };
+            markers.push(marker);
           });
+          monaco.editor.setModelMarkers(cm.getModel(),'error',markers);
         }catch (e) {
           console.log(e);
         }
