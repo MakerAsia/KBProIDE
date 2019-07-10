@@ -129,9 +129,9 @@
             text: "Do you want to clear and convert block to source code?",
             title: "Warning",
             actions: [
-              { text: "Cancel", key: false },
               { text: "Clear & Convert", key: "convert" },
-              { text: "Just switch", key: true }
+              { text: "Just switch", key: true },
+              { text: "Cancel", key: false, color: "red darken-1" }
             ]
           });
 
