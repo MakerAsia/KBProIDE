@@ -287,20 +287,24 @@
           text: "Changing board will clear your workspace. please confirm.",
           title: "Warning",
           actions: [
-            { text: "Cancel", key: false },
-            { text: "Clear", key: true }
+            { text: "Clear", key: "clear" },
+            { text: "Cancel", key: "cancel", color: "red darken-1" }
           ]
         });
-        if (res === true) {
-          this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
-          this.$global.board.board = boardname;
-          this.$global.editor.blockCode = "";
-          this.$global.editor.rawCode = "";
-          this.$global.$emit("board-change", this.$global.board.board_info);
-          this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
-          //--tracking--//
-          this.$track.event("board", "change", { evLabel: boardname, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+
+        if (res) {
+          if (res === "clear") {
+            this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
+            this.$global.board.board = boardname;
+            this.$global.editor.blockCode = "";
+            this.$global.editor.rawCode = "";
+            this.$global.$emit("board-change", this.$global.board.board_info);
+            this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
+            //--tracking--//
+            this.$track.event("board", "change", { evLabel: boardname, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+          }
         }
+
       },
       isOnline() {
         return window.navigator.onLine;
