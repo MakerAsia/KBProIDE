@@ -297,13 +297,13 @@
           text: "Changing board will clear your workspace. please confirm.",
           title: "Warning",
           actions: [
-            { text: "Clear", key: "clear" },
+            { text: "Confirm", key: "confirm" },
             { text: "Cancel", key: "cancel", color: "red darken-1" }
           ]
         });
 
         if (res) {
-          if (res === "clear") {
+          if (res === "confirm") {
             this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
             this.$global.board.board = boardname;
             this.$global.editor.blockCode = "";
