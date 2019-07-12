@@ -85,7 +85,6 @@
   // === UI Management ===
   export default {
     created: function() {
-
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           if (this.modeDialog === true) {
