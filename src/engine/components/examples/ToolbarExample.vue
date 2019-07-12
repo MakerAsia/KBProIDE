@@ -113,7 +113,7 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="exampleDialog = false">Close</v-btn>
+                    <v-btn class="btn-danger" flat @click.native="exampleDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -131,7 +131,7 @@
   export default {
     name: "example-dialog",
     components: {
-      "tree-menu": TreeMenu,
+      "tree-menu": TreeMenu
     },
     data() {
       return {
@@ -139,7 +139,7 @@
         searchText: "",
         platformExample: [],
         boardExample: [],
-        pluginInfo: this.$global.plugin.pluginInfo.categories,
+        pluginInfo: this.$global.plugin.pluginInfo.categories
       };
     },
     created() {
@@ -165,10 +165,10 @@
             if (fs.statSync(fullDir).isDirectory()) {
               let rRes = mother.createMenu(fullPath, name);
               res.push({
-                         title: name,
-                         dir: fullDir,
-                         examples: rRes,
-                       });
+                title: name,
+                dir: fullDir,
+                examples: rRes
+              });
             }
           }
         }
@@ -182,18 +182,20 @@
         let boardExampleDir = `${util.boardDir}/${this.$global.board.board_info.name}`;
         return this.createMenu(boardExampleDir, "examples");
       },
-      openExample(type,file){
+      openExample(type, file) {
         let win = new remote.BrowserWindow({
-                                             width: 800,
-                                             height: 600,
-                                             icon: path.join(__static, "icon.png"),
-                                             webPreferences: { //TODO check here!
-                                               webSecurity: false,
-                                             },
-                                           });
+          width: 800,
+          height: 600,
+          icon: path.join(__static, "icon.png"),
+          webPreferences: { //TODO check here!
+            webSecurity: false
+          }
+        });
         win.on("close", function() { win = null; });
         //"http://localhost:8080/#/editor?persistance=false&mode=1&file=file
-        let mode = type === "block" ? "1" : "3";
+        let mode = type === "block"
+          ? "1"
+          : "3";
         win.loadURL(`${document.location.href}?persistence=false&mode=${mode}&file=${file}`);
         win.show();
         //--tracking--//
@@ -209,11 +211,13 @@
           this.platformExample = this.listPlatformExample();
           this.boardExample = this.listBoardExample();
         }
-      },
-    },
+      }
+    }
   };
 </script>
-<style>
+<style lang="stylus">
+    @import "../../../theme/component-design.styl"
+
     .v-list__group__items {
         background-color: #DDD;
         padding-left: 20px;
