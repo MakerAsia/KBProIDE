@@ -14,14 +14,14 @@
   import util from "@/engine/utils";
 
   const electron = require("electron");
-  const {dialog} = require("electron").remote;
+  const { dialog } = require("electron").remote;
   const fs = require("fs");
   const path = require("path");
   //const WIN = new BrowserWindow({width: 800, height: 600});
   export default {
     data() {
       return {
-        openDialog: false,
+        openDialog: false
       };
     },
     created() {
@@ -33,19 +33,19 @@
         let isSaved = this.$global.editor.saved;
         if (mode < 3) {
           let userDec = await this.$dialog.confirm({
-                                                     title: "Warning",
-                                                     text: "Open new file will overwrite workspace, what do you want to do?",
-                                                     actions: [
-                                                       {text: "Cancel", key: false},
-                                                       {text: "Clear & Open", key: true},
-                                                     ],
-                                                   });
-          if (userDec === true) {
+            title: "Warning",
+            text: "Open new file will overwrite workspace, what do you want to do?",
+            actions: [
+              { text: "Clear & Open", key: "clear-open" },
+              { text: "Cancel", key: "cancel", color: "red darken-1" }
+            ]
+          });
+          if (userDec === "clear-open") {
             let blyOption = {
               title: "Open Blockly File",
               filters: [
-                {name: "Blockly file", extensions: ["bly", "txt"]},
-              ],
+                { name: "Blockly file", extensions: ["bly", "txt"] }
+              ]
             };
             let filePaths = dialog.showOpenDialog(null, blyOption);
             if (filePaths) {
@@ -55,24 +55,24 @@
               this.$global.editor.blockCode = text;
               this.$global.$emit("editor-mode-change", this.$global.editor.mode);
               //--track--//
-              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1, clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
+              this.$track.event("editor", "open", { evLabel: path.extname(file), evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
             }
           }
         } else {
           let userDec = await this.$dialog.confirm({
-                                                     title: "Save you code first?",
-                                                     text: "Open new file will overwrite your code, what do you want to do?",
-                                                     actions: [
-                                                       {text: "Cancel", key: false},
-                                                       {text: "Clear & Open", key: true},
-                                                     ],
-                                                   });
+            title: "Save you code first?",
+            text: "Open new file will overwrite your code, what do you want to do?",
+            actions: [
+              { text: "Cancel", key: false },
+              { text: "Clear & Open", key: true }
+            ]
+          });
           if (userDec === true) {
             let codeOption = {
               title: "Open Code File",
               filters: [
-                {name: "Source code file", extensions: ["kbp", "ino", "c", "cpp"]},
-              ],
+                { name: "Source code file", extensions: ["kbp", "ino", "c", "cpp"] }
+              ]
             };
             var filePaths = dialog.showOpenDialog(null, codeOption);
             if (filePaths) {
@@ -80,11 +80,11 @@
               this.$global.editor.sourceCode = fs.readFileSync(file, "utf8");
               //this.$global.$emit('editor-mode-change',this.$global.editor.mode);
               //--track--//
-              this.$track.event("editor", "open", {evLabel: path.extname(file), evValue: 1}).catch(err=>{ console.log(err)});
+              this.$track.event("editor", "open", { evLabel: path.extname(file), evValue: 1 }).catch(err => { console.log(err);});
             }
           }
         }
-      },
-    },
+      }
+    }
   };
 </script>
