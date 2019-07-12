@@ -144,6 +144,14 @@
     },
     created() {
       mother = this;
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.exampleDialog === true) {
+            console.log("---------> Do something when detect escape / Example & Tutorial");
+            this.exampleDialog = false;
+          }
+        }
+      });
     },
     mounted() {
 
