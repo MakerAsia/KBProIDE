@@ -43,10 +43,12 @@
                                         <template>
                                             <v-list-tile-content class="ml-2">
                                                 <v-list-tile-title>
-                                                    <strong v-if="data.category.title || data.category.name">{{data.category.title ? data.category.title : typeof(data.category.name) === "string" ? data.category.name : typeof(data.category.name.en) === "string" ? data.category.name.en : data.dirName}}</strong>
+                                                    <strong v-if="data.category.title || data.category.name">{{data.category.title ? data.category.title :
+                                                        typeof(data.category.name) === "string" ? data.category.name : typeof(data.category.name.en) === "string" ?
+                                                        data.category.name.en : data.dirName}}</strong>
                                                     <strong v-else>{{data.dirName}}</strong>
                                                     <span class="body-1">
-                                                        <span v-if='data.category.version || data.category.author'> [ {{data.category.version ? 'v' + data.category.version + ' ' : ''}}{{data.category.author ? 'by ' + data.category.author : ''}} ] </span>
+                                                        <span v-if='data.category.version || data.category.author'> [ {{data.category.version ? "v" + data.category.version + " " : ""}}{{data.category.author ? "by " + data.category.author : ""}} ] </span>
                                                         <span v-if='data.category.git'>[ <a @click="openLink(data.category.git)"> git </a> ]</span>
                                                     </span>
                                                 </v-list-tile-title>
@@ -155,10 +157,10 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="$global.setting.devMode === true" color="blue darken-1" flat
+                    <v-btn v-if="$global.setting.devMode === true" class="btn-primary" flat
                            @click.native="publishNewPlugin">Publish your plugin
                     </v-btn>
-                    <v-btn color="blue darken-1" flat @click.native="pluginDialog = false">Close</v-btn>
+                    <v-btn class="btn-danger" flat @click.native="pluginDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -166,7 +168,7 @@
 </template>
 
 <script>
-  const {shell} = require("electron");
+  const { shell } = require("electron");
   const fs = require("fs");
   const request = require("request-promise");
 
@@ -196,7 +198,7 @@
         onlinePluginPage: 0,
         onlinePlugin: [],
         statusText: "",
-        statusProgress: 0,
+        statusProgress: 0
       };
     },
     methods: {
@@ -229,7 +231,7 @@
           let filtered = [];
           res.plugins.forEach(obj => {
             let f = mother.localPlugin.find(
-                elm => elm.category.name === obj.name,
+              elm => elm.category.name === obj.name
             );
             if (f) {
               if (obj.version > f.category.version) {
@@ -272,7 +274,7 @@
           if (progress.status === "DOWNLOAD") {
             //when download just show to text
             this.statusText = `Downloading ... ${util.humanFileSize(
-                progress.state.size.transferred,
+              progress.state.size.transferred
             )} at ${(progress.state.speed / 1000.0 / 1000.0).toFixed(2)}Mbps`;
           } else if (progress.status === "UNZIP") {
             b.status = "UNZIP";
@@ -287,7 +289,7 @@
           this.$dialog.notify.info("Install success");
           this.$global.$emit("board-change", this.$global.board.board_info);
           //--tracking--//
-          this.$track.event("plugin", "install", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+          this.$track.event("plugin", "install", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
         }).catch(err => {
           console.log(err);
           this.statusText = `Error : ${err}`;
@@ -301,10 +303,10 @@
       removePlugin: async function(name) {
         const res = await this.$dialog.confirm({
           text:
-              "Do you really want to remove " +
-              name +
-              "? , this process will clear your code.",
-          title: "Warning",
+            "Do you really want to remove " +
+            name +
+            "? , this process will clear your code.",
+          title: "Warning"
         });
         if (res === true) {
           console.log("removing plugin : " + name);
@@ -315,7 +317,7 @@
             this.listAllPlugins();
             this.$global.$emit("board-change", this.$global.board.board_info);
             //--tracking--//
-            this.$track.event("plugin", "remove", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+            this.$track.event("plugin", "remove", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
             this.$dialog.notify.error("Cannot remove plugin : " + err);
             console.log("Error : cannot remove plugin");
@@ -326,7 +328,7 @@
       updatePlugin: async function(name) {
         const res = await this.$dialog.confirm({
           text: "Do you want to update " + name + " plugin?",
-          title: "Warning",
+          title: "Warning"
         });
         if (res === true) {
           var p = this.getPluginByName(name);
@@ -341,9 +343,9 @@
               if (progress.status === "DOWNLOAD") {
                 //when download just show to text
                 this.statusText = `Downloading ... ${util.humanFileSize(
-                    progress.state.size.transferred,
+                  progress.state.size.transferred
                 )} at ${(progress.state.speed / 1000.0 / 1000.0).toFixed(
-                    2,
+                  2
                 )}Mbps`;
               } else if (progress.status === "UNZIP") {
                 p.status = "UNZIP";
@@ -360,12 +362,12 @@
               this.listAllPlugins();
               setTimeout(() => {
                 this.$global.$emit(
-                    "board-change",
-                    this.$global.board.board_info,
+                  "board-change",
+                  this.$global.board.board_info
                 );
               }, 1000);
               //--tracking--//
-              Vue.prototype.$track.event("plugin", "update", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+              Vue.prototype.$track.event("plugin", "update", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
             });
 
           }).catch(err => {
@@ -382,22 +384,22 @@
       publishNewPlugin: async function() {
         let res = await this.$dialog.prompt({
           text: "https://github.com/user/repo/",
-          title: "Input Board Repository",
+          title: "Input Board Repository"
         });
         var json = null;
         if (util.regex.isValidGithubUrl(res)) {
           this.$dialog.notify.info("Please wait...");
           request(res + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
-          .then(res => {
-            json = JSON.parse(res);
-            if (json.name) {
-              //search if existing
-              return Vue.prototype.$db.collection("plugins").where("name", "==", json.name) //search start with
-              .get();
-            } else {
-              return false;
-            }
-          }).then(res => {
+            .then(res => {
+              json = JSON.parse(res);
+              if (json.name) {
+                //search if existing
+                return Vue.prototype.$db.collection("plugins").where("name", "==", json.name) //search start with
+                  .get();
+              } else {
+                return false;
+              }
+            }).then(res => {
             if (res && res.size >= 1) {
               return json.version > res.docs[0].data().version;
             } else {
@@ -411,7 +413,7 @@
               }
             } else {
               this.$dialog.notify.error(
-                  "Existing plugin name or is not newest version",
+                "Existing plugin name or is not newest version"
               );
               return false;
             }
@@ -419,15 +421,15 @@
             console.log("request error -----");
             console.log(err);
             this.$dialog.notify.error(
-                "Error something went wrong, please check the log",
+              "Error something went wrong, please check the log"
             );
           });
         } else {
           this.$dialog.notify.error(
-              "Github link format error. Please check your link again",
+            "Github link format error. Please check your link again"
           );
         }
-      },
+      }
     },
     mounted() {
       //console.log(this.localPlugin);
@@ -440,11 +442,13 @@
           //on opening
           this.listAllPlugins();
         }
-      },
-    },
+      }
+    }
   };
 </script>
-<style>
+<style lang="stylus">
+    @import "../../../theme/component-design.styl"
+
     .list-title {
         background-color: white !important;
     }
