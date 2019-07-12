@@ -38,12 +38,14 @@
                                             <v-card slot-scope="{ hover }"
                                                     :class="`elevation-${hover ? 12 : (selectingBoard == data.name? 8 : 2)}`">
                                                 <v-card-media @click.native="selectingBoard = data.name">
-                                                    <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1"
-                                                        color="primary">
+                                                    <h4 v-if="selectingBoard === data.name" class="bg-success text-white pa-1 pl-2 mb-1">
+                                                        {{data.title}}
+                                                    </h4>
+                                                    <h4 v-else class="bg-gray-800 text-white pa-1 pl-2 mb-1">
                                                         {{data.title}}
                                                     </h4>
                                                     <img class="board-image"
-                                                         :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
+                                                         :src="`file:///${boardImageDir}/${data.name}${data.image}`" alt="board image"/>
                                                 </v-card-media>
                                                 <v-card-text>
                                                     <v-btn v-if="data.status != 'UPDATABLE'"
