@@ -178,6 +178,16 @@
   var mother = null;
 
   export default {
+    created: function() {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.pluginDialog === true) {
+            console.log("---------> Do something when detect escape / Plugin Manager");
+            this.pluginDialog = false;
+          }
+        }
+      });
+    },
     data() {
       return {
         pluginDialog: false,
