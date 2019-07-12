@@ -84,7 +84,7 @@
   import Blockly from "vue-blockly";
   import en from "vue-blockly/dist/msg/en";
   // === Editor ===
-  import MonacoEditor from 'vue-monaco';
+  import MonacoEditor from "vue-monaco";
   // === uitls ===
   import util from "@/engine/utils";
 
@@ -97,7 +97,7 @@
   import TTSDialog from "@/engine/views/dialog/TTSDialog";
 
   let htmlEntities = function(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   };
 
   let renderBlock = function(blocks, level = 1) {
@@ -115,7 +115,9 @@
         if (element.xml) {
           var insideBlock = element.xml;
         }
-        var custom = element.custom ? `custom="${element.custom}" ` : "";
+        var custom = element.custom
+          ? `custom="${element.custom}" `
+          : "";
         res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
       } else {
         if (typeof (element) === "string") { //block element
@@ -124,7 +126,9 @@
           res += element.xml;
         } else if (typeof (element) === "object" && "type" in element && element.type == "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
-          var custom = element.custom ? `custom="${element.custom}" ` : "";
+          var custom = element.custom
+            ? `custom="${element.custom}" `
+            : "";
           res += `<category name="${element.name}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         } else if (typeof (element) === "object" && "mutation" in element) {
           let objKey = [];
@@ -167,7 +171,9 @@
         });
       });
       //let thName = cat.category.title;
-      let name = (cat.category.name.en) ? cat.category.name.en : cat.category.title;
+      let name = (cat.category.name.en)
+        ? cat.category.name.en
+        : cat.category.title;
       let color = cat.category.color;
       catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
     });
@@ -228,7 +234,7 @@
       MonacoEditor,
       VariableNamingDialog,
       PianoDialog,
-      TTSDialog,
+      TTSDialog
     },
     data() {
       return {
@@ -254,62 +260,69 @@
         },
         musicDialog: false,
         ttsDialog: false,
-        lineError: [],
+        lineError: []
       };
     },
     created() {
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          console.log("---------> Do something when detect escape");
+        }
+      });
+
       myself = this;
       electron.ipcRenderer.on("edit-undo", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "Z".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "Z".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.trigger('aaaa', 'undo', 'aaaa');
+          cm.trigger("aaaa", "undo", "aaaa");
         }
       });
       electron.ipcRenderer.on("edit-redo", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "Y".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "Y".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.trigger('aaaa', 'redo', 'aaaa');
+          cm.trigger("aaaa", "redo", "aaaa");
         }
       });
       electron.ipcRenderer.on("edit-cut", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "X".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "X".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("cut");
         }
       });
       electron.ipcRenderer.on("edit-copy", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "C".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "C".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("copy");
         }
       });
       electron.ipcRenderer.on("edit-paste", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "V".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "V".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("paste");
         }
       });
       electron.ipcRenderer.on("edit-find", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "F".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "F".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.trigger('aaaa','actions.find');
+          cm.trigger("aaaa", "actions.find");
         }
       });
       electron.ipcRenderer.on("edit-replace", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "H".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "H".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.trigger('aaaa','editor.action.startFindReplaceAction')
+          cm.trigger("aaaa", "editor.action.startFindReplaceAction");
         }
       });
     },
@@ -325,7 +338,7 @@
           spacing: 25,
           length: 3,
           colour: "#ccc",
-          snap: true,
+          snap: true
         },
         media: "./static/blockly/media/",
         //rtl: rtl,
@@ -336,9 +349,9 @@
           startScale: 1,
           maxScale: 2,
           minScale: 0.3,
-          scaleSpeed: 1.2,
+          scaleSpeed: 1.2
           //scrollbars: false
-        },
+        }
       });
       this.workspace.addChangeListener(this.updatecode);
       Blockly.svgResize(this.workspace);
@@ -361,7 +374,7 @@
       };
       Blockly.music = function(notes, cb) {
         if (notes) {
-          myself.$refs.musicNotes.tags = notes.split(",").map(el => {return {text: el};});
+          myself.$refs.musicNotes.tags = notes.split(",").map(el => {return { text: el };});
         }
         myself.$refs.musicNotes.$on("result", function(n) {
           myself.musicDialog = false;
@@ -372,7 +385,7 @@
       };
       Blockly.tts = function(words, cb) {
         if (words) {
-          myself.$refs.ttsWords.tags = words.split(" ").map(el => {return {text: el};});
+          myself.$refs.ttsWords.tags = words.split(" ").map(el => {return { text: el };});
         }
         myself.$refs.ttsWords.$on("result", function(n) {
           //console.log(n);
@@ -391,11 +404,11 @@
       this.$global.$on("editor-theme-change", this.onEditorThemeChange);
       this.$global.$on("editor-fontsize-change", this.onEditorFontsizeChange);
 
-      this.$global.$on("compile-begin",this.clearError);
-      this.$global.$on("compile-error",this.addError);
+      this.$global.$on("compile-begin", this.clearError);
+      this.$global.$on("compile-error", this.addError);
       //this.$global.$on("compile-success",_);
-      if(Vue.prototype.$vuetify.theme.primary === ""){
-        Vue.prototype.$vuetify.theme.primary = '#009688';
+      if (Vue.prototype.$vuetify.theme.primary === "") {
+        Vue.prototype.$vuetify.theme.primary = "#009688";
       }
       let theme = this.$vuetify.theme.primary;
       var lighter = util.ui.colorLuminance(theme, 0.2);
@@ -432,19 +445,19 @@
       onEditorFontsizeChange(value) {
         let cm = myself.getCm();
         if (cm) {
-          cm.updateOptions({fontSize: value});
+          cm.updateOptions({ fontSize: value });
           cm.layout();
         }
       },
       onEditorThemeChange(value) {
         let cm = myself.getCm();
         if (cm) {
-          if(value === 'vs-dark') {
-            monaco.editor.setTheme('vs-dark');
-          }else{
-            import('monaco-themes/themes/' + value + '.json').then(data => {
-              monaco.editor.defineTheme('monokai', data);
-              monaco.editor.setTheme('monokai');
+          if (value === "vs-dark") {
+            monaco.editor.setTheme("vs-dark");
+          } else {
+            import("monaco-themes/themes/" + value + ".json").then(data => {
+              monaco.editor.defineTheme("monokai", data);
+              monaco.editor.setTheme("monokai");
             });
           }
         }
@@ -453,8 +466,8 @@
         if (mode < 3) {
           var xml = "";
           if (myself.$global.editor.blockCode !== "" &&
-              myself.$global.editor.blockCode !==
-              "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>") {
+            myself.$global.editor.blockCode !==
+            "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>") {
             var text = myself.$global.editor.blockCode;
             xml = Blockly.Xml.textToDom(text);
           } else {
@@ -550,9 +563,9 @@
       },
       clearError() {
         let cm = this.getCm();
-        monaco.editor.setModelMarkers(cm.getModel(),'error',[]);
+        monaco.editor.setModelMarkers(cm.getModel(), "error", []);
       },
-      addError:function(errors) {
+      addError: function(errors) {
         try {
           let cm = this.getCm();
           this.clearError();
@@ -560,28 +573,28 @@
           if (errors.length === 0) { return; }
           let markers = [];
           errors.forEach(err => {
-            if (typeof err !== 'string') {return;}
+            if (typeof err !== "string") {return;}
             let rex = /^([0-9]+):([0-9]+):(.*)/g;
             let res = rex.exec(err);
             if (!res || res.length !== 4) { return; }
             let line = parseInt(res[1]);
             let col = parseInt(res[2]);
             let marker = {
-              startLineNumber : line,
-              startColumn : 0,
-              endLineNumber:line,
-              endColumn : 9999,
-              message : htmlEntities(err),
+              startLineNumber: line,
+              startColumn: 0,
+              endLineNumber: line,
+              endColumn: 9999,
+              message: htmlEntities(err),
               severity: monaco.MarkerSeverity.Error
             };
             markers.push(marker);
           });
-          monaco.editor.setModelMarkers(cm.getModel(),'error',markers);
-        }catch (e) {
+          monaco.editor.setModelMarkers(cm.getModel(), "error", markers);
+        } catch (e) {
           console.log(e);
         }
-      },
-    },
+      }
+    }
   };
 </script>
 
@@ -590,10 +603,12 @@
         width: 100%;
         height: 100%;
     }
+
     .line-error {
         background: rgba(251, 0, 26, 0.34) !important;
         color: #fff7fb !important;
     }
+
     .vertical-panes-editor {
         width: 100%;
         height: 100%; /* minus header and footer */

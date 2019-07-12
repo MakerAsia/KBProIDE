@@ -30,13 +30,13 @@
               text: "This workspace is not empty. Do you really want to clear this workspace?",
               title: "Warning",
               actions: [
-                { text: "Clear", key: "clear" },
+                { text: "Confirm", key: "confirm" },
                 { text: "Cancel", key: false, color: "red darken-1" }
               ]
             });
 
             if (res) {
-              if (res === "clear") {
+              if (res === "confirm") {
                 this.$global.editor.blockCode = "";
                 this.$global.$emit("editor-mode-change", this.$global.editor.mode); //mode 1 no need to convert code
               }

@@ -36,11 +36,11 @@
             title: "Warning",
             text: "Open new file will overwrite workspace, what do you want to do?",
             actions: [
-              { text: "Clear & Open", key: "clear-open" },
+              { text: "Confirm", key: "confirm" },
               { text: "Cancel", key: "cancel", color: "red darken-1" }
             ]
           });
-          if (userDec === "clear-open") {
+          if (userDec === "confirm") {
             let blyOption = {
               title: "Open Blockly File",
               filters: [
