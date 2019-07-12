@@ -30,11 +30,11 @@
                                                         <div class="sneaker" v-if="selectingMode == index+1"
                                                              transition="fade-transition">
                                                             <v-layout row justify-space-between
-                                                                      class="ma-0 grey lighten-2">
+                                                                      class="ma-0 bg-success lighten-2">
                                                                 <v-flex xs2>
                                                                 </v-flex>
                                                                 <v-flex xs2 class="text-sm-right">
-                                                                    <v-icon color="green">check_circle</v-icon>
+                                                                    <i class="fa fa-check-circle fa-lg text-white"></i>
                                                                 </v-flex>
                                                             </v-layout>
                                                         </div>
