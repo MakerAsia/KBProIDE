@@ -224,11 +224,11 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="$global.setting.devMode == true" color="blue darken-1" flat
+                    <v-btn v-if="$global.setting.devMode == true" class="btn-primary" flat
                            @click.native="publishNewBoard">Publish your board
                     </v-btn>
-                    <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
+                    <v-btn class="btn-success" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
+                    <v-btn class="btn-danger" flat @click.native="boardDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -237,7 +237,7 @@
 
 <script>
 
-  const {shell} = require("electron");
+  const { shell } = require("electron");
   const fs = require("fs");
   const request = require("request-promise");
   import bm from "@/engine/BoardManager";
@@ -268,7 +268,7 @@
         statusText: "",
         statusProgress: 0,
 
-        addBoardDialog: false,
+        addBoardDialog: false
       };
     },
     methods: {
@@ -287,20 +287,24 @@
           text: "Changing board will clear your workspace. please confirm.",
           title: "Warning",
           actions: [
-            {text: "Cancel", key: false},
-            {text: "Clear", key: true},
-          ],
+            { text: "Clear", key: "clear" },
+            { text: "Cancel", key: "cancel", color: "red darken-1" }
+          ]
         });
-        if (res === true) {
-          this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
-          this.$global.board.board = boardname;
-          this.$global.editor.blockCode = "";
-          this.$global.editor.rawCode = "";
-          this.$global.$emit("board-change", this.$global.board.board_info);
-          this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
-          //--tracking--//
-          this.$track.event("board", "change", {evLabel: boardname, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+
+        if (res) {
+          if (res === "clear") {
+            this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
+            this.$global.board.board = boardname;
+            this.$global.editor.blockCode = "";
+            this.$global.editor.rawCode = "";
+            this.$global.$emit("board-change", this.$global.board.board_info);
+            this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
+            //--tracking--//
+            this.$track.event("board", "change", { evLabel: boardname, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+          }
         }
+
       },
       isOnline() {
         return window.navigator.onLine;
@@ -347,7 +351,7 @@
       installOnlineBoard: async function(name) {
         const res = await this.$dialog.confirm({
           text: "Do you really want to install " + name + "?",
-          title: "Warning",
+          title: "Warning"
         });
         if (res === true) {
           let b = this.getOnlineBoardByName(name);
@@ -358,8 +362,8 @@
             //{process : 'board', status : 'DOWNLOAD', state:state }
             if (progress.status === "DOWNLOAD") { //when download just show to text
               this.statusText =
-                  `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
-                      1000.0 / 1000.0).toFixed(2)}Mbps`;
+                `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
+                  1000.0 / 1000.0).toFixed(2)}Mbps`;
             } else if (progress.status === "UNZIP") {
               b.status = "UNZIP";
               this.statusText = `Unzip file ${progress.state.percentage}%`;
@@ -371,7 +375,7 @@
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "install", {evLabel: name, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+            mother.$track.event("board", "install", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
             this.statusText = `Error : ${err}`;
             b.status = "ERROR";
@@ -385,7 +389,7 @@
       removeBoard: async function(board) {
         const res = await this.$dialog.confirm({
           text: "Do you really want to remove " + board + "?",
-          title: "Warning",
+          title: "Warning"
         });
         if (res === true) {
           console.log("removing board : " + board);
@@ -393,7 +397,7 @@
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "remove", {evLabel: board, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+            mother.$track.event("board", "remove", { evLabel: board, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
             console.log("Error : cannot remove board");
             console.log(err);
@@ -403,7 +407,7 @@
       updateBoard: async function(board) {
         const res = await this.$dialog.confirm({
           text: "Do you want to update " + board + " board?",
-          title: "Warning",
+          title: "Warning"
         });
         if (res === true) {
           var b = this.getBoardByName(board);
@@ -417,8 +421,8 @@
               //{process : 'board', status : 'DOWNLOAD', state:state }
               if (progress.status == "DOWNLOAD") { //when download just show to text
                 this.statusText =
-                    `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
-                        1000.0 / 1000.0).toFixed(2)}Mbps`;
+                  `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
+                    1000.0 / 1000.0).toFixed(2)}Mbps`;
               } else if (progress.status == "UNZIP") {
                 b.status = "UNZIP";
                 this.statusText = `Unzip file ${progress.state.percentage}%`;
@@ -435,7 +439,7 @@
                 this.listAllBoard();
               }, 1000);
               //--tracking--//
-              mother.$track.event("board", "update", {evLabel: board, evValue: 1, clientID: this.$track.clientID}).catch(err => { console.log(err);});
+              mother.$track.event("board", "update", { evLabel: board, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
             });
           }).catch(err => {
             this.statusText = `Error : ${err}`;
@@ -453,21 +457,21 @@
       publishNewBoard: async function() {
         let res = await this.$dialog.prompt({
           text: "https://github.com/user/repo/",
-          title: "Input Board Repository",
+          title: "Input Board Repository"
         });
         var json = null;
         if (util.regex.isValidGithubUrl(res)) {
           this.$dialog.notify.info("Please wait...");
           request(res + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
-          .then(res => {
-            json = eval(res);
-            if (json.name) { //search if existing
-              return Vue.prototype.$db.collection("boards").where("name", "==", json.name) //search start with
-              .get();
-            } else {
-              return false;
-            }
-          }).then(res => {
+            .then(res => {
+              json = eval(res);
+              if (json.name) { //search if existing
+                return Vue.prototype.$db.collection("boards").where("name", "==", json.name) //search start with
+                  .get();
+              } else {
+                return false;
+              }
+            }).then(res => {
             if (res && res.size >= 1) {
               return json.version > res.docs[0].data().version;
             } else {
@@ -491,7 +495,7 @@
         } else {
           this.$dialog.notify.error("Github link format error. Please check your link again");
         }
-      },
+      }
     },
     mounted() {
       mother = this;
@@ -505,11 +509,13 @@
           this.selectingBoard = this.$global.board.board;
           this.listOnlineBoard();
         }
-      },
-    },
+      }
+    }
   };
 </script>
-<style>
+<style lang="stylus">
+    @import "../../../theme/component-design.styl"
+
     .text-info-status {
         position: absolute;
         font-size: 12px;
