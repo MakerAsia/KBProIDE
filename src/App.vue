@@ -198,7 +198,7 @@
       MultipaneResizer,
       AsyncComponent,
       AppFooter,
-      AppUpdater,
+      AppUpdater
     },
     data() {
       return {
@@ -211,12 +211,12 @@
         tourCallbacks: {
           onPreviousStep: this.tourPreviousStep,
           onNextStep: this.tourNextStep,
-          onStop: this.tourStop,
+          onStop: this.tourStop
         },
         tourOptions: {
-          labels: TourSteps.button.en,
+          labels: TourSteps.button.en
         },
-        tourLang: "en",
+        tourLang: "en"
       };
     },
     computed: {},
@@ -246,6 +246,7 @@
         electron.shell.openItem(util.boardDir + "/" + window.getApp.$global.board.board + "/plugin");
       });
       electron.ipcRenderer.on("help-tour", () => {
+        this.$global.setting.firstUse = true;
         window.getApp.firstUseDialog = true;
       });
       this.$track.pageview("/", "/home", document.title).then((response) => {
@@ -271,7 +272,7 @@
         Object.keys(boardPackage).forEach(packageName => {
           bp[packageName] = {};
           let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,
-                                                          "board.package." + packageName);
+            "board.package." + packageName);
           bp[packageName] = boardPackageData.data;
         });
 
@@ -302,11 +303,13 @@
         }
       },
       skipTour: function() {
-        this.firstUseDialog = false;
-        this.$global.setting.firstUse = false;
+        //this.firstUseDialog = false;
+        //this.$global.setting.firstUse = false;
+        this.tourStop();
       },
       startTour: function(lang) {
         this.firstUseDialog = false;
+        this.$global.setting.firstUse = true;
         if (lang === "th") {
           this.tourOptions.labels = TourSteps.button.th;
           this.tourStep = TourSteps.th;
@@ -325,44 +328,41 @@
               break;
             case 4:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__text > div > div > div > div:nth-child(2) > div > div").
-              click();
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__text > div > div > div > div:nth-child(2) > div > div").click();
               break;
             case 5:
+              // this is last step tour
+              this.tourStop();
               document.querySelector(this.tourStep[step].target).click();
               break;
             case 6:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light > div.v-card__actions > span > button:nth-child(2)").
-              click();
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light > div.v-card__actions > span > button:nth-child(2)").click();
               break;
             case 7:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 8:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)").
-              click();
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)").click();
               break;
             case 9:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 10:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").
-              click();
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").click();
               break;
             case 11:
               document.querySelector(this.tourStep[step].target + " > span > span > button").click();
               break;
             case 12:
               document.querySelector(
-                  "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").
-              click();
+                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button").click();
               break;
             case 13:
               document.querySelector(
-                  "#inspire > div.application--wrap > nav > div > span:nth-child(6) > span > button",
+                "#inspire > div.application--wrap > nav > div > span:nth-child(6) > span > button"
               ).click();
               break;
           }
@@ -375,17 +375,17 @@
         switch (step) {
           case 4:
             document.querySelector(
-                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)",
+              "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)"
             ).click();
             break;
           case 6:
             document.querySelector(
-                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light.v-tour-highlight.v-tour-position > div.v-card__actions > span > button:nth-child(1)",
+              "#inspire > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.v-sheet--tile.theme--light.v-tour-highlight.v-tour-position > div.v-card__actions > span > button:nth-child(1)"
             ).click();
             break;
           case 8:
             document.querySelector(
-                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)",
+              "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)"
             ).click();
             break;
           case 9:
@@ -393,7 +393,7 @@
             break;
           case 10:
             document.querySelector(
-                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button",
+              "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button"
             ).click();
             break;
           case 11:
@@ -401,7 +401,7 @@
             break;
           case 12:
             document.querySelector(
-                "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button",
+              "#inspire > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button"
             ).click();
             break;
           case 13:
@@ -413,19 +413,27 @@
         }
       },
       tourStop: function() {
-        if (this.tourLang === "th") {
-          this.endDialogTitle = TourSteps.endDialog.title.th;
-          this.endDialogText = TourSteps.endDialog.content.th;
-        } else {
-          this.endDialogTitle = TourSteps.endDialog.title.en;
-          this.endDialogText = TourSteps.endDialog.content.en;
+
+        if (this.$global.setting.firstUse === true) {
+          if (this.tourLang === "th") {
+            this.endDialogTitle = TourSteps.endDialog.title.th;
+            this.endDialogText = TourSteps.endDialog.content.th;
+          } else {
+            this.endDialogTitle = TourSteps.endDialog.title.en;
+            this.endDialogText = TourSteps.endDialog.content.en;
+          }
+
+          this.$global.setting.firstUse = false;
+          this.endDialog = true;
+          this.$global.editor.mode = 1;
+          this.$global.$emit("editor-mode-change", 1);
+
+          this.firstUseDialog = false;
+          this.$global.setting.firstUse = false;
         }
-        this.$global.setting.firstUse = false;
-        this.endDialog = true;
-        this.$global.editor.mode = 1;
-        this.$global.$emit("editor-mode-change", 1);
-      },
-    },
+
+      }
+    }
   };
   /*height:calc(100vh - 64px - 50px - 81px -23px); */
 </script>
@@ -475,7 +483,7 @@
     .v-tabs {
         display: flex;
         flex-direction column;
-        width : 100%;
+        width: 100%;
     }
 
     .bottom-tab {
@@ -492,20 +500,20 @@
     }
 </style>
 <style>
-    .v-window{
+    .v-window {
         display: flex;
-        width : 100%;
+        width: 100%;
         flex: 1 1 auto;
     }
-    .v-window__container
-    {
+
+    .v-window__container {
         display: flex;
-        width : 100%;
+        width: 100%;
     }
-    .v-window-item
-    {
+
+    .v-window-item {
         display: flex;
-        width : 100%;
+        width: 100%;
     }
 
     .v-step {
