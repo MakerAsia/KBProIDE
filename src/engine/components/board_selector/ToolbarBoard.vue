@@ -41,7 +41,7 @@
                                                     <h4 v-if="selectingBoard === data.name" class="bg-success text-white pa-1 pl-2 mb-1">
                                                         {{data.title}}
                                                     </h4>
-                                                    <h4 v-else class="bg-gray-800 text-white pa-1 pl-2 mb-1">
+                                                    <h4 v-else class="bg-gray-400 pa-1 pl-2 mb-1">
                                                         {{data.title}}
                                                     </h4>
                                                     <img class="board-image"
@@ -229,7 +229,15 @@
                     <v-btn v-if="$global.setting.devMode == true" class="btn-primary" flat
                            @click.native="publishNewBoard">Publish your board
                     </v-btn>
-                    <v-btn class="btn-success" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
+                    <v-btn :class="{
+                                'btn-gray-400': this.$global.board.board === this.selectingBoard,
+                                'btn-success': this.$global.board.board !== this.selectingBoard
+                            }"
+                           flat
+                           @click="changeBoard(selectingBoard)"
+                           :disabled="this.$global.board.board === this.selectingBoard">
+                        Change Board
+                    </v-btn>
                     <v-btn class="btn-danger" flat @click.native="boardDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
