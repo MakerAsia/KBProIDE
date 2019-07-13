@@ -256,6 +256,16 @@
 
   var mother = null;
   export default {
+    created: function() {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.boardDialog === true) {
+            console.log("---------> Do something when detect escape / ToolbarBoard");
+            this.boardDialog = false;
+          }
+        }
+      });
+    },
     data() {
       return {
         boardImageDir: util.boardDir,

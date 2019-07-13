@@ -265,12 +265,6 @@
     },
     created() {
 
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          console.log("---------> Do something when detect escape");
-        }
-      });
-
       myself = this;
       electron.ipcRenderer.on("edit-undo", () => {
         if (this.$global.editor.mode < 3) {

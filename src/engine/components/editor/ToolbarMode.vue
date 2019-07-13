@@ -84,6 +84,16 @@
 <script>
   // === UI Management ===
   export default {
+    created: function() {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.modeDialog === true) {
+            console.log("---------> Do something when detect escape / ToolbarMode");
+            this.modeDialog = false;
+          }
+        }
+      });
+    },
     data() {
       return {
         selectingMode: this.$global.editor.mode,
