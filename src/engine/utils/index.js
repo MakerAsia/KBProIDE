@@ -107,11 +107,17 @@ const vueRuntimeComponent = function(file) {
 //  return capitalize(camel);
 //};
 
-var camelActual = function(str) {
+const camelActual = function(str) {
   return (str || "").replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ""));
 };
-
-var randomString = function(length = 5) {
+const humanize = function(str) {
+  let ret = (str || "").replace(/-(\w)/g, (_, c) => (c ? " " + c.toUpperCase() : ""));
+  return ret.charAt(0).toUpperCase() + ret.slice(1);
+};
+const kebab = (str) => {
+  return (str || "").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+};
+const randomString = function(length = 5) {
   let text = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (let i = 0; i < length; i++) {
@@ -124,9 +130,7 @@ const randomElement = (arr = []) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-const kebab = (str) => {
-  return (str || "").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-};
+
 
 const toggleFullScreen = () => {
   let doc = window.document;
@@ -241,11 +245,12 @@ function b64DecodeUnicode(str) {
 
 export default {
   //camel,
-  camelActual,
   randomString,
   randomElement,
   toggleFullScreen,
+  camelActual,
   kebab,
+  humanize,
   ui,
   requireFunc,
   humanFileSize,
