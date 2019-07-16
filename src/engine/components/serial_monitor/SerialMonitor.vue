@@ -419,16 +419,9 @@
       };
     },
     mounted() {
-      let self = this;
       this.listPort();
-      this.$global.$on("compile-begin", _ => {
-        if (self.port && self.port.isOpen) {
-          self.port.close();
-        }
-      });
-      this.$global.$on("upload-success", _ => {
-        self.connect();
-      });
+      this.$global.$on("compile-begin", this.closePort);
+      this.$global.$on("upload-success", this.connect);
     },
     updated() {
 
@@ -437,6 +430,8 @@
       if (this.port && this.port.isOpen) {
         this.port.close();
       }
+      this.$global.$off("compile-begin");
+      this.$global.$off("upload-success");
     },
     methods: {
       log(data) {
@@ -466,6 +461,11 @@
           setTimeout(_ => {
             self.connect();
           }, 300);
+        }
+      },
+      closePort : function(){
+        if (this.port && this.port.isOpen) {
+          this.port.close();
         }
       },
       connect: function() {
