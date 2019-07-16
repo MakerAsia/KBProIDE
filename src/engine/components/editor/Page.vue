@@ -137,7 +137,6 @@
     let pluginName = "Plugins";
     let plugins = pluginInfo; // plug.loadPlugin(boardInfo);
     let catStr = "";
-    console.log(plugins);
     plugins.categories.forEach(cat => {
       let pluginDirectory = cat.directory;
       let pluginBlockDirectory = `${pluginDirectory}/blocks`;
@@ -173,54 +172,49 @@
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
   };
-  var loadBlock = function(boardName, target) {
-    //look for board first
-    var blockFile = `${util.boardDir}/${boardName}/block/config.js`;
+  const loadBlock = function(boardInfo) {
+    let blockFile = `${boardInfo.dir}/block/config.js`;
     if (!util.fs.existsSync(blockFile)) {
       return null;
     }
-    var blocks = util.requireFunc(blockFile);
-    return blocks;
+    return util.requireFunc(blockFile);
   };
-  var initBlockly = function(boardInfo) {
-    var boardName = boardInfo.name;
-    var platformName = boardInfo.platform;
-    var blockyDir = `${util.boardDir}/${boardName}/block`;
-    var platformBlockDir = `${util.platformDir}/${platformName}/block`;
+  const initBlockly = function(boardInfo) {
+    let platformName = boardInfo.platform;
+    let blockyDir = `${boardInfo.dir}/block`;
+    let platformBlockDir = `${util.platformDir}/${platformName}/block`;
     //lookup platform first
-    var platformBlockFile = util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
+    let platformBlockFile = util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
     platformBlockFile.sort(function(a, b) {
       return a.length - b.length;
     });
-    var blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
+    let blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
     blocklyFile.sort(function(a, b) {
       return a.length - b.length;
     });
-    var blocks = platformBlockFile.concat(blocklyFile);
-    if (blocks.length > 0) {
-      blocks.forEach(element => {
-        if (element.includes("config.js")) { //skip config.js file
-          return;
+    let blocks = platformBlockFile.concat(blocklyFile);
+    blocks.forEach(element => {
+      if (element.includes("config.js")) { //skip config.js file
+        return;
+      }
+      try {
+        let name = path.basename(element);
+        if (name.startsWith("block") && name.endsWith("js")) {
+          util.requireFunc(element)(Blockly);
+          let generatorFile = name.replace("block", "generator");
+          util.requireFunc(`${path.dirname(element)}/${generatorFile}`)(Blockly);
         }
-        try {
-          let name = path.basename(element);
-          if (name.startsWith("block") && name.endsWith("js")) {
-            util.requireFunc(element)(Blockly);
-            let generatorFile = name.replace("block", "generator");
-            util.requireFunc(`${path.dirname(element)}/${generatorFile}`)(Blockly);
-          }
-        } catch (error) {
-          console.log("load blockly error");
-          console.log(error);
-          console.log(element);
-        }
-      });
-    }
+      } catch (error) {
+        console.log("load blockly error");
+        console.log(error);
+        console.log(element);
+      }
+    });
   };
   /*var reloadBlockly = function(toolbox,workspace,updatecode){
 
   }*/
-  var myself;
+  let myself;
   export default {
     name: "editor",
     components: {
@@ -235,7 +229,6 @@
       return {
         workspace: null,
         toolbox: null,
-        cm: null,
         editor_options: {
           automaticLayout: true,
           lineNumbers: "on",
@@ -255,11 +248,9 @@
         },
         musicDialog: false,
         ttsDialog: false,
-        lineError: []
       };
     },
     created() {
-
       myself = this;
       electron.ipcRenderer.on("edit-undo", () => {
         if (this.$global.editor.mode < 3) {
@@ -350,7 +341,7 @@
         myself.variable_name = defaultValue;
         myself.variableMessage = message;
         myself.$refs.variableOK.$on("click", function() {
-          var new_val = myself.variable_name;
+          let new_val = myself.variable_name;
           if ((new_val) && (new_val != "") && myself.validated) {
             callback(new_val);
           } else {
@@ -377,7 +368,6 @@
           myself.$refs.ttsWords.tags = words.split(" ").map(el => {return { text: el };});
         }
         myself.$refs.ttsWords.$on("result", function(n) {
-          //console.log(n);
           myself.ttsDialog = false;
           myself.$refs.ttsWords.$off("result");
           cb(n);
@@ -400,7 +390,7 @@
         Vue.prototype.$vuetify.theme.primary = "#009688";
       }
       let theme = this.$vuetify.theme.primary;
-      var lighter = util.ui.colorLuminance(theme, 0.2);
+      let lighter = util.ui.colorLuminance(theme, 0.2);
       document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = lighter;
 
       //---- render block
@@ -453,15 +443,15 @@
       },
       onEditorModeChange(mode, convert = false, create_new = false) {
         if (mode < 3) {
-          var xml = "";
+          let xml = "";
           if (myself.$global.editor.blockCode !== "" &&
             myself.$global.editor.blockCode !==
             "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>") {
-            var text = myself.$global.editor.blockCode;
+            let text = myself.$global.editor.blockCode;
             xml = Blockly.Xml.textToDom(text);
           } else {
-            var blocks = loadBlock(myself.$global.board.board);
-            if (blocks.initial_blocks) {
+            let blocks = loadBlock(myself.$global.board.board_info);
+            if(blocks.initial_blocks) {
               xml = Blockly.Xml.textToDom(blocks.initial_blocks);
             }
           }
@@ -472,7 +462,7 @@
           }, 300);
         } else {
           //------ generate template here ------//
-          const boardDirectory = `${util.boardDir}/${this.$global.board.board}`;
+          const boardDirectory = `/${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
           let codegen = null;
           if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
@@ -503,8 +493,7 @@
         this.$global.plugin.pluginInfo = plug.loadPlugin(this.$global.board.board_info);
 
         initBlockly(boardInfo);
-        let boardName = boardInfo.name;
-        let blocks = loadBlock(boardName);
+        let blocks = loadBlock(boardInfo);
         let stringBlock = "";
         if ("base_blocks" in blocks) { //render block base from platform
           stringBlock += renderBlock(blocks.base_blocks);

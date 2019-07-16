@@ -138,6 +138,10 @@ Object.keys(comps).forEach(function(key) {
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
 var boardInfoComponent = util.loadCofigComponents(boardInfo, "board");
+if(!boardInfoComponent.data.dir){
+  boardInfoComponent.data.board_info.dir = `${util.boardDir}/${boardInfoComponent.data.board_info.name}`;
+}
+console.log(boardInfoComponent);
 // assign data to $global
 componentAllData.data["board"] = boardInfoComponent.data;
 componentAllData.persistence["board"] = boardInfoComponent.persistence;
