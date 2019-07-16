@@ -3,4 +3,10 @@ export default {
     description : "no have",
     index : 1,
     tooltip : 'Board Manager',
+    persistence:{
+        sortby : 'platform',
+    },
+    data:{
+        //saved : false,
+    }
 }

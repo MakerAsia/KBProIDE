@@ -218,6 +218,7 @@
         } catch (error) {
           console.log("load blockly error");
           console.log(error);
+          console.log(element);
         }
       });
     }

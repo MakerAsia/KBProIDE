@@ -8,36 +8,38 @@ const request = require('request');
 const progress = require('request-progress');
 //const db = Vue.prototype.$db;
 
-var listedBoards = [];
-var listedPackages = {};
-var listedPackagesBoard = '';
+let listedBoards = [];
+let listedPackages = {};
+let listedPackagesBoard = '';
 
-var listBoard = function(){
-    var context = [];
-    var dirs = util.fs.readdirSync(util.boardDir);
+const listBoard = function(){
+    let context = [];
+    let dirs = util.fs.readdirSync(util.boardDir);
     dirs.forEach(element => {
-        if(util.fs.lstatSync(util.boardDir+"/"+element).isFile()){
+        let dir = util.boardDir+"/"+element;
+        if(util.fs.lstatSync(dir).isFile()){
             return;
         }
-        var dirBoards = util.fs.readdirSync(util.boardDir+"/"+element);
+        let dirBoards = util.fs.readdirSync(dir);
         if(!dirBoards.includes("config.js")){
             return; // only folder that contain config.js
         }
-        var config = util.requireFunc(util.boardDir+"/"+element+"/config");
+        let config = util.requireFunc(dir+"/config");
+        config["dir"] = dir;
         context.push(config);
     });
     return context;
 };
 
 
-var listPackage = function(boardName,includePlatform = true)
+const listPackage = function(boardName,includePlatform = true)
 {
     let targetBoardDir = `${util.boardDir}/${boardName}`;
     let targetBoardPackage = `${targetBoardDir}/package`;
-    var context = {};
-    if(util.fs.existsSync(targetBoardPackage)){ //util.boardDir+'/'+boardName+'/package')){ //no package folder
-        var pacakgeName = util.fs.readdirSync(targetBoardPackage);
-        pacakgeName.forEach(element => { //folder
+    let context = {};
+    if(util.fs.existsSync(targetBoardPackage)){
+        let packageName = util.fs.readdirSync(targetBoardPackage);
+        packageName.forEach(element => { //folder
             let fullPathPackage = `${targetBoardPackage}/${element}`;
             let configFile = `${fullPathPackage}/config.js`;
             let packageJsFile = `${fullPathPackage}/dist/${element}.umd.js`;
@@ -52,19 +54,19 @@ var listPackage = function(boardName,includePlatform = true)
             }
             if(!(element in context)){
                 context[element] = {};
-            }    
+            }
             try {
-                context[element]['config'] = util.requireFunc(configFile);            
+                context[element]['config'] = util.requireFunc(configFile);
                 context[element]['dir'] = fullPathPackage;
                 context[element]['js'] = packageJsFile;
-                context[element]['scope'] = 'board'; 
+                context[element]['scope'] = 'board';
             } catch (error) {
                 console.log('connot import config : '+fullPathPackage);
             }
-        });   
-    }    
+        });
+    }
     if(includePlatform){
-        let targetBoard = boards().find(obj => obj.name == boardName);
+        let targetBoard = boards().find(obj => obj.name === boardName);
         let platformName = targetBoard.platform;
         let platformPackageDir = `${util.platformDir}/${platformName}/package`;
         if(util.fs.existsSync(platformPackageDir)){
@@ -84,12 +86,12 @@ var listPackage = function(boardName,includePlatform = true)
                 }
                 if(!(element in context)){
                     context[element] = {};
-                }    
+                }
                 try {
-                    context[element]['config'] = util.requireFunc(configFile);            
+                    context[element]['config'] = util.requireFunc(configFile);
                     context[element]['dir'] = fullPathPackage;
                     context[element]['js'] = packageJsFile;
-                    context[element]['scope'] = 'platform'; 
+                    context[element]['scope'] = 'platform';
                 } catch (error) {
                     console.log('connot import config : '+fullPathPackage);
                 }
@@ -97,7 +99,7 @@ var listPackage = function(boardName,includePlatform = true)
         }
     }
     //sort menu by config index
-    var orderedContext = {};
+    let orderedContext = {};
     Object.keys(context).sort(function(a,b) {
         if(context[a].config && context[b].config){
             if('index' in context[a].config && 'index' in context[b].config)
@@ -106,97 +108,81 @@ var listPackage = function(boardName,includePlatform = true)
         return 0;
     }).forEach(function(key) {
         orderedContext[key] = context[key];
-    });    
+    });
     return orderedContext;
 };
 
 
-var listOnlineBoard = function(name = '',start = 0){
+const listOnlineBoard = function(name = '',start = 0){
     return new Promise((resolve,reject)=>{
         let onlineBoards = [];
-        if(name == ''){ //list all
+        if(name === ''){ //list all
             Vue.prototype.$db.collection('boards')
             .orderBy("name")
             .startAfter(start)
             .limit(50)
             .get().then(boardData =>{
-                var lastVisible = boardData.docs[boardData.docs.length-1];
+                let lastVisible = boardData.docs[boardData.docs.length-1];
                 boardData.forEach(element => {
                     onlineBoards.push(element.data());
                 });
                 resolve({end : lastVisible, boards : onlineBoards});
-            }).catch(err=>{                
+            }).catch(err=>{
                 reject(err);
             });
         }else{
-            var strSearch = name;
-            var strlength = strSearch.length;
-            var strFrontCode = strSearch.slice(0, strlength-1);
-            var strEndCode = strSearch.slice(strlength-1, strSearch.length);
+            let strSearch = name;
+            let strlength = strSearch.length;
+            let strFrontCode = strSearch.slice(0, strlength-1);
+            let strEndCode = strSearch.slice(strlength-1, strSearch.length);
 
-            var startcode = strSearch;
-            var endcode= strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+            let startcode = strSearch;
+            let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
 
-            Vue.prototype.$db.collection('boards')            
+            Vue.prototype.$db.collection('boards')
             .where('name','>=',startcode) //search start with
             .where('name','<',endcode)
             .orderBy("name")
             //.startAfter(start)
             .limit(50)
             .get().then(boardData =>{
-                var lastVisible = boardData.docs[boardData.docs.length-1];
+                let lastVisible = boardData.docs[boardData.docs.length-1];
                 boardData.forEach(element => {
                     onlineBoards.push(element.data());
                 });
                 resolve({end : lastVisible, boards : onlineBoards});
-            }).catch(err=>{                
+            }).catch(err=>{
                 reject(err);
             });
         }
-    });    
-}
+    });
+};
 
-var loadBoardManagerConfig = function(){
+const loadBoardManagerConfig = function(){
     let configFile = util.boardDir+'/config.js';
     if(!util.fs.existsSync(configFile)){
         return null;
     }
     return util.requireFunc(configFile);
 };
-var installBoardByName = function(name,cb)
-{
-    return new Promise((resolve,reject) => {
-        Vue.prototype.$db.collection('boards')
-            .where("name", "==", name)
-            .get()
-            .then(platfromData =>{    
-                platfromData.forEach(element => {
-                    return resolve(element.data());                    
-                });
-            }).catch(err=>{
-                reject(err);
-            });
-    }).then((info)=>{
-        return installOnlineBoard(info,cb);
-    });
-};
-var installOnlineBoard = function(info,cb)
+
+const installOnlineBoard = function(info,cb)
 {
     return new Promise((resolve, reject) => { //download zip
         if(!info.git){ reject('no git found'); }
-        var zipUrl = info.git + "/archive/master.zip";
-        var zipFile = os.tmpdir()+'/'+util.randomString(10)+'.zip';
-        var file = fs.createWriteStream(zipFile);
+        let zipUrl = info.git + "/archive/master.zip";
+        let zipFile = os.tmpdir()+'/'+util.randomString(10)+'.zip';
+        let file = fs.createWriteStream(zipFile);
         progress(
             request(zipUrl),
             {
-                throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms 
-                delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms 
+                throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms
+                delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms
                 followAllRedirects: true,
                 follow : true,
             }
         ).on('progress', function (state) {
-            cb & cb({process : 'board', status : 'DOWNLOAD', state:state }); 
+            cb && cb({process : 'board', status : 'DOWNLOAD', state:state });
         }).on('error', function (err) {
             reject(err);
         }).on('end', function () {
@@ -205,12 +191,12 @@ var installOnlineBoard = function(info,cb)
         })
         .pipe(file);
     }).then((zipFile)=>{ //unzip file
-        return util.unzip(zipFile,{dir: util.boardDir},p=>{ 
-            cb & cb({process : 'board', status : 'UNZIP', state: p });
+        return util.unzip(zipFile,{dir: util.boardDir},p=>{
+            cb && cb({process : 'board', status : 'UNZIP', state: p });
         });
     }).then(()=>{ //rename folder
-        //rename ended with word '-master' in boards 
-        var dirs = fs.readdirSync(util.boardDir);
+        //rename ended with word '-master' in boards
+        let dirs = fs.readdirSync(util.boardDir);
         for(let i =0; i< dirs.length; i++){
             let dirname = path.join(util.boardDir, dirs[i]);
             if(fs.lstatSync(dirname).isDirectory() && dirname.endsWith('-master')){
@@ -228,10 +214,10 @@ var installOnlineBoard = function(info,cb)
     });
 };
 
-var removeBoard = function(boardName)
+const removeBoard = function(boardInfo)
 {
     return new Promise((resolve,reject)=>{
-        let target = `${util.boardDir}/${boardName}`;
+        let target = `${boardInfo.dir}`;
         if(fs.existsSync(target)){
             util.rmdirf(target);
             resolve();
@@ -239,33 +225,81 @@ var removeBoard = function(boardName)
             reject('no directory')
         }
     });
-}
-var backupBoard = function(boardName)
+};
+
+const removeBackupBoard = function(boardInfo) {
+    return new Promise((resolve,reject)=>{
+        let target = `${boardInfo.dir}-backup-board`;
+        if(fs.existsSync(target)){
+            util.rmdirf(target);
+            resolve();
+        }else{
+            reject('no directory')
+        }
+    });
+};
+
+const backupBoard = function(boardInfo)
 {
     return new Promise((resolve,reject)=>{
-        let target = `${util.boardDir}/${boardName}`;
-        let newer = `${util.boardDir}/${boardName}-backup-board`;
+        let target = `${boardInfo.dir}`;
+        let newer = `${boardInfo.dir}-backup-board`;
         fs.renameSync(target,newer);
         resolve();
     }) ;
-}
+};
 
-var restoreBoard = function(boardName)
+const restoreBoard = function(boardInfo)
 {
     return new Promise((resolve,reject)=>{
-        let target = `${util.boardDir}/${boardName}`;
-        let newer = `${util.boardDir}/${boardName}-backup-board`;
+        let target = `${boardInfo.dir}`;
+        let newer = `${boardInfo.dir}-backup-board`;
         fs.renameSync(newer,target);
         resolve();
     }) ;
-}
-var boards = function(){
+};
+
+const publishBoard = function(url)
+{
+    return new Promise((resolve,reject)=>{
+        let json = null;
+        request(url + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
+        .then(res => {
+            json = eval(res);
+            if (json.name) { //search if existing
+                return Vue.prototype.$db.collection("boards").where("name", "==", json.name) //search start with
+                .get();
+            } else {
+                return false;
+            }
+        }).then(res => {
+            if (res && res.size >= 1) {
+                return json.version > res.docs[0].data().version;
+            } else {
+                return true;
+            }
+        }).then(res => {
+            if (res) {
+                Vue.prototype.$db.collection("boards").doc(json.name).set(json);
+                if (res) {
+                    resolve();
+                }
+            } else {
+                reject("Existing board name or is not newest version");
+            }
+        }).catch(err => {
+            reject(err);
+        });
+    });
+};
+
+const boards = function(){
     if(listedBoards.length === 0){ // check empty object !!!
         listedBoards = listBoard();
     }
     return listedBoards;
 };
-var clearListedBoard = function(){
+const clearListedBoard = function(){
     listedBoards = [];
     Object.keys(util.requireFunc.cache).map(file => {
         if((/\/boards\/.*?\/config\.js/g).test(file) || (/\\boards\\.*?\\config\.js/g).test(file)){
@@ -273,21 +307,22 @@ var clearListedBoard = function(){
         }
     });
 };
-var packages = function(selectedBoard){
+const packages = function(selectedBoard){
     if((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object) || (listedPackagesBoard != selectedBoard)){ // check empty object !!!
         listedPackages = listPackage(selectedBoard);
         listedPackagesBoard = selectedBoard;
     }
     return listedPackages;
 };
-var filerBoardPackageComponent = function(localPackage,name){
-    var components = {};
+
+const filerBoardPackageComponent = function(localPackage,name){
+    let components = {};
     Object.keys(localPackage).forEach(packageName => {
         if('config' in localPackage[packageName]){
             let conf = localPackage[packageName].config;
             components[packageName] = [];
             if('component' in conf){
-                conf.component.forEach(componentName => {                    
+                conf.component.forEach(componentName => {
                     if(componentName.toLowerCase().startsWith(name.toLowerCase())){
                         if(!components[packageName].includes(componentName)){
                             components[packageName].push(componentName);
@@ -299,6 +334,7 @@ var filerBoardPackageComponent = function(localPackage,name){
     });
     return components;
 };
+
 export default {
     boards,
     clearListedBoard,
@@ -316,20 +352,9 @@ export default {
     listBottomTab : selectedBoard => filerBoardPackageComponent(packages(selectedBoard),'BottomTab'),
     loadBoardManagerConfig,
     installOnlineBoard,
-    installBoardByName,
     removeBoard,
+    removeBackupBoard,
     backupBoard,
     restoreBoard,
-    load : ()=>{
-
-    },
-    install : (namespace)=>{
-
-    },
-    remove : (namespace)=>{
-
-    },
-    update : (namespace)=>{
-
-    }
+    publishBoard
 }

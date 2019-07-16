@@ -30,7 +30,6 @@
     methods: {
       openFilePopUp: async function() {
         let mode = this.$global.editor.mode;
-        let isSaved = this.$global.editor.saved;
         if (mode < 3) {
           let userDec = await this.$dialog.confirm({
             title: "Warning",
@@ -50,7 +49,7 @@
             let filePaths = dialog.showOpenDialog(null, blyOption);
             if (filePaths) {
               let file = filePaths[0];
-              var text = fs.readFileSync(file, "utf8");
+              let text = fs.readFileSync(file, "utf8");
               text = util.b64DecodeUnicode(text);
               this.$global.editor.blockCode = text;
               this.$global.$emit("editor-mode-change", this.$global.editor.mode);
@@ -74,9 +73,9 @@
                 { name: "Source code file", extensions: ["kbp", "ino", "c", "cpp"] }
               ]
             };
-            var filePaths = dialog.showOpenDialog(null, codeOption);
+            let filePaths = dialog.showOpenDialog(null, codeOption);
             if (filePaths) {
-              var file = filePaths[0];
+              let file = filePaths[0];
               this.$global.editor.sourceCode = fs.readFileSync(file, "utf8");
               //this.$global.$emit('editor-mode-change',this.$global.editor.mode);
               //--track--//

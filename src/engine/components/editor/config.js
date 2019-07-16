@@ -15,7 +15,6 @@ export default {
         Blockly : null,
         workspace : null,
         CodeMirror : null,
-        Editor : null,
-        //saved : false,
+        Editor : null
     }
 }

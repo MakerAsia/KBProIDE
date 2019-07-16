@@ -18,33 +18,24 @@
     methods: {
       newFile: async function() {
         if (this.$global.editor.mode < 3) {
-          var blockCode = this.$global.editor.blockCode;
-          //console.log(blockCode);
-          let rexEmptyBlock = /<xml.*?><variables><\/variables><block type="arduino_init\".*?><\/block><block type="arduino_loop\" id=\".*?\" x=\".*?\" y=\".*?\"><\/block><\/xml>/g;
-          if (blockCode === "" ||
-            blockCode === "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>" ||
-            rexEmptyBlock.test(blockCode)) { //it empty workspace
-            this.$global.ui.snackbar("Workspace already empty.");
-          } else { //non-empty workspace
-            const res = await this.$dialog.confirm({
-              text: "This workspace is not empty. Do you really want to clear this workspace?",
-              title: "Warning",
-              actions: [
-                { text: "Confirm", key: "confirm" },
-                { text: "Cancel", key: false, color: "red darken-1" }
-              ]
-            });
+          const res = await this.$dialog.confirm({
+                                                   text: "Do you really want to clear this workspace?",
+                                                   title: "Warning",
+                                                   actions: [
+                                                     {text: "Confirm", key: "confirm"},
+                                                     {text: "Cancel", key: false, color: "red darken-1"}
+                                                   ]
+                                                 });
 
-            if (res) {
-              if (res === "confirm") {
-                this.$global.editor.blockCode = "";
-                this.$global.$emit("editor-mode-change", this.$global.editor.mode); //mode 1 no need to convert code
-              }
+          if (res) {
+            if (res === "confirm") {
+              this.$global.editor.blockCode = "";
+              this.$global.$emit("editor-mode-change", this.$global.editor.mode); //mode 1 no need to convert code
             }
           }
         } else {
           const res = await this.$dialog.confirm({
-            text: "This workspace is not empty. Do you really want to clear this workspace?",
+            text: "Do you really want to clear this workspace?",
             title: "Warning",
             actions: [
               { text: "Clear", key: true },
@@ -52,8 +43,7 @@
               { text: "Cancel", key: false, color: "red darken-1" }
             ]
           });
-
-          if (res) {
+          if (res && res !== 'Cancel') {
             if (res === "convert") {
               this.$global.$emit("editor-mode-change", this.$global.editor.mode, true);
             } else {
