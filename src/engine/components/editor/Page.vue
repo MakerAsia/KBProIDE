@@ -96,39 +96,28 @@
   import PianoDialog from "@/engine/views/dialog/PianoDialog";
   import TTSDialog from "@/engine/views/dialog/TTSDialog";
 
-  let htmlEntities = function(str) {
+  const htmlEntities = function(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   };
 
-  let renderBlock = function(blocks, level = 1) {
+  const renderBlock = function(blocks, level = 1) {
     let res = "";
     if (blocks === undefined) {
       return res;
     }
     blocks.forEach(element => {
       if (level === 1) {
-        if (element.blocks) {
-          var insideBlock = renderBlock(element.blocks, level + 1);
-        } else {
-          var insideBlock = "";
-        }
-        if (element.xml) {
-          var insideBlock = element.xml;
-        }
-        var custom = element.custom
-          ? `custom="${element.custom}" `
-          : "";
+        let insideBlock = (element.blocks) ? renderBlock(element.blocks, level + 1) : (element.xml?element.xml:"");
+        let custom = element.custom ? `custom="${element.custom}" ` : "";
         res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
       } else {
         if (typeof (element) === "string") { //block element
           res += `<block type="${element}"></block>`;
         } else if (typeof (element) == "object" && element.xml) {
           res += element.xml;
-        } else if (typeof (element) === "object" && "type" in element && element.type == "category") {
+        } else if (typeof (element) === "object" && "type" in element && element.type === "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
-          var custom = element.custom
-            ? `custom="${element.custom}" `
-            : "";
+          let custom = element.custom ? `custom="${element.custom}" ` : "";
           res += `<category name="${element.name}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         } else if (typeof (element) === "object" && "mutation" in element) {
           let objKey = [];
@@ -144,12 +133,14 @@
     });
     return res;
   };
-  var loadAndRenderPluginsBlock = function(Blockly, boardInfo, pluginInfo) {
-    var pluginName = "Plugins";
-    var plugins = pluginInfo; // plug.loadPlugin(boardInfo);
+  const loadAndRenderPluginsBlock = function(Blockly, boardInfo, pluginInfo) {
+    let pluginName = "Plugins";
+    let plugins = pluginInfo; // plug.loadPlugin(boardInfo);
     let catStr = "";
-    //console.log(plugins);
+    console.log(plugins);
     plugins.categories.forEach(cat => {
+      let pluginDirectory = cat.directory;
+      let pluginBlockDirectory = `${pluginDirectory}/blocks`;
       let blockStr = "";
       Object.keys(cat.plugins).forEach(subPlugin => {
         let blocks = cat.plugins[subPlugin].blocks;
@@ -170,12 +161,15 @@
           blockStr += `<block type="${typeName}"></block>`;
         });
       });
-      //let thName = cat.category.title;
-      let name = (cat.category.name.en)
-        ? cat.category.name.en
-        : cat.category.title;
-      let color = cat.category.color;
-      catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
+      if(fs.existsSync(`${pluginBlockDirectory}/config.js`)){
+        let blockConfig = util.requireFunc(`${pluginBlockDirectory}/config.js`);
+        catStr += renderBlock(blockConfig);
+      }else{
+        //let thName = cat.category.title;
+        let name = (cat.category.name.en) ? cat.category.name.en : cat.category.title;
+        let color = cat.category.color;
+        catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
+      }
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
   };
