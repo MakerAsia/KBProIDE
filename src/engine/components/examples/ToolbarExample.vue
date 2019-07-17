@@ -34,7 +34,7 @@
 
                         <v-divider></v-divider>
 
-                        <v-subheader>
+                        <v-subheader class="title">
                             Plugin Examples
                         </v-subheader>
                         <div>
