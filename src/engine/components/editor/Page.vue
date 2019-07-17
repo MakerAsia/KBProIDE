@@ -174,10 +174,30 @@
   };
   const loadBlock = function(boardInfo) {
     let blockFile = `${boardInfo.dir}/block/config.js`;
-    if (!util.fs.existsSync(blockFile)) {
-      return null;
+    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
+    let finalBlock = [];
+    let boardBlock = [];
+    if (util.fs.existsSync(blockFile)) {
+      boardBlock = util.requireFunc(blockFile);
     }
-    return util.requireFunc(blockFile);
+    if(boardBlock.base_blocks && !boardBlock.blocks) {
+      finalBlock["blocks"] = boardBlock["base_blocks"];
+      return finalBlock;
+    }else if(boardBlock.blocks && !boardBlock.base_blocks){
+      finalBlock["blocks"] = boardBlock.blocks;
+      let platformBlock = [];
+      if(util.fs.existsSync(platformBlockFile)){
+        platformBlock = util.requireFunc(platformBlockFile);
+      }
+      let m = function(obj,master) {
+        obj.forEach(block=>{
+          let subMaster = master.find(el=>el.name === block.name);
+          if(subMaster){ //this category blocks already
+
+          }
+        });
+      };
+    }
   };
   const initBlockly = function(boardInfo) {
     let platformName = boardInfo.platform;
@@ -495,11 +515,11 @@
         initBlockly(boardInfo);
         let blocks = loadBlock(boardInfo);
         let stringBlock = "";
-        if ("base_blocks" in blocks) { //render block base from platform
-          stringBlock += renderBlock(blocks.base_blocks);
-        }
         if ("blocks" in blocks) { //render extended block
           stringBlock += renderBlock(blocks.blocks);
+        }
+        if ("base_blocks" in blocks) { //render block base from platform
+          stringBlock += renderBlock(blocks.base_blocks);
         }
         // render plugin blocks
         stringBlock += loadAndRenderPluginsBlock(Blockly, boardInfo, this.$global.plugin.pluginInfo);

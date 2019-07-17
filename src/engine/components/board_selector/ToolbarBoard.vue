@@ -30,9 +30,9 @@
                             </v-btn>
                         </template>
                         <v-list>
-                            <v-list-tile @click="changeOrder('vendor')">
+                            <!--v-list-tile @click="changeOrder('vendor')">
                                 <v-list-tile-title>Order by vendor</v-list-tile-title>
-                            </v-list-tile>
+                            </v-list-tile-->
                             <v-list-tile @click="changeOrder('name')">
                                 <v-list-tile-title>Order by name</v-list-tile-title>
                             </v-list-tile>
