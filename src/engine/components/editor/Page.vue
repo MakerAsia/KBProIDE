@@ -175,29 +175,10 @@
   const loadBlock = function(boardInfo) {
     let blockFile = `${boardInfo.dir}/block/config.js`;
     let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
-    let finalBlock = [];
-    let boardBlock = [];
-    if (util.fs.existsSync(blockFile)) {
-      boardBlock = util.requireFunc(blockFile);
+    if(!util.fs.existsSync(blockFile)){
+      return null;
     }
-    if(boardBlock.base_blocks && !boardBlock.blocks) {
-      finalBlock["blocks"] = boardBlock["base_blocks"];
-      return finalBlock;
-    }else if(boardBlock.blocks && !boardBlock.base_blocks){
-      finalBlock["blocks"] = boardBlock.blocks;
-      let platformBlock = [];
-      if(util.fs.existsSync(platformBlockFile)){
-        platformBlock = util.requireFunc(platformBlockFile);
-      }
-      let m = function(obj,master) {
-        obj.forEach(block=>{
-          let subMaster = master.find(el=>el.name === block.name);
-          if(subMaster){ //this category blocks already
-
-          }
-        });
-      };
-    }
+    return util.requireFunc(blockFile);
   };
   const initBlockly = function(boardInfo) {
     let platformName = boardInfo.platform;
@@ -528,13 +509,11 @@
         this.workspace.updateToolbox(this.toolbox);
       },
       onThemeChange(theme) {
-        var lighter = util.ui.colorLuminance(theme, 0.2);
-        document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = lighter;
+        document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = util.ui.colorLuminance(theme, 0.2);
       },
       onResizePanel(pane, container, size) {
         Blockly.svgResize(this.workspace);
         console.log("editor resized");
-        //console.log(this.$root.editor.MODE);
       },
       updatecode(e) {
         if (e.type != Blockly.Events.UI) {
