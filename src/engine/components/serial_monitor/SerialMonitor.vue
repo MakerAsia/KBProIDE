@@ -490,8 +490,10 @@
             parity: partityBit,
             rtscts: flowCtrl
           });
+          const Readline = require("@serialport/parser-readline");
+          this.parser = this.port.pipe(new Readline({ delimiter: "\r\n" }));
           this.port.on("open", this.onSerialOpen);
-          this.port.on("data", this.onSerialData);
+          this.parser.on("data", this.onSerialData);
           this.port.on("error", this.onSerialError);
           this.port.on("close", this.onSerialClose);
         }
