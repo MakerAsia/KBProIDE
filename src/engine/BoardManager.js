@@ -7,6 +7,7 @@ const path = require('path');
 const request = require('request');
 const progress = require('request-progress');
 //const db = Vue.prototype.$db;
+const request_promise = require("request-promise");
 
 let listedBoards = [];
 let listedPackages = {};
@@ -263,7 +264,7 @@ const publishBoard = function(url)
 {
     return new Promise((resolve,reject)=>{
         let json = null;
-        request(url + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
+        request_promise(url + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
         .then(res => {
             json = eval(res);
             if (json.name) { //search if existing

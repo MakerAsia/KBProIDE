@@ -10,8 +10,8 @@ const progress = require("request-progress");
 let localBoardName = "";
 let localPlugins = {};
 
-let listPlugin = function(dir) {
-  var plugins = {};
+const listPlugin = function(dir) {
+  let plugins = {};
   let blockFiles = fs.readdirSync(dir);
   if (blockFiles.length > 0) {
     blockFiles.forEach(blockFile => {
@@ -45,7 +45,7 @@ let listPlugin = function(dir) {
         };
         try {
           eval(fs.readFileSync(fgen, "utf8"));
-          for (var i in Blockly.JavaScript) {
+          for (let i in Blockly.JavaScript) {
             generators.push(i);
           }
         } catch (e) {
@@ -58,17 +58,16 @@ let listPlugin = function(dir) {
           blocks: blocks,
           generators: generators,
         };
-        console.log(
-            `plugin "${blockFile}" found ${blocks.length} block${blocks.length >
-            1 ? "s" : ""}`);
+        console.log(`plugin "${blockFile}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
       }
     });
   }
   return plugins;
 };
-var listKidBrightPlugin = function(dir) {
+
+const listKidBrightPlugin = function(dir) {
   console.log("-----------");
-  var plugins = {};
+  let plugins = {};
   let catPlugins = fs.readdirSync(dir);
   if (catPlugins.length > 0) {
     catPlugins.forEach(plugin => {
@@ -81,7 +80,7 @@ var listKidBrightPlugin = function(dir) {
         };
         try {
           eval(fs.readFileSync(`${fdir}/blocks.js`, "utf8"));
-          for (var i in Blockly.Blocks) {
+          for (let i in Blockly.Blocks) {
             blocks.push(i);
           }
         } catch (e) {
@@ -109,15 +108,13 @@ var listKidBrightPlugin = function(dir) {
           blocks: blocks,
           generators: generators,
         };
-        console.log(
-            `plugin "${plugin}" found ${blocks.length} block${blocks.length > 1
-                ? "s"
-                : ""}`);
+        console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
       }
     });
   }
   return plugins;
 };
+
 let listExamples = function(exampleDir) {
   let exampleInfo = [];
   if (fs.existsSync(exampleDir)) {

@@ -272,7 +272,6 @@
 
   const { shell } = require("electron");
   const fs = require("fs");
-  const request = require("request-promise");
   import bm from "@/engine/BoardManager";
   import util from "@/engine/utils";
   import {setTimeout} from "timers";
@@ -525,6 +524,7 @@
             }else{
               this.$dialog.notify.error("Error something went wrong, please check the log");
             }
+            console.error(err);
           });
         } else {
           this.$dialog.notify.error("Github link format error. Please check your link again");
