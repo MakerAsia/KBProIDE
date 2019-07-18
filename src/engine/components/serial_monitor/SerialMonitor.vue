@@ -313,7 +313,7 @@
       Slider,
       "line-chart": LineChart,
       "compact-picker": Compact,
-      "chrome-picker": Chrome,
+      "chrome-picker": Chrome
     },
     data() {
       return {
@@ -335,7 +335,7 @@
           data_bit: [8, 7],
           stop_bit: [1, 2],
           parity_bit: ["none", "even", "odd"],
-          flow_control: [false, true],
+          flow_control: [false, true]
         },
 
         current_postfix: 3,
@@ -343,10 +343,10 @@
         send_delay: 50,
         send_string: "",
         send_postfix: [
-          {label: "RAW", value: "", content: ""},
-          {label: "LF", value: "\n", content: "\\n"},
-          {label: "CR", value: "\r", content: "\\r"},
-          {label: "CRLF", value: "\r\n", content: "\\r\\n"},
+          { label: "RAW", value: "", content: "" },
+          { label: "LF", value: "\n", content: "\\n" },
+          { label: "CR", value: "\r", content: "\\r" },
+          { label: "CRLF", value: "\r\n", content: "\\r\\n" }
         ],
 
         serial_data: [],
@@ -357,7 +357,7 @@
 
         graph_data: {
           labels: [],
-          datasets: [],
+          datasets: []
         },
         graph_dataset_labels: "Var 1",
         graph_dataset_count: 0,
@@ -372,50 +372,53 @@
           "#ef00b3",
           "#7200d7",
           "#1800b3",
-          "#00a5ff"],
+          "#00a5ff"
+        ],
 
         graph_options: {
           y_length: 100,
           responsive: true,
           fill: false,
           maintainAspectRatio: false,
-          animation: {duration: 0},
-          hover: {animationDuration: 0},
+          animation: { duration: 0 },
+          hover: { animationDuration: 0 },
           responsiveAnimationDuration: 0,
           elements: {
             line: {
-              tension: 0, // disables bezier curves
-            },
+              tension: 0 // disables bezier curves
+            }
           },
           scales: {
             xAxes: [
               {
                 gridLines: {
-                  display: true,
+                  display: true
                 },
                 scaleLabel: {
                   display: true,
                   labelString: "Tick(IDs)",
-                  fontColor: "black",
+                  fontColor: "black"
                 },
                 ticks: {
                   autoskip: true,
-                  autoSkipPadding: 30,
-                },
-              }],
+                  autoSkipPadding: 30
+                }
+              }
+            ],
             yAxes: [
               {
                 gridLines: {
-                  display: true,
+                  display: true
                 },
                 scaleLabel: {
                   display: true,
                   labelString: "Value",
-                  fontColor: "black",
-                },
-              }],
-          },
-        },
+                  fontColor: "black"
+                }
+              }
+            ]
+          }
+        }
       };
     },
     mounted() {
@@ -463,7 +466,7 @@
           }, 300);
         }
       },
-      closePort : function(){
+      closePort: function() {
         if (this.port && this.port.isOpen) {
           this.port.close();
         }
@@ -485,7 +488,7 @@
             dataBits: dataBit,
             stopBits: stopBit,
             parity: partityBit,
-            rtscts: flowCtrl,
+            rtscts: flowCtrl
           });
           this.port.on("open", this.onSerialOpen);
           this.port.on("data", this.onSerialData);
@@ -575,8 +578,12 @@
         }
         //--- process graph ---//
         let data_ids = lineStr.split(":");
-        let data_id = (data_ids.length === 2) ? data_ids[0] : this.received_count;
-        let numberArr = (data_ids.length === 2) ? data_ids[1] : lineStr;
+        let data_id = (data_ids.length === 2)
+          ? data_ids[0]
+          : this.received_count;
+        let numberArr = (data_ids.length === 2)
+          ? data_ids[1]
+          : lineStr;
         numberArr = numberArr.split(",");
         numberArr = numberArr.map(o => parseInt(o));
         numberArr = numberArr.filter(o => !Number.isNaN(o));
@@ -585,18 +592,20 @@
         }
         if (numberArr.length > this.graph_dataset_count) { //add new dataset if new data column
           let data_labels = this.graph_dataset_labels.split(",");
-          let labels = numberArr.map((el, ind) => (ind < data_labels.length) ? data_labels[ind] : "Var " + (ind + 1));
+          let labels = numberArr.map((el, ind) => (ind < data_labels.length)
+            ? data_labels[ind]
+            : "Var " + (ind + 1));
           for (let j = this.graph_dataset_count; j < numberArr.length; j++) {
             this.graph_data.datasets.push(
-                {
-                  label: labels[j],
-                  fill: false,
-                  borderColor: this.get_random_color(),
-                  borderWidth: 1,
-                  pointRadius: 2,
-                  pointHoverRadius: 3,
-                  data: [numberArr[j]],
-                },
+              {
+                label: labels[j],
+                fill: false,
+                borderColor: this.get_random_color(),
+                borderWidth: 1,
+                pointRadius: 2,
+                pointHoverRadius: 3,
+                data: [numberArr[j]]
+              }
             );
           }
           this.graph_dataset_count = numberArr.length;
@@ -643,7 +652,9 @@
         let hexStr = "";
         for (let i = 0; i < uint8arr.length; i++) {
           let hex = (uint8arr[i] & 0xff).toString(16);
-          hex = (hex.length === 1) ? "0" + hex : hex;
+          hex = (hex.length === 1)
+            ? "0" + hex
+            : hex;
           hexStr += hex + " ";
         }
         return hexStr.toUpperCase();
@@ -654,8 +665,8 @@
         } else if (typeof color === "string") {
           return color;
         }
-      },
-    },
+      }
+    }
   };
 
 </script>
