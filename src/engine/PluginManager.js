@@ -337,9 +337,9 @@ const performPluginNameSearch = function(name, column, value, start = 0) {
     let strlength = strSearch.length;
     let strFrontCode = strSearch.slice(0, strlength - 1);
     let strEndCode = strSearch.slice(strlength - 1, strSearch.length);
-
     let startcode = strSearch;
     let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+
     Vue.prototype.$db.collection("plugins").where("name", ">=", startcode) //search start with
     .where("name", "<", endcode).where(column, "==", value).orderBy("name")
     //.startAfter(start)

@@ -1,8 +1,8 @@
 {
   "name": "kbide",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "private": true,
-  "author": "Khomdet Phueadphut",
+  "author": "Maker Asia",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
