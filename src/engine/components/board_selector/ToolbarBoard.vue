@@ -513,22 +513,18 @@
         if (res === false){ // user cancel
           return;
         }
-        if (util.regex.isValidGithubUrl(res)) {
-          this.$dialog.notify.info("Please wait...");
-          bm.publishBoard(res)
-          .then(_=>{
+        this.$dialog.notify.info("Please wait...");
+        bm.publishBoard(res)
+        .then(_=>{
             this.$dialog.notify.success("Added your board success, please refresh again");
-          }).catch(err=>{
-            if(typeof err === "string"){
-              this.$dialog.notify.error(err);
-            }else{
-              this.$dialog.notify.error("Error something went wrong, please check the log");
-            }
-            console.error(err);
-          });
-        } else {
-          this.$dialog.notify.error("Github link format error. Please check your link again");
-        }
+        }).catch(err=>{
+          if(typeof err === "string"){
+            this.$dialog.notify.error(err);
+          }else{
+            this.$dialog.notify.error("Error something went wrong, please check the log");
+          }
+          console.error(err);
+        });
       }
     },
     mounted() {

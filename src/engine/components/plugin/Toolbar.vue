@@ -175,7 +175,7 @@
   import util from "@/engine/utils";
   import pm from "@/engine/PluginManager";
 
-  var mother = null;
+  let mother = null;
 
   export default {
     created: function() {
@@ -196,14 +196,8 @@
         searchText: "",
         isInstalling: false,
 
-        installedPlugin: pm.plugins(this.$global.board.board_info).map(obj => {
-          obj.status = "READY";
-          return obj;
-        }),
-        localPlugin: pm.plugins(this.$global.board.board_info).map(obj => {
-          obj.status = "READY";
-          return obj;
-        }),
+        installedPlugin: [],
+        localPlugin: [],
         onlinePluginStatus: "wait",
         onlinePluginPage: 0,
         onlinePlugin: [],
@@ -262,11 +256,12 @@
       },
       listLocalPlugin(name = "") {
         this.localPlugin = [];
+        console.log("ffffffffffff");
         this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj => {
           obj.status = "READY";
           return obj;
         });
-        if (name != "") {
+        if (name !== "") {
           this.localPlugin = this.installedPlugin.filter(obj => {
             return obj.name.startsWith(name);
           });
@@ -312,10 +307,7 @@
       },
       removePlugin: async function(name) {
         const res = await this.$dialog.confirm({
-          text:
-            "Do you really want to remove " +
-            name +
-            "? , this process will clear your code.",
+          text: "Do you really want to remove " + name + "? , this process will clear your code.",
           title: "Warning"
         });
         if (res === true) {
@@ -341,8 +333,8 @@
           title: "Warning"
         });
         if (res === true) {
-          var p = this.getPluginByName(name);
-          var st = p.status;
+          let p = this.getPluginByName(name);
+          let st = p.status;
           pm.backupPlugin(p.category).then(() => {
             console.log("update plugin : " + name);
             p.status = "DOWNLOAD";
@@ -396,49 +388,22 @@
           text: "https://github.com/user/repo/",
           title: "Input Board Repository"
         });
-        var json = null;
-        if (util.regex.isValidGithubUrl(res)) {
-          this.$dialog.notify.info("Please wait...");
-          request(res + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
-            .then(res => {
-              json = JSON.parse(res);
-              if (json.name) {
-                //search if existing
-                return Vue.prototype.$db.collection("plugins").where("name", "==", json.name) //search start with
-                  .get();
-              } else {
-                return false;
-              }
-            }).then(res => {
-            if (res && res.size >= 1) {
-              return json.version > res.docs[0].data().version;
-            } else {
-              return true;
-            }
-          }).then(res => {
-            if (res) {
-              Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
-              if (res) {
-                this.$dialog.notify.success("submit your plugin success, please refresh again");
-              }
-            } else {
-              this.$dialog.notify.error(
-                "Existing plugin name or is not newest version"
-              );
-              return false;
-            }
-          }).catch(err => {
-            console.log("request error -----");
-            console.log(err);
-            this.$dialog.notify.error(
-              "Error something went wrong, please check the log"
-            );
-          });
-        } else {
-          this.$dialog.notify.error(
-            "Github link format error. Please check your link again"
-          );
+        if (res === false){ // user cancel
+          return;
         }
+        this.$dialog.notify.info("Please wait...");
+        if(!res.endsWith("/")){ res += "/"; }
+        pm.publishPlugin(res).then(_=>{
+          this.$dialog.notify.success("submit your plugin success, please refresh again");
+        }).catch(err=>{
+          if(typeof err === "string"){
+            this.$dialog.notify.error(err);
+          }else{
+            this.$dialog.notify.error("Error something went wrong, please check the log");
+          }
+          console.log("publish plugin error -----");
+          console.error(err);
+        });
       }
     },
     mounted() {

@@ -263,6 +263,10 @@ const restoreBoard = function(boardInfo)
 const publishBoard = function(url)
 {
     return new Promise((resolve,reject)=>{
+        if (util.regex.isValidGithubUrl(url)) {
+            reject("Invalid GitHub urrl");
+            return;
+        }
         let json = null;
         request_promise(url + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
         .then(res => {
