@@ -263,7 +263,7 @@ const restoreBoard = function(boardInfo)
 const publishBoard = function(url)
 {
     return new Promise((resolve,reject)=>{
-        if (util.regex.isValidGithubUrl(url)) {
+        if (!util.regex.isValidGithubUrl(url)) {
             reject("Invalid GitHub urrl");
             return;
         }

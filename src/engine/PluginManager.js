@@ -487,7 +487,7 @@ const restorePlugin = function(pluginInfo) {
 const publishPlugin = function(url){
   return new Promise((resolve,reject)=>{
     let json = null;
-    if (util.regex.isValidGithubUrl(url)) {
+    if (!util.regex.isValidGithubUrl(url)) {
       reject("wrong github url format");
       return;
     }
