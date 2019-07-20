@@ -117,17 +117,21 @@
                   ) {
                     console.log("User ignored update popup");
                     resolve(false);
+                    return false;
                   }
                   mother.updateDialog = true;
                   resolve(true);
+                  return true;
                 } else if (error === "no_update_available") {
                   if (showNotification) {
                     mother.$dialog.notify.info("This is newest version");
                   }
                   resolve(false);
+                  return false;
                 } else {
                   mother.$dialog.notify.error("check version error : " + error);
                   resolve(false);
+                  return false;
                 }
               });
             }
