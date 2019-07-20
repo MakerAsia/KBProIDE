@@ -400,6 +400,9 @@ const installPluginByName = function(name, cb) {
 };
 const installOnlinePlugin = function(info, cb) {
   let targetDir = util.pluginDir;
+  if(info.board === "kidbright"){
+    targetDir = `${util.boardDir}/kidbright/plugin`;
+  }
   return new Promise((resolve, reject) => { //download zip
     if (!info.git) { reject("no git found"); }
     let zipUrl = info.git + "/archive/master.zip";
