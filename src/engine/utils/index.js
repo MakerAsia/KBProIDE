@@ -200,7 +200,7 @@ var rmdirf = function(path) {
     fs.rmdirSync(path);
   }
 };
-var walk = function(dir) {
+const walk = function(dir) {
   var results = [];
   if (!fs.existsSync(dir)) {
     return results;
@@ -216,6 +216,24 @@ var walk = function(dir) {
       /* Is a file */
       results.push(file);
     }
+  });
+  return results;
+};
+//const dirWalk = source => readdirSync(source, { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
+
+const dirWalk = function(dir) {
+  let results = [];
+  if (!fs.existsSync(dir)) {
+    return results;
+  }
+  let list = fs.readdirSync(dir,{ withFileTypes: true });
+  list.forEach(function(file) {
+    if(!file.isDirectory()){
+      return;
+    }
+    let target = dir + "/" + file.name;
+    results.push(target);
+    results = results.concat(dirWalk(target));
   });
   return results;
 };
@@ -256,6 +274,7 @@ export default {
   humanFileSize,
   loadCofigComponents,
   walk,
+  dirWalk,
   rmdirf,
   promiseTimeout,
   b64EncodeUnicode,
