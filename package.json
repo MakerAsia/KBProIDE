@@ -100,7 +100,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "tar": "^4.4.8",
-    "vue-cli-plugin-electron-builder": "^1.0.0-rc.11",
+    "vue-cli-plugin-electron-builder": "^1.1.0",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "2.6.6",
     "vuetify-loader": "^1.0.5",
