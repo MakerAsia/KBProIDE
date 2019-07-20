@@ -39,6 +39,9 @@
                             <v-list-tile @click="changeOrder('platform')">
                                 <v-list-tile-title>Order by platform</v-list-tile-title>
                             </v-list-tile>
+                            <v-list-tile @click="changeOrder('vendor')">
+                                <v-list-tile-title>Order by vendor</v-list-tile-title>
+                            </v-list-tile>
                         </v-list>
                     </v-menu>
                 </v-card-title>
@@ -327,6 +330,18 @@
                 sorted[board.platform] = [];
               }
               sorted[board.platform].push(board);
+          }
+          return sorted;
+        }else if(orderBy === "vendor"){
+          for(let i in obj){
+            let board = obj[i];
+            if(!board.vendor){
+              board.vendor = "Others";
+            }
+            if(!(board.vendor in sorted)){
+              sorted[board.vendor] = [];
+            }
+            sorted[board.vendor].push(board);
           }
           return sorted;
         }
