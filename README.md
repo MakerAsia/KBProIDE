@@ -47,7 +47,7 @@ first run CMD as Administrator and install build tool first
 - npm run test:unit
 - npx vue-cli-service test:unit --watchAll
 
-# Update submodules
+## Update submodules
 - git config submodule.recurse true
 - git submodule foreach --recursive git pull origin master
 - git pull --recurse-submodules
