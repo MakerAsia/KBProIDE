@@ -53,7 +53,8 @@ first run CMD as Administrator and install build tool first
 - git pull --recurse-submodules
 
 ## Release
-- zip -9 1.0.0-darwin.zip mac/kbide.app/Contents/Resources/app.asar
+- cp mac/kbide.app/Contents/Resources/app.asar update.asar
+- zip -9 1.0.0-darwin.zip update.asar
 
 
 ## License
