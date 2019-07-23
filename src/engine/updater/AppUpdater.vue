@@ -60,7 +60,7 @@
   const electron = require("electron");
   const requests = require("request-promise");
 
-  var mother = null;
+  let mother = null;
   export default {
     name: "app-updater",
     components: {},
@@ -81,7 +81,7 @@
       this.checkUpdate();
       electron.ipcRenderer.on("help-update", () => {
         mother.$dialog.notify.info("Checking new update");
-        this.checkUpdate(true, true);
+        mother.checkUpdate(true, true);
       });
     },
     mounted() {},
@@ -92,7 +92,7 @@
       },
       checkUpdate(showNotification = false, forceShowUpdate = false) {
         return new Promise((resolve, reject) => {
-          this.$db.collection("apps").orderBy("date", "desc").limit(1).get().then(appData => {
+          mother.$db.collection("apps").orderBy("date", "desc").limit(1).get().then(appData => {
             if (appData.size >= 1) {
               let data = appData.docs[0].data();
               mother.update = data;
@@ -138,7 +138,7 @@
           });
         }).then(res => {
           if (!res) { //apps already ignored or updated
-            this.$db.collection("platforms").
+            mother.$db.collection("platforms").
             where("platform", "==", mother.$global.board.board_info.platform).
             orderBy("date", "desc").
             limit(1).
@@ -173,29 +173,29 @@
       },
       ignoreUpdate(type, version) {
         if (type === "app") {
-          this.$global.setting.ignoreUpdateVersion = version;
+          mother.$global.setting.ignoreUpdateVersion = version;
           //--tracking--//
-          this.$track.event("update", "ignore",
+          mother.$track.event("update", "ignore",
                             {evLabel: "app_version_" + version, evValue: 1, clientID: this.$track.clientID})
                     .catch(err=>{ console.log(err)});
         } else if (type === "platform") {
-          this.$global.setting.ignorePlatformVersion = version;
+          mother.$global.setting.ignorePlatformVersion = version;
           //--tracking--//
-          this.$track.event("update", "ignore", {
+          mother.$track.event("update", "ignore", {
             evLabel: "platform_" + this.update.platform + "_version_" + version,
             evValue: 1,
-            clientID: this.$track.clientID,
+            clientID: mother.$track.clientID,
           }).catch(err=>{ console.log(err)});
         } else if (type === "board") {
           //not support yet!
         }
-        this.updateDialog = false;
+        mother.updateDialog = false;
       },
       updateApp() {
-        this.updateStatus = "UPDATING";
-        this.updateText = "Downloading ... ";
+        mother.updateStatus = "UPDATING";
+        mother.updateText = "Downloading ... ";
         //======== app update ========//
-        if (this.update.type === "app") {
+        if (mother.update.type === "app") {
           EAU.progress(mother.progress);
           EAU.download(function(error) {
             if (error) {
@@ -210,11 +210,11 @@
               electron.remote.app.exit(0);
             }, 2000);
             //--tracking--//
-            this.$track.event("update", "success",
+            mother.$track.event("update", "success",
                               {evLabel: "app_" + this.update.version, evValue: 1, clientID: this.$track.clientID})
                         .catch(err=>{ console.log(err)});
           });
-        } else if (this.update.type === "platform") {
+        } else if (mother.update.type === "platform") {
           Updater.progress(mother.progress);
           let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
           Updater.process(currentPlatformDir).then(() => {
@@ -224,17 +224,17 @@
               document.location.reload();
             }, 2000);
             //--tracking--//
-            this.$track.event("update", "success", {
-              evLabel: "platform_" + this.update.platform + "_version_" + this.update.version,
+            mother.$track.event("update", "success", {
+              evLabel: "platform_" + mother.update.platform + "_version_" + mother.update.version,
               evValue: 1,
-              clientID: this.$track.clientID,
+              clientID: mother.$track.clientID,
             }).catch(err=>{ console.log(err)});
           }).catch(err => {
             //--tracking--//
-            this.$track.event("update", "failed", {
-              evLabel: this.update.name + "_" + this.update.version,
+            mother.$track.event("update", "failed", {
+              evLabel: mother.update.name + "_" + mother.update.version,
               evValue: 1,
-              clientID: this.$track.clientID,
+              clientID: mother.$track.clientID,
             }).catch(err=>{ console.log(err)});
             console.log("update platform error : " + err);
             mother.errorAndReset(err);
@@ -265,11 +265,7 @@
       },
     },
     watch: {
-      /*pluginDialog : function(val){
-            if(val){//on opening
-                this.listOnlinePlugin();
-            }
-        }*/
+      
     },
   };
 </script>

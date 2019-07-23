@@ -209,7 +209,7 @@ const installOnlineBoard = function(info,cb)
         return true;
     }).then(()=>{ //install platform
         if(!fs.readdirSync(util.platformDir).includes(info.platform)){
-            return pfm.installPlatfromByName(info.platform);
+            return pfm.installPlatformByName(info.platform);
         }
         return Promise.resolve();
     });
