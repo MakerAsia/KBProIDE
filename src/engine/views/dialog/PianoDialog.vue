@@ -5,7 +5,7 @@
         </v-card-title>
 
         <v-card-text>
-            <v-container>
+            <v-containe>
                 <v-layout column>
                     <v-flex xs12 mb-2>
                         <vue-tags-input
@@ -24,7 +24,7 @@
                         <piano @pressed="pressedNote"></piano>
                     </v-flex>
                 </v-layout>
-            </v-container>
+            </v-containe>
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
@@ -37,16 +37,17 @@
 <script>
   import Piano from "@/engine/views/widgets/piano/Piano";
   import Notes from "../widgets/piano/midikey";
+
   export default {
     components: {
-      Piano,
+      Piano
     },
     data() {
       return {
         tag: "",
         tags: [],
-        notes : Notes,
-        synth: null,
+        notes: Notes,
+        synth: null
       };
     },
     mounted() {
@@ -60,22 +61,22 @@
         }).sort((a, b) => {
           return a.text.length - b.text.length;
         });
-      },
+      }
     },
     methods: {
       pressedNote: function(note) {
-        if(note !== "SIL"){
+        if (note !== "SIL") {
           this.synth.triggerAttackRelease(note, "8n");
         }
-        this.tags.push({text : note});
+        this.tags.push({ text: note });
       },
       close() {
         this.$emit("close");
       },
       OK() {
         this.$emit("result", this.tags.map(obj => obj.text));
-      },
-    },
+      }
+    }
   };
 </script>
 

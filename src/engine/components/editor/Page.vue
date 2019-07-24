@@ -107,8 +107,14 @@
     }
     blocks.forEach(element => {
       if (level === 1) {
-        let insideBlock = (element.blocks) ? renderBlock(element.blocks, level + 1) : (element.xml?element.xml:"");
-        let custom = element.custom ? `custom="${element.custom}" ` : "";
+        let insideBlock = (element.blocks)
+          ? renderBlock(element.blocks, level + 1)
+          : (element.xml
+            ? element.xml
+            : "");
+        let custom = element.custom
+          ? `custom="${element.custom}" `
+          : "";
         res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
       } else {
         if (typeof (element) === "string") { //block element
@@ -117,7 +123,9 @@
           res += element.xml;
         } else if (typeof (element) === "object" && "type" in element && element.type === "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
-          let custom = element.custom ? `custom="${element.custom}" ` : "";
+          let custom = element.custom
+            ? `custom="${element.custom}" `
+            : "";
           res += `<category name="${element.name}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         } else if (typeof (element) === "object" && "mutation" in element) {
           let objKey = [];
@@ -160,12 +168,14 @@
           blockStr += `<block type="${typeName}"></block>`;
         });
       });
-      if(fs.existsSync(`${pluginBlockDirectory}/config.js`)){
+      if (fs.existsSync(`${pluginBlockDirectory}/config.js`)) {
         let blockConfig = util.requireFunc(`${pluginBlockDirectory}/config.js`);
         catStr += renderBlock(blockConfig);
-      }else{
+      } else {
         //let thName = cat.category.title;
-        let name = (cat.category.name.en) ? cat.category.name.en : cat.category.title;
+        let name = (cat.category.name.en)
+          ? cat.category.name.en
+          : cat.category.title;
         let color = cat.category.color;
         catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
       }
@@ -175,7 +185,7 @@
   const loadBlock = function(boardInfo) {
     let blockFile = `${boardInfo.dir}/block/config.js`;
     let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
-    if(!util.fs.existsSync(blockFile)){
+    if (!util.fs.existsSync(blockFile)) {
       return null;
     }
     return util.requireFunc(blockFile);
@@ -248,7 +258,7 @@
           return this.validated || "Invalid variable name";
         },
         musicDialog: false,
-        ttsDialog: false,
+        ttsDialog: false
       };
     },
     created() {
@@ -452,7 +462,7 @@
             xml = Blockly.Xml.textToDom(text);
           } else {
             let blocks = loadBlock(myself.$global.board.board_info);
-            if(blocks.initial_blocks) {
+            if (blocks.initial_blocks) {
               xml = Blockly.Xml.textToDom(blocks.initial_blocks);
             }
           }
