@@ -234,9 +234,11 @@
           this.onlinePluginPage = res.end;
           let filtered = [];
           res.plugins.forEach(obj => {
-            let f = mother.localPlugin.find(
-              elm => elm.category.name === obj.name
-            );
+            let f = mother.localPlugin.find(elm => {
+              let lc = elm.category.name.en?elm.category.name.en.toLowerCase() : elm.category.name.toLowerCase();
+              let rm = obj.name.en ? obj.name.en.toLowerCase() : obj.name.toLowerCase();
+              return lc === rm;
+            });
             if (f) {
               if (obj.version > f.category.version) {
                 f.status = "UPDATABLE";
@@ -248,7 +250,7 @@
             }
           });
           mother.onlinePlugin = filtered;
-          //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
+            //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
           this.onlinePluginStatus = "OK";
         }).catch(err => {
           this.onlinePluginStatus = "ERROR";
@@ -256,7 +258,6 @@
       },
       listLocalPlugin(name = "") {
         this.localPlugin = [];
-        console.log("ffffffffffff");
         this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj => {
           obj.status = "READY";
           return obj;

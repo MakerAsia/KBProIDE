@@ -80,7 +80,6 @@ const listPlugin = function(dir) {
 };
 
 const listKidBrightPlugin = function(dir) {
-  console.log("-----------");
   let plugins = {};
   let catPlugins = fs.readdirSync(dir);
   if (catPlugins.length > 0) {
