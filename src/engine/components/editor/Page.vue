@@ -39,9 +39,38 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
+
+            <v-dialog v-model="cameraDialog" persistent max-width="785px">
+                <v-card>
+                    <v-card-title>
+                        <!--                        <span class="headline">{{variableMessage}}</span>-->
+                        <span class="headline">Getting Image from the camera.</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-flex xs12>
+                                <video ref="video" id="video" width="640" height="480" autoplay></video>
+                                <button id="snap" v-on:click="capture()">Snap Photo</button>
+                                <!--                                <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>-->
+                                <!--                                <img v-bind:src="c" height="50"/>-->
+                            </v-flex>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="cameraDialog = false">Save
+                            <v-btn color="blue darken-1" flat @click="cameraDialog = false">Close</v-btn>
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             <v-dialog v-model="musicDialog" max-width="785px">
                 <piano-dialog ref="musicNotes" @close="()=>{musicDialog = false}"></piano-dialog>
             </v-dialog>
+            <!--            <v-dialog v-model="cameraDialog" max-width="785px">-->
+            <!--                <camera-dialog ref="cameraStream" @close="()=>{cameraDialog = false}"></camera-dialog>-->
+            <!--            </v-dialog>-->
             <v-dialog v-model="ttsDialog" max-width="600px">
                 <t-t-s-dialog ref="ttsWords" @close="()=>{ttsDialog = false}"></t-t-s-dialog>
             </v-dialog>
@@ -261,7 +290,11 @@
           return this.validated || "Invalid variable name";
         },
         musicDialog: false,
-        ttsDialog: false
+        ttsDialog: false,
+        cameraDialog: false,
+        video: {},
+        canvas: {},
+        captures: []
       };
     },
     created() {
@@ -377,6 +410,7 @@
         });
         myself.musicDialog = true;
       };
+
       Blockly.tts = function(words, cb) {
         if (words) {
           myself.$refs.ttsWords.tags = words.split(" ").map(el => {return { text: el };});
@@ -388,6 +422,24 @@
         });
         myself.ttsDialog = true;
       };
+
+      Blockly.camera = (cb) => {
+        // Camera API
+        this.video = this.$refs.video;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            this.video.src = window.URL.createObjectURL(stream);
+            this.video.play();
+          });
+        }
+        this.cameraDialog = true;
+        //myself.musicDialog = true;
+        console.log("camera called.", this.ttsDialog);
+        //this.canvas = this.$refs.canvas;
+        //var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+        //this.captures.push(canvas.toDataURL("image/png"));
+      };
+
       console.log("blocly mounted");
       //---- global event
       this.$global.$on("theme-change", this.onThemeChange);
