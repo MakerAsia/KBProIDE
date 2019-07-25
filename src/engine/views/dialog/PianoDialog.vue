@@ -52,7 +52,8 @@
     },
     mounted() {
       //Tone.start();
-      this.synth = new Tone.Synth().toMaster();
+      //this.synth = new Tone.Synth().toMaster();
+      console.log("Camera Dialog is mounted.");
     },
     computed: {
       filteredItems() {
