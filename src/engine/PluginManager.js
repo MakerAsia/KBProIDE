@@ -158,14 +158,21 @@ const listCategoryPlugins = function(pluginDir,boardInfo) {
       }
       //------- load kidbright plugins -------//
       let kbPluginInfoFile = `${dir}/${cat}.json`;
-      if (fs.existsSync(kbPluginInfoFile)) {
+      let kbSrcDir = `${dir}/${cat}`;
+      if (fs.existsSync(kbPluginInfoFile) && boardInfo.name === "kidbright") {
         let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFile,"utf8"));
         let blockPlugins = listKidBrightPlugin(dir);
+        let srcFile = [];
+        if(fs.existsSync(kbSrcDir)){
+          srcFile = fs.readdirSync(kbSrcDir);
+        }
         categories.push({
                           directory: dir,
                           dirName: cat,
                           plugins: blockPlugins,
                           category: catInfoFile,
+                          sourceFile : srcFile,
+                          sourceIncludeDir : kbSrcDir,
                         });
         Object.assign(allPlugin, blockPlugins);
       //------- load normal plugins ---------//
@@ -399,9 +406,6 @@ const installPluginByName = function(name, cb) {
 };
 const installOnlinePlugin = function(info, cb) {
   let targetDir = util.pluginDir;
-  if(info.board === "kidbright"){
-    targetDir = `${util.boardDir}/kidbright/plugin`;
-  }
   return new Promise((resolve, reject) => { //download zip
     if (!info.git) { reject("no git found"); }
     let zipUrl = info.git + "/archive/master.zip";
@@ -428,16 +432,17 @@ const installOnlinePlugin = function(info, cb) {
       cb && cb({process: "board", status: "UNZIP", state: p});
     });
   }).then(() => { //rename folder
-    //rename ended with word '-master' in boards
-    let dirs = fs.readdirSync(targetDir);
-    for (let i = 0; i < dirs.length; i++) {
+    //TODO : check if extract success or not
+    //rename ended with word '-master' if it's KidBright's plugin.
+    //let dirs = fs.readdirSync(targetDir);
+    /*for (let i = 0; i < dirs.length; i++) {
       let dirname = path.join(targetDir, dirs[i]);
       if (fs.lstatSync(dirname).isDirectory() && dirname.endsWith("-master")) {
         let source = dirname;
         let target = path.join(targetDir, info.name);
         fs.renameSync(source, target);
       }
-    }
+    }*/
     return true;
   });
 };

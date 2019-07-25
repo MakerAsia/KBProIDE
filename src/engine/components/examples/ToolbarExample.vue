@@ -38,11 +38,11 @@
                             Plugin Examples
                         </v-subheader>
                         <div>
-
                             <v-list>
                                 <v-list-group
                                         v-for="(item,index) in pluginInfo"
                                         :key="index"
+                                        v-if="item.examples && item.examples.length > 0"
                                 >
                                     <template v-slot:activator>
                                         <v-list-tile
