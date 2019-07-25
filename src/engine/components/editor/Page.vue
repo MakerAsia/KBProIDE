@@ -148,6 +148,9 @@
     plugins.categories.forEach(cat => {
       let pluginDirectory = cat.directory;
       let pluginBlockDirectory = `${pluginDirectory}/blocks`;
+      if(Object.entries(cat.plugins).length === 0){
+          return;
+      }
       let blockStr = "";
       Object.keys(cat.plugins).forEach(subPlugin => {
         let blocks = cat.plugins[subPlugin].blocks;

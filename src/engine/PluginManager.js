@@ -157,28 +157,24 @@ const listCategoryPlugins = function(pluginDir,boardInfo) {
         return;
       }
       //------- load kidbright plugins -------//
-      let kbPluginInfoFile = `${dir}/${cat}.json`;
-      let kbSrcDir = `${dir}/${cat}`;
-      if (fs.existsSync(kbPluginInfoFile) && boardInfo.name === "kidbright") {
-        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFile,"utf8"));
+      let pluginContents = fs.readdirSync(dir,{withFileTypes : true});
+      let kbPluginInfoFile = pluginContents.find(el=>el.isFile() && el.name.endsWith(".json") && el.name !== "library.json");
+      if (kbPluginInfoFile && boardInfo.name === "kidbright") {
+        let kbPluginInfoFileFull = `${dir}/${kbPluginInfoFile.name}`;
+        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFileFull,"utf8"));
         let blockPlugins = listKidBrightPlugin(dir);
-        let srcFile = [];
-        if(fs.existsSync(kbSrcDir)){
-          srcFile = fs.readdirSync(kbSrcDir);
-        }
+        let incDirectory = pluginContents.filter(el=>el.isDirectory());
         categories.push({
                           directory: dir,
                           dirName: cat,
                           plugins: blockPlugins,
                           category: catInfoFile,
-                          sourceFile : srcFile,
-                          sourceIncludeDir : kbSrcDir,
+                          sourceIncludeDir : incDirectory,
                         });
         Object.assign(allPlugin, blockPlugins);
       //------- load normal plugins ---------//
-      }else{
+      }else if(boardInfo.name !== "kidbright"){
         let pluginInfo = null;
-
         let infoFile = `${dir}/library.json`;
         let arduinoInfoFile = `${dir}/library.properties`;
         if(fs.existsSync(infoFile)) {
