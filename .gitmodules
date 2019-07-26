@@ -43,3 +43,6 @@
 [submodule "boards/arduino-nano"]
 	path = boards/arduino-nano
 	url = https://github.com/cmmakerclub/arduino-nano-board/
+[submodule "boards/arduino-mega"]
+	path = boards/arduino-mega
+	url = https://github.com/cmmakerclub/arduino-mega-board/
