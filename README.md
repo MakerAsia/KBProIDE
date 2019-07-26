@@ -49,8 +49,8 @@ first run CMD as Administrator and install build tool first
 
 ## Update submodules
 - git config submodule.recurse true
-- git submodule foreach --recursive git pull origin master
 - git pull --recurse-submodules
+- git submodule update --recursive --remote
 
 ## Release
 - cp mac/kbide.app/Contents/Resources/app.asar update.asar
