@@ -4,7 +4,7 @@ export default {
     index : 1,
     tooltip : 'Board Manager',
     persistence:{
-        sortby : 'platform',
+        sortby : 'recommended',
     },
     data:{
         //saved : false,

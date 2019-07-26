@@ -33,6 +33,9 @@
                             <!--v-list-tile @click="changeOrder('vendor')">
                                 <v-list-tile-title>Order by vendor</v-list-tile-title>
                             </v-list-tile-->
+                            <v-list-tile @click="changeOrder('recommended')">
+                                <v-list-tile-title>Order by recommended</v-list-tile-title>
+                            </v-list-tile>
                             <v-list-tile @click="changeOrder('name')">
                                 <v-list-tile-title>Order by name</v-list-tile-title>
                             </v-list-tile>
@@ -317,20 +320,32 @@
       },
       orderBoardBy(obj,orderBy,defaultName){
         let sorted = { };
-        if(orderBy === "name"){
-          sorted[defaultName] = obj;
-          sorted[defaultName].sort((a,b)=>{
-            return a.title > b.title;
+        if(orderBy === "recommended"){
+          sorted["Recommended"] = [];
+          obj.forEach(el=>{
+            let key = (el.title.toLowerCase().includes("kidbright") || el.recommended === "ilovekbide")? "Recommended" : defaultName;
+            if(!(key in sorted)){
+              sorted[key] = [];
+            }
+            sorted[key].push(el);
           });
+          if(sorted["Recommended"].length === 0){
+            delete sorted["Recommended"];
+          }
+          return sorted;
+        }else if(orderBy === "name"){
+          sorted[defaultName] = obj;
+          sorted[defaultName].sort((a,b)=> a.title.localeCompare(b.title));
           return sorted;
         }else if(orderBy === "platform"){
           for(let i in obj){
-              let board = obj[i];
-              if(!(board.platform in sorted)){
-                sorted[board.platform] = [];
-              }
-              sorted[board.platform].push(board);
+            let board = obj[i];
+            if(!(board.platform in sorted)){
+              sorted[board.platform] = [];
+            }
+            sorted[board.platform].push(board);
           }
+          Object.keys(sorted).forEach(el=>sorted[el].sort((a,b)=> a.title.localeCompare(b.title)));
           return sorted;
         }else if(orderBy === "vendor"){
           for(let i in obj){

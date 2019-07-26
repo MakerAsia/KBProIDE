@@ -29,11 +29,11 @@ const installPlatformByName = function(name, cb) {
     }
     return info;
   }).then((info) => {
-    if (info) {
+    if (info && info.zip) {
       if (fs.readdirSync(util.platformDir).includes(info.name)) {
         return null;
-      } else { //download file 
-        let zipUrl = info.git + "/archive/master.zip";
+      } else { //download file
+        let zipUrl = info.zip + "-" + process.platform +".zip";
         let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
         progress(
             request(zipUrl),
@@ -48,7 +48,7 @@ const installPlatformByName = function(name, cb) {
         }).on("error", function(err) {
           return Promise.reject(err);
         }).on("end", function() { //downloaded
-          return utils.unzip(zipFile, {dir: utils.boardDir}, p => {
+          return utils.unzip(zipFile, {dir: utils.platformDir}, p => {
             cb && cb({process: "platform", status: "UNZIP", state: p});
           });
         }).pipe(fs.createWriteStream(zipFile));
