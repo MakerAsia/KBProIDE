@@ -41,3 +41,5 @@ boards/esp32-wrover/include/KBProTime.cpp
 boards/esp32-wrover/block/config.js
 package-lock.json
 INSTALLED
+boards/arduino-nano/
+boards/arduino-mega/
