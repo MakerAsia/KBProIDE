@@ -488,7 +488,8 @@
             dataBits: dataBit,
             stopBits: stopBit,
             parity: partityBit,
-            rtscts: flowCtrl
+            rtscts: flowCtrl,
+            hupcl: false, //TODO : check this error https://github.com/serialport/node-serialport/issues/1854
           });
           const Readline = require("@serialport/parser-readline");
           this.parser = this.port.pipe(new Readline({ delimiter: "\r\n" }));
