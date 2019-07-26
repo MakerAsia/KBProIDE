@@ -40,3 +40,6 @@
 [submodule "boards/ipst-wifi"]
 	path = boards/ipst-wifi
 	url = https://github.com/MakerAsia/ipst-wifi-board
+[submodule "boards/arduino-nano"]
+	path = boards/arduino-nano
+	url = https://github.com/cmmakerclub/arduino-nano-board/
