@@ -10,13 +10,27 @@
     <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">
       <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
     </v-toolbar-title>
-    
-    <img src="/static/logo/KBIDE.png" height="45"
-         alt="Problem? report me at fb.com/comdet"
-         class="mr-3"
-         style="border-radius: 8px; background-color: #ffffffa8; margin-top: 4px;">
-    
-    
+
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <img v-on="on" src="/static/logo/KBIDE.png" height="45"
+             alt="Problem? report me at fb.com/comdet"
+             class="mr-3"
+             style="border-radius: 8px; background-color: #ffffffa8; margin-top: 4px;">
+      </template>
+      <span>KBIDE by MakerAsia</span>
+    </v-tooltip>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <img v-on="on" src="/static/logo/kidcom_128.png" height="45"
+             alt="KidBright Community"
+             class="mr-2"
+             style="border-radius: 8px; background-color: rgba(255, 255, 255, 0.8); margin-top: 4px;">
+      </template>
+      <span>KidBright Community</span>
+    </v-tooltip>
+
+
     <!-- dynamic left toolbar -->
     <template v-for="(comp,compName) in toolbars">
       <template v-for="(toobarTarget,tbName) in comp">
