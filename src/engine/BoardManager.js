@@ -197,7 +197,7 @@ const installOnlineBoard = function(info,cb)
         });
     }).then(()=>{ //rename folder
         //rename ended with word '-master' in boards
-        /*let dirs = fs.readdirSync(util.boardDir);
+        let dirs = fs.readdirSync(util.boardDir);
         for(let i =0; i< dirs.length; i++){
             let dirname = path.join(util.boardDir, dirs[i]);
             if(fs.lstatSync(dirname).isDirectory() && dirname.endsWith('-master')){
@@ -205,7 +205,7 @@ const installOnlineBoard = function(info,cb)
                 let targetDir = path.join(util.boardDir,info.name);
                 fs.renameSync(sourceDir,targetDir);
             }
-        }*/
+        }
         return true;
     }).then(()=>{ //install platform
         if(!fs.readdirSync(util.platformDir).includes(info.platform)){
