@@ -64,7 +64,7 @@ const installPlatformByName = function(name, cb) {
       return Promise.reject("no data passing");
     }
   }).then(() => {
-    let dirs = fs.readdirSync(util.platformDir);
+    /*let dirs = fs.readdirSync(util.platformDir);
     for (let i = 0; i < dirs.length; i++) {
       let dirname = dirs[i];
       if (fs.statSync(dirname).isDirectory() && dirname.endsWith("-master")) {
@@ -72,7 +72,7 @@ const installPlatformByName = function(name, cb) {
                       path.join(util.platformDir,
                                 dirname.replace("-master", "")));
       }
-    }
+    }*/
     return true;
   });
 };

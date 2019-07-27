@@ -179,13 +179,13 @@
           mother.$global.setting.ignoreUpdateVersion = version;
           //--tracking--//
           mother.$track.event("update", "ignore",
-                            {evLabel: "app_version_" + version, evValue: 1, clientID: this.$track.clientID})
+                            {evLabel: "app_version_" + version, evValue: 1, clientID: mother.$track.clientID})
                     .catch(err=>{ console.log(err)});
         } else if (type === "platform") {
           mother.$global.setting.ignorePlatformVersion = version;
           //--tracking--//
           mother.$track.event("update", "ignore", {
-            evLabel: "platform_" + this.update.platform + "_version_" + version,
+            evLabel: "platform_" + mother.update.platform + "_version_" + version,
             evValue: 1,
             clientID: mother.$track.clientID,
           }).catch(err=>{ console.log(err)});
@@ -214,12 +214,13 @@
             }, 2000);
             //--tracking--//
             mother.$track.event("update", "success",
-                              {evLabel: "app_" + this.update.version, evValue: 1, clientID: this.$track.clientID})
+                              {evLabel: "app_" + mother.update.version, evValue: 1, clientID: mother.$track.clientID})
                         .catch(err=>{ console.log(err)});
           });
         } else if (mother.update.type === "platform") {
           Updater.progress(mother.progress);
-          let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
+          //let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
+          let currentPlatformDir = `${util.platformDir}`;
           Updater.process(currentPlatformDir).then(() => {
             console.log("Update platform success");
             mother.updateText = "Reloading in 2 seconds ...";
