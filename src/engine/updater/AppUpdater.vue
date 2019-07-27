@@ -98,7 +98,7 @@
               mother.update = data;
               mother.update.type = "app";
               let arch = require('os').arch();
-              if (process.platform === "win32" && arch === "x86") {
+              if (process.platform === "win32" && arch === "ia32") {
                 data.asar =  data.asar + "-win32.zip";
               }else if(process.platform === "win32" && arch === "x64"){
                 data.asar =  data.asar + "-win64.zip";

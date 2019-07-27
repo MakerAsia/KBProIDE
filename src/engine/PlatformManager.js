@@ -35,7 +35,7 @@ const installPlatformByName = function(name, cb) {
       } else { //download file
         let targetPlatform = process.platform;
         let arch = require('os').arch();
-        if(targetPlatform === "win32" && arch === "x86"){
+        if(targetPlatform === "win32" && arch === "ia32"){
           targetPlatform = "win32";
         }else if(targetPlatform === "win32" && arch === "x64"){
           targetPlatform = "win64";

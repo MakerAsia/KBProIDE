@@ -107,7 +107,7 @@ var Updater = {
       const file = fs.createWriteStream(zipFile);
       let targetUrl = "";
       let arch = require('os').arch();
-      if(process.platform === "win32" && arch === "x86"){
+      if(process.platform === "win32" && arch === "ia32"){
         targetUrl = `${Updater.setup.zip}-win32.zip`;
       }else if(process.platform === "win32" && arch === "x64"){
         targetUrl = `${Updater.setup.zip}-win64.zip`;
