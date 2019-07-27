@@ -97,9 +97,12 @@
               let data = appData.docs[0].data();
               mother.update = data;
               mother.update.type = "app";
-              if (process.platform === "win32") {
+              let arch = require('os').arch();
+              if (process.platform === "win32" && arch === "x86") {
                 data.asar =  data.asar + "-win32.zip";
-              } else if (process.platform === "darwin") {
+              }else if(process.platform === "win32" && arch === "x64"){
+                data.asar =  data.asar + "-win64.zip";
+              }else if (process.platform === "darwin") {
                 data.asar = data.asar + "-darwin.zip";
               } else if (process.platform === "linux") {
                 data.asar = data.asar + "-linux.zip";

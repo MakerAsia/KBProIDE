@@ -106,8 +106,11 @@ var Updater = {
       const zipFile = `${os.tmpdir()}/${util.randomString(10)}.zip`;
       const file = fs.createWriteStream(zipFile);
       let targetUrl = "";
-      if(process.platform === "win32"){
+      let arch = require('os').arch();
+      if(process.platform === "win32" && arch === "x86"){
         targetUrl = `${Updater.setup.zip}-win32.zip`;
+      }else if(process.platform === "win32" && arch === "x64"){
+        targetUrl = `${Updater.setup.zip}-win64.zip`;
       }else if(process.platform === "darwin"){
         targetUrl = `${Updater.setup.zip}-darwin.zip`;
       }else if(process.platform === "linux"){

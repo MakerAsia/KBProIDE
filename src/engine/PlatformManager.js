@@ -33,7 +33,14 @@ const installPlatformByName = function(name, cb) {
       if (fs.readdirSync(util.platformDir).includes(info.name)) {
         return null;
       } else { //download file
-        let zipUrl = info.zip + "-" + process.platform +".zip";
+        let targetPlatform = process.platform;
+        let arch = require('os').arch();
+        if(targetPlatform === "win32" && arch === "x86"){
+          targetPlatform = "win32";
+        }else if(targetPlatform === "win32" && arch === "x64"){
+          targetPlatform = "win64";
+        }
+        let zipUrl = info.zip + "-" + targetPlatform +".zip";
         let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
         progress(
             request(zipUrl),
