@@ -1,5 +1,5 @@
 
-# KBProIDE
+# KBProIDE [![Build Status](https://travis-ci.com/MakerAsia/KBProIDE.svg?branch=master)](https://travis-ci.com/MakerAsia/KBProIDE)
 
 ## Windows Install
 use node v10.15.0 (but v8 also work too) and need Anaconda python2
@@ -42,6 +42,21 @@ first run CMD as Administrator and install build tool first
 
 ## Build
 - npm run electron:build
+
+## Test
+- npm run test:unit
+- npx vue-cli-service test:unit --watchAll
+
+## Update submodules
+- git config submodule.recurse true
+- git pull --recurse-submodules
+- git submodule update --recursive --remote
+- git submodule foreach "(git checkout master; git pull)"
+
+## Release
+- cp mac/kbide.app/Contents/Resources/app.asar update.asar
+- zip -9 1.0.0-darwin.zip update.asar
+
 
 ## License
 

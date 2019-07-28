@@ -9,12 +9,12 @@ export default {
         sourceCode : '',
         rawCode : '',
         fontSize : '24',
-        theme : 'mdn-like'
+        theme : 'vs-dark'
     },
     data:{
         Blockly : null,
         workspace : null,
         CodeMirror : null,
-        //saved : false,
+        Editor : null
     }
 }

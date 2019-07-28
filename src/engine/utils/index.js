@@ -8,6 +8,7 @@ const os = require("os");
 
 import unzip from "./unzip";
 import compiler from "./compiler";
+import regex_parser from "./regex-parser";
 
 var baseDir = "";
 console.log("app dirname = " + rootDir);
@@ -63,10 +64,10 @@ const vueLoader = function(file) { //this section from https://www.npmjs.com/pac
 
     let script = vue.replace(
         new RegExp("^[^]*<script>([^]*)export default[^]+<\/script>[^]*$",
-                   "gm"), "$1");
+            "gm"), "$1");
     let component = vue.replace(
         new RegExp("^[^]*export default[\s\n]*(\{[^]*\})[^]*<\/script>[^]*$",
-                   "gm"), "$1");
+            "gm"), "$1");
 
     let style = null;
     if (new RegExp("<style[^]*>[^]*<\/style>", "gm").test(vue)) {
@@ -106,11 +107,17 @@ const vueRuntimeComponent = function(file) {
 //  return capitalize(camel);
 //};
 
-var camelActual = function(str) {
+const camelActual = function(str) {
   return (str || "").replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ""));
 };
-
-var randomString = function(length = 5) {
+const humanize = function(str) {
+  let ret = (str || "").replace(/-(\w)/g, (_, c) => (c ? " " + c.toUpperCase() : ""));
+  return ret.charAt(0).toUpperCase() + ret.slice(1);
+};
+const kebab = (str) => {
+  return (str || "").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+};
+const randomString = function(length = 5) {
   let text = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (let i = 0; i < length; i++) {
@@ -123,9 +130,7 @@ const randomElement = (arr = []) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-const kebab = (str) => {
-  return (str || "").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-};
+
 
 const toggleFullScreen = () => {
   let doc = window.document;
@@ -195,7 +200,7 @@ var rmdirf = function(path) {
     fs.rmdirSync(path);
   }
 };
-var walk = function(dir) {
+const walk = function(dir) {
   var results = [];
   if (!fs.existsSync(dir)) {
     return results;
@@ -211,6 +216,24 @@ var walk = function(dir) {
       /* Is a file */
       results.push(file);
     }
+  });
+  return results;
+};
+//const dirWalk = source => readdirSync(source, { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
+
+const dirWalk = function(dir) {
+  let results = [];
+  if (!fs.existsSync(dir)) {
+    return results;
+  }
+  let list = fs.readdirSync(dir,{ withFileTypes: true });
+  list.forEach(function(file) {
+    if(!file.isDirectory()){
+      return;
+    }
+    let target = dir + "/" + file.name;
+    results.push(target);
+    results = results.concat(dirWalk(target));
   });
   return results;
 };
@@ -240,16 +263,18 @@ function b64DecodeUnicode(str) {
 
 export default {
   //camel,
-  camelActual,
   randomString,
   randomElement,
   toggleFullScreen,
+  camelActual,
   kebab,
+  humanize,
   ui,
   requireFunc,
   humanFileSize,
   loadCofigComponents,
   walk,
+  dirWalk,
   rmdirf,
   promiseTimeout,
   b64EncodeUnicode,
@@ -285,4 +310,5 @@ export default {
   //------- zip --------//
   unzip: unzip.unzip,
   compiler,
+  regex: regex_parser,
 };

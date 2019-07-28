@@ -51,14 +51,24 @@
         <!-- source code -->
         <div class="pane"
              :style="[this.$global.editor.mode == 1 ? {width: '0px'} : (this.$global.editor.mode == 2?{ flexGrow: 1 } : { width:'100%', height :'100%'})]">
-            <code-mirror ref="cm" v-if="$global.editor.mode < 3"
-                         v-model="$global.editor.rawCode"
-                         :options="editor_options">
-            </code-mirror>
-            <code-mirror ref="cm" v-else-if="$global.editor.mode == 3"
-                         v-model="$global.editor.sourceCode"
-                         :options="editor_options">
-            </code-mirror>
+            <MonacoEditor
+                    ref="cm"
+                    v-if="$global.editor.mode < 3"
+                    v-model="$global.editor.rawCode"
+                    class="editor"
+                    language="cpp"
+                    theme="vs-dark"
+                    :options="this.editor_options"
+            />
+            <MonacoEditor
+                    ref="cm"
+                    v-else-if="$global.editor.mode == 3"
+                    v-model="$global.editor.sourceCode"
+                    class="editor"
+                    language="cpp"
+                    theme="vs-dark"
+                    :options="this.editor_options"
+            />
         </div>
         <!-- end -->
     </multipane>
@@ -74,28 +84,7 @@
   import Blockly from "vue-blockly";
   import en from "vue-blockly/dist/msg/en";
   // === Editor ===
-  import CodeMirror from "vue-cm";
-  import "codemirror/lib/codemirror.css";
-  import "codemirror/theme/mdn-like.css";
-  import "codemirror/mode/clike/clike";
-  import "codemirror/addon/edit/matchbrackets";
-  import "codemirror/addon/selection/active-line";
-  //---- search ----//
-  import "codemirror/addon/display/panel";
-  import "codemirror/addon/dialog/dialog.css";
-  import "codemirror/addon/search/matchesonscrollbar.css";
-  //import 'codemirror/addon/dialog/dialog';
-  //import "codemirror/addon/search/searchcursor";
-  //import "codemirror/addon/search/search";
-  import "codemirror-advanceddialog";
-  //import 'codemirror-advanceddialog/dist/dialog.css';
-  import "codemirror-revisedsearch";
-  //---- error lint ----//
-  import "codemirror/addon/lint/lint.css";
-  import CmLint from "./errorlint";
-  import "codemirror/addon/scroll/annotatescrollbar";
-  import "codemirror/addon/search/matchesonscrollbar";
-  import "codemirror/addon/search/jump-to-line";
+  import MonacoEditor from "vue-monaco";
   // === uitls ===
   import util from "@/engine/utils";
 
@@ -107,35 +96,36 @@
   import PianoDialog from "@/engine/views/dialog/PianoDialog";
   import TTSDialog from "@/engine/views/dialog/TTSDialog";
 
-  let htmlEntities = function(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const htmlEntities = function(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   };
 
-  let renderBlock = function(blocks, level = 1) {
+  const renderBlock = function(blocks, level = 1) {
     let res = "";
     if (blocks === undefined) {
       return res;
     }
     blocks.forEach(element => {
       if (level === 1) {
-        if (element.blocks) {
-          var insideBlock = renderBlock(element.blocks, level + 1);
-        } else {
-          var insideBlock = "";
-        }
-        if (element.xml) {
-          var insideBlock = element.xml;
-        }
-        var custom = element.custom ? `custom="${element.custom}" ` : "";
+        let insideBlock = (element.blocks)
+          ? renderBlock(element.blocks, level + 1)
+          : (element.xml
+            ? element.xml
+            : "");
+        let custom = element.custom
+          ? `custom="${element.custom}" `
+          : "";
         res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
       } else {
         if (typeof (element) === "string") { //block element
           res += `<block type="${element}"></block>`;
         } else if (typeof (element) == "object" && element.xml) {
           res += element.xml;
-        } else if (typeof (element) === "object" && "type" in element && element.type == "category") {
+        } else if (typeof (element) === "object" && "type" in element && element.type === "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
-          var custom = element.custom ? `custom="${element.custom}" ` : "";
+          let custom = element.custom
+            ? `custom="${element.custom}" `
+            : "";
           res += `<category name="${element.name}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
         } else if (typeof (element) === "object" && "mutation" in element) {
           let objKey = [];
@@ -151,12 +141,16 @@
     });
     return res;
   };
-  var loadAndRenderPluginsBlock = function(Blockly, boardInfo, pluginInfo) {
-    var pluginName = "Plugins";
-    var plugins = pluginInfo; // plug.loadPlugin(boardInfo);
+  const loadAndRenderPluginsBlock = function(Blockly, boardInfo, pluginInfo) {
+    let pluginName = "Plugins";
+    let plugins = pluginInfo; // plug.loadPlugin(boardInfo);
     let catStr = "";
-    //console.log(plugins);
     plugins.categories.forEach(cat => {
+      let pluginDirectory = cat.directory;
+      let pluginBlockDirectory = `${pluginDirectory}/blocks`;
+      if(Object.entries(cat.plugins).length === 0){
+          return;
+      }
       let blockStr = "";
       Object.keys(cat.plugins).forEach(subPlugin => {
         let blocks = cat.plugins[subPlugin].blocks;
@@ -177,82 +171,82 @@
           blockStr += `<block type="${typeName}"></block>`;
         });
       });
-      //let thName = cat.category.title;
-      let name = (cat.category.name.en) ? cat.category.name.en : cat.category.title;
-      let color = cat.category.color;
-      catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
+      if (fs.existsSync(`${pluginBlockDirectory}/config.js`)) {
+        let blockConfig = util.requireFunc(`${pluginBlockDirectory}/config.js`);
+        catStr += renderBlock(blockConfig);
+      } else {
+        //let thName = cat.category.title;
+        let name = (cat.category.name.en)
+          ? cat.category.name.en
+          : cat.category.title;
+        let color = cat.category.color;
+        catStr += `<category name="${name}" colour="${color}">${blockStr}</category>`;
+      }
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
   };
-  var loadBlock = function(boardName, target) {
-    //look for board first
-    var blockFile = `${util.boardDir}/${boardName}/block/config.js`;
+  const loadBlock = function(boardInfo) {
+    let blockFile = `${boardInfo.dir}/block/config.js`;
+    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
     if (!util.fs.existsSync(blockFile)) {
       return null;
     }
-    var blocks = util.requireFunc(blockFile);
-    return blocks;
+    return util.requireFunc(blockFile);
   };
-  var initBlockly = function(boardInfo) {
-    var boardName = boardInfo.name;
-    var platformName = boardInfo.platform;
-    var blockyDir = `${util.boardDir}/${boardName}/block`;
-    var platformBlockDir = `${util.platformDir}/${platformName}/block`;
+  const initBlockly = function(boardInfo) {
+    let platformName = boardInfo.platform;
+    let blockyDir = `${boardInfo.dir}/block`;
+    let platformBlockDir = `${util.platformDir}/${platformName}/block`;
     //lookup platform first
-    var platformBlockFile = util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
-    var blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
-    var blocks = platformBlockFile.concat(blocklyFile);
-    if (blocks.length > 0) {
-      blocks.sort(function(a, b) {
-        return a.length - b.length;
-      });
-      blocks.forEach(element => {
-        if (element.includes("config.js")) { //skip config.js file
-          return;
+    let platformBlockFile = util.fs.readdirSync(platformBlockDir).map(obj => `${platformBlockDir}/${obj}`);
+    platformBlockFile.sort(function(a, b) {
+      return a.length - b.length;
+    });
+    let blocklyFile = util.fs.readdirSync(blockyDir).map(obj => `${blockyDir}/${obj}`);
+    blocklyFile.sort(function(a, b) {
+      return a.length - b.length;
+    });
+    let blocks = platformBlockFile.concat(blocklyFile);
+    blocks.forEach(element => {
+      if (element.includes("config.js")) { //skip config.js file
+        return;
+      }
+      try {
+        let name = path.basename(element);
+        if (name.startsWith("block") && name.endsWith("js")) {
+          util.requireFunc(element)(Blockly);
+          let generatorFile = name.replace("block", "generator");
+          util.requireFunc(`${path.dirname(element)}/${generatorFile}`)(Blockly);
         }
-        try {
-          let name = path.basename(element);
-          if (name.startsWith("block") && name.endsWith("js")) {
-            util.requireFunc(element)(Blockly);
-            let generatorFile = name.replace("block", "generator");
-            util.requireFunc(`${path.dirname(element)}/${generatorFile}`)(Blockly);
-          }
-        } catch (error) {
-          console.log("load blockly error");
-          console.log(error);
-        }
-      });
-    }
+      } catch (error) {
+        console.log("load blockly error");
+        console.log(error);
+        console.log(element);
+      }
+    });
   };
   /*var reloadBlockly = function(toolbox,workspace,updatecode){
 
   }*/
-  var myself;
+  let myself;
   export default {
     name: "editor",
     components: {
       Multipane,
       MultipaneResizer,
-      CodeMirror,
+      MonacoEditor,
       VariableNamingDialog,
       PianoDialog,
-      TTSDialog,
+      TTSDialog
     },
     data() {
       return {
         workspace: null,
         toolbox: null,
-        cm: null,
         editor_options: {
-          mode: "text/x-c++src",
-          theme: "mdn-like",
-          lineNumbers: true,
-          styleActiveLine: true,
-          matchBrackets: true,
-          readOnly: true,
-          extraKeys: {"Alt-F": "findPersistent"},
-          gutters: ["CodeMirror-lint-markers"],
-          lint: true,
+          automaticLayout: true,
+          lineNumbers: "on",
+          scrollBeyondLastLine: false
         },
         variableDialog: false,
         variable_name: this.name,
@@ -267,63 +261,62 @@
           return this.validated || "Invalid variable name";
         },
         musicDialog: false,
-        ttsDialog: false,
-        lineError: [],
+        ttsDialog: false
       };
     },
     created() {
       myself = this;
       electron.ipcRenderer.on("edit-undo", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "Z".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "Z".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.execCommand("undo");
+          cm.trigger("aaaa", "undo", "aaaa");
         }
       });
       electron.ipcRenderer.on("edit-redo", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "Y".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "Y".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.execCommand("redo");
+          cm.trigger("aaaa", "redo", "aaaa");
         }
       });
       electron.ipcRenderer.on("edit-cut", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "X".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "X".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("cut");
         }
       });
       electron.ipcRenderer.on("edit-copy", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "C".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "C".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("copy");
         }
       });
       electron.ipcRenderer.on("edit-paste", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "V".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "V".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           document.execCommand("paste");
         }
       });
       electron.ipcRenderer.on("edit-find", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "F".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "F".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.execCommand("find");
+          cm.trigger("aaaa", "actions.find");
         }
       });
       electron.ipcRenderer.on("edit-replace", () => {
         if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({keyCode: "H".charCodeAt(0), ctrlKey: true, target: {type: "none"}});
+          Blockly.onKeyDown_({ keyCode: "H".charCodeAt(0), ctrlKey: true, target: { type: "none" } });
         } else {
           let cm = myself.getCm();
-          cm.execCommand("replace");
+          cm.trigger("aaaa", "editor.action.startFindReplaceAction");
         }
       });
     },
@@ -339,7 +332,7 @@
           spacing: 25,
           length: 3,
           colour: "#ccc",
-          snap: true,
+          snap: true
         },
         media: "./static/blockly/media/",
         //rtl: rtl,
@@ -350,9 +343,9 @@
           startScale: 1,
           maxScale: 2,
           minScale: 0.3,
-          scaleSpeed: 1.2,
+          scaleSpeed: 1.2
           //scrollbars: false
-        },
+        }
       });
       this.workspace.addChangeListener(this.updatecode);
       Blockly.svgResize(this.workspace);
@@ -362,7 +355,7 @@
         myself.variable_name = defaultValue;
         myself.variableMessage = message;
         myself.$refs.variableOK.$on("click", function() {
-          var new_val = myself.variable_name;
+          let new_val = myself.variable_name;
           if ((new_val) && (new_val != "") && myself.validated) {
             callback(new_val);
           } else {
@@ -375,7 +368,7 @@
       };
       Blockly.music = function(notes, cb) {
         if (notes) {
-          myself.$refs.musicNotes.tags = notes.split(",").map(el => {return {text: el};});
+          myself.$refs.musicNotes.tags = notes.split(",").map(el => {return { text: el };});
         }
         myself.$refs.musicNotes.$on("result", function(n) {
           myself.musicDialog = false;
@@ -386,10 +379,9 @@
       };
       Blockly.tts = function(words, cb) {
         if (words) {
-          myself.$refs.ttsWords.tags = words.split(" ").map(el => {return {text: el};});
+          myself.$refs.ttsWords.tags = words.split(" ").map(el => {return { text: el };});
         }
         myself.$refs.ttsWords.$on("result", function(n) {
-          //console.log(n);
           myself.ttsDialog = false;
           myself.$refs.ttsWords.$off("result");
           cb(n);
@@ -405,14 +397,14 @@
       this.$global.$on("editor-theme-change", this.onEditorThemeChange);
       this.$global.$on("editor-fontsize-change", this.onEditorFontsizeChange);
 
-      this.$global.$on("compile-begin",this.clearError);
-      this.$global.$on("compile-error",this.addError);
+      this.$global.$on("compile-begin", this.clearError);
+      this.$global.$on("compile-error", this.addError);
       //this.$global.$on("compile-success",_);
-      if(Vue.prototype.$vuetify.theme.primary === ""){
-        Vue.prototype.$vuetify.theme.primary = '#009688';
+      if (Vue.prototype.$vuetify.theme.primary === "") {
+        Vue.prototype.$vuetify.theme.primary = "#009688";
       }
       let theme = this.$vuetify.theme.primary;
-      var lighter = util.ui.colorLuminance(theme, 0.2);
+      let lighter = util.ui.colorLuminance(theme, 0.2);
       document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = lighter;
 
       //---- render block
@@ -426,7 +418,8 @@
       //---- load code ----//
       this.$global.editor.Blockly = Blockly;
       this.$global.editor.workspace = this.workspace;
-      this.$global.editor.CodeMirror = this.getCm();
+      this.$global.editor.CodeMirror = null;
+      this.$global.editor.Editor = this.getCm();
       //this.addError();
     },
     methods: {
@@ -434,7 +427,7 @@
         try {
           if ("cm" in myself.$refs) {
             if (myself.$refs.cm != undefined) {
-              return myself.$refs.cm.getCodeMirror();
+              return myself.$refs.cm.getEditor();
             }
           }
           return false;
@@ -445,28 +438,33 @@
       onEditorFontsizeChange(value) {
         let cm = myself.getCm();
         if (cm) {
-          cm.getWrapperElement().style["font-size"] = value + "px";
-          cm.refresh();
+          cm.updateOptions({ fontSize: value });
+          cm.layout();
         }
       },
       onEditorThemeChange(value) {
-        //console.log(value);
-        import("codemirror/theme/" + value + ".css");
         let cm = myself.getCm();
         if (cm) {
-          cm.setOption("theme", value);
+          if (value === "vs-dark") {
+            monaco.editor.setTheme("vs-dark");
+          } else {
+            import("monaco-themes/themes/" + value + ".json").then(data => {
+              monaco.editor.defineTheme("monokai", data);
+              monaco.editor.setTheme("monokai");
+            });
+          }
         }
       },
       onEditorModeChange(mode, convert = false, create_new = false) {
         if (mode < 3) {
-          var xml = "";
+          let xml = "";
           if (myself.$global.editor.blockCode !== "" &&
-              myself.$global.editor.blockCode !==
-              "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>") {
-            var text = myself.$global.editor.blockCode;
+            myself.$global.editor.blockCode !==
+            "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables></xml>") {
+            let text = myself.$global.editor.blockCode;
             xml = Blockly.Xml.textToDom(text);
           } else {
-            var blocks = loadBlock(myself.$global.board.board);
+            let blocks = loadBlock(myself.$global.board.board_info);
             if (blocks.initial_blocks) {
               xml = Blockly.Xml.textToDom(blocks.initial_blocks);
             }
@@ -478,7 +476,7 @@
           }, 300);
         } else {
           //------ generate template here ------//
-          const boardDirectory = `${util.boardDir}/${this.$global.board.board}`;
+          const boardDirectory = `/${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
           let codegen = null;
           if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
@@ -499,8 +497,8 @@
         }
         if ("cm" in this.$refs) {
           if (this.$refs.cm != undefined) { //enable editing code
-            let code = this.$refs.cm.getCodeMirror();
-            code.setOption("readOnly", mode < 3);
+            let code = this.$refs.cm.getEditor();
+            //code.setOption("readOnly", mode < 3);
           }
         }
       },
@@ -509,14 +507,13 @@
         this.$global.plugin.pluginInfo = plug.loadPlugin(this.$global.board.board_info);
 
         initBlockly(boardInfo);
-        let boardName = boardInfo.name;
-        let blocks = loadBlock(boardName);
+        let blocks = loadBlock(boardInfo);
         let stringBlock = "";
-        if ("base_blocks" in blocks) { //render block base from platform
-          stringBlock += renderBlock(blocks.base_blocks);
-        }
         if ("blocks" in blocks) { //render extended block
           stringBlock += renderBlock(blocks.blocks);
+        }
+        if ("base_blocks" in blocks) { //render block base from platform
+          stringBlock += renderBlock(blocks.base_blocks);
         }
         // render plugin blocks
         stringBlock += loadAndRenderPluginsBlock(Blockly, boardInfo, this.$global.plugin.pluginInfo);
@@ -525,13 +522,11 @@
         this.workspace.updateToolbox(this.toolbox);
       },
       onThemeChange(theme) {
-        var lighter = util.ui.colorLuminance(theme, 0.2);
-        document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = lighter;
+        document.body.getElementsByClassName("blocklyToolboxDiv")[0].style.backgroundColor = util.ui.colorLuminance(theme, 0.2);
       },
       onResizePanel(pane, container, size) {
         Blockly.svgResize(this.workspace);
         console.log("editor resized");
-        //console.log(this.$root.editor.MODE);
       },
       updatecode(e) {
         if (e.type != Blockly.Events.UI) {
@@ -558,56 +553,52 @@
       },
       clearError() {
         let cm = this.getCm();
-        this.lineError.forEach(el=>{
-          cm.clearGutter(CmLint.GUTTER_ID);
-          //cm.removeLineClass(el.line);
-          el.marker.clear();
-        });
-        this.lineError = [];
+        monaco.editor.setModelMarkers(cm.getModel(), "error", []);
       },
-      addError:function(errors) {
+      addError: function(errors) {
         try {
           let cm = this.getCm();
           this.clearError();
           if (!Array.isArray(errors)) { return; }
           if (errors.length === 0) { return; }
+          let markers = [];
           errors.forEach(err => {
-            if (typeof err !== 'string') {return;}
+            if (typeof err !== "string") {return;}
             let rex = /^([0-9]+):([0-9]+):(.*)/g;
             let res = rex.exec(err);
             if (!res || res.length !== 4) { return; }
-            let line = parseInt(res[1]) - 1
+            let line = parseInt(res[1]);
             let col = parseInt(res[2]);
-            let div = document.createElement('span');
-            div.innerHTML = htmlEntities(err);
-            let gutter =
-                cm.setGutterMarker(line, CmLint.GUTTER_ID, CmLint.makeMarker(cm, div, "error", false, err));
-            //let marker = cm.addLineClass(line, 'background', 'line-error');
-            let marker = cm.markText(
-                {line: line, ch: 0},
-                {line: line, ch: 9999},
-                {className: 'line-error', title: err}
-            );
-            myself.lineError.push({
-                                    line: line,
-                                    col: col,
-                                    gutter: gutter,
-                                    marker: marker
-                                  });
+            let marker = {
+              startLineNumber: line,
+              startColumn: 0,
+              endLineNumber: line,
+              endColumn: 9999,
+              message: htmlEntities(err),
+              severity: monaco.MarkerSeverity.Error
+            };
+            markers.push(marker);
           });
-        }catch (e) {
+          monaco.editor.setModelMarkers(cm.getModel(), "error", markers);
+        } catch (e) {
           console.log(e);
         }
-      },
-    },
+      }
+    }
   };
 </script>
 
 <style>
+    .editor {
+        width: 100%;
+        height: 100%;
+    }
+
     .line-error {
         background: rgba(251, 0, 26, 0.34) !important;
         color: #fff7fb !important;
     }
+
     .vertical-panes-editor {
         width: 100%;
         height: 100%; /* minus header and footer */

@@ -5,13 +5,27 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const request = require("request");
+const request_promise = require("request-promise");
 const progress = require("request-progress");
 
 let localBoardName = "";
 let localPlugins = {};
 
-let listPlugin = function(dir) {
-  var plugins = {};
+const decodeArduinoLibraryConfig = function(targetFile){
+  let tmpData = fs.readFileSync(targetFile,"utf8");
+  let lines = tmpData.split('\n');
+  let tdata = lines.map(l => l.split("="));
+  let res = {};
+  tdata.forEach(el=>{
+    if(el.length && el.length === 2) {
+      res[el[0].trim()] = el[1].trim();
+    }
+  });
+  return res;
+};
+
+const listPlugin = function(dir) {
+  let plugins = {};
   let blockFiles = fs.readdirSync(dir);
   if (blockFiles.length > 0) {
     blockFiles.forEach(blockFile => {
@@ -45,7 +59,7 @@ let listPlugin = function(dir) {
         };
         try {
           eval(fs.readFileSync(fgen, "utf8"));
-          for (var i in Blockly.JavaScript) {
+          for (let i in Blockly.JavaScript) {
             generators.push(i);
           }
         } catch (e) {
@@ -58,17 +72,15 @@ let listPlugin = function(dir) {
           blocks: blocks,
           generators: generators,
         };
-        console.log(
-            `plugin "${blockFile}" found ${blocks.length} block${blocks.length >
-            1 ? "s" : ""}`);
+        console.log(`plugin "${blockFile}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
       }
     });
   }
   return plugins;
 };
-var listKidBrightPlugin = function(dir) {
-  console.log("-----------");
-  var plugins = {};
+
+const listKidBrightPlugin = function(dir) {
+  let plugins = {};
   let catPlugins = fs.readdirSync(dir);
   if (catPlugins.length > 0) {
     catPlugins.forEach(plugin => {
@@ -81,7 +93,7 @@ var listKidBrightPlugin = function(dir) {
         };
         try {
           eval(fs.readFileSync(`${fdir}/blocks.js`, "utf8"));
-          for (var i in Blockly.Blocks) {
+          for (let i in Blockly.Blocks) {
             blocks.push(i);
           }
         } catch (e) {
@@ -109,16 +121,14 @@ var listKidBrightPlugin = function(dir) {
           blocks: blocks,
           generators: generators,
         };
-        console.log(
-            `plugin "${plugin}" found ${blocks.length} block${blocks.length > 1
-                ? "s"
-                : ""}`);
+        console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
       }
     });
   }
   return plugins;
 };
-let listExamples = function(exampleDir) {
+
+const listExamples = function(exampleDir) {
   let exampleInfo = [];
   if (fs.existsSync(exampleDir)) {
     let exampleFolders = fs.readdirSync(exampleDir);
@@ -136,65 +146,124 @@ let listExamples = function(exampleDir) {
   }
   return exampleInfo;
 };
-var listCategoryPlugins = function(pluginDir,boardInfo) {
-  var categories = [];
-  var allPlugin = {};
+const listCategoryPlugins = function(pluginDir,boardInfo) {
+  let categories = [];
+  let allPlugin = {};
   if (fs.existsSync(pluginDir)) {
-    var cats = fs.readdirSync(pluginDir);
+    let cats = fs.readdirSync(pluginDir);
     cats.forEach(cat => {
       let dir = `${pluginDir}/${cat}`;
-      let infoFile = `${dir}/library.json`;
-      let kbPluginInfoFile = `${dir}/${cat}.json`;
-      let srcDir = `${dir}/src`;
-      let blockDir = `${dir}/blocks`;
-      let exampleDir = `${dir}/examples`;
-      if (fs.existsSync(infoFile) && fs.existsSync(srcDir) &&
-          fs.existsSync(blockDir)) {
-        let pluginInfo = JSON.parse(fs.readFileSync(infoFile, "utf8"));
-        //----- check correct platform -----//
-        if(boardInfo !== undefined){
-          if(typeof(pluginInfo.platform) === "string"
+      if(!fs.lstatSync(dir).isDirectory()){
+        return;
+      }
+      //------- load kidbright plugins -------//
+      let pluginContents = fs.readdirSync(dir,{withFileTypes : true});
+      let kbPluginInfoFile = pluginContents.find(el=>el.isFile() && el.name.endsWith(".json") && el.name !== "library.json");
+      if (kbPluginInfoFile && boardInfo.name === "kidbright") {
+        let kbPluginInfoFileFull = `${dir}/${kbPluginInfoFile.name}`;
+        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFileFull,"utf8"));
+        let blockPlugins = listKidBrightPlugin(dir);
+        let incDirectory = pluginContents.filter(el=>el.isDirectory());
+        categories.push({
+                          directory: dir,
+                          dirName: cat,
+                          plugins: blockPlugins,
+                          category: catInfoFile,
+                          sourceIncludeDir : incDirectory,
+                        });
+        Object.assign(allPlugin, blockPlugins);
+      //------- load normal plugins ---------//
+      }else if(boardInfo.name !== "kidbright"){
+        let pluginInfo = null;
+        let infoFile = `${dir}/library.json`;
+        let arduinoInfoFile = `${dir}/library.properties`;
+        if(fs.existsSync(infoFile)) {
+          pluginInfo = JSON.parse(fs.readFileSync(infoFile, "utf8"));
+          if("frameworks" in pluginInfo && "platforms" in pluginInfo) { //this is platformIO config file
+             if(pluginInfo.frameworks === "arduino") {
+                if(pluginInfo.platforms === "*") {
+                  pluginInfo.platform = ["*"];
+                }
+                if(typeof pluginInfo.platforms === "object" && pluginInfo.platforms.includes("espressif32")) {
+                  pluginInfo.platform = ["arduino-esp32"];
+                }
+             }
+             if(pluginInfo.repository && pluginInfo.repository.type === "git") {
+                pluginInfo["git"] = pluginInfo.repository.url.replace(".git","/").trim();
+             }else {
+                return; //this plugin cannot update
+             }
+             if(pluginInfo.authors) {
+               pluginInfo["author"] = pluginInfo.authors.name;
+             }
+             pluginInfo["title"] = pluginInfo["name"];
+             pluginInfo["name"] = pluginInfo["name"].replace(/\s/g,"-").trim();
+          }
+        }else if(fs.existsSync(arduinoInfoFile)) {
+          pluginInfo = decodeArduinoLibraryConfig(arduinoInfoFile);
+          if("url" in pluginInfo) {
+            pluginInfo["git"] = pluginInfo.url;
+          }else {
+            return; //reject
+          }
+          pluginInfo.title = pluginInfo.name;
+          pluginInfo.name = pluginInfo.name.replace(/\s/g,"-").trim();
+          pluginInfo.description = pluginInfo.sentence;
+          pluginInfo.platform = pluginInfo.architectures;
+        }else {
+          return; //there are no info file in this library.
+        }
+        //---------- rejection other board platform ----------//
+        if(boardInfo !== undefined && boardInfo.platform){
+          if(typeof(pluginInfo.platform) === "string" //single param platform
               && !pluginInfo.platform.includes(",")
-              && pluginInfo.platform !== boardInfo.platform){
+              && pluginInfo.platform !== boardInfo.platform
+              && pluginInfo.platform !== "*"){ //any platform ? is that real!?
             return;
-          }else if(typeof(pluginInfo.platform) === "string"
+          }else if(typeof(pluginInfo.platform) === "string" //string with comma
               && pluginInfo.platform.includes(",")){
             let supportedPlugins = pluginInfo.platform.split(",").map(el=>el.trim());
             if(!supportedPlugins.includes(boardInfo.platform)){
               return;
             }
-          }else if(typeof(pluginInfo.platform) === pluginInfo.constructor === Array){
+          }else if(pluginInfo.platform.constructor === Array){ //array of platform
             if(!pluginInfo.platform.includes(boardInfo.platform)){
               return;
             }
           }
         }
-        //---------------------//
-        let plugins = listPlugin(blockDir);
-        let srcFile = fs.readdirSync(srcDir);
+        //---------- load plugin ----------//
+        let srcDir = `${dir}/src`;
+        let blockDir = `${dir}/blocks`;
+        let exampleDir = `${dir}/examples`;
+
+        let blockPlugins = {};
+        let srcFile = [];
+        let srcIncDir = dir;
+        if(fs.existsSync(blockDir)){
+          blockPlugins = listPlugin(blockDir);
+        }
+        if(fs.existsSync(srcDir)){
+          srcFile = fs.readdirSync(srcDir);
+          srcIncDir = srcDir;
+        }else if(fs.readdirSync(dir).find(el=>el.endsWith(".h"))){
+          srcFile = fs.readdirSync(dir);
+          srcIncDir = dir;
+        }
         let exampleInfo = [];
         if (fs.existsSync(exampleDir)) {
           exampleInfo = listExamples(exampleDir);
         }
         categories.push({
-                          directory: dir,
-                          dirName: cat,
-                          sourceFile: srcFile,
-                          plugins: plugins,
-                          category: pluginInfo,
-                          examples: exampleInfo,
-                        });
-        Object.assign(allPlugin, plugins);
-      } else if (fs.existsSync(dir) && fs.existsSync(kbPluginInfoFile)) {
-        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFile));
-        let plugins = listKidBrightPlugin(dir);
-        categories.push({
-                          directory: dir,
-                          dirName: cat,
-                          plugins: plugins,
-                          category: catInfoFile,
-                        });
-        Object.assign(allPlugin, plugins);
+                            directory: dir,
+                            dirName: cat,
+                            sourceFile: srcFile,
+                            sourceIncludeDir : srcIncDir,
+                            plugins: blockPlugins,
+                            category: pluginInfo,
+                            examples: exampleInfo,
+                          });
+        Object.assign(allPlugin, blockPlugins);
       }
     });
   }
@@ -202,7 +271,7 @@ var listCategoryPlugins = function(pluginDir,boardInfo) {
 };
 //TODO : look for platform blocks
 
-var loadPlugin = function(boardInfo) {
+const loadPlugin = function(boardInfo) {
   if ((Object.entries(localPlugins).length === 0 && localPlugins.constructor ===
       Object) || (boardInfo.name !== localBoardName)) { // check empty object !!!
     //load mother platform
@@ -219,7 +288,7 @@ var loadPlugin = function(boardInfo) {
     let globalPlugins = listCategoryPlugins(
         util.pluginDir,
         boardInfo
-    )
+    );
     //join all together
     let allPlugins = {};
     Object.assign(allPlugins, platformPlugins.plugins);
@@ -234,15 +303,15 @@ var loadPlugin = function(boardInfo) {
   return localPlugins;
 };
 
-var clearListedPlugin = function() {
+const clearListedPlugin = function() {
   localPlugins = {};
 };
 
-var plugins = function(boardInfo) {
+const plugins = function(boardInfo) {
   let lpg = loadPlugin(boardInfo);
   return lpg.categories;
 };
-var performPluginSearch = function(name,queryMode, value, start = 0) {
+const performPluginSearch = function(name,queryMode, value, start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
     Vue.prototype.$db.collection("plugins").
@@ -252,7 +321,7 @@ var performPluginSearch = function(name,queryMode, value, start = 0) {
     limit(50).
     get().
     then(data => {
-      var lastVisible = data.docs[data.docs.length - 1];
+      const lastVisible = data.docs[data.docs.length - 1];
       data.forEach(element => {
         onlinePlugins.push(element.data());
       });
@@ -263,22 +332,21 @@ var performPluginSearch = function(name,queryMode, value, start = 0) {
     });
   });
 };
-var performPluginNameSearch = function(name, column, value, start = 0) {
+const performPluginNameSearch = function(name, column, value, start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
-    var strSearch = name;
-    var strlength = strSearch.length;
-    var strFrontCode = strSearch.slice(0, strlength - 1);
-    var strEndCode = strSearch.slice(strlength - 1, strSearch.length);
+    let strSearch = name;
+    let strlength = strSearch.length;
+    let strFrontCode = strSearch.slice(0, strlength - 1);
+    let strEndCode = strSearch.slice(strlength - 1, strSearch.length);
+    let startcode = strSearch;
+    let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
 
-    var startcode = strSearch;
-    var endcode = strFrontCode +
-        String.fromCharCode(strEndCode.charCodeAt(0) + 1);
     Vue.prototype.$db.collection("plugins").where("name", ">=", startcode) //search start with
     .where("name", "<", endcode).where(column, "==", value).orderBy("name")
     //.startAfter(start)
     .limit(50).get().then(data => {
-      var lastVisible = data.docs[data.docs.length - 1];
+      let lastVisible = data.docs[data.docs.length - 1];
       data.forEach(element => {
         onlinePlugins.push(element.data());
       });
@@ -288,10 +356,10 @@ var performPluginNameSearch = function(name, column, value, start = 0) {
     });
   });
 };
-var listOnlinePlugin = function(boardInfo, name = "", start = 0) {
+const listOnlinePlugin = function(boardInfo, name = "", start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
-    if (name == "") { //list all
+    if (name === "") { //list all
       performPluginSearch("board","==", boardInfo.name).then(res => {
         onlinePlugins = onlinePlugins.concat(res.plugins);
         return performPluginSearch("platform","array-contains",boardInfo.platform);
@@ -311,12 +379,11 @@ var listOnlinePlugin = function(boardInfo, name = "", start = 0) {
       }).catch(err => {
         reject(err);
       });
-
     }
   });
 };
 
-var installPluginByName = function(name, cb) {
+const installPluginByName = function(name, cb) {
   return new Promise((resolve, reject) => {
     Vue.prototype.$db.collection("plugins").
     where("name", "==", name).
@@ -333,19 +400,13 @@ var installPluginByName = function(name, cb) {
     return installOnlinePlugin(info, cb);
   });
 };
-var installOnlinePlugin = function(info, cb) {
-  if (info.board) {
-    var targetDir = util.boardDir + "/" + info.board + "/plugin";
-  } else if (info.platform) {
-    var targetDir = util.platformDir + "/" + info.platform + "/plugin";
-  } else {
-    throw "no target defined";
-  }
+const installOnlinePlugin = function(info, cb) {
+  let targetDir = util.pluginDir;
   return new Promise((resolve, reject) => { //download zip
     if (!info.git) { reject("no git found"); }
-    var zipUrl = info.git + "/archive/master.zip";
-    var zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
-    var file = fs.createWriteStream(zipFile);
+    let zipUrl = info.git + "/archive/master.zip";
+    let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
+    let file = fs.createWriteStream(zipFile);
     progress(
         request(zipUrl),
         {
@@ -355,7 +416,7 @@ var installOnlinePlugin = function(info, cb) {
           follow: true,
         },
     ).on("progress", function(state) {
-      cb & cb({process: "board", status: "DOWNLOAD", state: state});
+      cb && cb({process: "board", status: "DOWNLOAD", state: state});
     }).on("error", function(err) {
       reject(err);
     }).on("end", function() {
@@ -364,33 +425,27 @@ var installOnlinePlugin = function(info, cb) {
     }).pipe(file);
   }).then((zipFile) => { //unzip file
     return util.unzip(zipFile, {dir: targetDir}, p => {
-      cb & cb({process: "board", status: "UNZIP", state: p});
+      cb && cb({process: "board", status: "UNZIP", state: p});
     });
   }).then(() => { //rename folder
-    //rename ended with word '-master' in boards
-    var dirs = fs.readdirSync(targetDir);
-    for (let i = 0; i < dirs.length; i++) {
+    //TODO : check if extract success or not
+    //rename ended with word '-master' if it's KidBright's plugin.
+    //let dirs = fs.readdirSync(targetDir);
+    /*for (let i = 0; i < dirs.length; i++) {
       let dirname = path.join(targetDir, dirs[i]);
       if (fs.lstatSync(dirname).isDirectory() && dirname.endsWith("-master")) {
         let source = dirname;
         let target = path.join(targetDir, info.name);
         fs.renameSync(source, target);
       }
-    }
+    }*/
     return true;
   });
 };
 
-var removePlugin = function(pluginInfo, isBackupRemove = false) {
-  if (pluginInfo.board) {
-    var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
-  } else if (pluginInfo.platform) {
-    var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
-  } else {
-    throw "no target defined";
-  }
+const removePlugin = function(pluginInfo, isBackupRemove = false) {
   return new Promise((resolve, reject) => {
-    let target = `${targetDir}/${pluginInfo.name}`;
+    let target = pluginInfo.directory;
     if (isBackupRemove) {
       target += "-backup-plugin";
     }
@@ -403,35 +458,67 @@ var removePlugin = function(pluginInfo, isBackupRemove = false) {
   });
 };
 
-var backupPlugin = function(pluginInfo) {
-  if (pluginInfo.board) {
-    var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
-  } else if (pluginInfo.platform) {
-    var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
-  } else {
-    throw "no target defined";
-  }
+const backupPlugin = function(pluginInfo) {
   return new Promise((resolve, reject) => {
-    let target = `${targetDir}/${pluginInfo.name}`;
-    let newer = `${targetDir}/${pluginInfo.name}-backup-plugin`;
-    fs.renameSync(target, newer);
-    resolve();
+    let target = pluginInfo.directory;
+    if(target.endsWith("/")){
+      target = target.substring(0,target.length - 1);
+    }
+    let newer = `${target}-backup-plugin`;
+    if (!fs.existsSync(target)) {
+      reject("no directory");
+    }else{
+      fs.renameSync(target, newer);
+      resolve();
+    }
   });
 };
 
-var restorePlugin = function(pluginInfo) {
-  if (pluginInfo.board) {
-    var targetDir = util.boardDir + "/" + pluginInfo.board + "/plugin";
-  } else if (pluginInfo.platform) {
-    var targetDir = util.platformDir + "/" + pluginInfo.platform + "/plugin";
-  } else {
-    throw "no target defined";
+const restorePlugin = function(pluginInfo) {
+  let target = pluginInfo.directory;
+  if(target.endsWith("/")){
+    target = target.substring(0,target.length - 1);
   }
-  return new Promise((resolve, reject) => {
-    let target = `${targetDir}/${pluginInfo.name}`;
-    let newer = `${targetDir}/${pluginInfo.name}-backup-plugin`;
-    fs.renameSync(newer, target);
-    resolve();
+  let newer = `${target}-backup-plugin`;
+  fs.renameSync(newer, target);
+  resolve();
+};
+
+const publishPlugin = function(url){
+  return new Promise((resolve,reject)=>{
+    let json = null;
+    if (!util.regex.isValidGithubUrl(url)) {
+      reject("wrong github url format");
+      return;
+    }
+    request_promise(url + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
+    .then(res => {
+      json = JSON.parse(res);
+      if(json.name) { //search if existing
+        return Vue.prototype.$db.collection("plugins").where("name", "==", json.name).get();
+      } else {
+        return false;
+      }
+    }).then(res => {
+      if (res && res.size >= 1) {
+        return json.version > res.docs[0].data().version;
+      } else {
+        return true;
+      }
+    }).then(res => {
+      if (res) {
+        Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
+        if (res) {
+          resolve("submit your plugin success, please refresh again");
+        }
+      } else {
+        reject("Existing plugin name or is not newest version");
+      }
+    }).catch(err => {
+      console.log("Plugin Publishing Error : ");
+      console.log(err);
+      reject(err);
+    });
   });
 };
 
@@ -445,4 +532,5 @@ export default {
   removePlugin,
   backupPlugin,
   restorePlugin,
+  publishPlugin
 };

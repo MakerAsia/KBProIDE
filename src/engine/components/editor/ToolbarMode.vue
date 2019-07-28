@@ -30,11 +30,11 @@
                                                         <div class="sneaker" v-if="selectingMode == index+1"
                                                              transition="fade-transition">
                                                             <v-layout row justify-space-between
-                                                                      class="ma-0 grey lighten-2">
+                                                                      class="ma-0 bg-success lighten-2">
                                                                 <v-flex xs2>
                                                                 </v-flex>
                                                                 <v-flex xs2 class="text-sm-right">
-                                                                    <v-icon color="green">check_circle</v-icon>
+                                                                    <i class="fa fa-check-circle fa-lg text-white"></i>
                                                                 </v-flex>
                                                             </v-layout>
                                                         </div>
@@ -61,8 +61,19 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="modeDialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click.native="changeEditorMode(selectingMode)">Change Editor
+                    <v-btn :disabled="this.selectingMode === this.$global.editor.mode"
+                           :class="{
+                              'btn-success': this.selectingMode !== this.$global.editor.mode,
+                              'disabled': this.selectingMode === this.$global.editor.mode
+                            }"
+                           flat
+                           @click.native="changeEditorMode(selectingMode)">
+                        Change Editor
+                    </v-btn>
+                    <v-btn class="btn-danger"
+                           flat
+                           @click.native="modeDialog = false">
+                        Close
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -73,6 +84,16 @@
 <script>
   // === UI Management ===
   export default {
+    created: function() {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.modeDialog === true) {
+            console.log("---------> Do something when detect escape / ToolbarMode");
+            this.modeDialog = false;
+          }
+        }
+      });
+    },
     data() {
       return {
         selectingMode: this.$global.editor.mode,
@@ -82,30 +103,30 @@
             desc: "Easy programming with blocks",
             icon: {
               src: "/static/icons/kid.png",
-              size: "96",
+              size: "96"
             },
-            mode: 1,
+            mode: 1
           },
           {
             name: "Student Level",
             desc: "Learning convert block to code",
             icon: {
               src: "/static/icons/nerd.png",
-              size: "96",
+              size: "96"
             },
-            mode: 2,
+            mode: 2
           },
           {
             name: "Programmer Level",
             desc: "Coding with pure editor",
             icon: {
               src: "/static/icons/programmer.png",
-              size: "96",
+              size: "96"
             },
-            mode: 3,
-          },
+            mode: 3
+          }
         ],
-        modeDialog: false,
+        modeDialog: false
       };
     },
     computed: {},
@@ -115,21 +136,21 @@
         this.modeDialog = false;
         if (mode >= 3) { // we ask a convert
           const res = await this.$dialog.confirm({
-                                                   text: "Do you want to clear and convert block to source code?",
-                                                   title: "Warning",
-                                                   actions: [
-                                                     {text: "Cancel", key: false},
-                                                     {text: "Clear & Convert", key: "convert"},
-                                                     {text: "Just switch", key: true}
-                                                   ],
-                                                 });
+            text: "Do you want to clear and convert block to source code?",
+            title: "Warning",
+            actions: [
+              { text: "Clear & Convert", key: "convert" },
+              { text: "Just switch", key: true },
+              { text: "Cancel", key: false, color: "red darken-1" }
+            ]
+          });
 
-          if(res === "convert"){ //convert from block
+          if (res === "convert") { //convert from block
             this.$global.editor.mode = mode;
             this.$nextTick(function() { //wait for element changed before fire event
               this.$global.$emit("editor-mode-change", mode, true);
             });
-          }else if(res === true){ //just switch
+          } else if (res === true) { //just switch
             this.$global.editor.mode = mode;
             this.$nextTick(function() { //wait for element changed before fire event
               this.$global.$emit("editor-mode-change", mode);
@@ -150,21 +171,24 @@
           });
         }
         //--tracking--//
-        this.$track.event("editor", "mode_change", {evLabel: "mode_" + mode, evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
-      },
+        this.$track.event("editor", "mode_change", { evLabel: "mode_" + mode, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+      }
     },
     watch: {
       "modeDialog": function(val) {
         if (val) {//on opening
           this.selectingMode = this.$global.editor.mode;
         }
-      },
-    },
+      }
+    }
   };
 </script>
 
 <style lang="stylus" scoped>
+    @import "../../../theme/component-design.styl"
+
     /*https://github.com/vuetifyjs/vuetify/issues/2111*/
+
     .dialog {
         z-index: inherit
     }

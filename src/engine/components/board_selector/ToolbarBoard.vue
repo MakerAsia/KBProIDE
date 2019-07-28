@@ -9,7 +9,7 @@
         <v-dialog v-model="boardDialog" max-width="80%" max-height="81%" scrollable persistent>
             <v-card>
                 <v-card-title>
-                    <span class="headline">Select board : {{getBoardByName(this.$global.board.board).title}}</span>
+                    <span class="headline">Select board : {{this.$global.board.board_info.title}}</span>
                     <v-spacer class="hidden-xs-only"></v-spacer>
                     <v-text-field
                             prepend-icon="search"
@@ -23,115 +23,147 @@
                             @click:clear="listAllBoard()"
                             @change="listAllBoard(searchText)"
                             v-model="searchText"></v-text-field>
+                    <v-menu bottom left>
+                        <template v-slot:activator="{ on }">
+                            <v-btn icon v-on="on">
+                                <v-icon>more_vert</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <!--v-list-tile @click="changeOrder('vendor')">
+                                <v-list-tile-title>Order by vendor</v-list-tile-title>
+                            </v-list-tile-->
+                            <v-list-tile @click="changeOrder('recommended')">
+                                <v-list-tile-title>Order by recommended</v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile @click="changeOrder('name')">
+                                <v-list-tile-title>Order by name</v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile @click="changeOrder('platform')">
+                                <v-list-tile-title>Order by platform</v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile @click="changeOrder('vendor')">
+                                <v-list-tile-title>Order by vendor</v-list-tile-title>
+                            </v-list-tile>
+                        </v-list>
+                    </v-menu>
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar>
                     <v-card-text>
-                        <v-subheader>
-                            Installed
-                        </v-subheader>
-                        <div>
-                            <v-container grid-list-xl fluid>
-                                <v-layout wrap>
-                                    <v-flex sm6 md4 v-for="(data) in localBoards" :key="data.name">
-                                        <v-hover>
-                                            <v-card slot-scope="{ hover }"
-                                                    :class="`elevation-${hover ? 12 : (selectingBoard == data.name? 8 : 2)}`">
-                                                <v-card-media @click.native="selectingBoard = data.name">
-                                                    <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1"
-                                                        color="primary">
-                                                        {{data.title}}
-                                                    </h4>
-                                                    <img class="board-image"
-                                                         :src="`file:///${boardImageDir}/${data.name}${data.image}`"/>
-                                                </v-card-media>
-                                                <v-card-text>
-                                                    <v-btn v-if="data.status != 'UPDATABLE'"
-                                                           icon fab absolute right bottom small dark
-                                                           class="red"
-                                                           style="bottom:25px; right:5px"
-                                                           @click="removeBoard(data.name)"
-                                                           :disabled="(data.status != 'READY' && data.status != 'INSTALLED') || $global.board.board == data.name"
-                                                    >
-                                                        <v-progress-circular
-                                                                v-if="data.status != 'READY'"
-                                                                indeterminate
-                                                                color="primary lighten-4"
+                        <div v-for="(boardData,index) in localBoards" :key="index">
+                            <v-subheader>
+                                {{humanize(index)}}
+                            </v-subheader>
+                            <div>
+                                <v-container grid-list-xl fluid>
+                                    <v-layout wrap>
+                                        <v-flex sm6 md4 v-for="data in boardData" :key="data.name">
+                                            <v-hover>
+                                                <v-card slot-scope="{ hover }"
+                                                        :class="`elevation-${hover ? 12 : (selectingBoard.name === data.name? 8 : 2)}`">
+                                                    <v-responsive @click.native="selectingBoard = data">
+                                                        <h4 v-if="selectingBoard.name === data.name" class="bg-success text-white pa-1 pl-2 mb-1">
+                                                            {{data.title}}
+                                                        </h4>
+                                                        <h4 v-else class="bg-gray-400 pa-1 pl-2 mb-1">
+                                                            {{data.title}}
+                                                        </h4>
+                                                        <img class="board-image"
+                                                             :src="`file:///${data.dir}/${data.image}`" alt="board image"/>
+                                                    </v-responsive>
+                                                    <v-card-text>
+                                                        <v-btn v-if="data.status !== 'UPDATABLE'"
+                                                               icon fab absolute right bottom small dark
+                                                               class="red"
+                                                               style="bottom:25px; right:5px"
+                                                               @click="removeBoard(data)"
+                                                               :disabled="(data.status !== 'READY' && data.status !== 'INSTALLED') || $global.board.board_info.name === data.name"
                                                         >
-                                                        </v-progress-circular>
-                                                        <v-icon v-else>fa-trash-o</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-else
-                                                           icon fab absolute right bottom small dark
-                                                           class="red"
-                                                           style="bottom:25px; right:5px"
-                                                           @click="updateBoard(data.name)"
-                                                    >
-                                                        <v-icon>fa-retweet</v-icon>
-                                                    </v-btn>
-                                                    <div class="board-desc-text"
-                                                         @click="e=>e.target.classList.toggle('board-desc-text-more')">
-                                                        <div class="board-desc-more">
-                                                            <v-icon>fa-chevron-down</v-icon>
-                                                        </div>
-                                                        {{data.description}}
-                                                    </div>
-
-                                                    <transition name="fade">
-                                                        <div v-if="selectingBoard == data.name"
-                                                             class="selected-board-icon">
-                                                            <div class="corner-icon">
-                                                                <v-icon size="70" color="light-green">
-                                                                    fa-check-circle-o
-                                                                </v-icon>
+                                                            <v-progress-circular
+                                                                    v-if="data.status !== 'READY'"
+                                                                    indeterminate
+                                                                    color="primary lighten-4"
+                                                            >
+                                                            </v-progress-circular>
+                                                            <v-icon v-else>fa-trash-o</v-icon>
+                                                        </v-btn>
+                                                        <v-btn v-else
+                                                               icon fab absolute right bottom small dark
+                                                               class="red"
+                                                               style="bottom:25px; right:5px"
+                                                               @click="updateBoard(data)"
+                                                        >
+                                                            <v-icon>fa-retweet</v-icon>
+                                                        </v-btn>
+                                                        <div class="board-desc-text"
+                                                             @click="e=>e.target.classList.toggle('board-desc-text-more')">
+                                                            <div class="board-desc-more">
+                                                                <v-icon>fa-chevron-down</v-icon>
                                                             </div>
-                                                            <div class="corner-select"></div>
+                                                            {{data.description}}
                                                         </div>
-                                                    </transition>
-                                                </v-card-text>
-                                                <v-divider></v-divider>
-                                                <p v-if="data.status != 'READY'" class="text-info-status">
-                                                    {{statusText}}</p>
-                                                <v-progress-linear
-                                                        v-if="data.status != 'READY'"
-                                                        height="2"
-                                                        style="position:absolute; margin-top: -2px;"
-                                                        color="primary"
-                                                        v-model="statusProgress"
-                                                        :indeterminate="data.status == 'DOWNLOAD'">
-                                                </v-progress-linear>
-                                                <v-card-actions>
-                                                    <span class="ml-2"><strong>{{data.version}}</strong></span>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn flat small color="primary" dark class="right pa-0 ma-0"
-                                                           style="min-width:40px" @click="openLink(data.website)"
-                                                           v-if="data.website">
-                                                        <v-icon>fa-link</v-icon>
-                                                    </v-btn>
-                                                    <v-btn flat small color="primary" dark class="right pa-0 ma-0"
-                                                           style="min-width:40px"
-                                                           @click="openLink('mailto:'+data.email)" v-if="data.email">
-                                                        <v-icon>fa-envelope-o</v-icon>
-                                                    </v-btn>
-                                                    <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5"
-                                                           style="min-width:40px" @click="openLink(data.git)"
-                                                           v-if="data.git">
-                                                        <v-icon>fa-github</v-icon>
-                                                    </v-btn>
-                                                </v-card-actions>
-                                            </v-card>
-                                        </v-hover>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
+
+                                                        <transition name="fade">
+                                                            <div v-if="selectingBoard.name === data.name"
+                                                                 class="selected-board-icon">
+                                                                <div class="corner-icon">
+                                                                    <v-icon size="70" color="light-green">
+                                                                        fa-check-circle-o
+                                                                    </v-icon>
+                                                                </div>
+                                                                <div class="corner-select"></div>
+                                                            </div>
+                                                        </transition>
+                                                    </v-card-text>
+                                                    <v-divider></v-divider>
+                                                    <p v-if="data.status !== 'READY'" class="text-info-status">
+                                                        {{statusText}}</p>
+                                                    <v-progress-linear
+                                                            v-if="data.status !== 'READY'"
+                                                            height="2"
+                                                            style="position:absolute; margin-top: -2px;"
+                                                            color="primary"
+                                                            v-model="statusProgress"
+                                                            :indeterminate="data.status === 'DOWNLOAD'">
+                                                    </v-progress-linear>
+                                                    <v-card-actions>
+                                                        <span class="ml-2"><strong>{{data.version}}</strong></span>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn flat small color="primary" dark class="right pa-0 ma-0"
+                                                               style="min-width:40px" @click="openLink(data.website)"
+                                                               v-if="data.website">
+                                                            <v-icon>fa-link</v-icon>
+                                                        </v-btn>
+                                                        <v-btn flat small color="primary" dark class="right pa-0 ma-0"
+                                                               style="min-width:40px"
+                                                               @click="openLink('mailto:'+data.email)" v-if="data.email">
+                                                            <v-icon>fa-envelope-o</v-icon>
+                                                        </v-btn>
+                                                        <v-btn flat small color="primary" dark class="right pa-0 ma-0 mr-5"
+                                                               style="min-width:40px" @click="openLink(data.git)"
+                                                               v-if="data.git">
+                                                            <v-icon>fa-github</v-icon>
+                                                        </v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-hover>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                                <!--v-divider></v-divider-->
+                            </div>
                         </div>
 
                         <v-divider></v-divider>
-                        <v-subheader>
+                        <h3 class="ml-2 mt-2">
                             Online available
-                        </v-subheader>
+                        </h3>
 
-                        <div>
+                        <div v-for="(boardData,name) in onlineBoards" :key="'online'+name">
+                            <v-subheader>
+                                {{humanize(name)}}
+                            </v-subheader>
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex v-if="isOnline() === false" xs12 md12 sm12 class="text-xs-center">
@@ -145,31 +177,30 @@
                                                 indeterminate
                                         ></v-progress-circular>
                                     </v-flex>
-                                    <v-flex v-else-if="onlineBoardStatus != 'wait'" sm6 md4
-                                            v-for="(data) in onlineBoards" :key="data.name">
-                                        <template v-if="data.status != 'INSTALLED'">
+                                    <v-flex v-else-if="onlineBoardStatus !== 'wait'" sm6 md4
+                                            v-for="data in boardData" :key="data.name">
+                                        <template v-if="data.status !== 'INSTALLED'">
                                             <v-card>
-                                                <v-card-media>
-                                                    <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1"
-                                                        color="primary">
+                                                <v-responsive>
+                                                    <h4 class="white--text pa-1 pl-2 primary darken-1 mb-1">
                                                         {{data.title}}
                                                     </h4>
                                                     <v-img contain v-if="data.image.startsWith('http') === true"
                                                            class="board-image" :src="data.image"/>
                                                     <v-img contain v-else class="board-image"
                                                            :src="`${data.git}raw/master/${data.image}`"/>
-                                                </v-card-media>
+                                                </v-responsive>
                                                 <v-card-text>
                                                     <v-btn
                                                             icon fab absolute right bottom small dark
                                                             style="bottom:25px; right:5px"
                                                             class="primary"
-                                                            :disabled="data.status != 'READY'"
-                                                            @click="installOnlineBoard(data.name)"
+                                                            :disabled="data.status !== 'READY'"
+                                                            @click="installOnlineBoard(data)"
                                                     >
-                                                        <v-icon v-if="data.status == 'READY'">fa-download</v-icon>
+                                                        <v-icon v-if="data.status === 'READY'">fa-download</v-icon>
                                                         <v-progress-circular
-                                                                v-else-if="data.status != 'READY'"
+                                                                v-else-if="data.status !== 'READY'"
                                                                 indeterminate
                                                                 color="primary lighten-4"
                                                         >
@@ -184,15 +215,15 @@
                                                     </div>
                                                 </v-card-text>
                                                 <v-divider></v-divider>
-                                                <p v-if="data.status != 'READY'" class="text-info-status">
+                                                <p v-if="data.status !== 'READY'" class="text-info-status">
                                                     {{statusText}}</p>
                                                 <v-progress-linear
-                                                        v-if="data.status != 'READY'"
+                                                        v-if="data.status !== 'READY'"
                                                         height="2"
                                                         style="position:absolute; margin-top: -2px;"
                                                         color="primary"
                                                         v-model="statusProgress"
-                                                        :indeterminate="data.status == 'DOWNLOAD'">
+                                                        :indeterminate="data.status === 'DOWNLOAD'">
                                                 </v-progress-linear>
                                                 <v-card-actions>
                                                     <span class="ml-2"><strong>{{data.version}}</strong></span>
@@ -224,11 +255,19 @@
                 </smooth-scrollbar>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="$global.setting.devMode == true" color="blue darken-1" flat
+                    <v-btn v-if="$global.setting.devMode == true" class="btn-primary" flat
                            @click.native="publishNewBoard">Publish your board
                     </v-btn>
-                    <v-btn color="blue darken-1" flat @click.native="boardDialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="changeBoard(selectingBoard)">Change Board</v-btn>
+                    <v-btn :class="{
+                                'btn-gray-400': this.$global.board.board_info.name === this.selectingBoard.name,
+                                'btn-success': this.$global.board.board_info.name !== this.selectingBoard.name
+                            }"
+                           flat
+                           @click="changeBoard(selectingBoard)"
+                           :disabled="this.$global.board.board_info.name === this.selectingBoard.name">
+                        Change Board
+                    </v-btn>
+                    <v-btn class="btn-danger" flat @click.native="boardDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -237,70 +276,93 @@
 
 <script>
 
-  const {shell} = require("electron");
+  const { shell } = require("electron");
   const fs = require("fs");
-  const request = require("request-promise");
   import bm from "@/engine/BoardManager";
   import util from "@/engine/utils";
   import {setTimeout} from "timers";
 
-  var mother = null;
+  let mother = null;
   export default {
+    created: function() {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (this.boardDialog === true) {
+            console.log("---------> Do something when detect escape / ToolbarBoard");
+            this.boardDialog = false;
+          }
+        }
+      });
+    },
     data() {
       return {
-        boardImageDir: util.boardDir,
-        selectingBoard: this.$global.board.board,
+        selectingBoard: this.$global.board.board_info,
         boardDialog: false,
         searchText: "",
-        isInstalling: false,
-
-        installedBoard: bm.boards().map(obj => {
-          obj.status = "READY";
-          return obj;
-        }),
-        localBoards: bm.boards().map(obj => {
-          obj.status = "READY";
-          return obj;
-        }),
+        boardOrderBy : this.$global.board_selector.sortby,
+        installedBoard: [],
+        localBoards: {},
+        onlineBoards: {},
         onlineBoardStatus: "wait",
-        onlineBoardPage: 0,
-        onlineBoards: [],
         statusText: "",
         statusProgress: 0,
-
-        addBoardDialog: false,
+        //--- feature use ---//
+        //TODO : add pagination to board selector
+        onlineBoardPage: 0,
       };
     },
     methods: {
-      getBoardByName(name) {
-        return this.installedBoard.find(obj => { return obj.name == name;});
+      humanize : util.humanize,
+      changeOrder(orderName){
+        this.boardOrderBy = orderName;
+        this.listAllBoard(this.searchText);
+        this.$global.board_selector.sortby = orderName;
       },
-      getOnlineBoardByName(name) {
-        return this.onlineBoards.find(obj => { return obj.name == name;});
+      orderBoardBy(obj,orderBy,defaultName){
+        let sorted = { };
+        if(orderBy === "recommended"){
+          sorted["Recommended"] = [];
+          obj.forEach(el=>{
+            let key = (el.title.toLowerCase().includes("kidbright") || el.recommended === "ilovekbide")? "Recommended" : defaultName;
+            if(!(key in sorted)){
+              sorted[key] = [];
+            }
+            sorted[key].push(el);
+          });
+          if(sorted["Recommended"].length === 0){
+            delete sorted["Recommended"];
+          }
+          return sorted;
+        }else if(orderBy === "name"){
+          sorted[defaultName] = obj;
+          sorted[defaultName].sort((a,b)=> a.title.localeCompare(b.title));
+          return sorted;
+        }else if(orderBy === "platform"){
+          for(let i in obj){
+            let board = obj[i];
+            if(!(board.platform in sorted)){
+              sorted[board.platform] = [];
+            }
+            sorted[board.platform].push(board);
+          }
+          Object.keys(sorted).forEach(el=>sorted[el].sort((a,b)=> a.title.localeCompare(b.title)));
+          return sorted;
+        }else if(orderBy === "vendor"){
+          for(let i in obj){
+            let board = obj[i];
+            if(!board.vendor){
+              board.vendor = "Others";
+            }
+            if(!(board.vendor in sorted)){
+              sorted[board.vendor] = [];
+            }
+            sorted[board.vendor].push(board);
+          }
+          return sorted;
+        }
       },
       openLink(url) {
         shell.openExternal(url);
-      },
-      changeBoard: async function(boardname) {
-        this.boardDialog = false;
-        const res = await this.$dialog.confirm({
-                                                 text: "Changing board will clear your workspace. please confirm.",
-                                                 title: "Warning",
-                                                 actions: [
-                                                   {text: "Cancel", key: false},
-                                                   {text: "Clear", key: true},
-                                                 ],
-                                               });
-        if (res === true) {
-          this.$global.board.board_info = bm.boards().find(obj => obj.name === boardname);
-          this.$global.board.board = boardname;
-          this.$global.editor.blockCode = "";
-          this.$global.editor.rawCode = "";
-          this.$global.$emit("board-change", this.$global.board.board_info);
-          this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
-          //--tracking--//
-          this.$track.event("board", "change", {evLabel: boardname, evValue: 1,clientID : this.$track.clientID}).catch(err=>{ console.log(err)});
-        }
       },
       isOnline() {
         return window.navigator.onLine;
@@ -316,7 +378,7 @@
           mother.onlineBoardPage = res.end;
           let filtered = [];
           res.boards.forEach(obj => {
-            let f = mother.installedBoard.find(elm => elm.name == obj.name);
+            let f = mother.installedBoard.find(elm => elm.name === obj.name);
             if (f) {
               if (obj.version > f.version) {
                 f.status = "UPDATABLE";
@@ -326,7 +388,7 @@
               filtered.push(obj);
             }
           });
-          mother.onlineBoards = filtered;
+          mother.onlineBoards = this.orderBoardBy(filtered,this.boardOrderBy,"Online Available");
           mother.onlineBoardStatus = "OK";
         }).catch(err => {
           mother.onlineBoardStatus = "ERROR";
@@ -337,89 +399,112 @@
           obj.status = "READY";
           return obj;
         });
-        this.localBoards = [];
-        if (name != "") {
-          this.localBoards = this.installedBoard.filter(obj => {return obj.name.startsWith(name);});
+        this.localBoards = {};
+        if (name !== "") {
+          let filtered = this.installedBoard.filter(obj => {return obj.name.startsWith(name);});
+          this.localBoards = this.orderBoardBy(filtered,this.orderBoardBy,"Installed");
         } else {
-          this.localBoards = this.installedBoard;
+          this.localBoards = this.orderBoardBy(this.installedBoard,this.boardOrderBy,"Installed");
         }
       },
-      installOnlineBoard: async function(name) {
+      changeBoard: async function(boardInfo) {
+        this.boardDialog = false;
         const res = await this.$dialog.confirm({
-                                                 text: "Do you really want to install " + name + "?",
+                                                 text: "Changing board will clear your workspace. please confirm.",
                                                  title: "Warning",
+                                                 actions: [
+                                                   { text: "Confirm", key: "confirm" },
+                                                   { text: "Cancel", key: "cancel", color: "red darken-1" }
+                                                 ]
                                                });
+        if (res) {
+          if (res === "confirm") {
+            this.$global.board.board_info = bm.boards().find(obj => obj.name === boardInfo.name);
+            this.$global.board.board = boardInfo.name;
+            this.$global.editor.blockCode = "";
+            this.$global.editor.rawCode = "";
+            this.$global.$emit("board-change", this.$global.board.board_info);
+            this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //change with convert code
+            //--tracking--//
+            this.$track.event("board", "change", { evLabel: boardInfo.name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+          }
+        }
+      },
+      installOnlineBoard: async function(boardInfo) {
+        const res = await this.$dialog.confirm({
+          text: "Do you really want to install " + boardInfo.title + "?",
+          title: "Warning"
+        });
         if (res === true) {
-          let b = this.getOnlineBoardByName(name);
-          b.status = "DOWNLOAD";
+          boardInfo.status = "DOWNLOAD";
           this.statusText = "Downloading";
           this.statusProgress = 0;
-          bm.installBoardByName(name, progress => {
+          bm.installOnlineBoard(boardInfo, progress => {
             //{process : 'board', status : 'DOWNLOAD', state:state }
             if (progress.status === "DOWNLOAD") { //when download just show to text
               this.statusText =
-                  `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
-                      1000.0 / 1000.0).toFixed(2)}Mbps`;
+                `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
+                  1000.0 / 1000.0).toFixed(2)}Mbps`;
             } else if (progress.status === "UNZIP") {
-              b.status = "UNZIP";
+              boardInfo.status = "UNZIP";
               this.statusText = `Unzip file ${progress.state.percentage}%`;
               this.statusProgress = progress.state.percentage;
             }
           }).then(() => { //install success
-            b.status = "INSTALLED";
+            boardInfo.status = "INSTALLED";
             this.statusText = "";
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "install", { evLabel: name, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+            mother.$track.event("board", "install", { evLabel: boardInfo.name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
             this.statusText = `Error : ${err}`;
-            b.status = "ERROR";
+            boardInfo.status = "ERROR";
             setTimeout(() => {
-              b.status = "READY";
+              boardInfo.status = "READY";
               this.statusText = "";
             }, 5000);
           });
         }
       },
-      removeBoard: async function(board) {
+      removeBoard: async function(boardInfo) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you really want to remove " + board + "?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you really want to remove " + boardInfo.title + "?",
+          title: "Warning"
+        });
         if (res === true) {
-          console.log("removing board : " + board);
-          bm.removeBoard(board).then(() => {
+          console.log("removing board : " + boardInfo.name);
+          bm.removeBoard(boardInfo).then(() => {
             bm.clearListedBoard();
             mother.listAllBoard();
             //--tracking--//
-            mother.$track.event("board", "remove", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+            mother.$track.event("board", "remove", { evLabel: boardInfo.name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
             console.log("Error : cannot remove board");
             console.log(err);
           });
         }
       },
-      updateBoard: async function(board) {
+      updateBoard: async function(boardInfo) {
         const res = await this.$dialog.confirm({
-                                                 text: "Do you want to update " + board + " board?",
-                                                 title: "Warning",
-                                               });
+          text: "Do you want to update " + boardInfo.title,
+          title: "Warning"
+        });
         if (res === true) {
-          var b = this.getBoardByName(board);
-          var st = b.status;
-          bm.backupBoard(board).then(() => {
-            console.log("update board : " + board);
+          let b = boardInfo;
+          let st = b.status;
+          bm.backupBoard(boardInfo).then(() => {
+            console.log("update board : " + boardInfo.name);
             b.status = "DOWNLOAD";
             this.statusText = "Downloading";
             this.statusProgress = 0;
-            return bm.installBoardByName(board, progress => {
+            return bm.installOnlineBoard(boardInfo, progress => {
               //{process : 'board', status : 'DOWNLOAD', state:state }
-              if (progress.status == "DOWNLOAD") { //when download just show to text
+              if (progress.status === "DOWNLOAD") { //when download just show to text
                 this.statusText =
-                    `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
-                        1000.0 / 1000.0).toFixed(2)}Mbps`;
-              } else if (progress.status == "UNZIP") {
+                  `Downloading ... ${util.humanFileSize(progress.state.size.transferred)} at ${(progress.state.speed /
+                    1000.0 / 1000.0).toFixed(2)}Mbps`;
+              } else if (progress.status === "UNZIP") {
                 b.status = "UNZIP";
                 this.statusText = `Unzip file ${progress.state.percentage}%`;
                 this.statusProgress = progress.state.percentage;
@@ -428,19 +513,19 @@
           }).then(() => { //install success
             b.status = "READY";
             this.statusText = "";
-            bm.removeBoard(board + "-backup-board").then(() => {
+            bm.removeBackupBoard(boardInfo).then(() => {
               bm.clearListedBoard();
-              mother.localBoards = [];
+              mother.localBoards = {};
               setTimeout(() => {
                 this.listAllBoard();
               }, 1000);
               //--tracking--//
-              mother.$track.event("board", "update", { evLabel: board, evValue: 1, clientID : this.$track.clientID }).catch(err=>{ console.log(err)});
+              mother.$track.event("board", "update", { evLabel: boardInfo.name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
             });
           }).catch(err => {
             this.statusText = `Error : ${err}`;
             b.status = "ERROR";
-            bm.restoreBoard(board).then(() => {
+            bm.restoreBoard(boardInfo).then(() => {
 
             });
             setTimeout(() => {
@@ -452,46 +537,25 @@
       },
       publishNewBoard: async function() {
         let res = await this.$dialog.prompt({
-                                              text: "https://github.com/user/repo/",
-                                              title: "Input Board Repository",
-                                            });
-        var json = null;
-        if ((/^http(s)?:\/\/(www\.)?github\.com\/[\-0-9A-Za-z]+\/[\-0-9A-Za-z]+\/$/g).test(res)) {
-          this.$dialog.notify.info("Please wait...");
-          request(res + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
-          .then(res => {
-            json = eval(res);
-            if (json.name) { //search if existing
-              return Vue.prototype.$db.collection("boards").where("name", "==", json.name) //search start with
-              .get();
-            } else {
-              return false;
-            }
-          }).then(res => {
-            if (res && res.size >= 1) {
-              return json.version > res.docs[0].data().version;
-            } else {
-              return true;
-            }
-          }).then(res => {
-            if (res) {
-              Vue.prototype.$db.collection("boards").doc(json.name).set(json);
-              if (res) {
-                this.$dialog.notify.success("Added your board success, please refresh again");
-              }
-            } else {
-              this.$dialog.notify.error("Existing board name or is not newest version");
-              return false;
-            }
-          }).catch(err => {
-            console.log("request error -----");
-            console.log(err);
-            this.$dialog.notify.error("Error something went wrong, please check the log");
-          });
-        } else {
-          this.$dialog.notify.error("Github link format error. Please check your link again");
+          text: "https://github.com/user/repo/",
+          title: "Input Board Repository",
+        });
+        if (res === false){ // user cancel
+          return;
         }
-      },
+        this.$dialog.notify.info("Please wait...");
+        bm.publishBoard(res)
+        .then(_=>{
+            this.$dialog.notify.success("Added your board success, please refresh again");
+        }).catch(err=>{
+          if(typeof err === "string"){
+            this.$dialog.notify.error(err);
+          }else{
+            this.$dialog.notify.error("Error something went wrong, please check the log");
+          }
+          console.error(err);
+        });
+      }
     },
     mounted() {
       mother = this;
@@ -502,14 +566,16 @@
     watch: {
       boardDialog: function(val) {
         if (val) {//on opening
-          this.selectingBoard = this.$global.board.board;
-          this.listOnlineBoard();
+          this.selectingBoard = this.$global.board.board_info;
+          this.listAllBoard();
         }
-      },
-    },
+      }
+    }
   };
 </script>
-<style>
+<style lang="stylus">
+    @import "../../../theme/component-design.styl"
+
     .text-info-status {
         position: absolute;
         font-size: 12px;
