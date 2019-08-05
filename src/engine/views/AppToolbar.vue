@@ -67,7 +67,7 @@
     <v-divider class="mx-1" inset vertical></v-divider>
 
     <v-btn icon @click="handleFullScreen()">
-      <img src="/static/icons/fullscreen.png" alt="" style="width: 32px; height: 32px">
+      <v-icon>fullscreen</v-icon>
     </v-btn>
     <notification></notification>
   </v-toolbar>
