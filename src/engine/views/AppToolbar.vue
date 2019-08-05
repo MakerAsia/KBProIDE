@@ -67,7 +67,7 @@
     <v-divider class="mx-1" inset vertical></v-divider>
 
     <v-btn icon @click="handleFullScreen()">
-      <v-icon>fullscreen</v-icon>
+      <img src="/static/icons/fullscreen.png" alt="" style="width: 32px; height: 32px">
     </v-btn>
     <notification></notification>
   </v-toolbar>
@@ -86,18 +86,18 @@ import notification from '@/engine/views/Notification';
 //var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.umd.js');
 //Vue.use(vv);
 
-export default {  
+export default {
   name: 'app-toolbar',
   components: {
     notification,
     AsyncComponent
   },
-  data: () => ({    
+  data: () => ({
     toolbars : cm.listToolbar,
     actionbar : cm.listActionbar,
   }),
   created(){
-    
+
   },
   computed: {
     toolbarColor () {
