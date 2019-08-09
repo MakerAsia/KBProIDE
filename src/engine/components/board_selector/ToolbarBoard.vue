@@ -90,7 +90,7 @@
                                                         </v-btn>
                                                         <v-btn v-else
                                                                icon fab absolute right bottom small dark
-                                                               class="red"
+                                                               class="btn-success"
                                                                style="bottom:25px; right:5px"
                                                                @click="updateBoard(data)"
                                                         >

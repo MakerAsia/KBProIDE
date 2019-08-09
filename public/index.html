@@ -5,9 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>KBIDE </title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CMaterial+Icons' rel="stylesheet">
+    <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CMaterial+Icons' rel="stylesheet"> -->
+
+    <!-- Code snippet to speed up Google Fonts rendering: googlefonts.3perf.com -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" as="fetch" crossorigin="anonymous">
+    <script type="text/javascript">
+      !function(e,n,t){"use strict";var o="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700",r="__3perf_googleFonts_2c2c0";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage);
+    </script>
+    <!-- End of code snippet for Google Fonts -->
+
+
     <script src="/static/vue.js"></script>
-    <script src="https://cdn.bootcss.com/echarts/4.0.4/echarts-en.min.js"></script>
+    <script src="/static/echarts-en.min.js"></script>
     <script src="/static/js/firebase-app.js"></script>
     <script src="/static/js/firebase-auth.js"></script>
     <script src="/static/js/firebase-firestore.js"></script>
@@ -33,16 +44,16 @@
     <script src="static/js/blockly/blockly_compressed.js"></script>
     <script src="static/js/blockly/blocks_compressed.js"></script>
     <script src="static/js/blockly/javascript_compressed.js"></script>
-    
+
     <script src="static/blockly/kidbright/blocks.js"></script>
     <script src="static/blockly/kidbright/blocks-iot.js"></script>
     <script src="static/blockly/kidbright/blocks-math.js"></script>
     <script src="static/blockly/kidbright/generators.js"></script>
     <script src="static/blockly/kidbright/generators-iot.js"></script>
-    <script src="static/blockly/kidbright/generators-math.js"></script>	
+    <script src="static/blockly/kidbright/generators-math.js"></script>
     -->
-  
-    <link rel="shortcut icon" href="/static/m.png" type="image/x-icon">    
+
+    <link rel="shortcut icon" href="/static/m.png" type="image/x-icon">
   </head>
   <body>
     <noscript>

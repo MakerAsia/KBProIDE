@@ -6,6 +6,7 @@ import store from "./store";
 import "./registerServiceWorker";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "font-awesome/css/font-awesome.css";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import cm from "@/engine/ComponentManager";
 import bm from "@/engine/BoardManager";
