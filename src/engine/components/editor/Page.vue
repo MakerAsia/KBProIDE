@@ -476,7 +476,7 @@
           }, 300);
         } else {
           //------ generate template here ------//
-          const boardDirectory = `/${this.$global.board.board_info.dir}`;
+          const boardDirectory = `${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
           let codegen = null;
           if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
