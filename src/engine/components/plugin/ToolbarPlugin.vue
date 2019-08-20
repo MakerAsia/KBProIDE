@@ -336,7 +336,7 @@
         if (res === true) {
           let p = this.getPluginByName(name);
           let st = p.status;
-          pm.backupPlugin(p.category).then(() => {
+          pm.backupPlugin(p).then(() => {
             console.log("update plugin : " + name);
             p.status = "DOWNLOAD";
             this.statusText = "Downloading";
@@ -360,7 +360,7 @@
             //install success
             p.status = "READY";
             this.statusText = "";
-            pm.removePlugin(p.category, true).then(() => {
+            pm.removePlugin(p, true).then(() => {
               this.$dialog.notify.info("Update plugin success");
               this.listAllPlugins();
               setTimeout(() => {
@@ -380,7 +380,7 @@
               p.status = st;
               this.statusText = "";
             }, 5000);
-            pm.restorePlugin(p.category).then(() => {});
+            pm.restorePlugin(p).then(() => {});
           });
         }
       },
