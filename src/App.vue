@@ -243,7 +243,7 @@
         electron.shell.openItem(util.platformDir);
       });
       electron.ipcRenderer.on("file-plugin-folder", () => {
-        electron.shell.openItem(util.boardDir + "/" + window.getApp.$global.board.board + "/plugin");
+        electron.shell.openItem(util.pluginDir);
       });
       electron.ipcRenderer.on("help-tour", () => {
         this.$global.setting.firstUse = true;
