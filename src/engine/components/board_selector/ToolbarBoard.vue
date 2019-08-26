@@ -9,7 +9,7 @@
         <v-dialog v-model="boardDialog" max-width="80%" max-height="81%" scrollable persistent>
             <v-card>
                 <v-card-title>
-                    <span class="headline">Select board : {{this.$global.board.board_info.title}}</span>
+                    <span class="headline">Current board : {{this.$global.board.board_info.title}}</span>
                     <v-spacer class="hidden-xs-only"></v-spacer>
                     <v-text-field
                             prepend-icon="search"
@@ -58,7 +58,7 @@
                             <div>
                                 <v-container grid-list-xl fluid>
                                     <v-layout wrap>
-                                        <v-flex sm6 md4 v-for="data in boardData" :key="data.name">
+                                        <v-flex sm6 md4 lg3 v-for="data in boardData" :key="data.name">
                                             <v-hover>
                                                 <v-card slot-scope="{ hover }"
                                                         :class="`elevation-${hover ? 12 : (selectingBoard.name === data.name? 8 : 2)}`">
