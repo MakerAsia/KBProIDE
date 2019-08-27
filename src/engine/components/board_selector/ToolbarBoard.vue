@@ -72,13 +72,7 @@
               <div>
                 <v-container grid-list-xl fluid>
                   <v-layout wrap>
-                    <v-flex
-                      sm6
-                      md4
-                      lg3
-                      v-for="data in boardData"
-                      :key="data.name"
-                    >
+                    <v-flex sm6 md4 lg3 v-for="data in boardData" :key="data.name">
                       <v-hover>
                         <v-card
                           slot-scope="{ hover }"
@@ -283,13 +277,7 @@
                       indeterminate
                     ></v-progress-circular>
                   </v-flex>
-                  <v-flex
-                    v-else-if="onlineBoardStatus !== 'wait'"
-                    sm6
-                    md4
-                    v-for="data in boardData"
-                    :key="data.name"
-                  >
+                  <v-flex sm6 md4 lg3 v-else-if="onlineBoardStatus !== 'wait'" v-for="data in boardData" :key="data.name">
                     <template v-if="data.status !== 'INSTALLED'">
                       <v-card>
                         <v-responsive>
