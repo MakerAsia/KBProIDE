@@ -74,7 +74,7 @@
                                             <template v-else>
                                                 <v-btn
                                                         icon fab small dark
-                                                        class="red"
+                                                        class="green"
                                                         @click="updatePlugin(data.category.name)"
                                                 >
                                                     <v-icon>fa-retweet</v-icon>
