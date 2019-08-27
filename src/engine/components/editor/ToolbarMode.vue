@@ -4,12 +4,12 @@
             <v-btn color="primary darken-2" slot="activator" icon @click="modeDialog = !modeDialog">
                 <v-icon dark>fa-users</v-icon>
             </v-btn>
-            <span>User Level</span>
+            <span>Programming Mode</span>
         </v-tooltip>
         <v-dialog v-model="modeDialog" max-width="800px" persistent>
             <v-card>
                 <v-card-title>
-                    <span class="headline">Select programming level</span>
+                    <span class="headline">Select programming mode</span>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
@@ -99,28 +99,28 @@
         selectingMode: this.$global.editor.mode,
         modes: [
           {
-            name: "Kid Level",
+            name: "Block programming",
             desc: "Easy programming with blocks",
             icon: {
-              src: "/static/icons/kid.png",
+              src: "/static/icons/jigsaw_128_wbg.png",
               size: "96"
             },
             mode: 1
           },
           {
-            name: "Student Level",
+            name: "Dual mode (Block & C/C++)",
             desc: "Learning convert block to code",
             icon: {
-              src: "/static/icons/nerd.png",
+              src: "/static/icons/dual2_128_wbg.png",
               size: "96"
             },
             mode: 2
           },
           {
-            name: "Programmer Level",
-            desc: "Coding with pure editor",
+            name: "Text-based programming",
+            desc: "Coding with C/C++ language",
             icon: {
-              src: "/static/icons/programmer.png",
+              src: "/static/icons/source-code2_128_wbg.png",
               size: "96"
             },
             mode: 3

@@ -38,76 +38,7 @@
                             Plugin Examples
                         </v-subheader>
                         <div>
-                            <v-list>
-                                <v-list-group
-                                        v-for="(item,index) in pluginInfo"
-                                        :key="index"
-                                        v-if="item.examples && item.examples.length > 0"
-                                >
-                                    <template v-slot:activator>
-                                        <v-list-tile
-                                                avatar
-                                                @click=""
-                                        >
-                                            <v-list-tile-avatar>
-                                                <template v-if="item.category.image">
-                                                    <img v-if="item.category.image.startsWith('http') === true"
-                                                         :src="item.category.image"/>
-                                                    <img v-else
-                                                         :src="`file:///${item.directory}/${item.category.image}`"/>
-                                                </template>
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="item.category.title"></v-list-tile-title>
-                                            </v-list-tile-content>
-                                        </v-list-tile>
-                                    </template>
-
-                                    <v-expansion-panel popout>
-                                        <v-expansion-panel-content
-                                                v-for="(example,index) in item.examples"
-                                                :key="index"
-                                        >
-                                            <template v-slot:header>
-                                                <div>
-                                                    <v-layout row wrap align-center>
-                                                        <v-flex xs12 sm3>
-                                                            <v-icon>fa-play</v-icon>&nbsp;&nbsp;{{example.folder}}
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.bly'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openExample('block',example.dir + '/' + example.files.find(obj=>obj.endsWith('.bly')))">
-                                                                <v-icon>fa-puzzle-piece</v-icon>
-                                                                &nbsp;&nbsp;Open Block
-                                                            </v-btn>
-                                                            <v-btn
-                                                                    v-if="example.files.find(obj=>obj.endsWith('.ino'))"
-                                                                    small
-                                                                    color="primary"
-                                                                    @click.stop=""
-                                                                    @click="openExample('code',example.dir + '/' + example.files.find(obj=>obj.endsWith('.ino')))">
-                                                                <v-icon>fa-code</v-icon>&nbsp;&nbsp;Open Code
-                                                            </v-btn>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </div>
-                                            </template>
-                                            <v-card>
-                                                <v-card-text v-if="example.files.find(obj=>obj.endsWith('.md'))">
-                                                    <div class="vue-markdown">
-                                                        <vue-markdown v-on:rendered="editTag">{{getMarkdown(example)}}
-                                                        </vue-markdown>
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
-                                </v-list-group>
-                            </v-list>
+                            <tree-menu2 :nodes="pluginInfo" v-on:open="openExample"></tree-menu2>
                         </div>
                     </v-card-text>
                 </smooth-scrollbar>
@@ -124,14 +55,15 @@
   import {remote} from "electron";
   import util from "@/engine/utils";
   import TreeMenu from "@/engine/views/widgets/list/TreeMenu";
-
+  import TreeMenu2 from "@/engine/views/widgets/list/TreeMenu2";
   let mother = null;
   const fs = require("fs");
   const path = require("path");
   export default {
     name: "example-dialog",
     components: {
-      "tree-menu": TreeMenu
+      "tree-menu": TreeMenu,
+      "tree-menu2": TreeMenu2
     },
     data() {
       return {

@@ -669,9 +669,30 @@ export default {
           let text = myself.$global.editor.blockCode;
           xml = Blockly.Xml.textToDom(text);
         } else {
+
           let blocks = loadBlock(myself.$global.board.board_info);
           if (blocks.initial_blocks) {
             xml = Blockly.Xml.textToDom(blocks.initial_blocks);
+
+          //------ generate template here ------//
+          const boardDirectory = `${this.$global.board.board_info.dir}`;
+          const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
+          let codegen = null;
+          if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
+            codegen = util.requireFunc(`${boardDirectory}/codegen`);
+          } else {
+            codegen = util.requireFunc(`${platformDir}/codegen`);
+          }
+          if (convert) {
+            const respCode = codegen.generate(this.$global.editor.rawCode);
+            myself.$global.editor.sourceCode = respCode.sourceCode;
+          } else if (create_new) {
+            const codeRes = codegen.generate("");
+            myself.$global.editor.sourceCode = codeRes.sourceCode;
+          } else {
+            //if user not convert just switch and leave create new (เอาไว้ให้ user กด new เองค่ะ
+            //this.$global.editor.sourceCode = this.$global.editor.sourceCode;
+
           }
         }
         myself.workspace.clear();
