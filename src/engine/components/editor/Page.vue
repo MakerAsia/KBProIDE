@@ -681,10 +681,8 @@ export default {
         }, 300);
       } else {
         //------ generate template here ------//
-        const boardDirectory = `/${this.$global.board.board_info.dir}`;
-        const platformDir = `${util.platformDir}/${
-          this.$global.board.board_info.platform
-        }`;
+        const boardDirectory = `${this.$global.board.board_info.dir}`;
+        const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
         let codegen = null;
         if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
           codegen = util.requireFunc(`${boardDirectory}/codegen`);
@@ -712,10 +710,7 @@ export default {
     },
     onBoardChange: function(boardInfo) {
       //reload plugin
-      this.$global.plugin.pluginInfo = plug.loadPlugin(
-        this.$global.board.board_info
-      );
-
+      this.$global.plugin.pluginInfo = plug.loadPlugin(this.$global.board.board_info);
       initBlockly(boardInfo);
       let blocks = loadBlock(boardInfo);
       let stringBlock = "";
@@ -736,6 +731,13 @@ export default {
       // TODO : render platform block
       this.toolbox = `<xml id="toolbox" style="display: none">${stringBlock}</xml>`;
       this.workspace.updateToolbox(this.toolbox);
+      //============== render mode 3 source code
+      const boardDirectory = `${this.$global.board.board_info.dir}`;
+      const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
+      let codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
+      const codeRes = codegen.generate("");
+      myself.$global.editor.sourceCode = codeRes.sourceCode;
+      //==============
     },
     onThemeChange(theme) {
       document.body.getElementsByClassName(

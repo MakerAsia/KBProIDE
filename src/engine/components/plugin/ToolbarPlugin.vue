@@ -20,6 +20,47 @@
                             hide-details
                             :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
                             v-model="searchText"></v-text-field>
+
+                        <v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
+                            <v-btn slot="activator" icon> <v-icon>filter_list</v-icon> </v-btn>
+                            <v-card class="filter" max-width=350>
+                                <v-card-title class="subheading">Filter</v-card-title>
+                                <v-divider></v-divider>
+                                <v-card-text>
+                                    <!-- Categorie -->
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>Categories</v-list-tile-title>
+                                        <v-list-tile-action>
+                                            <v-btn flat small color="primary">select all</v-btn>
+                                            <v-btn flat small color="primary">select none</v-btn>
+                                        </v-list-tile-action>
+                                        <v-list-tile-action>
+                                            <v-item-group multiple v-model="filter.categories.selected">
+                                                <v-item v-for="(data,index) in filter.categories.name" :key="index">
+                                                    <v-chip
+                                                            slot-scope="{active,toggle}"
+                                                            :selected="active"
+                                                            @click="toggle"
+                                                            :color="active ? 'primary' : ''"
+                                                            :text-color="active ? 'white' : ''"
+                                                    >
+                                                        {{data}}
+                                                    </v-chip>
+                                                </v-item>
+                                            </v-item-group>
+                                        </v-list-tile-action>
+                                    </v-list-tile-content>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn color="primary" flat @click="">Cancella</v-btn>
+                                    <v-btn color="primary" @click="">Salva</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-menu>
+
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar>
@@ -202,7 +243,25 @@
         onlinePluginPage: 0,
         onlinePlugin: [],
         statusText: "",
-        statusProgress: 0
+        statusProgress: 0,
+
+        filter : {
+          menu: false,
+          categories : {
+            selected : [0,1,2,3,4,5,6,7,8],
+            name : [
+              "Display",
+              "Communication",
+              "Signal Input/Output",
+              "Sensors",
+              "Device Control",
+              "Timing",
+              "Data Storage",
+              "Data Processing",
+              "Other"
+            ]
+          }
+        },
       };
     },
     methods: {

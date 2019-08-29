@@ -135,7 +135,7 @@
         console.log("editor change mode to : " + mode);
         this.modeDialog = false;
         if (mode >= 3) { // we ask a convert
-          const res = await this.$dialog.confirm({
+          /*const res = await this.$dialog.confirm({
             text: "Do you want to clear and convert block to source code?",
             title: "Warning",
             actions: [
@@ -143,8 +143,8 @@
               { text: "Just switch", key: true },
               { text: "Cancel", key: false, color: "red darken-1" }
             ]
-          });
-
+          });*/
+          let res = true; //force just switch
           if (res === "convert") { //convert from block
             this.$global.editor.mode = mode;
             this.$nextTick(function() { //wait for element changed before fire event
