@@ -19,48 +19,61 @@
                             clearable
                             hide-details
                             :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
+                            @click:append-outer="listAllPlugins(searchText)"
+                            @click:clear="listAllPlugins()"
+                            @change="listAllPlugins(searchText)"
                             v-model="searchText"></v-text-field>
-
-                        <v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
-                            <v-btn slot="activator" icon> <v-icon>filter_list</v-icon> </v-btn>
-                            <v-card class="filter" max-width=350>
-                                <v-card-title class="subheading">Filter</v-card-title>
+                    <!--v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
+                        <v-btn slot="activator" icon> <v-icon>filter_list</v-icon> </v-btn>
+                        <v-card class="filter" max-width=350>
+                            <v-card-title class="subheading">Filter</v-card-title>
+                            <v-divider></v-divider>
+                            <v-card-text>
+                                <v-list-tile-content> TODO : implement user auth to push new plugin and plugin like system
+                                    <v-list-tile-title>Sort</v-list-tile-title>
+                                    <v-list-tile-action>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-combobox
+                                                    v-model="filter.order.sortby"
+                                                    :items="filter.order.init_orders"
+                                                    label="Select sport type"
+                                            ></v-combobox>
+                                        </v-flex>
+                                    </v-list-tile-action>
+                                </v-list-tile-content>
                                 <v-divider></v-divider>
-                                <v-card-text>
-                                    <!-- Categorie -->
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>Categories</v-list-tile-title>
-                                        <v-list-tile-action>
-                                            <v-btn flat small color="primary">select all</v-btn>
-                                            <v-btn flat small color="primary">select none</v-btn>
-                                        </v-list-tile-action>
-                                        <v-list-tile-action>
-                                            <v-item-group multiple v-model="filter.categories.selected">
-                                                <v-item v-for="(data,index) in filter.categories.name" :key="index">
-                                                    <v-chip
-                                                            slot-scope="{active,toggle}"
-                                                            :selected="active"
-                                                            @click="toggle"
-                                                            :color="active ? 'primary' : ''"
-                                                            :text-color="active ? 'white' : ''"
-                                                    >
-                                                        {{data}}
-                                                    </v-chip>
-                                                </v-item>
-                                            </v-item-group>
-                                        </v-list-tile-action>
-                                    </v-list-tile-content>
-                                </v-card-text>
-
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-
-                                    <v-btn color="primary" flat @click="">Cancella</v-btn>
-                                    <v-btn color="primary" @click="">Salva</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-menu>
-
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Categories</v-list-tile-title>
+                                    <div>
+                                        <v-btn flat small color="primary"
+                                               @click="filter.categories.selected = filter.categories.init_selected">select all</v-btn>
+                                        <v-btn flat small color="primary"
+                                               @click="filter.categories.selected = []">select none</v-btn>
+                                    </div>
+                                    <v-list-tile-action>
+                                        <v-item-group multiple v-model="filter.categories.selected">
+                                            <v-item v-for="(data,index) in filter.categories.name" :key="index">
+                                                <v-chip
+                                                        slot-scope="{active,toggle}"
+                                                        :selected="active"
+                                                        @click="toggle"
+                                                        :color="active ? 'primary' : ''"
+                                                        :text-color="active ? 'white' : ''"
+                                                >
+                                                    {{data}}
+                                                </v-chip>
+                                            </v-item>
+                                        </v-item-group>
+                                    </v-list-tile-action>
+                                </v-list-tile-content>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" flat @click="filter.menu = false">Cancel</v-btn>
+                                <v-btn color="primary" @click="applyFilter">Apply</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu-->
                 </v-card-title>
                 <v-divider></v-divider>
                 <smooth-scrollbar>
@@ -247,7 +260,12 @@
 
         filter : {
           menu: false,
+          order : {
+            init_orders : ["Name","Newest","Popular","Recommended"],
+            sortby : this.$global.plugin.sortby,
+          },
           categories : {
+            init_selected : [0,1,2,3,4,5,6,7,8],
             selected : [0,1,2,3,4,5,6,7,8],
             name : [
               "Display",
@@ -282,12 +300,13 @@
         return window.navigator.onLine;
       },
       listAllPlugins(name = "") {
+        //let selected_categories = this.filter.categories.name.filter((el,ind) => this.filter.categories.selected.includes(ind));
         this.listOnlinePlugin(name);
         this.listLocalPlugin(name);
       },
       listOnlinePlugin(name = "") {
         this.onlinePluginStatus = "wait";
-        var boardInfo = this.$global.board.board_info;
+        let boardInfo = this.$global.board.board_info;
         pm.listOnlinePlugin(boardInfo, name).then(res => {
           //name,start return {end : lastVisible, plugins : onlinePlugins}
           this.onlinePluginPage = res.end;
@@ -316,6 +335,7 @@
         });
       },
       listLocalPlugin(name = "") {
+        console.log("find pluging = " + name);
         this.localPlugin = [];
         this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj => {
           obj.status = "READY";
@@ -323,11 +343,21 @@
         });
         if (name !== "") {
           this.localPlugin = this.installedPlugin.filter(obj => {
-            return obj.name.startsWith(name);
+            return obj.category.title.includes(name);
           });
+          this.localPlugin = this.localPlugin.concat(...this.installedPlugin.filter(obj => {
+            return (obj.category.keywords)? obj.category.keywords.includes(name) : false;
+          }));
+
         } else {
           this.localPlugin = this.installedPlugin;
         }
+      },
+      applyFilter(){
+        this.filter.menu = false;
+        let sortby = this.filter.order.sortby;
+        this.$global.plugin.sortby = sortby;
+        this.listAllPlugins();
       },
       installOnlinePlugin(name) {
         let b = this.getOnlinePluginByName(name);
@@ -475,6 +505,8 @@
       pluginDialog: function(val) {
         if (val) {
           //on opening
+          this.searchText = "";
+          this.filter.categories.selected = this.filter.categories.init_selected;
           this.listAllPlugins();
         }
       }

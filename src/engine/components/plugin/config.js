@@ -5,5 +5,8 @@ export default {
     tooltip : 'Plugin Manager',
     data:{
         pluginInfo : null,
-    }
+    },
+    persistence:{
+        sortby : 'Recommended',
+    },
 }

@@ -311,7 +311,7 @@ const plugins = function(boardInfo) {
   let lpg = loadPlugin(boardInfo);
   return lpg.categories;
 };
-const performPluginSearch = function(name,queryMode, value, start = 0) {
+const performPluginSearch = function(name, queryMode, value, start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
     Vue.prototype.$db.collection("plugins").
@@ -332,23 +332,28 @@ const performPluginSearch = function(name,queryMode, value, start = 0) {
     });
   });
 };
-const performPluginNameSearch = function(name, column, value, start = 0) {
+const performPluginNameSearch = function(name, column,where, value, start = 0) {
   return new Promise((resolve, reject) => {
     let onlinePlugins = [];
-    let strSearch = name;
+    /*let strSearch = name;
     let strlength = strSearch.length;
     let strFrontCode = strSearch.slice(0, strlength - 1);
     let strEndCode = strSearch.slice(strlength - 1, strSearch.length);
     let startcode = strSearch;
     let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
-
-    Vue.prototype.$db.collection("plugins").where("name", ">=", startcode) //search start with
-    .where("name", "<", endcode).where(column, "==", value).orderBy("name")
+    //console.log("hereeeeeeee");
+    */
+    Vue.prototype.$db.collection("plugins").where("keywords", "array-contains", name.toLowerCase().trim()) //search start with
+    //.where(column, where, value)
+    .orderBy("title")
     //.startAfter(start)
     .limit(50).get().then(data => {
       let lastVisible = data.docs[data.docs.length - 1];
       data.forEach(element => {
-        onlinePlugins.push(element.data());
+        let d = element.data();
+        if(d.platform.includes(value)){
+          onlinePlugins.push(element.data());
+        }
       });
       resolve({end: lastVisible, plugins: onlinePlugins});
     }).catch(err => {
@@ -370,9 +375,9 @@ const listOnlinePlugin = function(boardInfo, name = "", start = 0) {
         reject(err);
       });
     } else {
-      performPluginNameSearch(name, "board", boardInfo.name).then(res => {
+      performPluginNameSearch(name, "board", "==" ,boardInfo.name).then(res => {
         onlinePlugins = onlinePlugins.concat(res.plugins);
-        return performPluginNameSearch(name, "platform", boardInfo.platform);
+        return performPluginNameSearch(name, "platform","array-contains", boardInfo.platform);
       }).then(res => {
         onlinePlugins = onlinePlugins.concat(res.plugins);
         resolve({plugins: onlinePlugins});
@@ -507,6 +512,12 @@ const publishPlugin = function(url){
       }
     }).then(res => {
       if (res) {
+        json.like = 0;
+        json.installed = 0;
+        json.removed = 0;
+        json.star = 0;
+        json.update_date = new Date();
+        json.keywords = (json.keywords)? json.keywords.split(",").map(el=>el.toLowerCase().trim()) : [""];
         Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
         if (res) {
           resolve("submit your plugin success, please refresh again");
