@@ -311,100 +311,17 @@ const plugins = function(boardInfo) {
   let lpg = loadPlugin(boardInfo);
   return lpg.categories;
 };
-const performPluginSearch = function(name, queryMode, value, start = 0) {
+const listOnlinePlugin = function(query) {
   return new Promise((resolve, reject) => {
-    let onlinePlugins = [];
-    Vue.prototype.$db.collection("plugins").
-    where(name, queryMode, value).
-    orderBy("name").
-    startAfter(start).
-    limit(50).
-    get().
-    then(data => {
-      const lastVisible = data.docs[data.docs.length - 1];
-      data.forEach(element => {
-        onlinePlugins.push(element.data());
-      });
-      resolve({end: lastVisible, plugins: onlinePlugins});
-    }).
-    catch(err => {
+    Vue.prototype.$db2.getItems("plugins",query).then((data,meta)=>{
+      resolve({plugins: data.data , meta : data.meta});
+    }).catch(err=>{
+      console.error("list online plugin error : " + err);
       reject(err);
     });
-  });
-};
-const performPluginNameSearch = function(name, column,where, value, start = 0) {
-  return new Promise((resolve, reject) => {
-    let onlinePlugins = [];
-    /*let strSearch = name;
-    let strlength = strSearch.length;
-    let strFrontCode = strSearch.slice(0, strlength - 1);
-    let strEndCode = strSearch.slice(strlength - 1, strSearch.length);
-    let startcode = strSearch;
-    let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
-    //console.log("hereeeeeeee");
-    */
-    Vue.prototype.$db.collection("plugins").where("keywords", "array-contains", name.toLowerCase().trim()) //search start with
-    //.where(column, where, value)
-    .orderBy("title")
-    //.startAfter(start)
-    .limit(50).get().then(data => {
-      let lastVisible = data.docs[data.docs.length - 1];
-      data.forEach(element => {
-        let d = element.data();
-        if(d.platform.includes(value)){
-          onlinePlugins.push(element.data());
-        }
-      });
-      resolve({end: lastVisible, plugins: onlinePlugins});
-    }).catch(err => {
-      reject(err);
-    });
-  });
-};
-const listOnlinePlugin = function(boardInfo, name = "", start = 0) {
-  return new Promise((resolve, reject) => {
-    let onlinePlugins = [];
-    if (name === "") { //list all
-      performPluginSearch("board","==", boardInfo.name).then(res => {
-        onlinePlugins = onlinePlugins.concat(res.plugins);
-        return performPluginSearch("platform","array-contains",boardInfo.platform);
-      }).then(res => {
-        onlinePlugins = onlinePlugins.concat(res.plugins);
-        resolve({plugins: onlinePlugins});
-      }).catch(err => {
-        reject(err);
-      });
-    } else {
-      performPluginNameSearch(name, "board", "==" ,boardInfo.name).then(res => {
-        onlinePlugins = onlinePlugins.concat(res.plugins);
-        return performPluginNameSearch(name, "platform","array-contains", boardInfo.platform);
-      }).then(res => {
-        onlinePlugins = onlinePlugins.concat(res.plugins);
-        resolve({plugins: onlinePlugins});
-      }).catch(err => {
-        reject(err);
-      });
-    }
   });
 };
 
-const installPluginByName = function(name, cb) {
-  return new Promise((resolve, reject) => {
-    Vue.prototype.$db.collection("plugins").
-    where("name", "==", name).
-    get().
-    then(platfromData => {
-      platfromData.forEach(element => {
-        return resolve(element.data());
-      });
-    }).
-    catch(err => {
-      reject(err);
-    });
-  }).then((info) => {
-    return installOnlinePlugin(info, cb);
-  });
-};
 const installOnlinePlugin = function(info, cb) {
   let targetDir = util.pluginDir;
   return new Promise((resolve, reject) => { //download zip

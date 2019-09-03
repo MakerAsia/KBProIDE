@@ -23,20 +23,19 @@
                             @click:clear="listAllPlugins()"
                             @change="listAllPlugins(searchText)"
                             v-model="searchText"></v-text-field>
-                    <!--v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
+                    <v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
                         <v-btn slot="activator" icon> <v-icon>filter_list</v-icon> </v-btn>
                         <v-card class="filter" max-width=350>
                             <v-card-title class="subheading">Filter</v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
-                                <v-list-tile-content> TODO : implement user auth to push new plugin and plugin like system
-                                    <v-list-tile-title>Sort</v-list-tile-title>
+                                <v-list-tile-content>
                                     <v-list-tile-action>
                                         <v-flex xs12 sm12 md12>
                                             <v-combobox
                                                     v-model="filter.order.sortby"
                                                     :items="filter.order.init_orders"
-                                                    label="Select sport type"
+                                                    label="Sort by"
                                             ></v-combobox>
                                         </v-flex>
                                     </v-list-tile-action>
@@ -73,10 +72,10 @@
                                 <v-btn color="primary" @click="applyFilter">Apply</v-btn>
                             </v-card-actions>
                         </v-card>
-                    </v-menu-->
+                    </v-menu>
                 </v-card-title>
                 <v-divider></v-divider>
-                <smooth-scrollbar>
+                <smooth-scrollbar ref="scrollbar">
                     <v-card-text>
                         <v-subheader>
                             Installed
@@ -253,20 +252,23 @@
         installedPlugin: [],
         localPlugin: [],
         onlinePluginStatus: "wait",
-        onlinePluginPage: 0,
         onlinePlugin: [],
         statusText: "",
         statusProgress: 0,
 
         filter : {
+          defaultLimit : 20,
+          currentPage : 1,
+          nextOffset : 0,
           menu: false,
           order : {
             init_orders : ["Name","Newest","Popular","Recommended"],
+            actual_value : { Name : "title", Newest : "-modified_on", Popular : "installed", Recommended : "review" },
             sortby : this.$global.plugin.sortby,
           },
           categories : {
-            init_selected : [0,1,2,3,4,5,6,7,8],
-            selected : [0,1,2,3,4,5,6,7,8],
+            init_selected : [0,1,2,3,4,5,6,7,8,9],
+            selected : [0,1,2,3,4,5,6,7,8,9],
             name : [
               "Display",
               "Communication",
@@ -276,7 +278,8 @@
               "Timing",
               "Data Storage",
               "Data Processing",
-              "Other"
+              "Other",
+              "Uncategorized"
             ]
           }
         },
@@ -299,17 +302,53 @@
       isOnline() {
         return window.navigator.onLine;
       },
+      onScroll(status){
+        if(status.offset.y >= status.limit.y){
+          console.log('load more plugins');
+          this.listOnlinePlugin(this.searchText,true);
+        }
+      },
       listAllPlugins(name = "") {
         //let selected_categories = this.filter.categories.name.filter((el,ind) => this.filter.categories.selected.includes(ind));
         this.listOnlinePlugin(name);
         this.listLocalPlugin(name);
       },
-      listOnlinePlugin(name = "") {
-        this.onlinePluginStatus = "wait";
+      listOnlinePlugin(name = "",loadNext = false) {
+        this.onlinePluginStatus = (loadNext)? "OK" : "wait";
         let boardInfo = this.$global.board.board_info;
-        pm.listOnlinePlugin(boardInfo, name).then(res => {
+        //------------//
+        let selected_categories = this.filter.categories.selected.map(el => this.filter.categories.name[el]);
+        let query = {
+          "limit" : this.filter.defaultLimit,
+          "page" : this.filter.currentPage,
+          "meta" : "page",
+          "sort" : this.filter.order.actual_value[this.filter.order.sortby],
+          filter : {
+            filter : {
+              logical : "nest",
+              platform : {logical : "or" , contains : boardInfo.platform },
+              board : {logical : "or" , contains: boardInfo.name}
+            },
+            category: {
+              in : selected_categories
+            }
+          }
+        };
+        if(name !== ""){
+          query.filter.title = {contains : name};
+        }
+        if(loadNext){
+          query.page = query.page + 1;
+          query.offset = this.filter.nextOffset;
+          if(this.filter.nextOffset == null){
+            return;
+          }
+        }
+        //--------------//
+        pm.listOnlinePlugin(query).then(res => {
           //name,start return {end : lastVisible, plugins : onlinePlugins}
-          this.onlinePluginPage = res.end;
+          mother.filter.currentPage = res.meta.page;
+          mother.filter.nextOffset = res.meta.next_offset;
           let filtered = [];
           res.plugins.forEach(obj => {
             let f = mother.localPlugin.find(elm => {
@@ -327,8 +366,13 @@
               filtered.push(obj);
             }
           });
-          mother.onlinePlugin = filtered;
-            //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
+          if(loadNext){
+            mother.onlinePlugin.push(...filtered);
+          }else{
+            mother.onlinePlugin = filtered;
+          }
+
+          //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
           this.onlinePluginStatus = "OK";
         }).catch(err => {
           this.onlinePluginStatus = "ERROR";
@@ -499,8 +543,15 @@
     mounted() {
       //console.log(this.localPlugin);
       mother = this;
+      if(this.$refs.scrollbar){
+        this.$refs.scrollbar.scrollbar.addListener(this.onScroll);
+      }
     },
-    destroyed() {},
+    destroyed() {
+      if(this.$refs.scrollbar){
+        this.$refs.scrollbar.scrollbar.removeListener(this.onScroll);
+      }
+    },
     watch: {
       pluginDialog: function(val) {
         if (val) {
