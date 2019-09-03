@@ -38,7 +38,15 @@ var config = {
 };
 firebase.initializeApp(config);
 Vue.prototype.$db = firebase.firestore();
-
+//========= directus ==========//
+const DirectusSDK = require('@directus/sdk-js');
+const directus_client = DirectusSDK({
+  url : "https://manage.kbide.org/",
+  project : "_",
+  storage: window.localStorage
+});
+Vue.prototype.$db2 = directus_client;
+//=============================//
 Vue.config.productionTip = false;
 //---- Google Analytic ----//
 const analytics = new Analytics("UA-140229781-1");
