@@ -192,6 +192,7 @@
                                                     @click="installOnlinePlugin(data.name)"
                                             >
                                                 <v-icon v-if="data.status === 'READY'">fa-download</v-icon>
+                                                <v-icon v-if="data.status === 'DRAFT'">fa-pause</v-icon>
                                                 <v-progress-circular
                                                         v-else-if="data.status !== 'READY'"
                                                         indeterminate
@@ -362,7 +363,7 @@
                 f.nextVersion = obj.version;
               }
             } else {
-              obj.status = "READY";
+              obj.status = obj.status === "published" ? "READY" : (obj.status === "draft" ? "DRAFT" : "ERROR");
               filtered.push(obj);
             }
           });
@@ -558,6 +559,8 @@
           //on opening
           this.searchText = "";
           this.filter.categories.selected = this.filter.categories.init_selected;
+          this.filter.nextOffset = 0;
+          this.filter.currentPage = 1;
           this.listAllPlugins();
         }
       }
