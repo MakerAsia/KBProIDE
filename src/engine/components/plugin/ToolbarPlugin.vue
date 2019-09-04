@@ -264,7 +264,7 @@
           menu: false,
           order : {
             init_orders : ["Name","Newest","Popular","Recommended"],
-            actual_value : { Name : "title", Newest : "-modified_on", Popular : "installed", Recommended : "review" },
+            actual_value : { Name : "title", Newest : "-modified_on", Popular : "installed", Recommended : "rating" },
             sortby : this.$global.plugin.sortby,
           },
           categories : {
