@@ -325,7 +325,7 @@
           "meta" : "page",
           "sort" : this.filter.order.actual_value[this.filter.order.sortby],
           filter : {
-            filter : {
+            filter1 : {
               logical : "nest",
               platform : {logical : "or" , contains : boardInfo.platform },
               board : {logical : "or" , contains: boardInfo.name}
@@ -336,7 +336,11 @@
           }
         };
         if(name !== ""){
-          query.filter.title = {contains : name};
+          query.filter.filter2 = {
+            logical : "nest",
+            title : { logical : "or" , contains : name },
+            keywords : {logical : "or" , contains : name}
+          };
         }
         if(loadNext){
           query.page = query.page + 1;
