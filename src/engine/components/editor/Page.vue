@@ -388,7 +388,51 @@ export default {
       video: {},
       canvas: {},
       capture: null,
-      snapshotBuffer: null
+      snapshotBuffer: null,
+      themeColors: [
+        {
+          name: "blue",
+          color: "#2196f3",
+        },
+        {
+          name: "lightBlue",
+          color: "#03a9f4",
+        },
+        {
+          name: "teal",
+          color: "#009688",
+        },
+        {
+          name: "red",
+          color: "#f44336",
+        },
+        {
+          name: "orange",
+          color: "#ff9800",
+        },
+        {
+          name: "purple",
+          color: "#9c27b0",
+        },
+        {
+          name: "indigo",
+          color: "#3f51b5",
+        },
+        {
+          name: "cyan",
+          color: "#00bcd4",
+        },
+        {
+          name: "pink",
+          color: "#e91e63",
+        },
+        {
+          name: "green",
+          color: "#4caf50",
+        },
+      ],
+      lightThemeArray: ["red", "purple", "indigo", "pink"],
+      darkThemeArray: ["blue", "lightBlue", "teal", "orange", "cyan", "green"],
     };
   },
   created() {
@@ -598,8 +642,35 @@ export default {
     this.$global.editor.CodeMirror = null;
     this.$global.editor.Editor = this.getCm();
     //this.addError();
+
+    /* Detect Theme */
+    const currentThemeColor = this.$vuetify.theme.primary;
+    const getThemeName = this.themeColors.find((theme) => {
+      const themeColor = theme['color'];
+      return themeColor === currentThemeColor;
+    });
+    console.log('----------> here');
+    console.log(getThemeName['name'])
+    this.lightThemeArray.find(theme => theme === getThemeName['name']) && this.cssTextLight()
+    this.darkThemeArray.find(theme => theme === getThemeName['name']) && this.cssTextDark()
   },
   methods: {
+    cssTextLight() {
+      let elements = document.getElementsByClassName("blocklyTreeLabel");
+      for (let i in elements) {
+        if (elements.hasOwnProperty(i)) {
+          elements[i].classList.add("text-white");
+        }
+      }
+    },
+    cssTextDark() {
+      let elements = document.getElementsByClassName("blocklyTreeLabel");
+      for (let i in elements) {
+        if (elements.hasOwnProperty(i)) {
+          elements[i].classList.remove("text-white");
+        }
+      }
+    },
     snapCameraDialog() {
       this.video = this.$refs.video;
       this.canvas = this.$refs.canvas;
