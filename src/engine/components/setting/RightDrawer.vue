@@ -162,6 +162,97 @@ export default {
   watch: {
     themeColor: {
       handler (val) {
+
+        if (val === 'blue' || val === 'lightBlue') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.remove("text-white");
+            }
+          } 
+        }
+
+        if (val === 'teal') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.remove("text-white");
+            }
+          } 
+        }
+
+        if (val === 'red') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.add("text-white");
+            }
+          } 
+        }
+
+        if (val === 'orange') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.remove("text-white");
+            }
+          } 
+        }
+
+        if (val === 'purple') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.add("text-white");
+            }
+          } 
+        }
+
+        if (val === 'indigo') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.add("text-white");
+            }
+          } 
+        }
+
+        if (val === 'cyan') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.remove("text-white");
+            }
+          } 
+        }
+
+        if (val === 'pink') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.add("text-white");
+            }
+          } 
+        }
+
+        if (val === 'green') {
+         var elements = document.getElementsByClassName('blocklyTreeLabel');
+         
+          for (var i in elements) {
+            if (elements.hasOwnProperty(i)) {
+              elements[i].classList.remove("text-white");
+            }
+          } 
+        }
+
         if(val){
           this.$vuetify.theme.primary = this.colors[val].base; 
           this.$global.$emit('theme-change', this.colors[val].base);
