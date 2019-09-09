@@ -10,10 +10,13 @@
     <!-- Code snippet to speed up Google Fonts rendering: googlefonts.3perf.com -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" as="fetch" crossorigin="anonymous">
+    
+    <link rel="stylesheet" type="text/css" href="static/css/ui-custom.css">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+
     <script type="text/javascript">
-      !function(e,n,t){"use strict";var o="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700",r="__3perf_googleFonts_2c2c0";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage);
-    </script>
+      !function(e,n,t){"use strict";var o="https://fonts.googleapis.com/css?family=Manjari:300,400,500,700",r="__3perf_googleFonts_2c2c0";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage);
+    </script> -->
     <!-- End of code snippet for Google Fonts -->
 
 
@@ -35,10 +38,12 @@
           width: 0px;
           background: transparent;
       }*/
+
       html{
         overflow-x : hidden !important;
         overflow-y : hidden !important;
       }
+
     </style>
     <!--
     <script src="static/js/blockly/blockly_compressed.js"></script>
@@ -61,7 +66,7 @@
     </noscript>
     <div id="app">
       <div style="background-color: #eee; display : flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh;">
-        <span style="font-size: 50px">Loading ...</span>
+        <span style="font-size: 50px" class="text-loading">Loading ...</span>
       </div>
     </div>
     <!-- built files will be auto injected -->

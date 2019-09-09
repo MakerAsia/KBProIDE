@@ -252,7 +252,7 @@ const renderBlock = function(blocks, level = 1) {
   return res;
 };
 const loadAndRenderPluginsBlock = function(Blockly, boardInfo, pluginInfo) {
-  let pluginName = "Plugins";
+  let pluginName = " Plugins";
   let plugins = pluginInfo; // plug.loadPlugin(boardInfo);
   let catStr = "";
   plugins.categories.forEach(cat => {
