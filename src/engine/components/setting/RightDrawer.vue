@@ -65,6 +65,8 @@ export default {
       themeColor: false,
       colors: colors,
       componentSetting : cm.listSetting,
+      lightThemeArray: ["red", "purple", "indigo", "pink"],
+      darkThemeArray: ["blue", "lightBlue", "teal", "orange", "cyan", "green"],
   }),
   mounted : function(){
     Object.keys(this.colors).forEach((key)=>{
@@ -72,6 +74,24 @@ export default {
         this.themeColor = key;
       }
     });
+  },
+  methods: {
+    cssTextLight() {
+      let elements = document.getElementsByClassName("blocklyTreeLabel");
+      for (let i in elements) {
+        if (elements.hasOwnProperty(i)) {
+          elements[i].classList.add("text-white");
+        }
+      }
+    },
+    cssTextDark() {
+      let elements = document.getElementsByClassName("blocklyTreeLabel");
+      for (let i in elements) {
+        if (elements.hasOwnProperty(i)) {
+          elements[i].classList.remove("text-white");
+        }
+      }
+    }
   },
   computed: {
     themeColorOptions () {
@@ -162,96 +182,9 @@ export default {
   watch: {
     themeColor: {
       handler (val) {
-
-        if (val === 'blue' || val === 'lightBlue') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.remove("text-white");
-            }
-          } 
-        }
-
-        if (val === 'teal') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.remove("text-white");
-            }
-          } 
-        }
-
-        if (val === 'red') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.add("text-white");
-            }
-          } 
-        }
-
-        if (val === 'orange') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.remove("text-white");
-            }
-          } 
-        }
-
-        if (val === 'purple') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.add("text-white");
-            }
-          } 
-        }
-
-        if (val === 'indigo') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.add("text-white");
-            }
-          } 
-        }
-
-        if (val === 'cyan') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.remove("text-white");
-            }
-          } 
-        }
-
-        if (val === 'pink') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.add("text-white");
-            }
-          } 
-        }
-
-        if (val === 'green') {
-         var elements = document.getElementsByClassName('blocklyTreeLabel');
-         
-          for (var i in elements) {
-            if (elements.hasOwnProperty(i)) {
-              elements[i].classList.remove("text-white");
-            }
-          } 
-        }
+        
+        this.lightThemeArray.find(theme => theme === val) && this.cssTextLight()
+        this.darkThemeArray.find(theme => theme === val) && this.cssTextDark()
 
         if(val){
           this.$vuetify.theme.primary = this.colors[val].base; 
