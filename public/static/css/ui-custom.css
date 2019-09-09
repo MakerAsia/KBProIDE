@@ -34,6 +34,15 @@
 	padding-right: 20px;
 }
 
+.blocklyTreeSelected .blocklyTreeLabel {
+	color: black !important;
+}
+
+.blocklyTreeSelected, .blocklyFlyoutBackground {
+	fill: aliceblue !important;
+	background-color: aliceblue !important;
+}
+
 /* loading dots */
 
 .loading {
