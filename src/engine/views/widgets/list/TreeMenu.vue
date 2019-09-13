@@ -7,7 +7,14 @@
             <template v-slot:activator>
                 <v-list-tile avatar @click="">
                     <v-list-tile-content>
-                        <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                        <v-list-tile-title style="height: 34px;">
+
+                          <div style="display: flex">
+                            <img src="https://image.flaticon.com/icons/svg/201/201556.svg" alt="" style="width: 32px; height: 32px;"/>
+                            <span style="padding-left: 15px">{{ item.title }}</span>
+                          </div>
+                          
+                        </v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </template>
