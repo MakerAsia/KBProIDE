@@ -11,7 +11,7 @@
       :style="[
         this.$global.editor.mode == 1
           ? { width: '100%', height: '100%' }
-          : this.$global.editor.mode == 2
+          : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
           ? { minWidth: '500px', width: '75%' }
           : { width: '0px' }
       ]"
@@ -142,14 +142,14 @@
       </v-dialog>
     </div>
     <!-- end -->
-    <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
+    <multipane-resizer v-if="this.$global.editor.mode == 2 || this.$store.state.rawCode.mode"></multipane-resizer>
     <!-- source code -->
     <div
       class="pane"
       :style="[
         this.$global.editor.mode == 1
           ? { width: '0px' }
-          : this.$global.editor.mode == 2
+          : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
           ? { flexGrow: 1 }
           : { width: '100%', height: '100%' }
       ]"
@@ -520,6 +520,14 @@ export default {
     });
   },
   mounted() {
+
+    /* Check mode for Raw Code */
+    if (this.$global.editor.mode === 2) {
+      this.$store.dispatch('rawCodeToggleDisplay', true);
+    } else {
+      this.$store.dispatch('rawCodeToggleDisplay', false);
+    }
+
     Blockly.Msg = Object.assign(en, Blockly.Msg);
     Blockly.Msg = Blockly.Msg();
     Blockly.utils.getMessageArray_ = function() {
@@ -731,6 +739,11 @@ export default {
     },
     onEditorModeChange(mode, convert = false, create_new = false) {
       if (mode < 3) {
+        /* set display for Raw Code toggle */
+        if (mode === 2) {
+          this.$store.dispatch('rawCodeToggleDisplay', true);
+        }
+
         let xml = "";
         if (
           myself.$global.editor.blockCode !== "" &&
@@ -751,6 +764,13 @@ export default {
           Blockly.svgResize(this.workspace);
         }, 300);
       } else {
+
+        /* set display for Raw Code toggle */
+        if (this.$store.state.rawCode.mode === false) {
+          this.$store.dispatch('rawCodeToggleDisplay', false);
+          this.$store.dispatch('rollbackRawCode', 0);
+        }
+
         //------ generate template here ------//
         const boardDirectory = `${this.$global.board.board_info.dir}`;
         const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
@@ -820,6 +840,12 @@ export default {
       console.log("editor resized");
     },
     updatecode(e) {
+
+      if (this.$store.state.rawCode.mode) {
+        this.$global.editor.mode = 3;
+        this.$global.$emit("editor-mode-change", 3, true);
+      }
+
       if (e.type != Blockly.Events.UI) {
         //Blockly.JavaScript.resetTaskNumber();
         this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(

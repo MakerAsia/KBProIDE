@@ -25,6 +25,11 @@
   src: url(../fonts/Roboto/Roboto-Bold.ttf);
 }
 
+.f-manjari-b {
+  font-family: Manjari-Regular, sans-serif !important;
+  font-weight: bold !important;
+}
+
 .blocklyTreeLabel, .blocklyText, .loading {
 	font-family: Manjari-Bold, sans-serif !important;
 	font-weight: 700 !important;

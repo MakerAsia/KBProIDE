@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-tooltip bottom>
-            <v-btn color="primary darken-2" slot="activator" icon @click="modeDialog = !modeDialog">
+            <v-btn color="primary darken-2" slot="activator" icon @click="onChangeModeDialog">
                 <v-icon dark>fa-users</v-icon>
             </v-btn>
             <span>Programming Mode</span>
@@ -131,6 +131,20 @@
     },
     computed: {},
     methods: {
+      onChangeModeDialog() {
+
+        if (this.$store.state.rawCode.rollbackMode !== 0) {
+          // console.log('----------> onChangeModeDialog open')
+          // console.log(`rawCodeMode : ${this.$store.state.rawCode.mode}`);
+          this.$store.dispatch('rawCodeMode', false);
+          // console.log(`rawCodeMode : ${this.$store.state.rawCode.mode}`);
+          this.$global.editor.mode = this.$store.state.rawCode.rollbackMode;
+          this.$global.$emit("editor-mode-change", this.$store.state.rawCode.rollbackMode);
+        }
+
+        this.modeDialog = !this.modeDialog;
+      }
+      ,
       changeEditorMode: async function(mode) {
         console.log("editor change mode to : " + mode);
         this.modeDialog = false;
