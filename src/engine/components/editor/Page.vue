@@ -535,6 +535,15 @@
         this.$store.dispatch("rawCodeToggleDisplay", false);
       }
 
+      if (this.$global.editor.rawCodeMode === true) {
+        this.$store.dispatch("rawCodeMode", true);
+        this.$global.editor.mode = 2;
+        setTimeout(() => {
+          this.$global.editor.mode = 3;
+          this.$global.$emit("editor-mode-change", 3, true);
+        }, 1000);
+      }
+
       Blockly.Msg = Object.assign(en, Blockly.Msg);
       Blockly.Msg = Blockly.Msg();
       Blockly.utils.getMessageArray_ = function() {
@@ -862,7 +871,7 @@
       updatecode(e) {
 
         if (this.$store.state.rawCode.mode) {
-          this.$global.editor.mode = 3;
+          //this.$global.editor.mode = 3;
           this.$global.$emit("editor-mode-change", 3, true);
         }
 
