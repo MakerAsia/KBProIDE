@@ -688,7 +688,7 @@
         setTimeout(() => {
           this.lightThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextLight();
           this.darkThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextDark();
-        }, 3000);
+        }, 5000);
       },
       cssTextLight() {
         let elements = document.getElementsByClassName("blocklyTreeLabel");
