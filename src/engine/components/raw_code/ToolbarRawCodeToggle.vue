@@ -53,6 +53,7 @@
 
         if (this.$store.state.rawCode.rollbackMode === 0) {
           this.$store.dispatch("rollbackRawCode", this.$global.editor.mode);
+          this.$global.editor.rollbackMode = this.$global.editor.mode;
         }
 
         this.$store.dispatch("rawCodeMode", !this.$store.state.rawCode.mode);

@@ -372,11 +372,7 @@
       return {
         workspace: null,
         toolbox: null,
-        editor_options: {
-          automaticLayout: true,
-          lineNumbers: "on",
-          scrollBeyondLastLine: false
-        },
+        editor_options: this.$global.editor.editor_options,
         variableDialog: false,
         variable_name: this.name,
         variableMessage: "Variable Name",
@@ -527,6 +523,13 @@
       });
     },
     mounted() {
+
+      /* Monaco config */
+      if (this.$global.editor.mode < 3 || this.$global.editor.rawCodeMode === true) {
+        this.$global.editor.editor_options.readOnly = true;
+      } else {
+        this.$global.editor.editor_options.readOnly = false;
+      }
 
       /* Check mode for Raw Code */
       if (this.$global.editor.mode === 2) {

@@ -9,8 +9,15 @@ export default {
     sourceCode: "",
     rawCode: "",
     rawCodeMode: false,
+    rollbackMode: 0,
     fontSize: "24",
-    theme: "vs-dark"
+    theme: "vs-dark",
+    editor_options: {
+      automaticLayout: true,
+      lineNumbers: "on",
+      scrollBeyondLastLine: false,
+      readOnly: false
+    }
   },
   data: {
     Blockly: null,

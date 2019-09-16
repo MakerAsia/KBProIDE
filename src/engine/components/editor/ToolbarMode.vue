@@ -133,13 +133,12 @@
     methods: {
       onChangeModeDialog() {
 
-        if (this.$store.state.rawCode.rollbackMode !== 0) {
-          // console.log('----------> onChangeModeDialog open')
-          // console.log(`rawCodeMode : ${this.$store.state.rawCode.mode}`);
-          this.$store.dispatch('rawCodeMode', false);
-          // console.log(`rawCodeMode : ${this.$store.state.rawCode.mode}`);
-          this.$global.editor.mode = this.$store.state.rawCode.rollbackMode;
-          this.$global.$emit("editor-mode-change", this.$store.state.rawCode.rollbackMode);
+        if (this.$global.editor.rollbackMode !== 0) {
+          this.$store.dispatch("rawCodeMode", false);
+          this.$global.editor.rawCodeMode = false;
+          this.$global.editor.mode = this.$global.editor.rollbackMode;
+          this.$global.$emit("editor-mode-change", this.$global.editor.rollbackMode);
+          this.$global.editor.rollbackMode = 0;
         }
 
         this.modeDialog = !this.modeDialog;
@@ -148,7 +147,12 @@
       changeEditorMode: async function(mode) {
         console.log("editor change mode to : " + mode);
         this.modeDialog = false;
-        if (mode >= 3) { // we ask a convert
+        if (mode >= 3) {
+
+          /* Monaco config */
+          this.$global.editor.editor_options.readOnly = false;
+
+          // we ask a convert
           /*const res = await this.$dialog.confirm({
             text: "Do you want to clear and convert block to source code?",
             title: "Warning",
@@ -171,6 +175,10 @@
             });
           }
         } else {
+
+          /* Monaco config */
+          this.$global.editor.editor_options.readOnly = true;
+
           /*const res = await this.$dialog.confirm({
               text: 'Switching to block mode will lose this code.',
               title: 'Warning',
