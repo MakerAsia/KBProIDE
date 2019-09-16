@@ -673,7 +673,7 @@
         this.lightThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextLight();
         this.darkThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextDark();
 
-        setInterval(() => {
+        setTimeout(() => {
           this.lightThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextLight();
           this.darkThemeArray.find(theme => theme === getThemeName["name"]) && this.cssTextDark();
         }, 3000);
