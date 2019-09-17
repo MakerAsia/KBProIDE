@@ -200,6 +200,9 @@
   import PianoDialog from "@/engine/views/dialog/PianoDialog";
   import TTSDialog from "@/engine/views/dialog/TTSDialog";
 
+  // === Node.js ===
+  const exec = require("child_process").exec;
+
   const htmlEntities = function(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -674,6 +677,25 @@
 
     },
     methods: {
+      clangFormat() {
+        const fileName = "clang_source.js";
+        fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
+          // throws an error, you could also catch it here
+          if (err) throw err;
+          // success case, the file was saved
+          //console.log("sourceCode saved!");
+        });
+
+        let then = this;
+
+        exec(`./node_modules/.bin/clang-format ${fileName}`,
+          function(error, stdout, stderr) {
+            then.$global.editor.sourceCode = stdout;
+            if (error !== null) {
+              console.log("exec error: " + error);
+            }
+          });
+      },
       detectTheme() {
         /* Detect Theme */
         const currentThemeColor = this.$vuetify.theme.primary;
@@ -874,8 +896,8 @@
       updatecode(e) {
 
         if (this.$store.state.rawCode.mode) {
-          //this.$global.editor.mode = 3;
           this.$global.$emit("editor-mode-change", 3, true);
+          this.clangFormat();
         }
 
         if (e.type != Blockly.Events.UI) {
