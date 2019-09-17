@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 const { app, Menu, shell, BrowserWindow } = require("electron");
 var isMac = process.platform === "darwin";
 const template = [
@@ -135,6 +137,13 @@ const template = [
         accelerator: "CmdOrCtrl+H",
         click: () => {
           BrowserWindow.getFocusedWindow().webContents.send("edit-replace");
+        }
+      },
+      {
+        label: "Reformat Code",
+        accelerator: "CmdOrCtrl+Shift+F",
+        click: () => {
+          BrowserWindow.getFocusedWindow().webContents.send("clang-format");
         }
       }
     ]
