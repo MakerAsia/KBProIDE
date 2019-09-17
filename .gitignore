@@ -10,6 +10,7 @@ selenium-debug.log
 node_modules
 release
 boards/kidbright/build/
+clang_source.js
 
 # Editor directories and files
 .idea

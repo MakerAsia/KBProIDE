@@ -17,7 +17,8 @@ export default {
       lineNumbers: "on",
       scrollBeyondLastLine: false,
       readOnly: false
-    }
+    },
+    clangFormatFrom: "clang_source.js"
   },
   data: {
     Blockly: null,

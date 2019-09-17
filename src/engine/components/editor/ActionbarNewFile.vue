@@ -8,6 +8,11 @@
 </template>
 <script>
   const electron = require("electron");
+
+  // === Node.js ===
+  const fs = require("fs");
+  const exec = require("child_process").exec;
+
   export default {
     data() {
       return {};
@@ -16,6 +21,25 @@
       electron.ipcRenderer.on("file-new", this.newFile);
     },
     methods: {
+      clangFormat() {
+        const fileName = this.$global.editor.clangFormatFrom;
+        fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
+          // throws an error, you could also catch it here
+          if (err) throw err;
+          // success case, the file was saved
+          //console.log("sourceCode saved!");
+        });
+
+        let then = this;
+
+        exec(`./node_modules/.bin/clang-format ${fileName}`,
+          function(error, stdout, stderr) {
+            then.$global.editor.sourceCode = stdout;
+            if (error !== null) {
+              console.log("exec error: " + error);
+            }
+          });
+      },
       newFile: async function() {
         if (this.$global.editor.mode < 3 || this.$store.state.rawCode.mode === true) {
           const res = await this.$dialog.confirm({
@@ -38,7 +62,6 @@
                 this.$global.editor.mode = 3;
                 this.$global.$emit("editor-mode-change", 3, true);
               }
-
             }
           }
         } else {
@@ -54,6 +77,7 @@
           if (res && res !== "Cancel") {
             if (res === "convert") {
               this.$global.$emit("editor-mode-change", this.$global.editor.mode, true);
+              this.clangFormat();
             } else {
               this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //dont convert just create new
             }

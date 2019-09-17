@@ -524,6 +524,19 @@
           cm.trigger("aaaa", "editor.action.startFindReplaceAction");
         }
       });
+      electron.ipcRenderer.on("clang-format", () => {
+
+        if (this.$global.editor.mode < 3) {
+          if (this.$store.state.rawCode.mode) {
+            this.$global.$emit("editor-mode-change", 3, true);
+            this.clangFormat();
+          }
+        } else {
+          //this.$global.$emit("editor-mode-change", 3, true);
+          this.clangFormat();
+        }
+
+      });
     },
     mounted() {
 
@@ -678,7 +691,7 @@
     },
     methods: {
       clangFormat() {
-        const fileName = "clang_source.js";
+        const fileName = this.$global.editor.clangFormatFrom;
         fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
           // throws an error, you could also catch it here
           if (err) throw err;
