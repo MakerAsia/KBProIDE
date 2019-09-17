@@ -202,6 +202,7 @@
 
   // === Node.js ===
   const exec = require("child_process").exec;
+  const os = require("os");
 
   const htmlEntities = function(str) {
     return String(str)
@@ -700,14 +701,25 @@
         });
 
         let then = this;
+        let kb_path = this.$global.board.board_info.dir;
 
-        exec(`./node_modules/.bin/clang-format ${fileName}`,
-          function(error, stdout, stderr) {
-            then.$global.editor.sourceCode = stdout;
-            if (error !== null) {
-              console.log("exec error: " + error);
-            }
-          });
+        if (os.platform() === "win32") {
+          exec(`powershell -Command "cd ${kb_path}; cd ..; cd..; ./node_modules/.bin/clang-format ${fileName}"`,
+            function(error, stdout, stderr) {
+              then.$global.editor.sourceCode = stdout;
+              if (error !== null) {
+                console.log("exec error: " + error);
+              }
+            });
+        } else {
+          exec(`cd ${kb_path} && cd .. && cd .. && ./node_modules/.bin/clang-format ${fileName}`,
+            function(error, stdout, stderr) {
+              then.$global.editor.sourceCode = stdout;
+              if (error !== null) {
+                console.log("exec error: " + error);
+              }
+            });
+        }
       },
       detectTheme() {
         /* Detect Theme */
