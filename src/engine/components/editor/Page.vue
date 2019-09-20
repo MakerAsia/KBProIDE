@@ -159,24 +159,48 @@
         >
             <MonacoEditor
                     ref="cm"
-                    v-if="$global.editor.mode < 3"
+                    v-if="$global.editor.mode < 3 && $global.editor.rawCodeMode === false"
                     v-model="$global.editor.rawCode"
                     class="editor"
                     language="cpp"
                     theme="vs-dark"
                     :options="this.editor_options"
             />
+
             <MonacoEditor
                     ref="cm"
-                    v-else-if="$global.editor.mode == 3"
+                    v-else-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === true"
                     v-model="$global.editor.sourceCode"
                     class="editor"
                     language="cpp"
                     theme="vs-dark"
                     :options="this.editor_options"
+                    :value="$global.editor.sourceCode"
             />
+
+            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" style="height: 80% !important;">
+                <MonacoEditor
+                        ref="cm"
+                        v-model="$global.editor.sourceCode"
+                        class="editor"
+                        language="cpp"
+                        theme="vs-dark"
+                        :options="this.editor_options"
+                        :value="$global.editor.sourceCode"
+                />
+            </div>
+
+            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" class="notification-console">
+                <h5 style="font-weight: 700">Logs</h5>
+                <p style="color: yellow">
+                    <i class="fa fa-angle-right" v-if="alertErrors"></i>
+                    <span style="word-break: normal">{{ alertErrors }}</span>
+                </p>
+            </div>
+
         </div>
         <!-- end -->
+
     </multipane>
 </template>
 <script>
@@ -374,6 +398,25 @@
     },
     data() {
       return {
+        alertErrors: "",
+        compileStep: 1,
+        compileDialog: false,
+        failed: false,
+        stepResult: {
+          "1": {
+            result: true,
+            msg: ""
+          },
+          "2": {
+            result: true,
+            msg: ""
+          },
+          "3": {
+            result: true,
+            msg: ""
+          }
+        },
+
         workspace: null,
         toolbox: null,
         editor_options: this.$global.editor.editor_options,
@@ -538,6 +581,140 @@
         }
 
       });
+
+      electron.ipcRenderer.on("compile-source", () => {
+
+        if (this.$global.editor.mode === 3 && this.$global.editor.rawCodeMode === false) {
+
+          this.alertErrors = ` Processing ...`;
+
+          const engine = Vue.prototype.$engine;
+          const G = Vue.prototype.$global;
+          var path = `${G.board.board_info.dir}/compiler.js`;
+          var boardCompiler = engine.util.requireFunc(path);
+
+          var mac = "";
+          var boardName = "";
+
+          //setTimeout(() => {
+
+          console.log(this.$refs.cm);
+
+          G.$emit("compile-begin"); //<<<<< fire event
+          this.updateCompileStep(1);
+          this.stepResult["1"].result = true;
+          this.stepResult["2"].result = true;
+          this.stepResult["3"].result = true;
+          this.failed = false;
+          console.log("---> step 1 <---");
+          this.stepResult["1"].msg = `Compiling..`;
+
+          let thenThis = this;
+
+          //try {
+          const p = new Promise((resolve, reject) => {
+            resolve({ mac: "ff:ff:ff:ff:ff:ff" });
+          });
+
+          p.then(boardMac => {
+            mac = boardMac.mac;
+            boardName = mac.replace(/:/g, "-");
+            thenThis.updateCompileStep(2);
+            console.log("---> step 2 <---");
+            thenThis.stepResult["2"].msg = "Compile board ... ";
+            //------ just update it prevent unupdated data -------//
+            G.editor.rawCode = G.editor.Blockly.JavaScript.workspaceToCode(G.editor.workspace);
+            var xml = G.editor.Blockly.Xml.domToText(G.editor.Blockly.Xml.workspaceToDom(G.editor.Blockly.mainWorkspace));
+            G.editor.blockCode = xml;
+            //----------------------------------------------------//
+            var rawCode = (G.editor.mode >= 3)
+              ? G.editor.sourceCode
+              : G.editor.rawCode;
+            var isSourceCode = (G.editor.mode >= 3);
+            var config = {
+              board_mac_addr: mac,
+              isSourceCode: isSourceCode
+            };
+            //console.log(`calling boardCompiler.. from ActionbarJustCompile.`);
+            return boardCompiler.compile(rawCode, boardName, config, (status) => {
+              thenThis.updateCompileStep(2);
+              if (!thenThis.failed) {
+                thenThis.stepResult["2"].msg = status;
+              }
+            });
+
+          }).then(() => {
+            thenThis.updateCompileStep(3);
+            thenThis.stepResult["2"].msg = "Compile done!";
+            console.log("---> step 3 <---");
+            G.$emit("compile-success"); //<<<<< fire event
+            thenThis.alertErrors = ` Compile done.`
+          }).catch(function(rej) {
+
+            //console.log(rej['error']['killed']);
+            //console.log(rej['error']['code']);
+            //console.log(rej['error']['signal']);
+            //console.log(rej['error']['cmd']);
+            //console.log(rej['error']['stdout']);
+
+            String.prototype.explode = function(separator, limit) {
+              const array = this.split(separator);
+              if (limit !== undefined && array.length >= limit) {
+                array.push(array.splice(limit - 1).join(separator));
+              }
+              return array;
+            };
+
+            console.log(rej["error"]["stderr"]);
+
+            let lineErr = rej["error"]["stderr"].explode(":", 2);
+            console.log(lineErr);
+
+            thenThis.alertErrors = ``;
+            thenThis.alertErrors = ` Line ` + lineErr[1];
+
+            lineErr = lineErr[1].explode(":", 2);
+            const foundLineErr = parseInt(lineErr[0]);
+            console.log(`found error in line >>>> ${foundLineErr}`);
+
+            window.cm = thenThis.$refs.cm;
+            window.getEditor = thenThis.$refs.cm.getEditor();
+
+            console.log(`--------> monaco`);
+            window.monaco = monaco;
+            console.log(monaco);
+
+            //then.$refs.cm.editor.setSelection(new monaco.Selection(foundLineErr,foundLineErr,foundLineErr,foundLineErr));
+
+            /* Display error in line */
+            console.log("------ process error ------");
+            engine.util.compiler.parseError(rej).then(errors => {
+              console.error(`errors:`, errors);
+              G.$emit("compile-error", errors); //<<<<< fire event
+              thenThis.failed = true;
+              if (thenThis.compileStep == 1) {
+                thenThis.stepResult["1"].msg = "";
+                thenThis.stepResult["1"].result = false;
+              } else if (thenThis.compileStep == 2) {
+                thenThis.stepResult["2"].msg = `${errors.join("\n")}`;
+                thenThis.stepResult["2"].result = false;
+              } else if (thenThis.compileStep == 3) {
+                thenThis.stepResult["3"].msg = "Cannot upload program : " + err;
+                thenThis.stepResult["3"].result = false;
+              }
+
+            });
+          });
+
+          //} catch (e) {
+          //  console.log (e)
+          //}
+
+          //}, 5000);
+        }
+
+      });
+
     },
     mounted() {
 
@@ -691,6 +868,15 @@
 
     },
     methods: {
+
+      editorDidMount(event) {
+        console.log("---------> editorDidMount");
+      },
+
+      updateCompileStep(step) {
+        this.compileStep = step;
+      },
+
       clangFormat() {
         const fileName = this.$global.editor.clangFormatFrom;
         fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
@@ -704,7 +890,7 @@
         let kb_path = this.$global.board.board_info.dir;
 
         if (os.platform() === "win32") {
-          exec(`powershell -Command "cd ${kb_path}; cd ..; cd..; ./node_modules/.bin/clang-format ${fileName}"`,
+          exec(`powershell -Command "cd ${then.$global.editor.baseDir}; ./node_modules/.bin/clang-format ${fileName}"`,
             function(error, stdout, stderr) {
               then.$global.editor.sourceCode = stdout;
               if (error !== null) {
@@ -712,7 +898,7 @@
               }
             });
         } else {
-          exec(`cd ${kb_path} && cd .. && cd .. && ./node_modules/.bin/clang-format ${fileName}`,
+          exec(`cd ${then.$global.editor.baseDir} && ./node_modules/.bin/clang-format ${fileName}`,
             function(error, stdout, stderr) {
               then.$global.editor.sourceCode = stdout;
               if (error !== null) {
@@ -920,9 +1106,11 @@
       },
       updatecode(e) {
 
+
+        // real time reformat mode
         if (this.$store.state.rawCode.mode) {
           this.$global.$emit("editor-mode-change", 3, true);
-          this.clangFormat();
+          // this.clangFormat();
         }
 
         if (e.type != Blockly.Events.UI) {
@@ -953,7 +1141,7 @@
       },
       clearError() {
         let cm = this.getCm();
-        monaco.editor.setModelMarkers(cm.getModel(), "error", []);
+        monaco.editor.setModelMarkers(this.getCm().getModel(), "error", []);
       },
       addError: function(errors) {
         try {
@@ -987,7 +1175,7 @@
             };
             markers.push(marker);
           });
-          monaco.editor.setModelMarkers(cm.getModel(), "error", markers);
+          monaco.editor.setModelMarkers(this.getCm().getModel(), "error", markers);
         } catch (e) {
           console.log(e);
         }
@@ -997,6 +1185,15 @@
 </script>
 
 <style>
+    .notification-console {
+        height: 20% !important;
+        background-color: black;
+        color: white;
+        font-family: Manjari, sans-serif;
+        padding: 10px;
+        overflow: scroll;
+    }
+
     .editor {
         width: 100%;
         height: 100%;

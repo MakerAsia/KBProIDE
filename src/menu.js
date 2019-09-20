@@ -145,6 +145,13 @@ const template = [
         click: () => {
           BrowserWindow.getFocusedWindow().webContents.send("clang-format");
         }
+      },
+      {
+        label: "Log Compile",
+        accelerator: "CmdOrCtrl+Shift+C",
+        click: () => {
+          BrowserWindow.getFocusedWindow().webContents.send("compile-source");
+        }
       }
     ]
   },

@@ -1,3 +1,28 @@
+const path = require("path");
+const rootDir = __dirname; // require('electron-root-path').rootPath;
+
+let baseDir = "";
+
+if (process.env.NODE_ENV === "development") {
+  if (process.platform === "win32") {
+    baseDir = rootDir + "/../../../../../..";
+  } else if (process.platform === "darwin") {
+    baseDir = rootDir + "/../../../../../../../..";
+  } else if (process.platform === "linux") {
+    baseDir = rootDir + "/../../../../../..";
+  }
+} else {
+  if (process.platform === "win32") {
+    baseDir = rootDir + "/../..";
+  } else if (process.platform === "darwin") {
+    baseDir = rootDir + "/../..";
+  } else if (process.platform === "linux") {
+    baseDir = rootDir + "/../..";
+  }
+}
+
+baseDir = path.resolve(baseDir);
+
 export default {
   name: "editor",
   index: 0,
@@ -18,7 +43,8 @@ export default {
       scrollBeyondLastLine: false,
       readOnly: false
     },
-    clangFormatFrom: "clang_source.js"
+    clangFormatFrom: "clang_source.js",
+    baseDir: baseDir
   },
   data: {
     Blockly: null,

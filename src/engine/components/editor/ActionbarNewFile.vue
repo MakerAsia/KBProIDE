@@ -32,10 +32,9 @@
         });
 
         let then = this;
-        let kb_path = this.$global.board.board_info.dir;
 
         if (os.platform() === "win32") {
-          exec(`powershell -Command "cd ${kb_path}; cd ..; cd..; ./node_modules/.bin/clang-format ${fileName}"`,
+          exec(`powershell -Command "cd ${then.$global.editor.baseDir}; ./node_modules/.bin/clang-format ${fileName}"`,
             function(error, stdout, stderr) {
               then.$global.editor.sourceCode = stdout;
               if (error !== null) {
@@ -43,7 +42,7 @@
               }
             });
         } else {
-          exec(`cd ${kb_path} && cd .. && cd .. && ./node_modules/.bin/clang-format ${fileName}`,
+          exec(`cd ${then.$global.editor.baseDir} && ./node_modules/.bin/clang-format ${fileName}`,
             function(error, stdout, stderr) {
               then.$global.editor.sourceCode = stdout;
               if (error !== null) {
