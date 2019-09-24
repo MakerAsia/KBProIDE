@@ -178,7 +178,7 @@
                     :value="$global.editor.sourceCode"
             />
 
-            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" style="height: 80% !important;">
+            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" :style="{height: $global.editor.consoleDisplay ? '80% !important' : '100% !important'}">
                 <MonacoEditor
                         ref="cm"
                         v-model="$global.editor.sourceCode"
@@ -190,7 +190,8 @@
                 />
             </div>
 
-            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" class="notification-console">
+            <div v-if="($global.editor.mode === 3 && $global.editor.rawCodeMode === false) && $global.editor.consoleDisplay === true" class="console">
+                <i class="fa fa-remove fa-lg text-danger console-close-icon" @click="onClickConsoleCloseIcon"></i>
                 <h5 style="font-weight: 700">Logs</h5>
                 <p style="color: yellow">
                     <i class="fa fa-angle-right" v-if="alertErrors"></i>
@@ -586,6 +587,8 @@
 
         if (this.$global.editor.mode === 3 && this.$global.editor.rawCodeMode === false) {
 
+          this.$global.editor.consoleDisplay = true;
+
           this.alertErrors = ` Processing ...`;
 
           const engine = Vue.prototype.$engine;
@@ -648,7 +651,7 @@
             thenThis.stepResult["2"].msg = "Compile done!";
             console.log("---> step 3 <---");
             G.$emit("compile-success"); //<<<<< fire event
-            thenThis.alertErrors = ` Compile done.`
+            thenThis.alertErrors = ` Compile done.`;
           }).catch(function(rej) {
 
             //console.log(rej['error']['killed']);
@@ -717,6 +720,8 @@
 
     },
     mounted() {
+
+      console.log(`-----------> Page `, this.$global.editor);
 
       /* Monaco config */
       if (this.$global.editor.mode < 3 || this.$global.editor.rawCodeMode === true) {
@@ -868,6 +873,10 @@
 
     },
     methods: {
+
+      onClickConsoleCloseIcon() {
+        this.$global.editor.consoleDisplay = false;
+      },
 
       editorDidMount(event) {
         console.log("---------> editorDidMount");
@@ -1106,7 +1115,6 @@
       },
       updatecode(e) {
 
-
         // real time reformat mode
         if (this.$store.state.rawCode.mode) {
           this.$global.$emit("editor-mode-change", 3, true);
@@ -1185,13 +1193,18 @@
 </script>
 
 <style>
-    .notification-console {
+    .console {
         height: 20% !important;
         background-color: black;
         color: white;
         font-family: Manjari, sans-serif;
         padding: 10px;
         overflow: scroll;
+    }
+
+    .console > .console-close-icon {
+        float: right;
+        cursor: pointer;
     }
 
     .editor {

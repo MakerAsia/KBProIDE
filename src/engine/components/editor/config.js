@@ -44,7 +44,8 @@ export default {
       readOnly: false
     },
     clangFormatFrom: "clang_source.js",
-    baseDir: baseDir
+    baseDir: baseDir,
+    consoleDisplay: true
   },
   data: {
     Blockly: null,
