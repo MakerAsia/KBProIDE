@@ -49,9 +49,10 @@ const format = function(sourcecode){
     }, '');
     const execOptions = { input: sourcecode, cwd : cwd};
     try {
-      console.log(`"${exe}" ${args}`);
+      //console.log(`"${exe}" ${args}`);
       const stdout = execSync(`"${exe}" ${args}`, execOptions).toString();
-      return getReturnedFormattedText(stdout);
+      //return getReturnedFormattedText(stdout);
+      return stdout;
     } catch (error) {
     	console.log(error);
       if (error.message.indexOf('Command failed:') < 0) {

@@ -239,9 +239,7 @@
         let custom = element.custom
           ? `custom="${element.custom}" `
           : "";
-        res += `<category name="${element.name}" colour="${
-          element.color
-        }" ${custom}icon="${element.icon}">${insideBlock}</category>`;
+        res += `<category name="${element.name}" colour="${element.color}" ${custom}icon="${element.icon}">${insideBlock}</category>`;
       } else {
         if (typeof element === "string") {
           //block element
@@ -292,12 +290,7 @@
         //----- load block -----//
         try {
           eval(fs.readFileSync(`${dir}/${file}`, "utf8"));
-          eval(
-            fs.readFileSync(
-              `${dir}/${file.replace("block", "generator")}`,
-              "utf8"
-            )
-          );
+          eval(fs.readFileSync(`${dir}/${file.replace("block", "generator")}`, "utf8"));
           if (fs.existsSync(`${dir}/msg/en.js`)) {
             eval(fs.readFileSync(`${dir}/msg/en.js`, "utf8"));
           }
@@ -325,9 +318,7 @@
   };
   const loadBlock = function(boardInfo) {
     let blockFile = `${boardInfo.dir}/block/config.js`;
-    let platformBlockFile = `${util.platformDir}/${
-      boardInfo.platform
-    }/block/config.js`;
+    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
     if (!util.fs.existsSync(blockFile)) {
       return null;
     }
