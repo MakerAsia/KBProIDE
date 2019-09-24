@@ -7,12 +7,11 @@
     </v-tooltip>
 </template>
 <script>
-  const electron = require("electron");
+  // === uitls ===
+  import util from "@/engine/utils";
 
-  // === Node.js ===
-  const fs = require("fs");
-  const exec = require("child_process").exec;
-  const os = require("os");
+  const electron = require("electron");
+  const reformatCode = util.requireFunc(util.packageDir + "/kbide-package-clang-format/main");
 
   export default {
     data() {
@@ -23,33 +22,7 @@
     },
     methods: {
       clangFormat() {
-        const fileName = this.$global.editor.clangFormatFrom;
-        fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
-          // throws an error, you could also catch it here
-          if (err) throw err;
-          // success case, the file was saved
-          //console.log("sourceCode saved!");
-        });
-
-        let then = this;
-
-        if (os.platform() === "win32") {
-          exec(`powershell -Command "cd ${then.$global.editor.baseDir}; ./node_modules/.bin/clang-format ${fileName}"`,
-            function(error, stdout, stderr) {
-              then.$global.editor.sourceCode = stdout;
-              if (error !== null) {
-                console.log("exec error: " + error);
-              }
-            });
-        } else {
-          exec(`cd ${then.$global.editor.baseDir} && ./node_modules/.bin/clang-format ${fileName}`,
-            function(error, stdout, stderr) {
-              then.$global.editor.sourceCode = stdout;
-              if (error !== null) {
-                console.log("exec error: " + error);
-              }
-            });
-        }
+        this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
       newFile: async function() {
         if (this.$global.editor.mode < 3 || this.$store.state.rawCode.mode === true) {

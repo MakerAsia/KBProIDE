@@ -237,6 +237,8 @@
       .replace(/"/g, "&quot;");
   };
 
+  const reformatCode = util.requireFunc(util.packageDir + "/kbide-package-clang-format/main");
+
   const renderBlock = function(blocks, level = 1) {
     let res = "";
     if (blocks === undefined) {
@@ -887,34 +889,7 @@
       },
 
       clangFormat() {
-        const fileName = this.$global.editor.clangFormatFrom;
-        fs.writeFile(fileName, this.$global.editor.sourceCode, (err) => {
-          // throws an error, you could also catch it here
-          if (err) throw err;
-          // success case, the file was saved
-          //console.log("sourceCode saved!");
-        });
-
-        let then = this;
-        let kb_path = this.$global.board.board_info.dir;
-
-        if (os.platform() === "win32") {
-          exec(`powershell -Command "cd ${then.$global.editor.baseDir}; ./node_modules/.bin/clang-format ${fileName}"`,
-            function(error, stdout, stderr) {
-              then.$global.editor.sourceCode = stdout;
-              if (error !== null) {
-                console.log("exec error: " + error);
-              }
-            });
-        } else {
-          exec(`cd ${then.$global.editor.baseDir} && ./node_modules/.bin/clang-format ${fileName}`,
-            function(error, stdout, stderr) {
-              then.$global.editor.sourceCode = stdout;
-              if (error !== null) {
-                console.log("exec error: " + error);
-              }
-            });
-        }
+        this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
       detectTheme() {
         /* Detect Theme */
