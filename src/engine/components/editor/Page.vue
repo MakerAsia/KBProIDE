@@ -194,8 +194,7 @@
                 <i class="fa fa-remove fa-lg text-danger console-close-icon" @click="onClickConsoleCloseIcon"></i>
                 <h5 style="font-weight: 700">Logs</h5>
                 <p style="color: yellow">
-                    <i class="fa fa-angle-right" v-if="alertErrors"></i>
-                    <span style="word-break: normal">{{ alertErrors }}</span>
+                    <span style="word-break: normal" v-html="alertErrors"></span>
                 </p>
             </div>
 
@@ -591,7 +590,7 @@
 
           this.$global.editor.consoleDisplay = true;
 
-          this.alertErrors = ` Processing ...`;
+          //this.alertErrors = ` Processing ...`;
 
           const engine = Vue.prototype.$engine;
           const G = Vue.prototype.$global;
@@ -644,6 +643,7 @@
             return boardCompiler.compile(rawCode, boardName, config, (status) => {
               thenThis.updateCompileStep(2);
               if (!thenThis.failed) {
+                thenThis.alertErrors += `${status}<br>`;
                 thenThis.stepResult["2"].msg = status;
               }
             });
@@ -653,7 +653,7 @@
             thenThis.stepResult["2"].msg = "Compile done!";
             console.log("---> step 3 <---");
             G.$emit("compile-success"); //<<<<< fire event
-            thenThis.alertErrors = ` Compile done.`;
+            thenThis.alertErrors += `Done compiling.<br>`;
           }).catch(function(rej) {
 
             //console.log(rej['error']['killed']);
@@ -889,8 +889,10 @@
       },
 
       clangFormat() {
+        console.log(this.$global.editor.sourceCode)
         this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
+
       detectTheme() {
         /* Detect Theme */
         const currentThemeColor = this.$vuetify.theme.primary;
