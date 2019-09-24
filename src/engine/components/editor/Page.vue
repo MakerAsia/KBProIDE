@@ -8,13 +8,12 @@
         <!-- editor -->
         <div
                 class="pane"
-                :style="[
-        this.$global.editor.mode == 1
-          ? { width: '100%', height: '100%' }
-          : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
-          ? { minWidth: '500px', width: '75%' }
-          : { width: '0px' }
-      ]"
+                :style="[ this.$global.editor.mode == 1
+                              ? { width: '100%', height: '100%' }
+                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
+                              ? { minWidth: '500px', width: '75%' }
+                              : { width: '0px' }
+                        ]"
         >
             <div
                     id="blocklyDiv"
@@ -49,17 +48,15 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="variableDialog = false"
-                        >Close
-                        </v-btn
-                        >
+                        <v-btn color="blue darken-1" flat @click="variableDialog = false">Close</v-btn>
                         <v-btn
                                 color="blue darken-1"
                                 flat
                                 :disabled="!validated"
                                 ref="variableOK"
                                 @click="variableDialog = false"
-                        >Save
+                        >
+                            Save
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -69,9 +66,9 @@
                 <v-card>
                     <v-card-title>
                         <!--                        <span class="headline">{{variableMessage}}</span>-->
-                        <span class="headline font-bold"
-                        >Getting Image from the camera.</span
-                        >
+                        <span class="headline font-bold">
+                            Getting Image from the camera.
+                        </span>
                     </v-card-title>
                     <v-card-text style="padding-top: 0">
                         <v-container grid-list-md style="padding-top: 0">
@@ -91,31 +88,29 @@
                                             height="480"
                                     ></canvas>
                                 </div>
-                                <div
-                                        style="display: flex; justify-content: center; margin-top: 15px"
-                                >
+                                <div style="display: flex; justify-content: center; margin-top: 15px">
                                     <v-btn
                                             id="snap"
                                             class="btn-primary"
                                             @click="snapCameraDialog"
                                     >
-                                        <i class="fa fa-camera"></i>&ensp; Snapshot
+                                        <i class="fa fa-camera"></i>&ensp;
+                                        Snapshot
                                     </v-btn>
                                     <v-btn
                                             id="snap"
                                             class="btn-primary"
                                             @click="refreshCameraDialog"
                                     >
-                                        <i class="fa fa-refresh"></i>&ensp; Refresh
+                                        <i class="fa fa-refresh"></i>&ensp;
+                                        Refresh
                                     </v-btn>
-                                    <v-btn class="btn-success" flat @click="saveCameraDialog"
-                                    >Save
-                                    </v-btn
-                                    >
-                                    <v-btn class="btn-danger" flat @click="closeCameraDialog"
-                                    >Close
-                                    </v-btn
-                                    >
+                                    <v-btn class="btn-success" flat @click="saveCameraDialog">
+                                        Save
+                                    </v-btn>
+                                    <v-btn class="btn-danger" flat @click="closeCameraDialog">
+                                        Close
+                                    </v-btn>
                                 </div>
                             </v-flex>
                         </v-container>
@@ -126,21 +121,13 @@
             <v-dialog v-model="musicDialog" max-width="785px">
                 <piano-dialog
                         ref="musicNotes"
-                        @close="
-            () => {
-              musicDialog = false;
-            }
-          "
+                        @close="() => { musicDialog = false; }"
                 ></piano-dialog>
             </v-dialog>
             <v-dialog v-model="ttsDialog" max-width="600px">
                 <t-t-s-dialog
                         ref="ttsWords"
-                        @close="
-            () => {
-              ttsDialog = false;
-            }
-          "
+                        @close="() => { ttsDialog = false; }"
                 ></t-t-s-dialog>
             </v-dialog>
         </div>
@@ -149,13 +136,12 @@
         <!-- source code -->
         <div
                 class="pane"
-                :style="[
-        this.$global.editor.mode == 1
-          ? { width: '0px' }
-          : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
-          ? { flexGrow: 1 }
-          : { width: '100%', height: '100%' }
-      ]"
+                :style="[ this.$global.editor.mode == 1
+                              ? { width: '0px' }
+                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
+                              ? { flexGrow: 1 }
+                              : { width: '100%', height: '100%' }
+                        ]"
         >
             <MonacoEditor
                     ref="cm"
@@ -889,7 +875,7 @@
       },
 
       clangFormat() {
-        console.log(this.$global.editor.sourceCode)
+        console.log(this.$global.editor.sourceCode);
         this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
 
