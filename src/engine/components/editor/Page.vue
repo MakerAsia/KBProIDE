@@ -149,7 +149,7 @@
                     v-model="$global.editor.rawCode"
                     class="editor"
                     language="cpp"
-                    theme="vs-dark"
+                    :theme="$global.editor.theme"
                     :options="this.editor_options"
             />
 
@@ -159,7 +159,7 @@
                     v-model="$global.editor.sourceCode"
                     class="editor"
                     language="cpp"
-                    theme="vs-dark"
+                    :theme="$global.editor.theme"
                     :options="this.editor_options"
                     :value="$global.editor.sourceCode"
             />
@@ -170,7 +170,7 @@
                         v-model="$global.editor.sourceCode"
                         class="editor"
                         language="cpp"
-                        theme="vs-dark"
+                        :theme="$global.editor.theme"
                         :options="this.editor_options"
                         :value="$global.editor.sourceCode"
                 />
