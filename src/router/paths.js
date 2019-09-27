@@ -1,68 +1,79 @@
 export default [
 
   {
-    path: '*',
+    path: "*",
     meta: {
-      public: true,
+      public: true
     },
     redirect: {
-      path: '/404'
+      path: "/404"
     }
   },
   {
-    path: '/404',
+    path: "/404",
     meta: {
-      public: true,
+      public: true
     },
-    name: 'NotFound',
+    name: "NotFound",
     component: () => import(
       `@/engine/views/page/NotFound.vue`
-    )
+      )
   },
   {
-    path: '/403',
+    path: "/403",
     meta: {
-      public: true,
+      public: true
     },
-    name: 'AccessDenied',
-    component: () => import(      
+    name: "AccessDenied",
+    component: () => import(
       `@/engine/views/page/Deny.vue`
-    )
+      )
   },
   {
-    path: '/500',
+    path: "/500",
     meta: {
-      public: true,
+      public: true
     },
-    name: 'ServerError',
+    name: "ServerError",
     component: () => import(
       `@/engine/views/page/Error.vue`
-    )
+      )
   },
   {
-    path: '/login',
+    path: "/login",
     meta: {
-      public: true,
+      public: true
     },
-    name: 'Login',
-    component: () => import(      
+    name: "Login",
+    component: () => import(
       `@/engine/views/page/Login.vue`
-    )
+      )
   },
   {
-    path: '/',
-    meta: { },
-    name: 'Root',
+    path: "/",
+    meta: {},
+    name: "Root",
     redirect: {
-      name: 'Editor'
+      name: "Editor"
     }
   },
   {
-    path: '/editor',
-    meta: { breadcrumb: false ,hide_drawer: true },
-    name: 'Editor',
-    component: () => import(      
-      `@/engine/components/editor/Page.vue`
-    )
+    path: "/editor",
+    meta: { breadcrumb: false, hide_drawer: true },
+    name: "Editor",
+    component: () => {
+      return import(
+        `@/engine/components/editor/Page.vue`
+        );
+    }
+  },
+  {
+    path: "/market",
+    name: "Market",
+    component: () => {
+      return import(
+        `@/engine/components/market/Page.vue`
+        );
+    }
   }
 ];

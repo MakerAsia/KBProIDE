@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$global.setting.devMode === true">
+    <div v-if="$global.setting.devMode === true && $global.market.MarketDialog === false">
         <div class="container-raw-code" v-if="this.$global.editor.mode > 1 && this.$store.state.rawCode.display">
             <span class="f-manjari-b text-white">RAW CODE</span>
             <toggle-button :value="this.$store.state.rawCode.mode"
