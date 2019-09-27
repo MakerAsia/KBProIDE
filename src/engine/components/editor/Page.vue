@@ -192,6 +192,7 @@
 <script>
   const electron = require("electron");
   var path = require("path");
+  const xmlParser = new DOMParser();
   // === UI Management ===
   import {Multipane, MultipaneResizer} from "vue-multipane";
   // === Blockly ===
@@ -233,9 +234,9 @@
       if (level === 1) {
         let insideBlock = element.blocks
           ? renderBlock(element.blocks, level + 1)
-          : element.xml
+          : (element.xml
             ? element.xml
-            : "";
+            : "");
         let custom = element.custom
           ? `custom="${element.custom}" `
           : "";
@@ -246,11 +247,7 @@
           res += `<block type="${element}"></block>`;
         } else if (typeof element == "object" && element.xml) {
           res += element.xml;
-        } else if (
-          typeof element === "object" &&
-          "type" in element &&
-          element.type === "category"
-        ) {
+        } else if (typeof element === "object" && "type" in element && element.type === "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
           let custom = element.custom
             ? `custom="${element.custom}" `
@@ -316,13 +313,78 @@
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
   };
-  const loadBlock = function(boardInfo) {
-    let blockFile = `${boardInfo.dir}/block/config.js`;
-    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
-    if (!util.fs.existsSync(blockFile)) {
-      return null;
+
+  const mergeBlockConfig = function(blockConfig) {
+    blockConfig.base_blocks.sort((a, b) => (a.index > b.index)
+      ? 1
+      : -1);
+    blockConfig.blocks && blockConfig.blocks.sort((a, b) => (a.index > b.index)
+      ? 1
+      : -1);
+    for (let i in blockConfig.base_blocks) {
+      let el = blockConfig.base_blocks[i]; //base element
+      let name = el.name;
+      let heritageBlock = blockConfig.blocks.find(sel => sel.name === name);
+      if (heritageBlock) { // found same name
+        if (heritageBlock.blocks[0] && heritageBlock.blocks[0].type === "category" &&
+          el.blocks[0] && el.blocks[0].type === "category") { //block inside has category
+          let respSubmerge = mergeBlockConfig({base_blocks : el.blocks,blocks : heritageBlock.blocks});
+          el.blocks = respSubmerge.base_blocks;
+          blockConfig.blocks = blockConfig.blocks.filter(e=>e.name !== heritageBlock.name);
+        } else { //normal join
+          let platformNonDuplicateBlocks = el.blocks.filter(item => {
+            try {
+              let typename = typeof item === "string"
+                ? item
+                : xmlParser.parseFromString(item.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type");
+              return !heritageBlock.blocks.find(mItem => {
+                if (typeof mItem === "string") {
+                  return mItem === typename;
+                } else {
+                  return xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type") === typename;
+                }
+              });
+            }catch (e) {
+              return false;
+            }
+          });
+          el.blocks = heritageBlock.blocks.concat({ xml: "<sep gap=\"20\"></sep><label text=\"Platform Blocks\" web-class=\"title\"></label>" }, platformNonDuplicateBlocks);
+          blockConfig.blocks = blockConfig.blocks.filter(e=>e.name !== heritageBlock.name);
+        }
+      }
     }
-    return util.requireFunc(blockFile);
+    //======= merge difference with sort by index
+    let firstIndex1 = 0, fistIndex2 = 0;
+    let merged = [];
+    while(blockConfig.base_blocks.length > 0 && blockConfig.blocks.length > 0){
+      let f1 = blockConfig.base_blocks[0];
+      let f2 = blockConfig.blocks[0];
+      if(!f2.index){ f2.index = 0; }
+      if(f2.index < f1.index){ //insert f2
+        merged.push(blockConfig.blocks.shift());
+      }else{
+        merged.push(blockConfig.base_blocks.shift());
+      }
+    }
+    if(blockConfig.base_blocks.length > 0){
+      merged.push(...blockConfig.base_blocks);
+    }else if(blockConfig.blocks.length > 0){
+      merged.push(...blockConfig.blocks);
+    }
+    blockConfig.base_blocks = merged;
+    blockConfig.blocks = [];
+    return blockConfig;
+  };
+
+  const loadBlock = function(boardInfo) {
+    let boardBlockFile = `${boardInfo.dir}/block/config.js`;
+    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
+    let platformBlocks = util.requireFunc(platformBlockFile);
+    let boardBlocks = util.fs.existsSync(boardBlockFile)
+      ? util.requireFunc(boardBlockFile)
+      : {};
+    let blockConfig = Object.assign(platformBlocks, boardBlocks);
+    return mergeBlockConfig(blockConfig);
   };
   const initBlockly = function(boardInfo) {
     let platformName = boardInfo.platform;
@@ -548,17 +610,14 @@
         }
       });
       electron.ipcRenderer.on("clang-format", () => {
-
         if (this.$global.editor.mode < 3) {
           if (this.$store.state.rawCode.mode) {
             this.$global.$emit("editor-mode-change", 3, true);
             this.clangFormat();
           }
         } else {
-          //this.$global.$emit("editor-mode-change", 3, true);
           this.clangFormat();
         }
-
       });
 
       electron.ipcRenderer.on("compile-source", () => {
@@ -578,9 +637,6 @@
           var boardName = "";
 
           //setTimeout(() => {
-
-          console.log(this.$refs.cm);
-
           G.$emit("compile-begin"); //<<<<< fire event
           this.updateCompileStep(1);
           this.stepResult["1"].result = true;
@@ -699,9 +755,6 @@
 
     },
     mounted() {
-
-      console.log(`-----------> Page `, this.$global.editor);
-
       /* Monaco config */
       if (this.$global.editor.mode < 3 || this.$global.editor.rawCodeMode === true) {
         this.$global.editor.editor_options.readOnly = true;

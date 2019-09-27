@@ -64,6 +64,7 @@
               this.clangFormat();
             } else {
               this.$global.$emit("editor-mode-change", this.$global.editor.mode, false, true); //dont convert just create new
+              this.clangFormat();
             }
           }
         }
