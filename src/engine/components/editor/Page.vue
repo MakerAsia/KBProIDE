@@ -354,7 +354,6 @@
       }
     }
     //======= merge difference with sort by index
-    let firstIndex1 = 0, fistIndex2 = 0;
     let merged = [];
     while(blockConfig.base_blocks.length > 0 && blockConfig.blocks.length > 0){
       let f1 = blockConfig.base_blocks[0];
@@ -919,7 +918,7 @@
       },
 
       clangFormat() {
-        console.log(this.$global.editor.sourceCode);
+        //console.log(this.$global.editor.sourceCode);
         this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
 
