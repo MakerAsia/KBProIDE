@@ -2,6 +2,27 @@ import utils from '@/engine/utils';
 import Vue from "vue";
 import { timeout } from 'q';
 export default {
+    persistence : {
+        rightTabSize : 50, //percentage
+        rightTabCache : [],
+        bottomTabSize : 30, //percentage
+        bottomTabCache : [],
+        rightTabModel : false,
+        rightTabModelComponent : false,
+        bottomTabModel : false,
+        bottomTabModelComponent : false,
+        rightTab : [
+            /*
+            //{id : auto assign --cannot use as index} no use anymore!!!<<<<<<<<<<
+            name : tabname use this as removeRightTab parameter. this will be cobined with id 'editor_source-0' assigned as index.
+            title : tab title text must be show.
+            component : url component load in tab body ,ex './components/editor/RightTabSourcecode'
+            */
+        ],
+        bottomTab : [
+            /* same as righttab */
+        ],
+    },
     data : {
         rightDrawerStatus : false,
         leftDrawerStatus : false,
@@ -17,21 +38,7 @@ export default {
         rightDrawerComponent : false,
         leftDrawerComponent : false,
         /* tab */
-        rightTabModel : false,
-        rightTabModelComponent : false,        
-        bottomTabModel : false,
-        bottomTabModelCompoent : false,
-        rightTab : [
-            /*
-            //{id : auto assign --cannot use as index} no use anymore!!!<<<<<<<<<<
-            name : tabname use this as removeRightTab parameter. this will be cobined with id 'editor_source-0' assigned as index.
-            title : tab title text must be show.
-            component : url component load in tab body ,ex './components/editor/RightTabSourcecode'            
-            */
-        ],
-        bottomTab : [
-            /* same as righttab */
-        ],
+
         global : ()=>{ return Vue.prototype.$global; },
         rightDrawer : function(comp){            
             if(comp){
