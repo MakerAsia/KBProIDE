@@ -27,8 +27,15 @@
       myself = this;
     },
     mounted() {
-      this.$global.$on("compile-log",msg => this.add_data(msg));
-      this.$global.$on("compile-begin", this.clear_data());
+      this.$global.$on("compile-log",msg => {
+        this.add_data(msg);
+      });
+      this.$global.$on("compile-begin",_=>{
+        this.clear_data();
+      });
+      this.$global.$on("upload-success", _=>{
+        this.logs.push("===>>> Upload Success <<<===");
+      });
     },
     methods:{
       clear_data : function(){
@@ -50,17 +57,19 @@
 </script>
 
 <style scoped>
-    .console {
-        height: 20% !important;
-        background-color: black;
-        color: white;
-        font-family: Manjari, sans-serif;
-        padding: 10px;
-        overflow: scroll;
+    ol{
+        list-style-type: none;
+        counter-reset: elementcounter;
+        padding-left: 0;
     }
 
-    .console > .console-close-icon {
-        float: right;
-        cursor: pointer;
+    li:before{
+        content: "  ";
+        //content: counter(elementcounter) " |";
+        //counter-increment:elementcounter;
+        font-weight: bold;
+    }
+    .monitor-line{
+        padding-left: 10px;
     }
 </style>
