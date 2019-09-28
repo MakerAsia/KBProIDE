@@ -145,13 +145,6 @@ const template = [
         click: () => {
           BrowserWindow.getFocusedWindow().webContents.send("clang-format");
         }
-      },
-      {
-        label: "Log Compile",
-        accelerator: "CmdOrCtrl+Shift+C",
-        click: () => {
-          BrowserWindow.getFocusedWindow().webContents.send("compile-source");
-        }
       }
     ]
   },
@@ -168,6 +161,24 @@ const template = [
       { role: "zoomout" },
       { type: "separator" },
       { role: "togglefullscreen" }
+    ]
+  },
+  {
+    label: "Tools",
+    submenu: [
+      {
+        label: "Compile Log",
+        accelerator: "CmdOrCtrl+Shift+C",
+        click: () => {
+          BrowserWindow.getFocusedWindow().webContents.send("compile-logs");
+        }
+      },{
+        label: "Serial Monitor",
+        accelerator: "CmdOrCtrl+Shift+M",
+        click: () => {
+          BrowserWindow.getFocusedWindow().webContents.send("serial-monitor");
+        }
+      }
     ]
   },
   // { role: 'windowMenu' }
