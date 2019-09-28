@@ -1,5 +1,5 @@
-<template>
-    <v-flex xs12 class="pa-0 dark" style="display: flex; width: 100%; flex-direction: column">
+<template class="absolute">
+    <v-flex xs12 class="pa-0 dark monitor-console" style="display: flex; width: 100%; flex-direction: column">
         <v-flex style="display: flex; flex: 1 1 auto; flex-basis: 100%">
             <v-card dark style="font-size:13px;overflow-y: scroll; width: 100%;">
                 <ol ref="monitor" class="monitor-line">
@@ -71,5 +71,11 @@
     }
     .monitor-line{
         padding-left: 10px;
+    }
+    .monitor-console {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: absolute;
     }
 </style>
