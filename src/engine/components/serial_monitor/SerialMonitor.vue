@@ -279,18 +279,18 @@
             <template v-slot:activator>
                 <v-btn v-model="fab" color="primary" dark fab small>
                     <v-icon v-if="showMode==='text'">list_alt</v-icon>
-                    <v-icon v-if="showMode==='graph'">show_chart</v-icon>
-                    <v-icon>close</v-icon>
+                    <v-icon v-else-if="showMode==='graph'">show_chart</v-icon>
+                    <!--v-icon>close</v-icon-->
                 </v-btn>
             </template>
             <v-tooltip left>
-                <v-btn fab dark small color="primary" slot="activator" @click="showMode='text'">
+                <v-btn fab small color="primary" slot="activator" @click="showMode='text'">
                     <v-icon>list_alt</v-icon>
                 </v-btn>
                 <span>Show Text</span>
             </v-tooltip>
             <v-tooltip left>
-                <v-btn fab dark small color="primary" slot="activator" @click="showMode='graph'">
+                <v-btn fab small color="primary" slot="activator" @click="showMode='graph'">
                     <v-icon>show_chart</v-icon>
                 </v-btn>
                 <span>Show Graph</span>
