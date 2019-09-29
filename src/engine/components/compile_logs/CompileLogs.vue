@@ -3,7 +3,7 @@
         <v-flex style="display: flex; flex: 1 1 auto; flex-basis: 100%">
             <v-card dark style="font-size:13px;overflow-y: scroll; width: 100%;">
                 <ol ref="monitor" class="monitor-line">
-                    <li v-for="(line,inx) in logs" :key="inx" class="serial-line">
+                    <li v-for="(line,inx) in logs" :key="inx" class="serial-line" :style="[line.includes('Compile Error') ? {'color':'orangered'} : {}]">
                         {{line}}
                     </li>
                 </ol>
