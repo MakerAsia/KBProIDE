@@ -32,6 +32,7 @@ export default {
     mode: 1,
     blockCode: "",
     sourceCode: "",
+    previewSourceCode : "",
     rawCode: "",
     rawCodeMode: false,
     rollbackMode: 0,

@@ -10,7 +10,7 @@
                 class="pane"
                 :style="[ this.$global.editor.mode == 1
                               ? { width: '100%', height: '100%' }
-                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
+                              : this.$global.editor.mode == 2
                               ? { minWidth: '500px', width: '75%' }
                               : { width: '0px' }
                         ]"
@@ -132,49 +132,36 @@
             </v-dialog>
         </div>
         <!-- end -->
-        <multipane-resizer v-if="this.$global.editor.mode == 2 || this.$store.state.rawCode.mode"></multipane-resizer>
+        <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
         <!-- source code -->
         <div
                 class="pane"
-                :style="[ this.$global.editor.mode == 1
-                              ? { width: '0px' }
-                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
-                              ? { flexGrow: 1 }
-                              : { width: '100%', height: '100%' }
-                        ]"
+                :style="[
+            this.$global.editor.mode == 1
+              ? { width: '0px' }
+              : this.$global.editor.mode == 2
+              ? { flexGrow: 1 }
+              : { width: '100%', height: '100%' }
+          ]"
         >
             <MonacoEditor
                     ref="cm"
-                    v-if="$global.editor.mode < 3 && $global.editor.rawCodeMode === false"
-                    v-model="$global.editor.rawCode"
+                    v-if="$global.editor.mode < 3"
+                    v-model="$global.editor.rawCodeMode ? $global.editor.rawCode : $global.editor.previewSourceCode"
                     class="editor"
                     language="cpp"
-                    :theme="$global.editor.theme"
+                    theme="vs-dark"
                     :options="this.editor_options"
             />
-
             <MonacoEditor
                     ref="cm"
-                    v-else-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === true"
+                    v-else-if="$global.editor.mode == 3"
                     v-model="$global.editor.sourceCode"
                     class="editor"
                     language="cpp"
-                    :theme="$global.editor.theme"
+                    theme="vs-dark"
                     :options="this.editor_options"
-                    :value="$global.editor.sourceCode"
             />
-
-            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" :style="{height: '100% !important'}">
-                <MonacoEditor
-                        ref="cm"
-                        v-model="$global.editor.sourceCode"
-                        class="editor"
-                        language="cpp"
-                        :theme="$global.editor.theme"
-                        :options="this.editor_options"
-                        :value="$global.editor.sourceCode"
-                />
-            </div>
         </div>
         <!-- end -->
     </multipane>
@@ -318,9 +305,9 @@
       if (heritageBlock) { // found same name
         if (heritageBlock.blocks[0] && heritageBlock.blocks[0].type === "category" &&
           el.blocks[0] && el.blocks[0].type === "category") { //block inside has category
-          let respSubmerge = mergeBlockConfig({base_blocks : el.blocks,blocks : heritageBlock.blocks});
+          let respSubmerge = mergeBlockConfig({ base_blocks: el.blocks, blocks: heritageBlock.blocks });
           el.blocks = respSubmerge.base_blocks;
-          blockConfig.blocks = blockConfig.blocks.filter(e=>e.name !== heritageBlock.name);
+          blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
         } else { //normal join
           let platformNonDuplicateBlocks = el.blocks.filter(item => {
             try {
@@ -334,30 +321,30 @@
                   return xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type") === typename;
                 }
               });
-            }catch (e) {
+            } catch (e) {
               return false;
             }
           });
           el.blocks = heritageBlock.blocks.concat({ xml: "<sep gap=\"20\"></sep><label text=\"Platform Blocks\" web-class=\"title\"></label>" }, platformNonDuplicateBlocks);
-          blockConfig.blocks = blockConfig.blocks.filter(e=>e.name !== heritageBlock.name);
+          blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
         }
       }
     }
     //======= merge difference with sort by index
     let merged = [];
-    while(blockConfig.base_blocks.length > 0 && blockConfig.blocks.length > 0){
+    while (blockConfig.base_blocks.length > 0 && blockConfig.blocks.length > 0) {
       let f1 = blockConfig.base_blocks[0];
       let f2 = blockConfig.blocks[0];
-      if(!f2.index){ f2.index = 0; }
-      if(f2.index < f1.index){ //insert f2
+      if (!f2.index) { f2.index = 0; }
+      if (f2.index < f1.index) { //insert f2
         merged.push(blockConfig.blocks.shift());
-      }else{
+      } else {
         merged.push(blockConfig.base_blocks.shift());
       }
     }
-    if(blockConfig.base_blocks.length > 0){
+    if (blockConfig.base_blocks.length > 0) {
       merged.push(...blockConfig.base_blocks);
-    }else if(blockConfig.blocks.length > 0){
+    } else if (blockConfig.blocks.length > 0) {
       merged.push(...blockConfig.blocks);
     }
     blockConfig.base_blocks = merged;
@@ -426,6 +413,7 @@
     },
     data() {
       return {
+        codegen : null,
         alertErrors: "",
         compileStep: 1,
         compileDialog: false,
@@ -597,38 +585,15 @@
         }
       });
       electron.ipcRenderer.on("clang-format", () => {
-        if (this.$global.editor.mode < 3) {
-          if (this.$store.state.rawCode.mode) {
-            this.$global.$emit("editor-mode-change", 3, true);
-            this.clangFormat();
-          }
-        } else {
           this.clangFormat();
-        }
       });
     },
     mounted() {
       /* Monaco config */
-      if (this.$global.editor.mode < 3 || this.$global.editor.rawCodeMode === true) {
+      if (this.$global.editor.mode < 3) {
         this.$global.editor.editor_options.readOnly = true;
       } else {
         this.$global.editor.editor_options.readOnly = false;
-      }
-
-      /* Check mode for Raw Code */
-      if (this.$global.editor.mode === 2) {
-        this.$store.dispatch("rawCodeToggleDisplay", true);
-      } else {
-        this.$store.dispatch("rawCodeToggleDisplay", false);
-      }
-
-      if (this.$global.editor.rawCodeMode === true) {
-        this.$store.dispatch("rawCodeMode", true);
-        this.$global.editor.mode = 2;
-        setTimeout(() => {
-          this.$global.editor.mode = 3;
-          this.$global.$emit("editor-mode-change", 3, true);
-        }, 1000);
       }
 
       Blockly.Msg = Object.assign(en, Blockly.Msg);
@@ -854,10 +819,6 @@
       },
       onEditorModeChange(mode, convert = false, create_new = false) {
         if (mode < 3) {
-          /* set display for Raw Code toggle */
-          if (mode === 2) {
-            this.$store.dispatch("rawCodeToggleDisplay", true);
-          }
           let xml = "";
           if (
             myself.$global.editor.blockCode !== "" &&
@@ -878,27 +839,16 @@
             Blockly.svgResize(this.workspace);
           }, 300);
         } else {
-          /* set display for Raw Code toggle */
-          if (this.$store.state.rawCode.mode === false) {
-            this.$store.dispatch("rawCodeToggleDisplay", false);
-            this.$store.dispatch("rollbackRawCode", 0);
-          }
-
           //------ generate template here ------//
           const boardDirectory = `${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-          let codegen = null;
-          if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
-            codegen = util.requireFunc(`${boardDirectory}/codegen`);
-          } else {
-            codegen = util.requireFunc(`${platformDir}/codegen`);
-          }
+          this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
           if (convert) {
-            const respCode = codegen.generate(this.$global.editor.rawCode);
-            myself.$global.editor.sourceCode = respCode.sourceCode;
+            const respCode = this.codegen.generate(this.$global.editor.rawCode);
+            myself.$global.editor.sourceCode = reformatCode(respCode.sourceCode);
           } else if (create_new) {
-            const codeRes = codegen.generate("");
-            myself.$global.editor.sourceCode = codeRes.sourceCode;
+            const codeRes = this.codegen.generate("");
+            myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
           } else {
             //if user not convert just switch and leave create new (เอาไว้ให้ user กด new เองค่ะ
             //this.$global.editor.sourceCode = this.$global.editor.sourceCode;
@@ -938,15 +888,11 @@
         //============== render mode 3 source code
         const boardDirectory = `${this.$global.board.board_info.dir}`;
         const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-        let codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`)
-          ? boardDirectory
-          : platformDir}/codegen`);
-        const codeRes = codegen.generate("");
-        myself.$global.editor.sourceCode = codeRes.sourceCode;
+        this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
+        const codeRes = this.codegen.generate("");
+        myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
         //==============
-
         this.detectTheme();
-
       },
       onThemeChange(theme) {
         document.body.getElementsByClassName(
@@ -959,10 +905,6 @@
       },
       updatecode(e) {
         // real time reformat mode
-        if (this.$store.state.rawCode.mode) {
-          this.$global.$emit("editor-mode-change", 3, true);
-          // this.clangFormat();
-        }
         if (e.type != Blockly.Events.UI) {
           //Blockly.JavaScript.resetTaskNumber();
           this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(
@@ -972,7 +914,12 @@
             Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
           );
           this.$global.editor.blockCode = xml;
-        } /*else{
+        }
+        if (!this.$global.editor.rawCodeMode && this.$global.editor.mode === 2) {
+          let prev = reformatCode(this.codegen.generate(this.$global.editor.rawCode).sourceCode);
+          this.$global.editor.previewSourceCode = prev;
+        }
+        /*else{
                 if(e.element == 'selected'){
                     if(e.newValue != null){ //selected block
                         var block = this.workspace.getBlockById(e.newValue);

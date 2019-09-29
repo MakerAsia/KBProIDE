@@ -1,14 +1,22 @@
 <template>
     <div v-if="$global.setting.devMode === true">
-        <div class="container-raw-code" v-if="this.$global.editor.mode > 1 && this.$store.state.rawCode.display">
+        <div class="container-raw-code" v-if="$global.editor.mode === 2">
             <span class="f-manjari-b text-white">RAW CODE</span>
-            <toggle-button :value="this.$store.state.rawCode.mode"
-                           :labels="{checked: 'ON', unchecked: 'OFF'}"
-                           :sync="true"
-                           @change="onChangeRawCode"/>
+            <toggle-button v-model="$global.editor.rawCodeMode"
+                           :labels="{checked: 'ON', unchecked: 'OFF'}"/>
         </div>
     </div>
 </template>
+
+<script>
+  import {ToggleButton} from "vue-js-toggle-button";
+  export default {
+    name: "RawCodeToggle",
+    components: {
+      "ToggleButton": ToggleButton
+    },
+  };
+</script>
 
 <style scoped>
     .container-raw-code {
@@ -20,55 +28,10 @@
         align-items: center;
         margin-left: 5px;
     }
-
     .text-dark {
         color: #2e2e2e;
     }
-
     .text-white {
         color: white;
     }
 </style>
-
-<script>
-  import {ToggleButton} from "vue-js-toggle-button";
-
-  export default {
-    name: "RawCodeToggle",
-    mounted() {
-      // console.log('------------> RawCode Mounted')
-    },
-    components: {
-      "ToggleButton": ToggleButton
-    },
-    data() {
-      return {
-        mode: this.$store.state.rawCode.mode
-      };
-    },
-    methods: {
-      onChangeRawCode() {
-
-        // console.log('------> onChangeRawCode')
-
-        if (this.$store.state.rawCode.rollbackMode === 0) {
-          this.$store.dispatch("rollbackRawCode", this.$global.editor.mode);
-          this.$global.editor.rollbackMode = this.$global.editor.mode;
-        }
-
-        this.$store.dispatch("rawCodeMode", !this.$store.state.rawCode.mode);
-
-        if (this.$store.state.rawCode.mode === false) {
-          this.$global.editor.mode = 2;
-          this.$global.$emit("editor-mode-change", 2);
-        } else {
-          this.$global.editor.mode = 3;
-          this.$global.$emit("editor-mode-change", 3, true);
-        }
-
-        this.$global.editor.rawCodeMode = this.$store.state.rawCode.mode;
-
-      }
-    }
-  };
-</script>
