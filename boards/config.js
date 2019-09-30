@@ -5,18 +5,18 @@ module.exports = {
     template: "",
   },
   persistence: {
-    board : 'kidbright',
+    board : 'kidbright-arduino',
     board_info : {
-      name : 'kidbright',
-      platform : 'esp-idf',
-      title : 'KidBright (Original)',
-      description : 'KidBright (Original รูปแบบการเขียนโปรแกรมและบล๊อกเดิมจาก KidBright IDE) บอร์ดสมองกลฝังตัวที่สามารถทำงานตามชุดคำสั่ง มุ่งเน้นให้ผู้เรียนได้พัฒนากระบวนการคิดเชิงตรรกะ ร่วมกับความคิดสร้างสรรค์ สามารถต่อยอดสู่การพัฒนาแอปพลิเคชันและเทคโนโลยีด้วยตนเองในอนาคต',
-      author : 'NECTEC',
-      email : 'kidbright@nectec.or.th',
-      website : 'http://www.kidbright.org',
-      git : 'https://github.com/comdet/kidbright-board-kbide/',
+      name : 'kidbright-arduino',
+      platform : 'arduino-esp32',
+      title : 'Kidbright (Arduino API)',
+      description : 'บอร์ด KidBright เขียนบนแพลตฟอร์ม Arduino-ESP32 ทำให้สามารถใช้ความสามารถใหม่ ๆ และปลั๊กอินของ Arduino ได้',
+      author : 'Maker Asia (maintain by Comdet)',
+      email : 'makerasia@gmail.com',
+      website : 'https://github.com/MakerAsia/kidbright-arduino-board/',
+      git : "https://github.com/MakerAsia/kidbright-arduino-board/",
       image : '/static/display.jpg',
-      version : '1.1.1'
+      version : '1.1.4'
     }
   },
 };

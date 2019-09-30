@@ -4,7 +4,7 @@ export default {
     index : 6,
     tooltip : '',
     persistence:{
-        sortby : 'recommended',
+        
     },
     data:{
         //saved : false,

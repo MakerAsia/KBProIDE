@@ -7,9 +7,9 @@
     height="64px"
   >
 
-<!--    <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">-->
-<!--      <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>-->
-<!--    </v-toolbar-title>-->
+    <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">
+      <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
+    </v-toolbar-title>
 
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">

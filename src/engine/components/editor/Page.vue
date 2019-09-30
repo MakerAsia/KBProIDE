@@ -10,7 +10,7 @@
                 class="pane"
                 :style="[ this.$global.editor.mode == 1
                               ? { width: '100%', height: '100%' }
-                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
+                              : this.$global.editor.mode == 2
                               ? { minWidth: '500px', width: '75%' }
                               : { width: '0px' }
                         ]"
@@ -132,66 +132,44 @@
             </v-dialog>
         </div>
         <!-- end -->
-        <multipane-resizer v-if="this.$global.editor.mode == 2 || this.$store.state.rawCode.mode"></multipane-resizer>
+        <multipane-resizer v-if="this.$global.editor.mode == 2"></multipane-resizer>
         <!-- source code -->
         <div
                 class="pane"
-                :style="[ this.$global.editor.mode == 1
-                              ? { width: '0px' }
-                              : this.$global.editor.mode == 2 || this.$store.state.rawCode.mode
-                              ? { flexGrow: 1 }
-                              : { width: '100%', height: '100%' }
-                        ]"
+                :style="[
+            this.$global.editor.mode == 1
+              ? { width: '0px' }
+              : this.$global.editor.mode == 2
+              ? { flexGrow: 1 }
+              : { width: '100%', height: '100%' }
+          ]"
         >
             <MonacoEditor
                     ref="cm"
-                    v-if="$global.editor.mode < 3 && $global.editor.rawCodeMode === false"
-                    v-model="$global.editor.rawCode"
+                    v-if="$global.editor.mode < 3"
+                    v-model="$global.editor.rawCodeMode ? $global.editor.rawCode : $global.editor.previewSourceCode"
                     class="editor"
                     language="cpp"
-                    :theme="$global.editor.theme"
+                    theme="vs-dark"
                     :options="this.editor_options"
             />
-
             <MonacoEditor
                     ref="cm"
-                    v-else-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === true"
+                    v-else-if="$global.editor.mode == 3"
                     v-model="$global.editor.sourceCode"
                     class="editor"
                     language="cpp"
-                    :theme="$global.editor.theme"
+                    theme="vs-dark"
                     :options="this.editor_options"
-                    :value="$global.editor.sourceCode"
             />
-
-            <div v-if="$global.editor.mode === 3 && $global.editor.rawCodeMode === false" :style="{height: $global.editor.consoleDisplay ? '80% !important' : '100% !important'}">
-                <MonacoEditor
-                        ref="cm"
-                        v-model="$global.editor.sourceCode"
-                        class="editor"
-                        language="cpp"
-                        :theme="$global.editor.theme"
-                        :options="this.editor_options"
-                        :value="$global.editor.sourceCode"
-                />
-            </div>
-
-            <div v-if="($global.editor.mode === 3 && $global.editor.rawCodeMode === false) && $global.editor.consoleDisplay === true" class="console">
-                <i class="fa fa-remove fa-lg text-danger console-close-icon" @click="onClickConsoleCloseIcon"></i>
-                <h5 style="font-weight: 700">Logs</h5>
-                <p style="color: yellow">
-                    <span style="word-break: normal" v-html="alertErrors"></span>
-                </p>
-            </div>
-
         </div>
         <!-- end -->
-
     </multipane>
 </template>
 <script>
   const electron = require("electron");
   var path = require("path");
+  const xmlParser = new DOMParser();
   // === UI Management ===
   import {Multipane, MultipaneResizer} from "vue-multipane";
   // === Blockly ===
@@ -233,9 +211,9 @@
       if (level === 1) {
         let insideBlock = element.blocks
           ? renderBlock(element.blocks, level + 1)
-          : element.xml
+          : (element.xml
             ? element.xml
-            : "";
+            : "");
         let custom = element.custom
           ? `custom="${element.custom}" `
           : "";
@@ -246,11 +224,7 @@
           res += `<block type="${element}"></block>`;
         } else if (typeof element == "object" && element.xml) {
           res += element.xml;
-        } else if (
-          typeof element === "object" &&
-          "type" in element &&
-          element.type === "category"
-        ) {
+        } else if (typeof element === "object" && "type" in element && element.type === "category") {
           let insideBlock = renderBlock(element.blocks, level + 1);
           let custom = element.custom
             ? `custom="${element.custom}" `
@@ -316,13 +290,77 @@
     });
     return `<sep></sep><category name="${pluginName}" color="290">${catStr}</category>`;
   };
-  const loadBlock = function(boardInfo) {
-    let blockFile = `${boardInfo.dir}/block/config.js`;
-    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
-    if (!util.fs.existsSync(blockFile)) {
-      return null;
+
+  const mergeBlockConfig = function(blockConfig) {
+    blockConfig.base_blocks.sort((a, b) => (a.index > b.index)
+      ? 1
+      : -1);
+    blockConfig.blocks && blockConfig.blocks.sort((a, b) => (a.index > b.index)
+      ? 1
+      : -1);
+    for (let i in blockConfig.base_blocks) {
+      let el = blockConfig.base_blocks[i]; //base element
+      let name = el.name;
+      let heritageBlock = blockConfig.blocks.find(sel => sel.name === name);
+      if (heritageBlock) { // found same name
+        if (heritageBlock.blocks[0] && heritageBlock.blocks[0].type === "category" &&
+          el.blocks[0] && el.blocks[0].type === "category") { //block inside has category
+          let respSubmerge = mergeBlockConfig({ base_blocks: el.blocks, blocks: heritageBlock.blocks });
+          el.blocks = respSubmerge.base_blocks;
+          blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
+        } else { //normal join
+          let platformNonDuplicateBlocks = el.blocks.filter(item => {
+            try {
+              let typename = typeof item === "string"
+                ? item
+                : xmlParser.parseFromString(item.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type");
+              return !heritageBlock.blocks.find(mItem => {
+                if (typeof mItem === "string") {
+                  return mItem === typename;
+                } else {
+                  return xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type") === typename;
+                }
+              });
+            } catch (e) {
+              return false;
+            }
+          });
+          el.blocks = heritageBlock.blocks.concat({ xml: "<sep gap=\"20\"></sep><label text=\"Platform Blocks\" web-class=\"title\"></label>" }, platformNonDuplicateBlocks);
+          blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
+        }
+      }
     }
-    return util.requireFunc(blockFile);
+    //======= merge difference with sort by index
+    let merged = [];
+    while (blockConfig.base_blocks.length > 0 && blockConfig.blocks.length > 0) {
+      let f1 = blockConfig.base_blocks[0];
+      let f2 = blockConfig.blocks[0];
+      if (!f2.index) { f2.index = 0; }
+      if (f2.index < f1.index) { //insert f2
+        merged.push(blockConfig.blocks.shift());
+      } else {
+        merged.push(blockConfig.base_blocks.shift());
+      }
+    }
+    if (blockConfig.base_blocks.length > 0) {
+      merged.push(...blockConfig.base_blocks);
+    } else if (blockConfig.blocks.length > 0) {
+      merged.push(...blockConfig.blocks);
+    }
+    blockConfig.base_blocks = merged;
+    blockConfig.blocks = [];
+    return blockConfig;
+  };
+
+  const loadBlock = function(boardInfo) {
+    let boardBlockFile = `${boardInfo.dir}/block/config.js`;
+    let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
+    let platformBlocks = util.requireFunc(platformBlockFile);
+    let boardBlocks = util.fs.existsSync(boardBlockFile)
+      ? util.requireFunc(boardBlockFile)
+      : {};
+    let blockConfig = Object.assign(platformBlocks, boardBlocks);
+    return mergeBlockConfig(blockConfig);
   };
   const initBlockly = function(boardInfo) {
     let platformName = boardInfo.platform;
@@ -361,9 +399,7 @@
       }
     });
   };
-  /*var reloadBlockly = function(toolbox,workspace,updatecode){
 
-    }*/
   let myself;
   export default {
     name: "editor",
@@ -377,6 +413,7 @@
     },
     data() {
       return {
+        codegen : null,
         alertErrors: "",
         compileStep: 1,
         compileDialog: false,
@@ -548,181 +585,15 @@
         }
       });
       electron.ipcRenderer.on("clang-format", () => {
-
-        if (this.$global.editor.mode < 3) {
-          if (this.$store.state.rawCode.mode) {
-            this.$global.$emit("editor-mode-change", 3, true);
-            this.clangFormat();
-          }
-        } else {
-          //this.$global.$emit("editor-mode-change", 3, true);
           this.clangFormat();
-        }
-
       });
-
-      electron.ipcRenderer.on("compile-source", () => {
-
-        if (this.$global.editor.mode === 3 && this.$global.editor.rawCodeMode === false) {
-
-          this.$global.editor.consoleDisplay = true;
-
-          //this.alertErrors = ` Processing ...`;
-
-          const engine = Vue.prototype.$engine;
-          const G = Vue.prototype.$global;
-          var path = `${G.board.board_info.dir}/compiler.js`;
-          var boardCompiler = engine.util.requireFunc(path);
-
-          var mac = "";
-          var boardName = "";
-
-          //setTimeout(() => {
-
-          console.log(this.$refs.cm);
-
-          G.$emit("compile-begin"); //<<<<< fire event
-          this.updateCompileStep(1);
-          this.stepResult["1"].result = true;
-          this.stepResult["2"].result = true;
-          this.stepResult["3"].result = true;
-          this.failed = false;
-          console.log("---> step 1 <---");
-          this.stepResult["1"].msg = `Compiling..`;
-
-          let thenThis = this;
-
-          //try {
-          const p = new Promise((resolve, reject) => {
-            resolve({ mac: "ff:ff:ff:ff:ff:ff" });
-          });
-
-          p.then(boardMac => {
-            mac = boardMac.mac;
-            boardName = mac.replace(/:/g, "-");
-            thenThis.updateCompileStep(2);
-            console.log("---> step 2 <---");
-            thenThis.stepResult["2"].msg = "Compile board ... ";
-            //------ just update it prevent unupdated data -------//
-            G.editor.rawCode = G.editor.Blockly.JavaScript.workspaceToCode(G.editor.workspace);
-            var xml = G.editor.Blockly.Xml.domToText(G.editor.Blockly.Xml.workspaceToDom(G.editor.Blockly.mainWorkspace));
-            G.editor.blockCode = xml;
-            //----------------------------------------------------//
-            var rawCode = (G.editor.mode >= 3)
-              ? G.editor.sourceCode
-              : G.editor.rawCode;
-            var isSourceCode = (G.editor.mode >= 3);
-            var config = {
-              board_mac_addr: mac,
-              isSourceCode: isSourceCode
-            };
-            //console.log(`calling boardCompiler.. from ActionbarJustCompile.`);
-            return boardCompiler.compile(rawCode, boardName, config, (status) => {
-              thenThis.updateCompileStep(2);
-              if (!thenThis.failed) {
-                thenThis.alertErrors += `${status}<br>`;
-                thenThis.stepResult["2"].msg = status;
-              }
-            });
-
-          }).then(() => {
-            thenThis.updateCompileStep(3);
-            thenThis.stepResult["2"].msg = "Compile done!";
-            console.log("---> step 3 <---");
-            G.$emit("compile-success"); //<<<<< fire event
-            thenThis.alertErrors += `Done compiling.<br>`;
-          }).catch(function(rej) {
-
-            //console.log(rej['error']['killed']);
-            //console.log(rej['error']['code']);
-            //console.log(rej['error']['signal']);
-            //console.log(rej['error']['cmd']);
-            //console.log(rej['error']['stdout']);
-
-            String.prototype.explode = function(separator, limit) {
-              const array = this.split(separator);
-              if (limit !== undefined && array.length >= limit) {
-                array.push(array.splice(limit - 1).join(separator));
-              }
-              return array;
-            };
-
-            console.log(rej["error"]["stderr"]);
-
-            let lineErr = rej["error"]["stderr"].explode(":", 2);
-            console.log(lineErr);
-
-            thenThis.alertErrors = ``;
-            thenThis.alertErrors = ` Line ` + lineErr[1];
-
-            lineErr = lineErr[1].explode(":", 2);
-            const foundLineErr = parseInt(lineErr[0]);
-            console.log(`found error in line >>>> ${foundLineErr}`);
-
-            window.cm = thenThis.$refs.cm;
-            window.getEditor = thenThis.$refs.cm.getEditor();
-
-            console.log(`--------> monaco`);
-            window.monaco = monaco;
-            console.log(monaco);
-
-            //then.$refs.cm.editor.setSelection(new monaco.Selection(foundLineErr,foundLineErr,foundLineErr,foundLineErr));
-
-            /* Display error in line */
-            console.log("------ process error ------");
-            engine.util.compiler.parseError(rej).then(errors => {
-              console.error(`errors:`, errors);
-              G.$emit("compile-error", errors); //<<<<< fire event
-              thenThis.failed = true;
-              if (thenThis.compileStep == 1) {
-                thenThis.stepResult["1"].msg = "";
-                thenThis.stepResult["1"].result = false;
-              } else if (thenThis.compileStep == 2) {
-                thenThis.stepResult["2"].msg = `${errors.join("\n")}`;
-                thenThis.stepResult["2"].result = false;
-              } else if (thenThis.compileStep == 3) {
-                thenThis.stepResult["3"].msg = "Cannot upload program : " + err;
-                thenThis.stepResult["3"].result = false;
-              }
-
-            });
-          });
-
-          //} catch (e) {
-          //  console.log (e)
-          //}
-
-          //}, 5000);
-        }
-
-      });
-
     },
     mounted() {
-
-      console.log(`-----------> Page `, this.$global.editor);
-
       /* Monaco config */
-      if (this.$global.editor.mode < 3 || this.$global.editor.rawCodeMode === true) {
+      if (this.$global.editor.mode < 3) {
         this.$global.editor.editor_options.readOnly = true;
       } else {
         this.$global.editor.editor_options.readOnly = false;
-      }
-
-      /* Check mode for Raw Code */
-      if (this.$global.editor.mode === 2) {
-        this.$store.dispatch("rawCodeToggleDisplay", true);
-      } else {
-        this.$store.dispatch("rawCodeToggleDisplay", false);
-      }
-
-      if (this.$global.editor.rawCodeMode === true) {
-        this.$store.dispatch("rawCodeMode", true);
-        this.$global.editor.mode = 2;
-        setTimeout(() => {
-          this.$global.editor.mode = 3;
-          this.$global.$emit("editor-mode-change", 3, true);
-        }, 1000);
       }
 
       Blockly.Msg = Object.assign(en, Blockly.Msg);
@@ -852,24 +723,10 @@
 
     },
     methods: {
-
-      onClickConsoleCloseIcon() {
-        this.$global.editor.consoleDisplay = false;
-      },
-
-      editorDidMount(event) {
-        console.log("---------> editorDidMount");
-      },
-
-      updateCompileStep(step) {
-        this.compileStep = step;
-      },
-
       clangFormat() {
-        console.log(this.$global.editor.sourceCode);
+        //console.log(this.$global.editor.sourceCode);
         this.$global.editor.sourceCode = reformatCode(this.$global.editor.sourceCode);
       },
-
       detectTheme() {
         /* Detect Theme */
         const currentThemeColor = this.$vuetify.theme.primary;
@@ -962,11 +819,6 @@
       },
       onEditorModeChange(mode, convert = false, create_new = false) {
         if (mode < 3) {
-          /* set display for Raw Code toggle */
-          if (mode === 2) {
-            this.$store.dispatch("rawCodeToggleDisplay", true);
-          }
-
           let xml = "";
           if (
             myself.$global.editor.blockCode !== "" &&
@@ -987,28 +839,16 @@
             Blockly.svgResize(this.workspace);
           }, 300);
         } else {
-
-          /* set display for Raw Code toggle */
-          if (this.$store.state.rawCode.mode === false) {
-            this.$store.dispatch("rawCodeToggleDisplay", false);
-            this.$store.dispatch("rollbackRawCode", 0);
-          }
-
           //------ generate template here ------//
           const boardDirectory = `${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-          let codegen = null;
-          if (fs.existsSync(`${boardDirectory}/codegen.js`)) {
-            codegen = util.requireFunc(`${boardDirectory}/codegen`);
-          } else {
-            codegen = util.requireFunc(`${platformDir}/codegen`);
-          }
+          this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
           if (convert) {
-            const respCode = codegen.generate(this.$global.editor.rawCode);
-            myself.$global.editor.sourceCode = respCode.sourceCode;
+            const respCode = this.codegen.generate(this.$global.editor.rawCode);
+            myself.$global.editor.sourceCode = reformatCode(respCode.sourceCode);
           } else if (create_new) {
-            const codeRes = codegen.generate("");
-            myself.$global.editor.sourceCode = codeRes.sourceCode;
+            const codeRes = this.codegen.generate("");
+            myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
           } else {
             //if user not convert just switch and leave create new (เอาไว้ให้ user กด new เองค่ะ
             //this.$global.editor.sourceCode = this.$global.editor.sourceCode;
@@ -1048,15 +888,11 @@
         //============== render mode 3 source code
         const boardDirectory = `${this.$global.board.board_info.dir}`;
         const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-        let codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`)
-          ? boardDirectory
-          : platformDir}/codegen`);
-        const codeRes = codegen.generate("");
-        myself.$global.editor.sourceCode = codeRes.sourceCode;
+        this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
+        const codeRes = this.codegen.generate("");
+        myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
         //==============
-
         this.detectTheme();
-
       },
       onThemeChange(theme) {
         document.body.getElementsByClassName(
@@ -1068,13 +904,7 @@
         console.log("editor resized");
       },
       updatecode(e) {
-
         // real time reformat mode
-        if (this.$store.state.rawCode.mode) {
-          this.$global.$emit("editor-mode-change", 3, true);
-          // this.clangFormat();
-        }
-
         if (e.type != Blockly.Events.UI) {
           //Blockly.JavaScript.resetTaskNumber();
           this.$global.editor.rawCode = Blockly.JavaScript.workspaceToCode(
@@ -1084,7 +914,12 @@
             Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
           );
           this.$global.editor.blockCode = xml;
-        } /*else{
+        }
+        if (!this.$global.editor.rawCodeMode && this.$global.editor.mode === 2) {
+          let prev = reformatCode(this.codegen.generate(this.$global.editor.rawCode).sourceCode);
+          this.$global.editor.previewSourceCode = prev;
+        }
+        /*else{
                 if(e.element == 'selected'){
                     if(e.newValue != null){ //selected block
                         var block = this.workspace.getBlockById(e.newValue);
@@ -1094,12 +929,6 @@
                     }
                 }
             }*/
-      },
-      setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
       },
       clearError() {
         let cm = this.getCm();
@@ -1147,20 +976,6 @@
 </script>
 
 <style>
-    .console {
-        height: 20% !important;
-        background-color: black;
-        color: white;
-        font-family: Manjari, sans-serif;
-        padding: 10px;
-        overflow: scroll;
-    }
-
-    .console > .console-close-icon {
-        float: right;
-        cursor: pointer;
-    }
-
     .editor {
         width: 100%;
         height: 100%;

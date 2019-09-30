@@ -1,3 +1,7 @@
+const electron = require("electron");
+electron.ipcRenderer.on("serial-monitor", () => {
+    Vue.prototype.$global.ui.addBottomTab('serial-monitor','Serial Monitor','./components/serial_monitor/SerialMonitor');
+});
 export default {
     name : 'serial_monitor',
     index : 0,

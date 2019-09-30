@@ -55,7 +55,7 @@
 
                             <!--lower pane -->
                             <div class="bottom-tab" v-if="$global.ui.bottomTab.length > 0">
-                                <v-tabs color="primary" dark slider-color="yellow" v-model="bottomTabModel">
+                                <v-tabs color="primary" dark slider-color="yellow" v-model="$global.ui.bottomTabModel">
                                     <draggable :options="{group: 'tab-group'}" class="v-tabs__container"
                                                v-model="$global.ui.bottomTab">
                                         <!-- tab header -->
@@ -260,6 +260,9 @@
     methods: {
       closeTab(name) {
         this.$global.ui.removeAllTab(name);
+      },
+      initialTab(){
+
       },
       reloadBoardPackage() {
         var boardName = this.$global.board.board;
