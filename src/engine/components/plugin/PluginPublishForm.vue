@@ -45,9 +45,9 @@
                 </v-card>
             </v-stepper-content>
 
-            <v-stepper-content step="2">
+            <v-stepper-content step="2" style="padding: 0">
                 <v-card>
-                    <v-card-text>
+                    <v-card-text style="padding: 0">
                         <v-layout row wrap class="form-group">
                             <v-flex xs6>
                                 <v-text-field label="Name *"
@@ -184,13 +184,16 @@
                                 ></v-text-field>
                             </v-flex>
                             <v-spacer></v-spacer>
-                        </v-layout>
-                    </v-card-text>
+
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn class="btn" color="primary" flat @click.native="step = 1">Prev</v-btn>
                         <v-btn class="btn-danger" flat @click.native="pluginDialog = false">Close</v-btn>
                     </v-card-actions>
+
+                        </v-layout>
+                    </v-card-text>
+                    
                 </v-card>
             </v-stepper-content>
         </v-stepper-items>
@@ -201,7 +204,7 @@
   .form-group {
     height: 100vh !important;
     overflow: auto !important;
-    padding-bottom: 250px !important;
+    padding: 50px 50px 250px 50px !important;
   }
 </style>
 
