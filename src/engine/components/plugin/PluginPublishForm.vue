@@ -48,7 +48,7 @@
             <v-stepper-content step="2">
                 <v-card>
                     <v-card-text>
-                        <v-layout row wrap>
+                        <v-layout row wrap class="form-group">
                             <v-flex xs6>
                                 <v-text-field label="Name *"
                                               v-model="plugin_info.name"
@@ -196,6 +196,14 @@
         </v-stepper-items>
     </v-stepper>
 </template>
+
+<style scoped>
+  .form-group {
+    height: 100vh !important;
+    overflow: auto !important;
+    padding-bottom: 250px !important;
+  }
+</style>
 
 <script>
   const request = require("request");
