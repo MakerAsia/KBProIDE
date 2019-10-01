@@ -17,7 +17,7 @@
                         <v-layout row wrap>
                             <v-flex xs12>
                                 <v-form v-model="step1_valid">
-                                    <v-text-field style="min-width: 820px"
+                                    <v-text-field style="min-width: 750px"
                                                   label="Git URL *"
                                                   v-model="plugin_info.git"
                                                   :rules="gitUrlRules"
@@ -202,16 +202,17 @@
   const request_promise = require("request-promise");
   const progress = require("request-progress");
   import util from "@/engine/utils";
+
   let mother;
   export default {
     name: "PluginPublishForm",
     data() {
       return {
         step: 1,
-        step1_valid : false,
+        step1_valid: false,
         processing_step1: false,
-        step2_valid : false,
-        processing_step2 : false,
+        step2_valid: false,
+        processing_step2: false,
         plugin_info: {
           name: "",
           title: "",
@@ -228,7 +229,7 @@
           email: "",
           license: ""
         },
-        json : null,
+        json: null,
         categories_info: ["Display", "Communication", "Signal Input/Output", "Sensors", "Device Control", "Timing", "Data Storage", "Data Processing", "Other"],
         valid: false,
         requiredRules: [v => !!v || "required"],
@@ -254,34 +255,66 @@
       });*/
     },
     methods: {
-      parseConfig: function(){
+      parseConfig: function() {
         this.processing_step1 = true;
         let json;
         request_promise(this.plugin_info.git + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
           .then(res => {
             json = JSON.parse(res);
-            console.log(json);
-            if(json.name) { //search if existing
-              return Vue.prototype.$db.collection("plugins").where("name", "==", json.name).get();
+            if (json.name) { //search if existing
+              let query = { filter: { name: { eq: json.name } } };
+              return Vue.prototype.$db2.getItems("plugins", query).then((data, meta) => {
+                return data.data && data.data.length === 1 && data.data[0];
+              }).catch(err => {
+                console.error("list online plugin error : " + err);
+                return false;
+              });
             } else {
               return false;
             }
-          }).then(res => {
-          if (res && res.size >= 1) {
-            return json.version > res.docs[0].data().version;
-          } else {
-            return true;
-          }
-        }).then(res => {
-          if (res) {
-            console.log("Got it");
-          } else {
-            console.log("Existing plugin name or is not newest version");
-          }
-        }).catch(err => {
-          console.log("Plugin Publishing Error : ");
-          console.log(err);
-        });
+          })
+          .then(res => {
+            if (res && res.version) {
+              return json.version > res.version;
+            } else {
+              return true;
+            }
+          })
+          .then(res => {
+            if (res) {
+              console.log("Got it");
+              mother.$dialog.notify.success("Parsing success");
+              mother.plugin_info = {
+                name: json.name,
+                title: json.title,
+                description: json.description,
+                category: json.category,
+                platform: json.platform,
+                board: json.board,
+                keywords: json.keywords.includes(",")
+                  ? json.keywords.split(",").map(e => e.trim())
+                  : [json.keywords],
+                git: json.git,
+                version: json.version,
+                url: json.url,
+                image: json.image,
+                author: json.author,
+                email: json.email,
+                license: json.license
+              };
+              mother.step = 2;
+            } else {
+              console.log(json);
+              mother.$dialog.notify.error("Existing plugin name or is not newest version");
+              console.log("Existing plugin name or is not newest version");
+            }
+            mother.processing_step1 = false;
+          })
+          .catch(err => {
+            console.log("Plugin Publishing Error : ");
+            console.log(err);
+            mother.processing_step1 = false;
+          });
       }
     }
   };
