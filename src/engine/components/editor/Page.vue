@@ -308,7 +308,10 @@
           let respSubmerge = mergeBlockConfig({ base_blocks: el.blocks, blocks: heritageBlock.blocks });
           el.blocks = respSubmerge.base_blocks;
           blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
-        } else { //normal join
+        } else if (heritageBlock.override === true) {
+          blockConfig.base_blocks[i] = Object.assign({},heritageBlock);
+          blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
+        }else { //normal join
           let platformNonDuplicateBlocks = el.blocks.filter(item => {
             try {
               let typename = typeof item === "string"
