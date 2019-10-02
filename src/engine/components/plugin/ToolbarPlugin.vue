@@ -216,14 +216,11 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn v-if="$global.setting.devMode === true" class="btn-primary" flat
-                           @click.native="publishPluginDialog = true; pluginDialog = false;">Publish your plugin
+                           @click.native="publishNewPlugin">Publish your plugin
                     </v-btn>
                     <v-btn class="btn-danger" flat @click.native="pluginDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
-        <v-dialog v-model="publishPluginDialog" max-width="820" max-height="80%" persistent scrollable>
-            <PluginPublishForm></PluginPublishForm>
         </v-dialog>
     </div>
 </template>

@@ -45,6 +45,12 @@ const directus_client = DirectusSDK({
   project : "_",
   storage: window.localStorage
 });
+const directus_dev_client = DirectusSDK({
+  url : "https://manage.kbide.org/",
+  project : "_",
+  token : "FB7AECD641C6981EC81498704BCECFAE"
+});
+Vue.prototype.$db_dev = directus_dev_client;
 Vue.prototype.$db2 = directus_client;
 //=============================//
 Vue.config.productionTip = false;

@@ -7,17 +7,16 @@ const path = require("path");
 const request = require("request");
 const request_promise = require("request-promise");
 const progress = require("request-progress");
-
 let localBoardName = "";
 let localPlugins = {};
 
-const decodeArduinoLibraryConfig = function(targetFile){
-  let tmpData = fs.readFileSync(targetFile,"utf8");
-  let lines = tmpData.split('\n');
+const decodeArduinoLibraryConfig = function(targetFile) {
+  let tmpData = fs.readFileSync(targetFile, "utf8");
+  let lines = tmpData.split("\n");
   let tdata = lines.map(l => l.split("="));
   let res = {};
-  tdata.forEach(el=>{
-    if(el.length && el.length === 2) {
+  tdata.forEach(el => {
+    if (el.length && el.length === 2) {
       res[el[0].trim()] = el[1].trim();
     }
   });
@@ -31,11 +30,11 @@ const listPlugin = function(dir) {
     blockFiles.forEach(blockFile => {
       let fblock = `${dir}/${blockFile}`;
       if (blockFile.endsWith(".js") && blockFile.startsWith("block") &&
-          fs.lstatSync(fblock).isFile()) {
+        fs.lstatSync(fblock).isFile()) {
         // extract block definitions
         let blocks = [];
         var Blockly = {
-          Blocks: [],
+          Blocks: []
         };
         try {
           if (!document.BlockyPlugin) {
@@ -55,7 +54,7 @@ const listPlugin = function(dir) {
         let fgen = `${dir}/${blockFile.replace("block", "generator")}`;
         var generators = [];
         var Blockly = {
-          JavaScript: [],
+          JavaScript: []
         };
         try {
           eval(fs.readFileSync(fgen, "utf8"));
@@ -70,9 +69,11 @@ const listPlugin = function(dir) {
           dir: dir,
           file: blockFile,
           blocks: blocks,
-          generators: generators,
+          generators: generators
         };
-        console.log(`plugin "${blockFile}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
+        console.log(`plugin "${blockFile}" found ${blocks.length} block${blocks.length > 1
+          ? "s"
+          : ""}`);
       }
     });
   }
@@ -89,7 +90,7 @@ const listKidBrightPlugin = function(dir) {
         // extract block definitions
         var blocks = [];
         var Blockly = {
-          Blocks: [],
+          Blocks: []
         };
         try {
           eval(fs.readFileSync(`${fdir}/blocks.js`, "utf8"));
@@ -103,7 +104,7 @@ const listKidBrightPlugin = function(dir) {
         // extrack block generators
         var generators = [];
         var Blockly = {
-          JavaScript: [],
+          JavaScript: []
         };
         try {
           eval(fs.readFileSync(`${fdir}/generators.js`, "utf8"));
@@ -119,9 +120,11 @@ const listKidBrightPlugin = function(dir) {
           file: "blocks.js",
           name: plugin,
           blocks: blocks,
-          generators: generators,
+          generators: generators
         };
-        console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1 ? "s" : ""}`);
+        console.log(`plugin "${plugin}" found ${blocks.length} block${blocks.length > 1
+          ? "s"
+          : ""}`);
       }
     });
   }
@@ -139,95 +142,95 @@ const listExamples = function(exampleDir) {
         exampleInfo.push({
           folder: folder,
           dir: targetDir,
-          files: exampleContent,
+          files: exampleContent
         });
       }
     });
   }
   return exampleInfo;
 };
-const listCategoryPlugins = function(pluginDir,boardInfo) {
+const listCategoryPlugins = function(pluginDir, boardInfo) {
   let categories = [];
   let allPlugin = {};
   if (fs.existsSync(pluginDir)) {
     let cats = fs.readdirSync(pluginDir);
     cats.forEach(cat => {
       let dir = `${pluginDir}/${cat}`;
-      if(!fs.lstatSync(dir).isDirectory()){
+      if (!fs.lstatSync(dir).isDirectory()) {
         return;
       }
       //------- load kidbright plugins -------//
-      let pluginContents = fs.readdirSync(dir,{withFileTypes : true});
-      let kbPluginInfoFile = pluginContents.find(el=>el.isFile() && el.name.endsWith(".json") && el.name !== "library.json");
+      let pluginContents = fs.readdirSync(dir, { withFileTypes: true });
+      let kbPluginInfoFile = pluginContents.find(el => el.isFile() && el.name.endsWith(".json") && el.name !== "library.json");
       if (kbPluginInfoFile && boardInfo.name === "kidbright") {
         let kbPluginInfoFileFull = `${dir}/${kbPluginInfoFile.name}`;
-        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFileFull,"utf8"));
+        let catInfoFile = JSON.parse(fs.readFileSync(kbPluginInfoFileFull, "utf8"));
         let blockPlugins = listKidBrightPlugin(dir);
-        let incDirectory = pluginContents.filter(el=>el.isDirectory());
+        let incDirectory = pluginContents.filter(el => el.isDirectory());
         categories.push({
-                          directory: dir,
-                          dirName: cat,
-                          plugins: blockPlugins,
-                          category: catInfoFile,
-                          sourceIncludeDir : incDirectory,
-                        });
+          directory: dir,
+          dirName: cat,
+          plugins: blockPlugins,
+          category: catInfoFile,
+          sourceIncludeDir: incDirectory
+        });
         Object.assign(allPlugin, blockPlugins);
-      //------- load normal plugins ---------//
-      }else if(boardInfo.name !== "kidbright"){
+        //------- load normal plugins ---------//
+      } else if (boardInfo.name !== "kidbright") {
         let pluginInfo = null;
         let infoFile = `${dir}/library.json`;
         let arduinoInfoFile = `${dir}/library.properties`;
-        if(fs.existsSync(infoFile)) {
+        if (fs.existsSync(infoFile)) {
           pluginInfo = JSON.parse(fs.readFileSync(infoFile, "utf8"));
-          if("frameworks" in pluginInfo && "platforms" in pluginInfo) { //this is platformIO config file
-             if(pluginInfo.frameworks === "arduino") {
-                if(pluginInfo.platforms === "*") {
-                  pluginInfo.platform = ["*"];
-                }
-                if(typeof pluginInfo.platforms === "object" && pluginInfo.platforms.includes("espressif32")) {
-                  pluginInfo.platform = ["arduino-esp32"];
-                }
-             }
-             if(pluginInfo.repository && pluginInfo.repository.type === "git") {
-                pluginInfo["git"] = pluginInfo.repository.url.replace(".git","/").trim();
-             }else {
-                return; //this plugin cannot update
-             }
-             if(pluginInfo.authors) {
-               pluginInfo["author"] = pluginInfo.authors.name;
-             }
-             pluginInfo["title"] = pluginInfo["name"];
-             pluginInfo["name"] = pluginInfo["name"].replace(/\s/g,"-").trim();
+          if ("frameworks" in pluginInfo && "platforms" in pluginInfo) { //this is platformIO config file
+            if (pluginInfo.frameworks === "arduino") {
+              if (pluginInfo.platforms === "*") {
+                pluginInfo.platform = ["*"];
+              }
+              if (typeof pluginInfo.platforms === "object" && pluginInfo.platforms.includes("espressif32")) {
+                pluginInfo.platform = ["arduino-esp32"];
+              }
+            }
+            if (pluginInfo.repository && pluginInfo.repository.type === "git") {
+              pluginInfo["git"] = pluginInfo.repository.url.replace(".git", "/").trim();
+            } else {
+              return; //this plugin cannot update
+            }
+            if (pluginInfo.authors) {
+              pluginInfo["author"] = pluginInfo.authors.name;
+            }
+            pluginInfo["title"] = pluginInfo["name"];
+            pluginInfo["name"] = pluginInfo["name"].replace(/\s/g, "-").trim();
           }
-        }else if(fs.existsSync(arduinoInfoFile)) {
+        } else if (fs.existsSync(arduinoInfoFile)) {
           pluginInfo = decodeArduinoLibraryConfig(arduinoInfoFile);
-          if("url" in pluginInfo) {
+          if ("url" in pluginInfo) {
             pluginInfo["git"] = pluginInfo.url;
-          }else {
+          } else {
             return; //reject
           }
           pluginInfo.title = pluginInfo.name;
-          pluginInfo.name = pluginInfo.name.replace(/\s/g,"-").trim();
+          pluginInfo.name = pluginInfo.name.replace(/\s/g, "-").trim();
           pluginInfo.description = pluginInfo.sentence;
           pluginInfo.platform = pluginInfo.architectures;
-        }else {
+        } else {
           return; //there are no info file in this library.
         }
         //---------- rejection other board platform ----------//
-        if(boardInfo !== undefined && boardInfo.platform){
-          if(typeof(pluginInfo.platform) === "string" //single param platform
-              && !pluginInfo.platform.includes(",")
-              && pluginInfo.platform !== boardInfo.platform
-              && pluginInfo.platform !== "*"){ //any platform ? is that real!?
+        if (boardInfo !== undefined && boardInfo.platform) {
+          if (typeof (pluginInfo.platform) === "string" //single param platform
+            && !pluginInfo.platform.includes(",")
+            && pluginInfo.platform !== boardInfo.platform
+            && pluginInfo.platform !== "*") { //any platform ? is that real!?
             return;
-          }else if(typeof(pluginInfo.platform) === "string" //string with comma
-              && pluginInfo.platform.includes(",")){
-            let supportedPlugins = pluginInfo.platform.split(",").map(el=>el.trim());
-            if(!supportedPlugins.includes(boardInfo.platform)){
+          } else if (typeof (pluginInfo.platform) === "string" //string with comma
+            && pluginInfo.platform.includes(",")) {
+            let supportedPlugins = pluginInfo.platform.split(",").map(el => el.trim());
+            if (!supportedPlugins.includes(boardInfo.platform)) {
               return;
             }
-          }else if(pluginInfo.platform.constructor === Array){ //array of platform
-            if(!pluginInfo.platform.includes(boardInfo.platform)){
+          } else if (pluginInfo.platform.constructor === Array) { //array of platform
+            if (!pluginInfo.platform.includes(boardInfo.platform)) {
               return;
             }
           }
@@ -240,13 +243,13 @@ const listCategoryPlugins = function(pluginDir,boardInfo) {
         let blockPlugins = {};
         let srcFile = [];
         let srcIncDir = dir;
-        if(fs.existsSync(blockDir)){
+        if (fs.existsSync(blockDir)) {
           blockPlugins = listPlugin(blockDir);
         }
-        if(fs.existsSync(srcDir)){
+        if (fs.existsSync(srcDir)) {
           srcFile = fs.readdirSync(srcDir);
           srcIncDir = srcDir;
-        }else if(fs.readdirSync(dir).find(el=>el.endsWith(".h"))){
+        } else if (fs.readdirSync(dir).find(el => el.endsWith(".h"))) {
           srcFile = fs.readdirSync(dir);
           srcIncDir = dir;
         }
@@ -255,49 +258,49 @@ const listCategoryPlugins = function(pluginDir,boardInfo) {
           exampleInfo = listExamples(exampleDir);
         }
         categories.push({
-                            directory: dir,
-                            dirName: cat,
-                            sourceFile: srcFile,
-                            sourceIncludeDir : srcIncDir,
-                            plugins: blockPlugins,
-                            category: pluginInfo,
-                            examples: exampleInfo,
-                          });
+          directory: dir,
+          dirName: cat,
+          sourceFile: srcFile,
+          sourceIncludeDir: srcIncDir,
+          plugins: blockPlugins,
+          category: pluginInfo,
+          examples: exampleInfo
+        });
         Object.assign(allPlugin, blockPlugins);
       }
     });
   }
-  return {categories: categories, plugins: allPlugin};
+  return { categories: categories, plugins: allPlugin };
 };
 //TODO : look for platform blocks
 
 const loadPlugin = function(boardInfo) {
   if ((Object.entries(localPlugins).length === 0 && localPlugins.constructor ===
-      Object) || (boardInfo.name !== localBoardName)) { // check empty object !!!
+    Object) || (boardInfo.name !== localBoardName)) { // check empty object !!!
     //load mother platform
     //TODO : implement look up in mother of platform again
     //load from platform
     let platformPlugins = listCategoryPlugins(
-        `${util.platformDir}/${boardInfo.platform}/plugin`,
-        boardInfo);
+      `${util.platformDir}/${boardInfo.platform}/plugin`,
+      boardInfo);
     //load from board
     let boardPlugins = listCategoryPlugins(
-        `${util.boardDir}/${boardInfo.name}/plugin`,
-        boardInfo);
+      `${util.boardDir}/${boardInfo.name}/plugin`,
+      boardInfo);
     //load global plugin
     let globalPlugins = listCategoryPlugins(
-        util.pluginDir,
-        boardInfo
+      util.pluginDir,
+      boardInfo
     );
     //join all together
     let allPlugins = {};
     Object.assign(allPlugins, platformPlugins.plugins);
     Object.assign(allPlugins, boardPlugins.plugins);
     Object.assign(allPlugins, globalPlugins.plugins);
-    let allPluginsCat = globalPlugins.categories.concat(platformPlugins.categories,boardPlugins.categories);
+    let allPluginsCat = globalPlugins.categories.concat(platformPlugins.categories, boardPlugins.categories);
     localPlugins = {
       categories: allPluginsCat,
-      plugins: allPlugins,
+      plugins: allPlugins
     };
   }
   return localPlugins;
@@ -313,9 +316,9 @@ const plugins = function(boardInfo) {
 };
 const listOnlinePlugin = function(query) {
   return new Promise((resolve, reject) => {
-    Vue.prototype.$db2.getItems("plugins",query).then((data,meta)=>{
-      resolve({plugins: data.data , meta : data.meta});
-    }).catch(err=>{
+    Vue.prototype.$db2.getItems("plugins", query).then((data, meta) => {
+      resolve({ plugins: data.data, meta: data.meta });
+    }).catch(err => {
       console.error("list online plugin error : " + err);
       reject(err);
     });
@@ -330,15 +333,15 @@ const installOnlinePlugin = function(info, cb) {
     let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
     let file = fs.createWriteStream(zipFile);
     progress(
-        request(zipUrl),
-        {
-          throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms
-          delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms
-          followAllRedirects: true,
-          follow: true,
-        },
+      request(zipUrl),
+      {
+        throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms
+        delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms
+        followAllRedirects: true,
+        follow: true
+      }
     ).on("progress", function(state) {
-      cb && cb({process: "board", status: "DOWNLOAD", state: state});
+      cb && cb({ process: "board", status: "DOWNLOAD", state: state });
     }).on("error", function(err) {
       reject(err);
     }).on("end", function() {
@@ -346,8 +349,8 @@ const installOnlinePlugin = function(info, cb) {
       return resolve(zipFile);
     }).pipe(file);
   }).then((zipFile) => { //unzip file
-    return util.unzip(zipFile, {dir: targetDir}, p => {
-      cb && cb({process: "board", status: "UNZIP", state: p});
+    return util.unzip(zipFile, { dir: targetDir }, p => {
+      cb && cb({ process: "board", status: "UNZIP", state: p });
     });
   }).then(() => { //rename folder
     //TODO : check if extract success or not
@@ -383,13 +386,13 @@ const removePlugin = function(pluginInfo, isBackupRemove = false) {
 const backupPlugin = function(pluginInfo) {
   return new Promise((resolve, reject) => {
     let target = pluginInfo.directory;
-    if(target.endsWith("/")){
-      target = target.substring(0,target.length - 1);
+    if (target.endsWith("/")) {
+      target = target.substring(0, target.length - 1);
     }
     let newer = `${target}-backup-plugin`;
     if (!fs.existsSync(target)) {
       reject("no directory");
-    }else{
+    } else {
       fs.renameSync(target, newer);
       resolve();
     }
@@ -398,30 +401,30 @@ const backupPlugin = function(pluginInfo) {
 
 const restorePlugin = function(pluginInfo) {
   let target = pluginInfo.directory;
-  if(target.endsWith("/")){
-    target = target.substring(0,target.length - 1);
+  if (target.endsWith("/")) {
+    target = target.substring(0, target.length - 1);
   }
   let newer = `${target}-backup-plugin`;
   fs.renameSync(newer, target);
   resolve();
 };
 
-const publishPlugin = function(url){
-  return new Promise((resolve,reject)=>{
+const publishPlugin_old = function(url) {
+  return new Promise((resolve, reject) => {
     let json = null;
     if (!util.regex.isValidGithubUrl(url)) {
       reject("wrong github url format");
       return;
     }
     request_promise(url + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
-    .then(res => {
-      json = JSON.parse(res);
-      if(json.name) { //search if existing
-        return Vue.prototype.$db.collection("plugins").where("name", "==", json.name).get();
-      } else {
-        return false;
-      }
-    }).then(res => {
+      .then(res => {
+        json = JSON.parse(res);
+        if (json.name) { //search if existing
+          return Vue.prototype.$db.collection("plugins").where("name", "==", json.name).get();
+        } else {
+          return false;
+        }
+      }).then(res => {
       if (res && res.size >= 1) {
         return json.version > res.docs[0].data().version;
       } else {
@@ -434,7 +437,9 @@ const publishPlugin = function(url){
         json.removed = 0;
         json.star = 0;
         json.update_date = new Date();
-        json.keywords = (json.keywords)? json.keywords.split(",").map(el=>el.toLowerCase().trim()) : [""];
+        json.keywords = (json.keywords)
+          ? json.keywords.split(",").map(el => el.toLowerCase().trim())
+          : [""];
         Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
         if (res) {
           resolve("submit your plugin success, please refresh again");
@@ -443,6 +448,70 @@ const publishPlugin = function(url){
         reject("Existing plugin name or is not newest version");
       }
     }).catch(err => {
+      console.log("Plugin Publishing Error : ");
+      console.log(err);
+      reject(err);
+    });
+  });
+};
+
+const publishPlugin = function(url) {
+  return new Promise((resolve, reject) => {
+    let json = null;
+    if (!util.regex.isValidGithubUrl(url)) {
+      reject("wrong github url format");
+      return;
+    }
+    request_promise(url + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
+      .then(res => {
+        json = JSON.parse(res);
+        if (json.name) { //search if existing
+          let query = { filter: { name: { eq: json.name } } };
+          return Vue.prototype.$db2.getItems("plugins", query).then((data, meta) => {
+            return data.data && data.data.length === 1 && data.data[0];
+          }).catch(err => {
+            console.error("list online plugin error : " + err);
+            return false;
+          });
+        } else {
+          return false;
+        }
+      })
+      .then(res => {
+        if (res && res.version) {
+          return json.version > res.version;
+        } else {
+          return true;
+        }
+      })
+      .then(res => {
+        if (res) {
+          delete json.homepage; //please use URL instead.
+          json.status = "draft";
+          json.board = (json.board && json.board.includes(","))
+            ? json.board.split(",").map(el => el.toLowerCase().trim())
+            : null;
+          json.keywords = (json.keywords)
+            ? json.keywords.split(",").map(el => el.toLowerCase().trim())
+            : [""];
+          Vue.prototype.$db_dev.createItem("plugins", json)
+            .then(res => {
+              console.log(res);
+              if (res) {
+                resolve("submit your plugin success, please refresh again");
+              } else {
+                reject("Fail to add new plugin, please open console log to review.");
+              }
+            })
+            .catch(err => {
+              console.log("Publish data failed : ");
+              console.log(err);
+              reject(err);
+            });
+        } else {
+          reject("Existing plugin name or is not newest version");
+        }
+      }).catch(err => {
       console.log("Plugin Publishing Error : ");
       console.log(err);
       reject(err);
