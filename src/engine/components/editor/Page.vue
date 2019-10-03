@@ -550,28 +550,26 @@
         }
       });
       electron.ipcRenderer.on("edit-copy", () => {
-        document.execCommand("copy");
-        //if (this.$global.editor.mode < 3) {
-        //  Blockly.onKeyDown_({
-        //    keyCode: "C".charCodeAt(0),
-        //    ctrlKey: true,
-        //    target: { type: "none" }
-        //  });
-        //} else {
-        //  document.execCommand("copy");
-        //}
+        if (this.$global.editor.mode < 3) {
+          Blockly.onKeyDown_({
+            keyCode: "C".charCodeAt(0),
+            ctrlKey: true,
+            target: { type: "none" }
+          });
+        } else {
+          document.execCommand("copy");
+        }
       });
       electron.ipcRenderer.on("edit-paste", () => {
-        document.execCommand("paste");
-        //if (this.$global.editor.mode < 3) {
-        //  Blockly.onKeyDown_({
-        //    keyCode: "V".charCodeAt(0),
-        //    ctrlKey: true,
-        //    target: { type: "none" }
-        //  });
-        //} else {
-        //  document.execCommand("paste");
-        //}
+        if (this.$global.editor.mode < 3) {
+          Blockly.onKeyDown_({
+            keyCode: "V".charCodeAt(0),
+            ctrlKey: true,
+            target: { type: "none" }
+          });
+        } else {
+          document.execCommand("paste");
+        }
       });
       electron.ipcRenderer.on("edit-find", () => {
         if (this.$global.editor.mode < 3) {
