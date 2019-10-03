@@ -309,9 +309,9 @@
           el.blocks = respSubmerge.base_blocks;
           blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
         } else if (heritageBlock.override === true) {
-          blockConfig.base_blocks[i] = Object.assign({},heritageBlock);
+          blockConfig.base_blocks[i] = Object.assign({}, heritageBlock);
           blockConfig.blocks = blockConfig.blocks.filter(e => e.name !== heritageBlock.name);
-        }else { //normal join
+        } else { //normal join
           let platformNonDuplicateBlocks = el.blocks.filter(item => {
             try {
               let typename = typeof item === "string"
@@ -322,7 +322,9 @@
                   return mItem === typename;
                 } else {
                   let parsed = xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block");
-                  return parsed.length !== 0 ? parsed[0].getAttribute("type") === typename : false;
+                  return parsed.length !== 0
+                    ? parsed[0].getAttribute("type") === typename
+                    : false;
                 }
               });
               return foundDuplication === undefined;
@@ -424,7 +426,7 @@
     },
     data() {
       return {
-        codegen : null,
+        codegen: null,
         alertErrors: "",
         compileStep: 1,
         compileDialog: false,
@@ -550,26 +552,38 @@
         }
       });
       electron.ipcRenderer.on("edit-copy", () => {
-        if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({
-            keyCode: "C".charCodeAt(0),
-            ctrlKey: true,
-            target: { type: "none" }
-          });
-        } else {
+
+        if (process.platform === "darwin") {
           document.execCommand("copy");
+        } else {
+          if (this.$global.editor.mode < 3) {
+            Blockly.onKeyDown_({
+              keyCode: "C".charCodeAt(0),
+              ctrlKey: true,
+              target: { type: "none" }
+            });
+          } else {
+            document.execCommand("copy");
+          }
         }
+
       });
       electron.ipcRenderer.on("edit-paste", () => {
-        if (this.$global.editor.mode < 3) {
-          Blockly.onKeyDown_({
-            keyCode: "V".charCodeAt(0),
-            ctrlKey: true,
-            target: { type: "none" }
-          });
-        } else {
+
+        if (process.platform === "darwin") {
           document.execCommand("paste");
+        } else {
+          if (this.$global.editor.mode < 3) {
+            Blockly.onKeyDown_({
+              keyCode: "V".charCodeAt(0),
+              ctrlKey: true,
+              target: { type: "none" }
+            });
+          } else {
+            document.execCommand("paste");
+          }
         }
+
       });
       electron.ipcRenderer.on("edit-find", () => {
         if (this.$global.editor.mode < 3) {
@@ -596,7 +610,7 @@
         }
       });
       electron.ipcRenderer.on("clang-format", () => {
-          this.clangFormat();
+        this.clangFormat();
       });
     },
     mounted() {
@@ -853,7 +867,9 @@
           //------ generate template here ------//
           const boardDirectory = `${this.$global.board.board_info.dir}`;
           const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-          this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
+          this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`)
+            ? boardDirectory
+            : platformDir}/codegen`);
           if (convert) {
             const respCode = this.codegen.generate(this.$global.editor.rawCode);
             myself.$global.editor.sourceCode = reformatCode(respCode.sourceCode);
@@ -900,7 +916,9 @@
         //============== render mode 3 source code
         const boardDirectory = `${this.$global.board.board_info.dir}`;
         const platformDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-        this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`) ? boardDirectory : platformDir}/codegen`);
+        this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`)
+          ? boardDirectory
+          : platformDir}/codegen`);
         const codeRes = this.codegen.generate("");
         myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
         //==============
