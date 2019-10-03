@@ -317,13 +317,15 @@
               let typename = typeof item === "string"
                 ? item
                 : xmlParser.parseFromString(item.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type");
-              return !heritageBlock.blocks.find(mItem => {
+              let foundDuplication = heritageBlock.blocks.find(mItem => {
                 if (typeof mItem === "string") {
                   return mItem === typename;
                 } else {
-                  return xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block")[0].getAttribute("type") === typename;
+                  let parsed = xmlParser.parseFromString(mItem.xml, "text/xml").getElementsByTagName("block");
+                  return parsed.length !== 0 ? parsed[0].getAttribute("type") === typename : false;
                 }
               });
+              return foundDuplication === undefined;
             } catch (e) {
               return false;
             }
@@ -358,6 +360,12 @@
   const loadBlock = function(boardInfo) {
     let boardBlockFile = `${boardInfo.dir}/block/config.js`;
     let platformBlockFile = `${util.platformDir}/${boardInfo.platform}/block/config.js`;
+    //clear cache
+    Object.keys(util.requireFunc.cache).map(file => {
+      if (file.endsWith("block\\config.js") || file.endsWith("block/config.js")) {
+        delete util.requireFunc.cache[file];
+      }
+    });
     let platformBlocks = util.requireFunc(platformBlockFile);
     let boardBlocks = util.fs.existsSync(boardBlockFile)
       ? util.requireFunc(boardBlockFile)
@@ -867,6 +875,7 @@
       },
       onBoardChange: function(boardInfo) {
         //reload plugin
+        console.log("board changed resender toolbox");
         this.$global.plugin.pluginInfo = plug.loadPlugin(this.$global.board.board_info);
         initBlockly(boardInfo);
         let blocks = loadBlock(boardInfo);
