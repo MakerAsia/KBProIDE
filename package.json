@@ -27,6 +27,7 @@
   "dependencies": {
     "@directus/sdk-js": "^5.3.4",
     "@johmun/vue-tags-input": "^2.0.1",
+    "bluebird": "^3.5.5",
     "chart.js": "^2.8.0",
     "electron-asar-hot-updater": "git+https://github.com/comdet/electron-asar-hot-updater.git",
     "electron-google-analytics": "^0.1.0",
