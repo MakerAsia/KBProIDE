@@ -51,6 +51,11 @@ var humanFileSize = function(bytes, si = true) {
 const requireFunc = typeof __webpack_require__ === "function"
     ? __non_webpack_require__
     : require;
+const clearCacheRequire = function(){
+  Object.keys(requireFunc.cache).forEach(function(key) {
+    delete requireFunc.cache[key];
+  });
+};
 const vueLoader = function(file) { //this section from https://www.npmjs.com/package/vue-file-compiler
   let vue = fs.readFileSync(file, "utf-8");
   let validRegex = new RegExp(
@@ -271,6 +276,7 @@ export default {
   humanize,
   ui,
   requireFunc,
+  clearRequire : clearCacheRequire,
   humanFileSize,
   loadCofigComponents,
   walk,
