@@ -2,8 +2,12 @@
     <v-container grid-list-md text-xs-center>
         <v-layout row wrap style="margin-bottom: 100px">
 
-            <!-- Electronics -->
-            <category-component></category-component>
+            <v-flex xs12 sm2>
+                <!-- Categories -->
+                <category-component></category-component>
+                <!-- Carts -->
+                <cart-component></cart-component>
+            </v-flex>
 
             <v-flex xs12 sm10>
 
@@ -133,6 +137,7 @@
   import axios from "axios";
   import CategoryComponent from "./components/Category";
   import ProductComponent from "./components/Product";
+  import CartComponent from "./components/Cart";
 
   export default {
     name: "Page",
@@ -157,7 +162,8 @@
     },
     components: {
       "category-component": CategoryComponent,
-      "product-component": ProductComponent
+      "product-component": ProductComponent,
+      "cart-component": CartComponent
     },
     mounted() {
       console.log(`------> Market Page mounted`);

@@ -1,6 +1,6 @@
 <template>
 
-    <v-flex xs12 sm2>
+    <div>
         <h2 class="text-xs-left" style="font-weight: 700">
             <!--            <i class="fa fa-microchip"></i>&ensp;-->
             Electronics
@@ -43,7 +43,7 @@
                 </v-list-group>
             </v-list>
         </v-card>
-    </v-flex>
+    </div>
 
 </template>
 
