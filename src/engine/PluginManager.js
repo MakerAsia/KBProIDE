@@ -491,7 +491,7 @@ const publishPlugin = function(url) {
           json.board = (json.board && json.board.includes(","))
             ? json.board.split(",").map(el => el.toLowerCase().trim())
             : null;
-          json.keywords = (json.keywords)
+          json.keywords = (json.keywords && json.keywords.includes(","))
             ? json.keywords.split(",").map(el => el.toLowerCase().trim())
             : [""];
           Vue.prototype.$db_dev.createItem("plugins", json)
