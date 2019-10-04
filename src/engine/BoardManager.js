@@ -112,50 +112,6 @@ const listPackage = function(boardName, includePlatform = true) {
   return orderedContext;
 };
 
-const listOnlineBoard_old = function(name = "", start = 0) {
-  return new Promise((resolve, reject) => {
-    let onlineBoards = [];
-    if (name === "") { //list all
-      Vue.prototype.$db.collection("boards")
-        .orderBy("name")
-        .startAfter(start)
-        .limit(50)
-        .get().then(boardData => {
-        let lastVisible = boardData.docs[boardData.docs.length - 1];
-        boardData.forEach(element => {
-          onlineBoards.push(element.data());
-        });
-        resolve({ end: lastVisible, boards: onlineBoards });
-      }).catch(err => {
-        reject(err);
-      });
-    } else {
-      let strSearch = name;
-      let strlength = strSearch.length;
-      let strFrontCode = strSearch.slice(0, strlength - 1);
-      let strEndCode = strSearch.slice(strlength - 1, strSearch.length);
-
-      let startcode = strSearch;
-      let endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
-
-      Vue.prototype.$db.collection("boards")
-        .where("name", ">=", startcode) //search start with
-        .where("name", "<", endcode)
-        .orderBy("name")
-        //.startAfter(start)
-        .limit(50)
-        .get().then(boardData => {
-        let lastVisible = boardData.docs[boardData.docs.length - 1];
-        boardData.forEach(element => {
-          onlineBoards.push(element.data());
-        });
-        resolve({ end: lastVisible, boards: onlineBoards });
-      }).catch(err => {
-        reject(err);
-      });
-    }
-  });
-};
 const listOnlineBoard = function(query)
 {
   return new Promise((resolve, reject) => {
@@ -265,42 +221,6 @@ const restoreBoard = function(boardInfo) {
   });
 };
 
-const publishBoard_old = function(url) {
-  return new Promise((resolve, reject) => {
-    if (!util.regex.isValidGithubUrl(url)) {
-      reject("Invalid GitHub urrl");
-      return;
-    }
-    let json = null;
-    request_promise(url + "raw/master/config.js?random=" + util.randomString()) //add randomstring prevent cached response
-      .then(res => {
-        json = eval(res);
-        if (json.name) { //search if existing
-          return Vue.prototype.$db.collection("boards").where("name", "==", json.name) //search start with
-            .get();
-        } else {
-          return false;
-        }
-      }).then(res => {
-      if (res && res.size >= 1) {
-        return json.version > res.docs[0].data().version;
-      } else {
-        return true;
-      }
-    }).then(res => {
-      if (res) {
-        Vue.prototype.$db.collection("boards").doc(json.name).set(json);
-        if (res) {
-          resolve();
-        }
-      } else {
-        reject("Existing board name or is not newest version");
-      }
-    }).catch(err => {
-      reject(err);
-    });
-  });
-};
 
 const publishBoard = function(url) {
   return new Promise((resolve, reject) => {
@@ -343,10 +263,12 @@ const publishBoard = function(url) {
         if (res) {
           delete json.homepage; //please use URL instead.
           json.status = "draft";
-          if (json.keywords) {
-            json.keywords = json.keywords.includes(",")
-              ? json.keywords.split(",").map(el => el.toLowerCase().trim())
-              : [""];
+          if(typeof json.platform === "string"){
+            if(json.platform.includes(",")){
+              json.platform = json.platform.split(",").map(el => el.toLowerCase().trim())
+            }else{
+              json.platform = [json.platform]
+            }
           }
           Vue.prototype.$db_dev.createItem("boards", json)
             .then(res => {

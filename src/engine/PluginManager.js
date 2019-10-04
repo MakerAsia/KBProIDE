@@ -409,52 +409,6 @@ const restorePlugin = function(pluginInfo) {
   resolve();
 };
 
-const publishPlugin_old = function(url) {
-  return new Promise((resolve, reject) => {
-    let json = null;
-    if (!util.regex.isValidGithubUrl(url)) {
-      reject("wrong github url format");
-      return;
-    }
-    request_promise(url + "raw/master/library.json?random=" + util.randomString()) //add randomstring prevent cached response
-      .then(res => {
-        json = JSON.parse(res);
-        if (json.name) { //search if existing
-          return Vue.prototype.$db.collection("plugins").where("name", "==", json.name).get();
-        } else {
-          return false;
-        }
-      }).then(res => {
-      if (res && res.size >= 1) {
-        return json.version > res.docs[0].data().version;
-      } else {
-        return true;
-      }
-    }).then(res => {
-      if (res) {
-        json.like = 0;
-        json.installed = 0;
-        json.removed = 0;
-        json.star = 0;
-        json.update_date = new Date();
-        json.keywords = (json.keywords)
-          ? json.keywords.split(",").map(el => el.toLowerCase().trim())
-          : [""];
-        Vue.prototype.$db.collection("plugins").doc(json.name).set(json);
-        if (res) {
-          resolve("submit your plugin success, please refresh again");
-        }
-      } else {
-        reject("Existing plugin name or is not newest version");
-      }
-    }).catch(err => {
-      console.log("Plugin Publishing Error : ");
-      console.log(err);
-      reject(err);
-    });
-  });
-};
-
 const publishPlugin = function(url) {
   return new Promise((resolve, reject) => {
     let json = null;

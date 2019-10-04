@@ -200,6 +200,7 @@
                                                            @click="installOnlineBoard(data)"
                                                     >
                                                         <v-icon v-if="data.status === 'READY'">fa-download</v-icon>
+                                                        <v-icon v-if="data.status === 'DRAFT'">fa-pause</v-icon>
                                                         <v-progress-circular
                                                                 v-else-if="data.status !== 'READY'"
                                                                 indeterminate
@@ -213,7 +214,7 @@
                                                         <div class="board-desc-more">
                                                             <v-icon>fa-chevron-down</v-icon>
                                                         </div>
-                                                        {{ data.description }}
+                                                        {{data.status === 'DRAFT' ? '(Under review) ' : ''}}{{ data.description }}
                                                     </div>
                                                 </v-card-text>
                                                 <v-divider></v-divider>
@@ -437,7 +438,11 @@
                   f.status = "UPDATABLE";
                 }
               } else {
-                obj.status = "READY";
+                obj.status = obj.status === "published"
+                  ? "READY"
+                  : (obj.status === "draft"
+                    ? "DRAFT"
+                    : "ERROR");
                 filtered.push(obj);
               }
             });
