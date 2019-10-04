@@ -126,9 +126,9 @@
     },
     methods: {
       getCategories() {
-        axios.get("http://kb-market:8888/api/electronic/categories").then(res => {
+        axios.get("http://kb-market:8888/api/categories").then(res => {
           this.categories = res.data;
-          console.log(`fetch categories `, this.categories);
+          console.log(`this categories `, this.categories);
         });
       }
     },

@@ -1,81 +1,98 @@
 @font-face {
-  font-family: Manjari-Bold;
-  src: url(../fonts/Manjari/Manjari-Bold.ttf);
+    font-family: Manjari-Bold;
+    src: url(../fonts/Manjari/Manjari-Bold.ttf);
 }
 
 @font-face {
-  font-family: Manjari-Regular;
-  src: url(../fonts/Manjari/Manjari-Regular.ttf);
+    font-family: Manjari-Regular;
+    src: url(../fonts/Manjari/Manjari-Regular.ttf);
 }
 
 @font-face {
-  font-family: Manjari-Thin;
-  src: url(../fonts/Manjari/Manjari-Thin.ttf);
+    font-family: Manjari-Thin;
+    src: url(../fonts/Manjari/Manjari-Thin.ttf);
 }
 
 @font-face {
-  font-family: Roboto;
-  font-weight: normal;
-  src: url(../fonts/Roboto/Roboto-Regular.ttf);
+    font-family: Prompt-Bold;
+    src: url(../fonts/Prompt/Prompt-Bold.ttf);
 }
 
 @font-face {
-  font-family: Roboto;
-  font-weight: bold;
-  src: url(../fonts/Roboto/Roboto-Bold.ttf);
+    font-family: Prompt-Regular;
+    src: url(../fonts/Prompt/Prompt-Regular.ttf);
+}
+
+@font-face {
+    font-family: Prompt-Thin;
+    src: url(../fonts/Prompt/Prompt-Thin.ttf);
+}
+
+@font-face {
+    font-family: Roboto;
+    font-weight: normal;
+    src: url(../fonts/Roboto/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Roboto;
+    font-weight: bold;
+    src: url(../fonts/Roboto/Roboto-Bold.ttf);
 }
 
 .f-manjari-b {
-  font-family: Manjari-Regular, sans-serif !important;
-  font-weight: bold !important;
+    font-family: Manjari-Regular, sans-serif !important;
+    font-weight: bold !important;
 }
 
 .blocklyTreeLabel, .blocklyText, .loading {
-	font-family: Manjari-Bold, sans-serif !important;
-	font-weight: 700 !important;
+    font-family: Manjari-Bold, sans-serif !important;
+    font-weight: 700 !important;
 }
 
 .blocklyTreeLabel {
-	padding-right: 20px;
+    padding-right: 20px;
 }
 
 .blocklyTreeSelected .blocklyTreeLabel {
-	color: black !important;
+    color: black !important;
 }
 
 .blocklyTreeSelected, .blocklyFlyoutBackground {
-	fill: aliceblue !important;
-	background-color: aliceblue !important;
+    fill: aliceblue !important;
+    background-color: aliceblue !important;
 }
 
 /* loading dots */
 
 .loading {
-  color: black;
-  font: 300 4em/150% Impact;
-  text-align: center;
+    color: black;
+    font: 300 4em/150% Impact;
+    text-align: center;
 }
 
 .loading:after {
-  content: ' .';
-  animation: dots 1s steps(5, end) infinite;}
+    content: ' .';
+    animation: dots 1s steps(5, end) infinite;
+}
 
 @keyframes dots {
-  0%, 20% {
-    color: rgba(0,0,0,0);
-    text-shadow:
-      .25em 0 0 rgba(0,0,0,0),
-      .5em 0 0 rgba(0,0,0,0);}
-  40% {
-    color: black;
-    text-shadow:
-      .25em 0 0 rgba(0,0,0,0),
-      .5em 0 0 rgba(0,0,0,0);}
-  60% {
-    text-shadow:
-      .25em 0 0 black,
-      .5em 0 0 rgba(0,0,0,0);}
-  80%, 100% {
-    text-shadow:
-      .25em 0 0 black,
-      .5em 0 0 black;}}
+    0%, 20% {
+        color: rgba(0, 0, 0, 0);
+        text-shadow: .25em 0 0 rgba(0, 0, 0, 0),
+        .5em 0 0 rgba(0, 0, 0, 0);
+    }
+    40% {
+        color: black;
+        text-shadow: .25em 0 0 rgba(0, 0, 0, 0),
+        .5em 0 0 rgba(0, 0, 0, 0);
+    }
+    60% {
+        text-shadow: .25em 0 0 black,
+        .5em 0 0 rgba(0, 0, 0, 0);
+    }
+    80%, 100% {
+        text-shadow: .25em 0 0 black,
+        .5em 0 0 black;
+    }
+}
