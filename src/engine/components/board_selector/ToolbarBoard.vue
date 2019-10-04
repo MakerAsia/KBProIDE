@@ -323,7 +323,7 @@
         //--- feature use ---//
         onlineBoardPage: 0,
         filter: {
-          defaultLimit: 5,
+          defaultLimit: 20,
           currentPage: 1,
           nextOffset: 0,
           menu: false,
