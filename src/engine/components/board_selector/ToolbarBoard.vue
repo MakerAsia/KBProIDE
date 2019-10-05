@@ -413,6 +413,7 @@
         let query = {
           limit : this.filter.defaultLimit,
           page : this.filter.currentPage,
+          "sort" : "-modified_on",
           meta : "page"
         };
         if(name){
@@ -434,7 +435,7 @@
             res.boards.forEach(obj => {
               let f = mother.installedBoard.find(elm => elm.name === obj.name);
               if (f) {
-                if (obj.version > f.version) {
+                if (obj.version > f.version && obj.status !== "draft") {
                   f.status = "UPDATABLE";
                 }
               } else {

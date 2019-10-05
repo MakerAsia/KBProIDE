@@ -172,8 +172,11 @@ const installOnlineBoard = function(info, cb) {
     }
     return true;
   }).then(() => { //install platform
-    if (!fs.readdirSync(util.platformDir).includes(info.platform)) {
-      return pfm.installPlatformByName(info.platform);
+    let havePlatform = fs.readdirSync(util.platformDir);
+    let nonExistPlatform = info.platform.filter(el => !havePlatform.includes(el));
+    for(let nPlatform in nonExistPlatform){
+      let np = nonExistPlatform[nPlatform];
+      pfm.installPlatformByName(np);
     }
     return Promise.resolve();
   });
@@ -272,7 +275,7 @@ const publishBoard = function(url) {
           }
           Vue.prototype.$db_dev.createItem("boards", json)
             .then(res => {
-              console.log(res);
+              //console.log(res);
               if (res) {
                 resolve("submit your board success, please refresh again");
               } else {
