@@ -377,7 +377,7 @@
               return lc === rm;
             });
             if (f) {
-              if (obj.version > f.category.version) {
+              if (obj.version > f.category.version && obj.status !== "draft") {
                 f.status = "UPDATABLE";
                 f.nextVersion = obj.version;
               }
