@@ -7,6 +7,8 @@
                 <category-component></category-component>
                 <!-- Carts -->
                 <cart-component></cart-component>
+                <!-- Profile -->
+                <profile-component></profile-component>
             </v-flex>
 
             <v-flex xs12 sm10>
@@ -128,8 +130,12 @@
         font-family: Prompt-Regular, sans-serif !important;
     }
 
-    button, p, span {
+    a, button, p, span {
         font-family: Prompt-Regular, sans-serif !important;
+    }
+
+    .item-profile-menu:hover {
+        color: green;
     }
 </style>
 
@@ -138,6 +144,7 @@
   import CategoryComponent from "./components/Category";
   import ProductComponent from "./components/Product";
   import CartComponent from "./components/Cart";
+  import ProfileComponent from "./components/Profile";
 
   export default {
     name: "Page",
@@ -163,7 +170,8 @@
     components: {
       "category-component": CategoryComponent,
       "product-component": ProductComponent,
-      "cart-component": CartComponent
+      "cart-component": CartComponent,
+      "profile-component": ProfileComponent
     },
     mounted() {
       console.log(`------> Market Page mounted`);
