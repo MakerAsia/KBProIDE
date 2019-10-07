@@ -26,6 +26,11 @@
                     </v-list-tile-sub-title>
                 </v-list-tile-content>
 
+                <div>
+                    <input type="number" min="1" value="1" style="background-color: white; border: 1px solid #e0e0e0; text-align: center; width: 50px; margin-right: 10px; border-radius: 3px">
+                    <i class="fa fa-remove text-danger" style="cursor: pointer"></i>
+                </div>
+
             </v-list-tile>
 
             <p class="text-success-dark">ยอดทั้งหมด X,XXX บาท</p>
