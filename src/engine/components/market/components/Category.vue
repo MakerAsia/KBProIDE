@@ -3,7 +3,7 @@
     <div>
         <h2 class="text-xs-left" style="font-weight: 700">
             <!--            <i class="fa fa-microchip"></i>&ensp;-->
-            Electronics
+            หมวดหมู่สินค้า
         </h2>
         <v-card style="margin-top: 30px; margin-right: 15px">
             <!--            <v-toolbar color="light-green darken-1" dark>-->

@@ -128,7 +128,7 @@
         font-family: Prompt-Regular, sans-serif !important;
     }
 
-    p, span {
+    button, p, span {
         font-family: Prompt-Regular, sans-serif !important;
     }
 </style>

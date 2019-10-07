@@ -35,6 +35,12 @@
 
             <p class="text-success-dark">ยอดทั้งหมด X,XXX บาท</p>
 
+            <v-btn color="green darken-1" style="color: white; width: 85%">
+                ชำระเงิน
+                &nbsp;
+                <i class="fa fa-angle-right"></i>
+            </v-btn>
+
         </v-list>
     </v-card>
 
