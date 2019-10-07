@@ -15,7 +15,7 @@
                 <div class="text-xs-left" style="padding-top: 15px">
                         <span>
                             โดย
-                            <span class="blue--text darken-2" style="font-weight: 500">{{ data.author }}</span>
+                            <span style="font-weight: 500">{{ data.author }}</span>
                         </span>
                     <p style="padding-bottom: 0; margin-bottom: 0">
                         วันที่เพิ่มสินค้า {{ data.created_at }}
@@ -25,6 +25,9 @@
         </v-card-title>
 
         <v-card-actions>
+            <v-flex class="text-xs-left">
+                <span class="text-danger">มีสินค้า {{ data.stock }} ชิ้น</span>
+            </v-flex>
             <v-flex class="text-xs-right">
                 <v-btn color="success">
                     <i class="fa fa-shopping-bag"></i>&ensp;
