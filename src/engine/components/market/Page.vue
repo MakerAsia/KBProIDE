@@ -130,7 +130,7 @@
         font-family: Prompt-Regular, sans-serif !important;
     }
 
-    a, button, p, span {
+    input, a, button, p, span {
         font-family: Prompt-Regular, sans-serif !important;
     }
 

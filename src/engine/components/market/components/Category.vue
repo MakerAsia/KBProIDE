@@ -5,6 +5,8 @@
             <!--            <i class="fa fa-microchip"></i>&ensp;-->
             หมวดหมู่สินค้า
         </h2>
+        <!-- Search -->
+        <search-component></search-component>
         <v-card style="margin-top: 30px; margin-right: 15px">
             <!--            <v-toolbar color="light-green darken-1" dark>-->
             <!--                <v-toolbar-title>Categories</v-toolbar-title>-->
@@ -60,9 +62,13 @@
 
 <script>
   import axios from "axios";
+  import SearchComponent from "./Search";
 
   export default {
     name: "Category",
+    components: {
+      "search-component": SearchComponent
+    },
     data() {
       return {
         categories: [],
