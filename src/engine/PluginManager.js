@@ -448,6 +448,9 @@ const publishPlugin = function(url) {
           json.keywords = (json.keywords && json.keywords.includes(","))
             ? json.keywords.split(",").map(el => el.toLowerCase().trim())
             : [""];
+          if(!json.category){
+            json.category = "Uncategorized";
+          }
           Vue.prototype.$db_dev.createItem("plugins", json)
             .then(res => {
               console.log(res);
