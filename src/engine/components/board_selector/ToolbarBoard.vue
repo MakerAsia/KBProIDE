@@ -651,6 +651,7 @@
               });
             })
             .catch(err => {
+              console.error(err);
               this.statusText = `Error : ${err}`;
               b.status = "ERROR";
               bm.restoreBoard(boardInfo).then(() => {});

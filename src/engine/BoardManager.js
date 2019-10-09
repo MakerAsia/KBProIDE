@@ -173,7 +173,12 @@ const installOnlineBoard = function(info, cb) {
     return true;
   }).then(() => { //install platform
     let havePlatform = fs.readdirSync(util.platformDir);
-    let nonExistPlatform = info.platform.filter(el => !havePlatform.includes(el));
+    let nonExistPlatform;
+    if(typeof info.platform === "string"){
+      nonExistPlatform = havePlatform.includes(info.platform) ? [] : [info.platform];
+    }else{
+      nonExistPlatform = info.platform.filter(el => !havePlatform.includes(el));
+    }
     for(let nPlatform in nonExistPlatform){
       let np = nonExistPlatform[nPlatform];
       pfm.installPlatformByName(np);
