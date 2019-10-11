@@ -9,6 +9,8 @@
                 <cart-component></cart-component>
                 <!-- Profile -->
                 <profile-component></profile-component>
+                <!-- Login -->
+                <login-component></login-component>
             </v-flex>
 
             <v-flex xs12 sm10>
@@ -145,6 +147,7 @@
   import ProductComponent from "./components/Product";
   import CartComponent from "./components/Cart";
   import ProfileComponent from "./components/Profile";
+  import LoginComponent from "./components/Login";
 
   export default {
     name: "Page",
@@ -171,7 +174,8 @@
       "category-component": CategoryComponent,
       "product-component": ProductComponent,
       "cart-component": CartComponent,
-      "profile-component": ProfileComponent
+      "profile-component": ProfileComponent,
+      "login-component": LoginComponent
     },
     mounted() {
       console.log(`------> Market Page mounted`);
