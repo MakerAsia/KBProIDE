@@ -13,6 +13,9 @@
       </v-flex>
 
       <v-flex xs12 sm10>
+        <!-- Dialog -->
+        <dialog-component></dialog-component>
+
         <v-layout row wrap>
           <v-flex xs12 sm3 v-for="index in loadMoreProducts" :key="`pd-${index}`">
             <div v-if="index < products.length">
@@ -146,6 +149,14 @@ span {
 .item-profile-menu:hover {
   color: green;
 }
+
+.v-card__text {
+  font-family: Prompt-Regular, sans-serif !important;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 
 <script>
@@ -155,6 +166,7 @@ import ProductComponent from "./components/Product";
 import CartComponent from "./components/Cart";
 import ProfileComponent from "./components/Profile";
 import LoginComponent from "./components/Login";
+import DialogComponent from "./components/vue-components/other/Dialog";
 
 export default {
   name: "Page",
@@ -182,7 +194,8 @@ export default {
     "product-component": ProductComponent,
     "cart-component": CartComponent,
     "profile-component": ProfileComponent,
-    "login-component": LoginComponent
+    "login-component": LoginComponent,
+    "dialog-component": DialogComponent
   },
   mounted() {
     console.log(`------> Market Page mounted`);
