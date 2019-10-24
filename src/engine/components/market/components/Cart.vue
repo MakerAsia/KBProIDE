@@ -8,7 +8,7 @@
         </h4>
       </v-subheader>
 
-      <v-list-tile v-for="item in cart" :key="item.title" avatar @click>
+      <v-list-tile v-for="item in cart" :key="item.title" avatar>
         <v-list-tile-avatar>
           <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
         </v-list-tile-avatar>
@@ -24,7 +24,7 @@
           <input
             type="number"
             min="1"
-            value="1"
+            :value="item.quantity"
             style="background-color: white; border: 1px solid #e0e0e0; text-align: center; width: 50px; margin-right: 10px; border-radius: 3px"
           />
           <i class="fa fa-remove text-danger" style="cursor: pointer"></i>
@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       cart: [],
-      subTotal: 0
+      subTotal: 0,
+      renderComponent: true
     };
   },
   computed: {
@@ -64,29 +65,42 @@ export default {
       return this.cart.length > 0;
     }
   },
-  mounted() {
-    console.log(`-----> Cart mounted`);
-  },
-  watch: {
-    "market.cart": function(newValue, oldValue) {
+  methods: {
+    updateCart(items) {
       let data = [];
-      let cart = this.$store.state.market.cart;
-
-      cart.forEach(item => {
-        const price = this.$numeral(item.price).format("0,0");
+      items.forEach(item => {
+        const quantity = item.quantity;
+        const price = this.$numeral(item.price * quantity).format("0,0");
 
         data.push({
           icon: "folder",
           iconClass: "grey lighten-1 white--text",
           title: item.title,
-          subtitle: `${price} บาท`
+          subtitle: `${price} บาท`,
+          quantity: item.quantity
         });
       });
 
+      return data;
+    }
+  },
+  mounted() {
+    console.log(`-----> Cart mounted`);
+  },
+  watch: {
+    "market.cart": function(newValue, oldValue) {
+      console.log(`-----> watch detected market.cart`);
+      /* re-render cart */
+      const data = this.updateCart(newValue);
       this.cart = data;
     },
     "market.subTotal": function(newValue, oldValue) {
+      console.log(`-----> watch detected market.subTotal`);
       this.subTotal = this.$numeral(newValue).format("0,0");
+
+      /* re-render cart */
+      const data = this.updateCart(this.$store.state.market.cart);
+      this.cart = data;
     }
   }
 };

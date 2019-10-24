@@ -41,7 +41,7 @@ export default {
     addToCart() {
       let pd = this.data;
       console.log(`-----> addToCart `, pd);
-      this.$store.commit("addToCart", pd);
+      this.$store.dispatch("addToCart", pd);
       const dialog = {
         status: true,
         title: "",
