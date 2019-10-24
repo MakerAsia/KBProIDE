@@ -25,6 +25,9 @@
             type="number"
             min="1"
             :value="item.quantity"
+            @keyup="onChangeQuantity"
+            @change="onChangeQuantity"
+            :data-product-id="item.id"
             style="background-color: white; border: 1px solid #e0e0e0; text-align: center; width: 50px; margin-right: 10px; border-radius: 3px"
           />
           <i class="fa fa-remove text-danger" style="cursor: pointer"></i>
@@ -71,8 +74,9 @@ export default {
       items.forEach(item => {
         const quantity = item.quantity;
         const price = this.$numeral(item.price * quantity).format("0,0");
-
+        console.log(item);
         data.push({
+          id: item.id,
           icon: "folder",
           iconClass: "grey lighten-1 white--text",
           title: item.title,
@@ -82,6 +86,28 @@ export default {
       });
 
       return data;
+    },
+    onChangeQuantity(e) {
+      console.log(`-----> onChangeQuantity`);
+      const quantity = e.target.value;
+      const productId = e.target.getAttribute("data-product-id");
+
+      let data = {
+        id: parseInt(productId),
+        quantity: parseInt(quantity)
+      };
+
+      if (quantity <= 0) {
+        data.quantity = 1;
+      } else {
+        data.quantity = parseInt(quantity);
+      }
+
+      this.$store.dispatch("changeProductQuantity", data);
+
+      if (quantity <= 0) {
+        return (e.target.value = 1);
+      }
     }
   },
   mounted() {

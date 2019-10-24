@@ -80,6 +80,20 @@ export default new Vuex.Store({
     openDialog(state, data) {
       state.market.dialog = data;
     },
+    changeProductQuantity(state, data) {
+      let found = state.market.cart.find(product => product.id === data.id);
+      if (found) {
+        found.quantity = data.quantity;
+        found.totalPrice = (parseInt(found.price) * found.quantity);
+        //state.market.subTotal = state.market.subTotal + parseInt(found.price);
+        console.log(`-----> debug`)
+        let subTotal = 0;
+        state.market.cart.forEach(item => {
+          subTotal += (item.price * item.quantity)
+        })
+        state.market.subTotal = subTotal
+      }
+    },
   },
   actions: {
     addToCart(context, data) {
@@ -93,6 +107,9 @@ export default new Vuex.Store({
     },
     openDialog(context, data) {
       context.commit('openDialog', data);
+    },
+    changeProductQuantity(context, data) {
+      context.commit('changeProductQuantity', data);
     },
   }
 });
