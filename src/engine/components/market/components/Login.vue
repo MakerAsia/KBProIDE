@@ -10,16 +10,19 @@
             </v-subheader>
 
             <v-text-field
+                    type="email"
                     placeholder="Email"
                     style="padding: 0 20px 0 20px"
+                    v-model="email"
             ></v-text-field>
 
             <v-text-field
                     placeholder="Password"
                     style="padding: 0 20px 0 20px"
+                    v-model="password"
             ></v-text-field>
 
-            <v-btn color="green darken-1" flat style="color: green; width: 85%; background-color: #E8F5E9 !important;" @click="socialGoogleLogin">
+            <v-btn color="green darken-1" flat style="color: green; width: 85%; background-color: #E8F5E9 !important;" @click="login">
                 <i class="fa fa-sign-in fa-lg"></i>&ensp;
                 เข้าสู่ระบบ
             </v-btn>
@@ -30,8 +33,27 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
     name: "Login",
-    methods: {}
+    data() {
+      return {
+        email: "",
+        password: ""
+      };
+    },
+    methods: {
+      login() {
+        axios.post("http://kb-market:8888/api/auth", {
+          email: this.email,
+          password: this.password
+        }).then(res => {
+          console.log(res.data);
+        }).catch(e => {
+          console.log(e);
+        });
+      }
+    }
   };
 </script>
