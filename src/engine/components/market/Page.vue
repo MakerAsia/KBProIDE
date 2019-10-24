@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap style="margin-bottom: 100px">
-      <v-flex xs12 sm2>
+      <v-flex xs12 sm2 lg3>
         <!-- Categories -->
         <category-component></category-component>
         <!-- Carts -->
@@ -12,12 +12,12 @@
         <login-component></login-component>
       </v-flex>
 
-      <v-flex xs12 sm10>
+      <v-flex xs12 sm10 lg9>
         <!-- Dialog -->
         <dialog-component></dialog-component>
 
         <v-layout row wrap>
-          <v-flex xs12 sm3 v-for="index in loadMoreProducts" :key="`pd-${index}`">
+          <v-flex xs12 sm3 lg4 v-for="index in loadMoreProducts" :key="`pd-${index}`">
             <div v-if="index < products.length">
               <product-component :key="products[index].id" :data="products[index]"></product-component>
             </div>
