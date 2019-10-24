@@ -20,6 +20,11 @@ import Analytics from "electron-google-analytics";
 
 import SmoothScrollbar from "vue-smooth-scrollbar";
 
+/* Start Market */
+import numeral from 'numeral';
+Vue.prototype.$numeral = numeral
+/* End market */
+
 Vue.use(SmoothScrollbar);
 
 const fs = require("fs");
@@ -41,8 +46,8 @@ Vue.prototype.$db = firebase.firestore();
 //========= directus ==========//
 const DirectusSDK = require('@directus/sdk-js');
 const directus_client = DirectusSDK({
-  url : "https://manage.kbide.org/",
-  project : "_",
+  url: "https://manage.kbide.org/",
+  project: "_",
   storage: window.localStorage
 });
 Vue.prototype.$db2 = directus_client;
@@ -54,21 +59,23 @@ Vue.prototype.$track = analytics;
 
 //-----bug tracking ------//
 const unhandled = require("electron-unhandled");
-const { openNewGitHubIssue, debugInfo } = require("electron-util");
+const {
+  openNewGitHubIssue,
+  debugInfo
+} = require("electron-util");
 
 unhandled({
   reportButton: error => {
-    Vue.prototype.$db.collection("bugs").add(
-      {
-        stack: error.stack,
-        info: debugInfo(),
-        date: new Date(),
-        mode: Vue.prototype.$global.editor.mode,
-        //code : Vue.prototype.$global.editor.sourceCode,
-        //block : Vue.prototype.$global.editor.blockCode,
-        board: Vue.prototype.$global.board.board_info.name
-        //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
-      });
+    Vue.prototype.$db.collection("bugs").add({
+      stack: error.stack,
+      info: debugInfo(),
+      date: new Date(),
+      mode: Vue.prototype.$global.editor.mode,
+      //code : Vue.prototype.$global.editor.sourceCode,
+      //block : Vue.prototype.$global.editor.blockCode,
+      board: Vue.prototype.$global.board.board_info.name
+      //plugins : Vue.prototype.$global.plugin.pluginInfo.plugins
+    });
     Vue.prototype.$dialog.notify.info(
       "Thank you ... to help us improve ^^");
   },
@@ -95,7 +102,7 @@ if (!fs.existsSync(util.baseDir + "/INSTALLED")) {
 }
 //--------------------------------------//
 
-let addWatcher = function(name, ghandler, deep) {
+let addWatcher = function (name, ghandler, deep) {
   if (global.config.persistence === "false") {
     console.log("persistence disabled");
     return;
@@ -105,7 +112,7 @@ let addWatcher = function(name, ghandler, deep) {
   }
   watcherHandler[name].push(ghandler);
   watcher[name] = {
-    handler: function(val) {
+    handler: function (val) {
       watcherHandler[name].forEach(h => {
         h(val);
       });
@@ -114,7 +121,7 @@ let addWatcher = function(name, ghandler, deep) {
   };
 };
 
-let parseConfig = function() {
+let parseConfig = function () {
   let params = global.location.hash && global.location.hash.split("?");
   let res = {};
   if (params && params.length === 2) {
@@ -134,7 +141,7 @@ let parseConfig = function() {
 global.config = parseConfig();
 //========= component  manager =========//
 var comps = cm.listComponent();
-Object.keys(comps).forEach(function(key) {
+Object.keys(comps).forEach(function (key) {
   if ("config" in comps[key]) {
     let cmConfigData = util.loadCofigComponents(comps[key].config, key);
     componentAllData.data[key] = cmConfigData.data;
@@ -147,7 +154,7 @@ Object.keys(comps).forEach(function(key) {
 var boards = bm.listBoard();
 var boardInfo = bm.loadBoardManagerConfig();
 var boardInfoComponent = util.loadCofigComponents(boardInfo, "board");
-if(!boardInfoComponent.data.dir){
+if (!boardInfoComponent.data.dir) {
   boardInfoComponent.data.board_info.dir = `${util.boardDir}/${boardInfoComponent.data.board_info.name}`;
 }
 console.log(boardInfoComponent);
@@ -167,10 +174,10 @@ Object.keys(boardPackage).forEach(packageName => {
   );
   componentAllData.data.board.package[packageName] = boardPackageData.data;
   componentAllData.persistence["board.package." +
-  packageName] = boardPackageData.persistence;
+    packageName] = boardPackageData.persistence;
 });
 
-addWatcher("board.board", function(val) { //listen board name change we need to reload everything
+addWatcher("board.board", function (val) { //listen board name change we need to reload everything
   console.log("board changed to : " + val);
   localStorage["board.board"] = JSON.stringify(val);
 }, false);
@@ -189,9 +196,9 @@ componentAllData.persistence["ui"] = uiComponentData.persistence;
 //=====================================//
 
 //---- persistence data watcher ----//
-Object.keys(componentAllData.persistence).forEach(function(key) {
-  componentAllData.persistence[key].forEach(function(pkey) {
-    addWatcher(key + "." + pkey, function(val) {
+Object.keys(componentAllData.persistence).forEach(function (key) {
+  componentAllData.persistence[key].forEach(function (pkey) {
+    addWatcher(key + "." + pkey, function (val) {
       localStorage[key + "." + pkey] = JSON.stringify(val);
     }, true);
   });
@@ -234,7 +241,9 @@ var engineData = {
   uiManager: ui,
   pluginManager: pm
 };
-Vue.prototype.$engine = new Vue({ data: engineData });
+Vue.prototype.$engine = new Vue({
+  data: engineData
+});
 //=======================================================//
 new Vue({
   router,
@@ -246,4 +255,3 @@ new Vue({
 var utils = require;
 const u = require("electron").remote.getGlobal("blockly_utils");
 u.blockly_utils = blockly_utils;
-

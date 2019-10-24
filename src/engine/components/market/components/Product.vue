@@ -26,7 +26,7 @@
       <v-flex class="text-xs-right">
         <v-btn color="success" @click="addToCart">
           <i class="fa fa-shopping-bag"></i>&ensp;
-          <span>{{ data.price }} บาท</span>
+          <span>{{ productPrice }} บาท</span>
         </v-btn>
       </v-flex>
     </v-card-actions>
@@ -49,6 +49,13 @@ export default {
         type: "success"
       };
       this.$store.dispatch("openDialog", dialog);
+    }
+  },
+  computed: {
+    productPrice() {
+      const price = this.data.price;
+
+      return this.$numeral(price).format("0,0");
     }
   }
 };

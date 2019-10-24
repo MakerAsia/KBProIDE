@@ -6,6 +6,9 @@ Vue.use(Vuex);
 const marketState = {
   market: {
     cart: [],
+    subTotal: 0,
+    vatPercent: 7,
+    cartCount: 0,
     dialog: {
       status: false,
       title: '',

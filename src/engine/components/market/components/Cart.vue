@@ -32,7 +32,10 @@
       </v-list-tile>
 
       <div v-if="getCartNotEmpty">
-        <p class="text-success-dark">ยอดทั้งหมด X,XXX บาท</p>
+        <p class="text-success-dark">
+          ยอดทั้งหมด
+          <span>{{ subTotal }}</span> บาท
+        </p>
 
         <v-btn color="green darken-1" style="color: white; width: 85%">
           ชำระเงิน
@@ -51,7 +54,8 @@ export default {
   name: "Cart",
   data() {
     return {
-      cart: []
+      cart: [],
+      subTotal: 0
     };
   },
   computed: {
@@ -69,7 +73,7 @@ export default {
       let cart = this.$store.state.market.cart;
 
       cart.forEach(item => {
-        const price = item.price;
+        const price = this.$numeral(item.price).format("0,0");
 
         data.push({
           icon: "folder",
@@ -80,6 +84,9 @@ export default {
       });
 
       this.cart = data;
+    },
+    "market.subTotal": function(newValue, oldValue) {
+      this.subTotal = this.$numeral(newValue).format("0,0");
     }
   }
 };
