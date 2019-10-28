@@ -167,6 +167,7 @@ import CartComponent from "./components/Cart";
 import ProfileComponent from "./components/Profile";
 import LoginComponent from "./components/Login";
 import DialogComponent from "./components/vue-components/other/Dialog";
+import api from "./api";
 
 export default {
   name: "Page",
@@ -178,7 +179,7 @@ export default {
   },
   methods: {
     getProducts() {
-      axios.get("http://kb-market:8888/api/products").then(res => {
+      axios.get(api.products).then(res => {
         this.products = res.data;
         console.log(`this products `, this.products);
       });
