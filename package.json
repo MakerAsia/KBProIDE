@@ -91,7 +91,7 @@
     "electron": "^4.1.4",
     "electron-builder": "^20.38.5",
     "electron-icon-builder": "^1.0.0",
-    "electron-rebuild": "^1.8.4",
+    "electron-rebuild": "^1.8.6",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "fstream": "^1.0.12",
