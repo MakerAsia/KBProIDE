@@ -136,7 +136,7 @@
         let mode = type === "block"
           ? "1"
           : "3";
-        win.loadURL(`${document.location.href}?persistence=false&mode=${mode}&file=${file}`);
+        win.loadURL(`${document.location.href.split("?")[0]}?persistence=false&mode=${mode}&file=${file}`);
         win.show();
         //--tracking--//
         //this.$track.event("examples", "open",

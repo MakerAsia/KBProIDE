@@ -730,7 +730,7 @@
       )[0].style.backgroundColor = lighter;
 
       //---- render block
-      this.onBoardChange(this.$global.board.board_info);
+      this.onBoardChange(this.$global.board.board_info, true);
       //---- render editor theme
       this.onEditorThemeChange(this.$global.editor.theme);
       //---- render editor fontsize
@@ -889,7 +889,7 @@
           }
         }
       },
-      onBoardChange: function(boardInfo) {
+      onBoardChange: function(boardInfo, first_init = false) {
         //reload plugin
         console.log("board changed resender toolbox");
         this.$global.plugin.pluginInfo = plug.loadPlugin(this.$global.board.board_info);
@@ -919,7 +919,8 @@
         this.codegen = util.requireFunc(`${fs.existsSync(`${boardDirectory}/codegen.js`)
           ? boardDirectory
           : platformDir}/codegen`);
-        const codeRes = this.codegen.generate("");
+
+        const codeRes = first_init && global.config.file ? {sourceCode : this.$global.editor.sourceCode} : this.codegen.generate("");
         myself.$global.editor.sourceCode = reformatCode(codeRes.sourceCode);
         //==============
         this.detectTheme();
