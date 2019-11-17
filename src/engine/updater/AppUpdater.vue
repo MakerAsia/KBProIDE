@@ -91,7 +91,22 @@
         return window.navigator.onLine;
       },
       checkUpdate(showNotification = false, forceShowUpdate = false) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve,reject)=> {
+          let query = {
+            limit : 1,
+            "sort" : "-release_date"
+          };
+          Vue.prototype.$db2.getItems("version", query).then((res) => {
+            if(res && res.data && res.data.length === 1){
+              let data = res.data;
+              console.log(data);
+            }
+          }).catch(err => {
+            console.error("list online board error : " + err);
+            reject(err);
+          });
+        });
+        /*return new Promise((resolve, reject) => {
           mother.$db.collection("apps").orderBy("date", "desc").limit(1).get().then(appData => {
             if (appData.size >= 1) {
               let data = appData.docs[0].data();
@@ -172,7 +187,7 @@
               }
             });
           }
-        });
+        });*/
       },
       ignoreUpdate(type, version) {
         if (type === "app") {
@@ -269,7 +284,7 @@
       },
     },
     watch: {
-      
+
     },
   };
 </script>

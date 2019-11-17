@@ -171,12 +171,14 @@
   var path = require("path");
   const xmlParser = new DOMParser();
   // === UI Management ===
-  import {Multipane, MultipaneResizer} from "vue-multipane";
+  //const Multipane = import("vue-multipane"); //() => import("vue-multipane").then(({Multipane})=> Multipane);
+  import {Multipane,MultipaneResizer} from "vue-multipane";
+  //const MultipaneResizer = () => import("vue-multipane").then(({MultipaneResizer}) => MultipaneResizer);
   // === Blockly ===
   import Blockly from "vue-blockly";
   import en from "vue-blockly/dist/msg/en";
   // === Editor ===
-  import MonacoEditor from "vue-monaco";
+  //import MonacoEditor from "vue-monaco";
   // === uitls ===
   import util from "@/engine/utils";
 
@@ -184,9 +186,9 @@
   // === engine ===
   import plug from "@/engine/PluginManager";
   // === dialog ===
-  import VariableNamingDialog from "@/engine/views/dialog/VariableNamingDialog";
-  import PianoDialog from "@/engine/views/dialog/PianoDialog";
-  import TTSDialog from "@/engine/views/dialog/TTSDialog";
+  //import VariableNamingDialog from "@/engine/views/dialog/VariableNamingDialog";
+  //import PianoDialog from "@/engine/views/dialog/PianoDialog";
+  //import TTSDialog from "@/engine/views/dialog/TTSDialog";
 
   // === Node.js ===
   const exec = require("child_process").exec;
@@ -417,12 +419,12 @@
   export default {
     name: "editor",
     components: {
-      Multipane,
-      MultipaneResizer,
-      MonacoEditor,
-      VariableNamingDialog,
-      PianoDialog,
-      TTSDialog
+      Multipane : Multipane,
+      MultipaneResizer :  MultipaneResizer,
+      MonacoEditor : () => import("vue-monaco"),
+      VariableNamingDialog : () => import("@/engine/views/dialog/VariableNamingDialog"),
+      PianoDialog : () => import("@/engine/views/dialog/PianoDialog"),
+      TTSDialog : ()=> import("@/engine/views/dialog/TTSDialog")
     },
     data() {
       return {

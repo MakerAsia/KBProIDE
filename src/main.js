@@ -36,8 +36,10 @@ var config = {
   storageBucket: "kbproide.appspot.com",
   messagingSenderId: "1046722656270"
 };
+/*
 firebase.initializeApp(config);
 Vue.prototype.$db = firebase.firestore();
+*/
 //========= directus ==========//
 const DirectusSDK = require('@directus/sdk-js');
 const directus_client = DirectusSDK({
