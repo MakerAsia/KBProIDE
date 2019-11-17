@@ -1,3 +1,6 @@
+//=== magic !!!
+import 'v8-compile-cache';
+//=============
 import Vue from "vue";
 import "./engine/plugins/vuetify";
 import App from "./App.vue";
@@ -143,7 +146,6 @@ const appVersion = require("electron").remote.app.getVersion();
   if(!boardInfoComponent.data.dir){
     boardInfoComponent.data.board_info.dir = `${util.boardDir}/${boardInfoComponent.data.board_info.name}`;
   }
-  console.log(boardInfoComponent);
   // assign data to $global
   componentAllData.data["board"] = boardInfoComponent.data;
   componentAllData.persistence["board"] = boardInfoComponent.persistence;
