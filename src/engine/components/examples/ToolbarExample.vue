@@ -57,7 +57,7 @@
   import TreeMenu from "@/engine/views/widgets/list/TreeMenu";
   import TreeMenu2 from "@/engine/views/widgets/list/TreeMenu2";
   let mother = null;
-  const fs = require("fs");
+  const { promises: fs } = require("fs");
   const path = require("path");
   export default {
     name: "example-dialog",
@@ -89,38 +89,42 @@
 
     },
     methods: {
-      createMenu(root, dir) {
+      createMenu : async function(root, dir) {
         let res = [];
-        let fullPath = `${root}/${dir}`;
-        if (!fs.existsSync(fullPath)) {
-          return res;
-        }
-        let examples = fs.readdirSync(fullPath);
-        if (examples.find(el => el.endsWith(".md") || el.endsWith(".ino") || el.endsWith(".bly"))) {
-          return examples;
-        } else {
-          for (let i in examples) {
-            let name = examples[i];
-            let fullDir = `${fullPath}/${name}`;
-            if (fs.statSync(fullDir).isDirectory()) {
-              let rRes = mother.createMenu(fullPath, name);
-              res.push({
-                title: name,
-                dir: fullDir,
-                examples: rRes
-              });
+        try{
+          let fullPath = `${root}/${dir}`;
+          let existing = await fs.access(fullPath);
+          let examples = await fs.readdir(fullPath);
+          if (examples.find(el => el.endsWith(".md") || el.endsWith(".ino") || el.endsWith(".bly"))) {
+            return examples;
+          } else {
+            for (let i in examples) {
+              let name = examples[i];
+              let fullDir = `${fullPath}/${name}`;
+              let isDirectory = await fs.stat(fullDir);
+              if (isDirectory.isDirectory()) {
+                let rRes = await mother.createMenu(fullPath, name);
+                res.push({
+                  title: name,
+                  dir: fullDir,
+                  examples: rRes
+                });
+              }
             }
           }
+          return res;
         }
-        return res;
+        catch (e) {
+          return res;
+        }
       },
-      listPlatformExample() {
+      listPlatformExample: async function(){
         let platformExampleDir = `${util.platformDir}/${this.$global.board.board_info.platform}`;
-        return this.createMenu(platformExampleDir, "examples");
+        return await this.createMenu(platformExampleDir, "examples");
       },
-      listBoardExample() {
+      listBoardExample : async function() {
         let boardExampleDir = `${util.boardDir}/${this.$global.board.board_info.name}`;
-        return this.createMenu(boardExampleDir, "examples");
+        return await this.createMenu(boardExampleDir, "examples");
       },
       openExample(type, file) {
         let win = new remote.BrowserWindow({
@@ -145,11 +149,11 @@
       }
     },
     watch: {
-      exampleDialog: function(value) {
+      exampleDialog: async function(value) {
         if (value) {
           this.pluginInfo = this.$global.plugin.pluginInfo.categories;
-          this.platformExample = this.listPlatformExample();
-          this.boardExample = this.listBoardExample();
+          this.platformExample = await this.listPlatformExample();
+          this.boardExample = await this.listBoardExample();
         }
       }
     }

@@ -37,14 +37,18 @@
         <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
       </template>
     </template>
+
+    <!--toolbar-mode/>
+    <toolbar-board/>
+    <toolbar-plugin/>
+    <toolbar-example/>
+    <toolbar-setting/-->
     <!-- dynamic left toolbar -->
 
     <!-- load board package toolbar -->
     <v-divider class="mx-1" inset vertical></v-divider>
-    <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in (boardToolbar())[packageName]">
-        <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
-      </template>
+    <template v-for="(comp,index) in toolbarComp">
+      <component :is="comp.comp" :key="comp.name+'.'+index"></component>
     </template>
 
     <v-spacer></v-spacer>
@@ -55,12 +59,18 @@
       </template>
     </template>
 
+    <!--actionbar-new-file/>
+    <actionbar-open-file/>
+    <actionbar-save-file/>
+    <actionbar-serial/-->
+
     <v-divider class="mx-1" inset vertical></v-divider>
 
     <!-- load board package actionbar -->
-    <template v-for="(packageInfo,packageName) in $global.board.package">
-      <template v-for="(comp,index) in (boardActionbar())[packageName]">
-        <component v-if="packageInfo.loaded == true" :is="comp" :key="packageName+'.'+index"></component>
+
+    <template v-for="(comp,index) in actionbarComp">
+      <template v-for="(compName,index) in comp.comp">
+        <component v-if="comp.info.loaded === true" :is="compName" :key="comp.name+'.'+index"></component>
       </template>
     </template>
 
@@ -77,45 +87,70 @@ import Vue from 'vue';
 import util from '@/engine/utils';
 import cm from '@/engine/ComponentManager';
 import bm from '@/engine/BoardManager';
-import AsyncComponent from '@/engine/AsyncComponent';
-import notification from '@/engine/views/Notification';
+//import AsyncComponent from '@/engine/AsyncComponent';
+//import notification from '@/engine/views/Notification';
 
 //var boardComponentData = util.vueRuntimeComponent('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue');
 //var componentRegisterName = 'actionbar-newfile-1';
 //Vue.extend(boardComponentData);
 //var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.umd.js');
 //Vue.use(vv);
-
+let mother = null;
 export default {
   name: 'app-toolbar',
   components: {
-    notification,
-    AsyncComponent
+    notification : ()=> import("@/engine/views/Notification"),
+    AsyncComponent : ()=> import("@/engine/AsyncComponent"),
+    //--- fixed toolbar ---//
+    /*ToolbarMode : ()=> import("@/engine/components/editor/ToolbarMode"),
+    ToolbarBoard : ()=> import("@/engine/components/board_selector/ToolbarBoard"),
+    ToolbarPlugin : ()=> import("@/engine/components/plugin/ToolbarPlugin"),
+    ToolbarExample : ()=> import("@/engine/components/examples/ToolbarExample"),
+    ToolbarSetting : ()=> import("@/engine/components/setting/ToolbarSetting"),
+    //--- fixed actionbar ---//
+    ActionbarNewFile : ()=> import("@/engine/components/editor/ActionbarNewFile"),
+    ActionbarOpenFile : ()=> import("@/engine/components/editor/ActionbarOpenFile"),
+    ActionbarSaveFile : ()=> import("@/engine/components/editor/ActionbarSaveFile"),
+    ActionbarSerial : ()=> import("@/engine/components/serial_monitor/ActionbarSerial")*/
   },
-  data: () => ({
+  data:() => ({
     toolbars : cm.listToolbar,
-    actionbar : cm.listActionbar,
+    actionbar :cm.listActionbar,
+    toolbarComp : [],
+    actionbarComp : [],
   }),
-  created(){
+  mounted(){
 
   },
-  computed: {
-    toolbarColor () {
-      return this.$vuetify.options.extra.mainNav;
-    }
+  created(){
+    mother = this;
+    this.processToolbar();
   },
   methods: {
-    boardToolbar(){
-      return bm.listToolbar(this.$global.board.board);
-    },
-    boardActionbar(){
-      return bm.listActionbar(this.$global.board.board);
-    },
     handleDrawerToggle () {
       window.getApp.$emit('APP_DRAWER_TOGGLED');
     },
     handleFullScreen () {
       util.toggleFullScreen();
+    },
+    processToolbar : async function(){
+      let compActionbar = [];
+      let compToolbar = [];
+
+      let boardActionBar = await bm.listActionbar(mother.$global.board.board);
+      let boardToolbar = await bm.listToolbar(mother.$global.board.board);
+
+      for(let packageName in mother.$global.board.package){
+        compActionbar.push({info : mother.$global.board.package[packageName], name : packageName, comp : boardActionBar[packageName]});
+        compToolbar.push({info : mother.$global.board.package[packageName], name : packageName,comp : boardToolbar[packageName] });
+      }
+      mother.toolbarComp = compToolbar;
+      mother.actionbarComp = compActionbar;
+    }
+  },
+  watch:{
+    "$global.board.package" : async m =>{
+      await mother.processToolbar();
     }
   }
 };

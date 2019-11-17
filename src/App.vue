@@ -170,21 +170,20 @@
 </template>
 <script>
   import Vue from "vue";
-  import AppToolbar from "@/engine/views/AppToolbar";
-  import AppFooter from "@/engine/views/AppFooter";
-  import {Multipane, MultipaneResizer} from "vue-multipane";
-  import draggable from "vuedraggable";
-
+  //import AppToolbar from "@/engine/views/AppToolbar";
+  //import AppFooter from "@/engine/views/AppFooter";
+  //import {Multipane, MultipaneResizer} from "vue-multipane";
+  //import draggable from "vuedraggable";
   const electron = require("electron");
   //========= load manager ==========//
   import bm from "@/engine/BoardManager";
-  import AsyncComponent from "@/engine/AsyncComponent";
+  //import AsyncComponent from "@/engine/AsyncComponent";
   import AppEvents from "./event";
   import util from "@/engine/utils";
   import {stat} from "fs";
   import {spread} from "q";
   //========= updating =========//
-  import AppUpdater from "@/engine/updater/AppUpdater";
+  //import AppUpdater from "@/engine/updater/AppUpdater";
 
   import TourSteps from "./tour";
 
@@ -192,13 +191,13 @@
 
   export default {
     components: {
-      AppToolbar,
-      Multipane,
-      draggable,
-      MultipaneResizer,
-      AsyncComponent,
-      AppFooter,
-      AppUpdater
+      AppToolbar : ()=> import("@/engine/views/AppToolbar"),
+      Multipane : ()=> import("vue-multipane").then(({Multipane})=> Multipane),
+      MultipaneResizer : ()=> import("vue-multipane").then(({MultipaneResizer})=>MultipaneResizer),
+      draggable : ()=> import("vuedraggable"),
+      AsyncComponent : () => import("@/engine/AsyncComponent"),
+      AppFooter : ()=> import("@/engine/views/AppFooter"),
+      AppUpdater : () => import("@/engine/updater/AppUpdater")
     },
     data() {
       return {
@@ -223,7 +222,7 @@
     mounted: function() {
 
     },
-    created() {
+    async created() {
       AppEvents.forEach(item => {
         this.$on(item.name, item.callback);
       });
@@ -232,7 +231,7 @@
       //----- load color -----//
       this.$vuetify.theme.primary = this.$global.setting.color;
       //----- load external plugin -----//
-      this.reloadBoardPackage();
+      await this.reloadBoardPackage();
       this.$global.$on("board-change", this.reloadBoardPackage);
       //----- check for update -----//
       this.$global.$on("check-update", this.checkUpdate);
@@ -264,9 +263,9 @@
       initialTab(){
 
       },
-      reloadBoardPackage() {
+      reloadBoardPackage : async function() {
         var boardName = this.$global.board.board;
-        var boardPackage = bm.packages(boardName);
+        var boardPackage = await bm.packages(boardName);
         console.log("--------- bp ---------");
         console.log(boardPackage);
 
@@ -292,6 +291,8 @@
                 console.log(`board [${boardName}] loaded package : ${packageName}`);
                 if (index === arr.length - 1) {
                   Vue.prototype.$global.board.package = bp;
+                  Vue.prototype.$global.$emit("board-package-loaded");
+                  console.log("emitting board-package-loaded");
                 }
               }
             };

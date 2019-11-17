@@ -90,9 +90,4 @@ ipcMain.on("update-restart", () => {
   app.exit(0);
 });
 //====== create menu =======//
-
-global.blockly_utils = {
-  blockly_utils: {}
-};
-
 require("./menu");

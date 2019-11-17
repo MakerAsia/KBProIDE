@@ -338,9 +338,9 @@
     },
     methods: {
       humanize: util.humanize,
-      changeOrder(orderName) {
+      changeOrder : async function(orderName) {
         this.boardOrderBy = orderName;
-        this.listLocalBoard(this.searchText);
+        await this.listLocalBoard(this.searchText);
         this.$global.board_selector.sortby = orderName;
       },
       orderBoardBy(obj, orderBy, defaultName) {
@@ -404,9 +404,9 @@
           this.listOnlineBoard(this.searchText, true);
         }
       },
-      listAllBoard(name = "") {
+      listAllBoard : async function(name = "") {
         this.listOnlineBoard(name);
-        this.listLocalBoard(name);
+        await this.listLocalBoard(name);
       },
       listOnlineBoard(name = "",loadNext = false) {
         this.onlineBoardStatus = (loadNext) ? "OK" : "wait";
@@ -460,8 +460,8 @@
             mother.onlineBoardStatus = "ERROR";
           });
       },
-      listLocalBoard(name = "") {
-        this.installedBoard = bm.boards().map(obj => {
+      listLocalBoard : async function(name = "") {
+        this.installedBoard = (await bm.boards()).map(obj => {
           obj.status = "READY";
           return obj;
         });
@@ -495,8 +495,8 @@
         });
         if (res) {
           if (res === "confirm") {
-            this.$global.board.board_info = bm
-              .boards()
+            this.$global.board.board_info = (await bm
+              .boards())
               .find(obj => obj.name === boardInfo.name);
             this.$global.board.board = boardInfo.name;
             this.$global.editor.blockCode = "";
@@ -702,14 +702,14 @@
       }
     },
     watch: {
-      boardDialog: function(val) {
+      boardDialog: async function(val) {
         if (val) {
           //on opening
           this.searchText = "";
           this.filter.nextOffset = 0;
           this.filter.currentPage = 1;
           this.selectingBoard = this.$global.board.board_info;
-          this.listAllBoard();
+          await this.listAllBoard();
         }
       }
     }

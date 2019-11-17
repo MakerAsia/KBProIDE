@@ -1,7 +1,11 @@
 import util from "@/engine/utils";
 import pfm from "@/engine/PlatformManager";
 //import axios from 'axios';
-import fs from "fs";
+
+const { promises: fs } = require("fs");
+const rfs = require("fs");
+
+const fileExists = async path => !!(await fs.stat(path).catch(e => false));
 
 const os = require("os");
 const path = require("path");
@@ -14,42 +18,43 @@ let listedBoards = [];
 let listedPackages = {};
 let listedPackagesBoard = "";
 
-const listBoard = function() {
+const listBoard = async function() {
   let context = [];
-  let dirs = util.fs.readdirSync(util.boardDir);
-  dirs.forEach(element => {
-    let dir = util.boardDir + "/" + element;
-    if (util.fs.lstatSync(dir).isFile()) {
-      return;
+  let dirs = await fs.readdir(util.boardDir);
+  for(let i in dirs){
+    let dir = `${util.boardDir}/${dirs[i]}`;
+    if ((await fs.lstat(dir)).isFile()) {
+      continue;
     }
-    let dirBoards = util.fs.readdirSync(dir);
+    let dirBoards = await fs.readdir(dir);
     if (!dirBoards.includes("config.js")) {
-      return; // only folder that contain config.js
+      continue; // only folder that contain config.js
     }
     let config = util.requireFunc(dir + "/config");
     config["dir"] = dir;
     context.push(config);
-  });
+  }
   return context;
 };
 
-const listPackage = function(boardName, includePlatform = true) {
+const listPackage = async function(boardName, includePlatform = true) {
   let targetBoardDir = `${util.boardDir}/${boardName}`;
   let targetBoardPackage = `${targetBoardDir}/package`;
   let context = {};
-  if (util.fs.existsSync(targetBoardPackage)) {
-    let packageName = util.fs.readdirSync(targetBoardPackage);
-    packageName.forEach(element => { //folder
+  if (await fileExists(targetBoardPackage)) {
+    let packageName = await fs.readdir(targetBoardPackage);
+    for (let i in packageName) {
+      let element = packageName[i];
       let fullPathPackage = `${targetBoardPackage}/${element}`;
       let configFile = `${fullPathPackage}/config.js`;
       let packageJsFile = `${fullPathPackage}/dist/${element}.umd.js`;
-      if (util.fs.lstatSync(fullPathPackage).isFile()) {// skip file
+      if ((await fs.lstat(fullPathPackage)).isFile()) {// skip file
         return;
       }
-      if (!util.fs.existsSync(configFile)) {//package must contain config.js
+      if (!await fileExists(configFile)) {//package must contain config.js
         return;
       }
-      if (!util.fs.existsSync(packageJsFile)) {//package must contain js umd file
+      if (!await fileExists(packageJsFile)) {//package must contain js umd file
         return;
       }
       if (!(element in context)) {
@@ -63,25 +68,29 @@ const listPackage = function(boardName, includePlatform = true) {
       } catch (error) {
         console.log("connot import config : " + fullPathPackage);
       }
-    });
+    }
   }
   if (includePlatform) {
-    let targetBoard = boards().find(obj => obj.name === boardName);
+    let targetBoard = (await boards()).find(obj => obj.name === boardName);
     let platformName = targetBoard.platform;
     let platformPackageDir = `${util.platformDir}/${platformName}/package`;
-    if (util.fs.existsSync(platformPackageDir)) {
-      let platformPackageName = util.fs.readdirSync(platformPackageDir);
-      platformPackageName.forEach(element => {
+    console.log("check");
+    console.log(platformPackageDir);
+    if (await fileExists(platformPackageDir)) {
+      console.log("exist");
+      let platformPackageName = await fs.readdir(platformPackageDir);
+      for(let i in platformPackageName){
+        let element = platformPackageName[i];
         let fullPathPackage = `${platformPackageDir}/${element}`;
         let configFile = `${fullPathPackage}/config.js`;
         let packageJsFile = `${fullPathPackage}/dist/${element}.umd.js`;
-        if (util.fs.lstatSync(fullPathPackage).isFile()) {// skip file
+        if ((await fs.lstat(fullPathPackage)).isFile()) {// skip file
           return;
         }
-        if (!util.fs.existsSync(configFile)) {//package must contain config.js
+        if (!await fileExists(configFile)) {//package must contain config.js
           return;
         }
-        if (!util.fs.existsSync(packageJsFile)) {//package must contain js umd file
+        if (!await fileExists(packageJsFile)) {//package must contain js umd file
           return;
         }
         if (!(element in context)) {
@@ -95,7 +104,7 @@ const listPackage = function(boardName, includePlatform = true) {
         } catch (error) {
           console.log("connot import config : " + fullPathPackage);
         }
-      });
+      }
     }
   }
   //sort menu by config index
@@ -124,9 +133,9 @@ const listOnlineBoard = function(query)
   });
 };
 
-const loadBoardManagerConfig = function() {
+const loadBoardManagerConfig = async function() {
   let configFile = util.boardDir + "/config.js";
-  if (!util.fs.existsSync(configFile)) {
+  if (!await fileExists(configFile)) {
     return null;
   }
   return util.requireFunc(configFile);
@@ -137,7 +146,7 @@ const installOnlineBoard = function(info, cb) {
     if (!info.git) { reject("no git found"); }
     let zipUrl = info.git + "/archive/master.zip";
     let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
-    let file = fs.createWriteStream(zipFile);
+    let file = rfs.createWriteStream(zipFile);
     progress(
       request(zipUrl),
       {
@@ -161,18 +170,18 @@ const installOnlineBoard = function(info, cb) {
     });
   }).then(() => { //rename folder
     //rename ended with word '-master' in boards
-    let dirs = fs.readdirSync(util.boardDir);
+    let dirs = rfs.readdirSync(util.boardDir);
     for (let i = 0; i < dirs.length; i++) {
       let dirname = path.join(util.boardDir, dirs[i]);
-      if (fs.lstatSync(dirname).isDirectory() && dirname.endsWith("-master")) {
+      if (rfs.lstatSync(dirname).isDirectory() && dirname.endsWith("-master")) {
         let sourceDir = dirname;
         let targetDir = path.join(util.boardDir, info.name);
-        fs.renameSync(sourceDir, targetDir);
+        rfs.renameSync(sourceDir, targetDir);
       }
     }
     return true;
   }).then(() => { //install platform
-    let havePlatform = fs.readdirSync(util.platformDir);
+    let havePlatform = rfs.readdirSync(util.platformDir);
     let nonExistPlatform;
     if(typeof info.platform === "string"){
       nonExistPlatform = havePlatform.includes(info.platform) ? [] : [info.platform];
@@ -190,7 +199,7 @@ const installOnlineBoard = function(info, cb) {
 const removeBoard = function(boardInfo) {
   return new Promise((resolve, reject) => {
     let target = `${boardInfo.dir}`;
-    if (fs.existsSync(target)) {
+    if ( rfs.existsSync(target)) {
       util.rmdirf(target);
       resolve();
     } else {
@@ -202,7 +211,7 @@ const removeBoard = function(boardInfo) {
 const removeBackupBoard = function(boardInfo) {
   return new Promise((resolve, reject) => {
     let target = `${boardInfo.dir}-backup-board`;
-    if (fs.existsSync(target)) {
+    if (rfs.existsSync(target)) {
       util.rmdirf(target);
       resolve();
     } else {
@@ -215,7 +224,7 @@ const backupBoard = function(boardInfo) {
   return new Promise((resolve, reject) => {
     let target = `${boardInfo.dir}`;
     let newer = `${boardInfo.dir}-backup-board`;
-    fs.renameSync(target, newer);
+    rfs.renameSync(target, newer);
     resolve();
   });
 };
@@ -224,7 +233,7 @@ const restoreBoard = function(boardInfo) {
   return new Promise((resolve, reject) => {
     let target = `${boardInfo.dir}`;
     let newer = `${boardInfo.dir}-backup-board`;
-    fs.renameSync(newer, target);
+    rfs.renameSync(newer, target);
     resolve();
   });
 };
@@ -301,9 +310,9 @@ const publishBoard = function(url) {
   });
 };
 
-const boards = function() {
+const boards = async function() {
   if (listedBoards.length === 0) { // check empty object !!!
-    listedBoards = listBoard();
+    listedBoards = await listBoard();
   }
   return listedBoards;
 };
@@ -315,9 +324,9 @@ const clearListedBoard = function() {
     }
   });
 };
-const packages = function(selectedBoard) {
+const packages = async function(selectedBoard) {
   if ((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object) || (listedPackagesBoard != selectedBoard)) { // check empty object !!!
-    listedPackages = listPackage(selectedBoard);
+    listedPackages = await listPackage(selectedBoard);
     listedPackagesBoard = selectedBoard;
   }
   return listedPackages;
@@ -350,14 +359,14 @@ export default {
   listBoard,
   listOnlineBoard,
   listPackage,
-  listToolbar: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "Toolbar"),
-  listActionbar: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "Actionbar"),
-  listPage: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "Page"),
-  listLeftDrawer: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "LeftDrawer"),
-  listRightDrawer: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "RightDrawer"),
-  listBottomPanel: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "BottomPanel"),
-  listRightTab: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "RightTab"),
-  listBottomTab: selectedBoard => filerBoardPackageComponent(packages(selectedBoard), "BottomTab"),
+  listToolbar: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "Toolbar"),
+  listActionbar: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "Actionbar"),
+  listPage: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "Page"),
+  listLeftDrawer: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "LeftDrawer"),
+  listRightDrawer: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "RightDrawer"),
+  listBottomPanel: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "BottomPanel"),
+  listRightTab: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "RightTab"),
+  listBottomTab: async selectedBoard => filerBoardPackageComponent(await packages(selectedBoard), "BottomTab"),
   loadBoardManagerConfig,
   installOnlineBoard,
   removeBoard,
