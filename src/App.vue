@@ -263,15 +263,17 @@
       {
         console.log("toolbar created");
         setTimeout(()=>{
-          window.getApp.$refs.toolbar.processStaticToolbar(t);
-          //----- load external plugin -----//
-          window.getApp.reloadBoardPackage().then(()=>{
-            window.getApp.$refs.toolbar.processToolbar(t);
-          });
-          //----- load app packages ----//
-          window.getApp.loadAppPackage().then(()=>{
-            window.getApp.$refs.toolbar.processAppToolbar(t);
-          });
+          if(window.getApp) {
+            window.getApp.$refs.toolbar.processStaticToolbar(t);
+            //----- load external plugin -----//
+            window.getApp.reloadBoardPackage().then(() => {
+              window.getApp.$refs.toolbar.processToolbar(t);
+            });
+            //----- load app packages ----//
+            window.getApp.loadAppPackage().then(() => {
+              window.getApp.$refs.toolbar.processAppToolbar(t);
+            });
+          }
         },1000);
       },
       loadPackage : async function(packageInfo){
