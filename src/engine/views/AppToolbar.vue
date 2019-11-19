@@ -6,7 +6,6 @@
     app
     height="64px"
   >
-
     <v-toolbar-title v-if="!$route.meta.hide_drawer" class="ml-0 pl-0">
       <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
     </v-toolbar-title>
@@ -30,47 +29,66 @@
       <span>KidBright Community</span>
     </v-tooltip>
 
-
     <!-- dynamic left toolbar -->
     <template v-for="(comp,compName) in toolbars">
-      <template v-for="(toobarTarget,tbName) in comp">
-        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
+      <template v-for="(toolbarTarget,tbName) in comp">
+        <transition name="fade">
+        <async-component :target="toolbarTarget" :key="compName+'.'+tbName"/>
+        </transition>
       </template>
     </template>
 
-    <!--toolbar-mode/>
-    <toolbar-board/>
-    <toolbar-plugin/>
-    <toolbar-example/>
-    <toolbar-setting/-->
-    <!-- dynamic left toolbar -->
+    <v-divider class="mx-1" inset vertical></v-divider>
 
     <!-- load board package toolbar -->
-    <v-divider class="mx-1" inset vertical></v-divider>
-    <template v-for="(comp,index) in toolbarComp">
-      <component :is="comp.comp" :key="comp.name+'.'+index"></component>
+    <template v-for="(comp,index) in appToolbarComp">
+      <template v-for="(compName,index) in comp.comp">
+        <transition name="fade">
+        <component v-if="comp.info.loaded === true" :is="compName" :key="comp.name+'.'+index"></component>
+        </transition>
+      </template>
     </template>
+
+    <!-- load board package toolbar -->
+    <template v-for="(comp,index) in toolbarComp">
+      <template v-for="(compName,index) in comp.comp">
+        <transition name="fade">
+          <component v-if="comp.info.loaded === true" :is="compName" :key="comp.name+'.'+index"></component>
+        </transition>
+      </template>
+    </template>
+
 
     <v-spacer></v-spacer>
 
-    <template v-for="(comp,compName) in actionbar">
-      <template v-for="(toobarTarget,tbName) in comp">
-        <async-component :target="toobarTarget" :key="compName+'.'+tbName"/>
+    <!-- load app package actionbar -->
+    <template v-for="(comp,index) in appActionbarComp">
+      <template v-for="(compName,index) in comp.comp">
+        <transition name="fade">
+        <component v-if="comp.info.loaded === true" :is="compName" :key="comp.name+'.'+index"></component>
+        </transition>
       </template>
     </template>
 
-    <!--actionbar-new-file/>
-    <actionbar-open-file/>
-    <actionbar-save-file/>
-    <actionbar-serial/-->
+    <v-divider class="mx-1" inset vertical></v-divider>
+
+    <!-- load dynamic actionbar -->
+    <template v-for="(comp,compName) in actionbar">
+      <template v-for="(toolbarTarget,tbName) in comp">
+        <transition name="fade">
+        <async-component :target="toolbarTarget" :key="compName+'.'+tbName"/>
+        </transition>
+      </template>
+    </template>
 
     <v-divider class="mx-1" inset vertical></v-divider>
 
     <!-- load board package actionbar -->
-
     <template v-for="(comp,index) in actionbarComp">
       <template v-for="(compName,index) in comp.comp">
+        <transition name="fade">
         <component v-if="comp.info.loaded === true" :is="compName" :key="comp.name+'.'+index"></component>
+        </transition>
       </template>
     </template>
 
@@ -87,44 +105,27 @@ import Vue from 'vue';
 import util from '@/engine/utils';
 import cm from '@/engine/ComponentManager';
 import bm from '@/engine/BoardManager';
-//import AsyncComponent from '@/engine/AsyncComponent';
-//import notification from '@/engine/views/Notification';
-
-//var boardComponentData = util.vueRuntimeComponent('E:/Bloccoly/Research/KBProIDE/boards/kidbright/package/actionbar/ActionbarNewfile.vue');
-//var componentRegisterName = 'actionbar-newfile-1';
-//Vue.extend(boardComponentData);
-//var vv = util.requireFunc('E:/Bloccoly/Research/others/vuetify-table-master/dist/vuetify-table.umd.js');
-//Vue.use(vv);
+import pm from '@/engine/PackageManager';
 let mother = null;
 export default {
   name: 'app-toolbar',
   components: {
     notification : ()=> import("@/engine/views/Notification"),
     AsyncComponent : ()=> import("@/engine/AsyncComponent"),
-    //--- fixed toolbar ---//
-    /*ToolbarMode : ()=> import("@/engine/components/editor/ToolbarMode"),
-    ToolbarBoard : ()=> import("@/engine/components/board_selector/ToolbarBoard"),
-    ToolbarPlugin : ()=> import("@/engine/components/plugin/ToolbarPlugin"),
-    ToolbarExample : ()=> import("@/engine/components/examples/ToolbarExample"),
-    ToolbarSetting : ()=> import("@/engine/components/setting/ToolbarSetting"),
-    //--- fixed actionbar ---//
-    ActionbarNewFile : ()=> import("@/engine/components/editor/ActionbarNewFile"),
-    ActionbarOpenFile : ()=> import("@/engine/components/editor/ActionbarOpenFile"),
-    ActionbarSaveFile : ()=> import("@/engine/components/editor/ActionbarSaveFile"),
-    ActionbarSerial : ()=> import("@/engine/components/serial_monitor/ActionbarSerial")*/
   },
   data:() => ({
-    toolbars : cm.listToolbar,
-    actionbar :cm.listActionbar,
+    toolbars : [],
+    actionbar : [],
     toolbarComp : [],
     actionbarComp : [],
+    appToolbarComp : [],
+    appActionbarComp : [],
   }),
   mounted(){
-
+    this.$emit('mounted',this);
   },
   created(){
-    mother = this;
-    this.processToolbar();
+    this.$emit('created',this);
   },
   methods: {
     handleDrawerToggle () {
@@ -133,24 +134,30 @@ export default {
     handleFullScreen () {
       util.toggleFullScreen();
     },
-    processToolbar : async function(){
-      let compActionbar = [];
-      let compToolbar = [];
-
-      let boardActionBar = await bm.listActionbar(mother.$global.board.board);
-      let boardToolbar = await bm.listToolbar(mother.$global.board.board);
-
-      for(let packageName in mother.$global.board.package){
-        compActionbar.push({info : mother.$global.board.package[packageName], name : packageName, comp : boardActionBar[packageName]});
-        compToolbar.push({info : mother.$global.board.package[packageName], name : packageName,comp : boardToolbar[packageName] });
+    processStaticToolbar : async(t = this)=>{
+      t.toolbars = cm.listToolbar;
+      t.actionbar = cm.listActionbar;
+    },
+    processToolbar : async function(t=this){
+      t.toolbarComp = [];
+      t.actionbarComp = [];
+      let boardActionBar = await bm.listActionbar(Vue.prototype.$global.board.board);
+      let boardToolbar = await bm.listToolbar(Vue.prototype.$global.board.board);
+      for(let packageName in Vue.prototype.$global.board.package){
+        t.actionbarComp.push({info : Vue.prototype.$global.board.package[packageName], name : packageName, comp : boardActionBar[packageName]});
+        t.toolbarComp.push({info : Vue.prototype.$global.board.package[packageName], name : packageName,comp : boardToolbar[packageName] });
       }
-      mother.toolbarComp = compToolbar;
-      mother.actionbarComp = compActionbar;
-    }
-  },
-  watch:{
-    "$global.board.package" : async m =>{
-      await mother.processToolbar();
+    },
+    processAppToolbar : async function(t=this){
+      let t1 = [],t2 = [];
+      let appActionbar = await pm.listActionbar();
+      let appToolbar = await pm.listToolbar();
+      for(let packageName in Vue.prototype.$global.packages){
+        t1.push({info : Vue.prototype.$global.packages[packageName], name : packageName, comp : appActionbar[packageName]});
+        t2.push({info : Vue.prototype.$global.board.package[packageName], name : packageName,comp : appToolbar[packageName] });
+      }
+      t.appActionbarComp = t1;
+      t.appToolbarComp = t2;
     }
   }
 };

@@ -1,5 +1,4 @@
 export default [
-
   {
     path: '*',
     meta: {
@@ -25,7 +24,7 @@ export default [
       public: true,
     },
     name: 'AccessDenied',
-    component: () => import(      
+    component: () => import(
       `@/engine/views/page/Deny.vue`
     )
   },
@@ -45,7 +44,7 @@ export default [
       public: true,
     },
     name: 'Login',
-    component: () => import(      
+    component: () => import(
       `@/engine/views/page/Login.vue`
     )
   },
@@ -61,7 +60,7 @@ export default [
     path: '/editor',
     meta: { breadcrumb: false ,hide_drawer: true },
     name: 'Editor',
-    component: () => import(      
+    component: () => import(
       `@/engine/components/editor/Page.vue`
     )
   }

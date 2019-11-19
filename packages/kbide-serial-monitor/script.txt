@@ -1,0 +1,29 @@
+vue create kbide-serial-monitor
+cd kbide-serial-monitor/
+npm install --save vue-chartjs@^3.4.2
+npm install --save serial
+npm install --save vuetify@^1.5.16
+npm install --save material-design-icons-iconfont@^5.0.1
+npm install --save font-awesome@^4.7.0
+mkdir components
+cd src
+cat <<EOT >> lib.js
+import * as ComponentMap from './components'
+export default {
+  install(Vue, options)
+  {    
+    // register all components globally
+    for (var componentName in ComponentMap)
+    {
+      Vue.component( componentName, ComponentMap[ componentName ] );
+    }
+  }
+};
+EOT
+cd components
+cat <<EOT >> index.js
+export {default as ActionbarSerial} from "./ActionbarSerial";
+EOT
+touch ActionbarSerial.vue
+//script build
+//"build": "vue-cli-service build --target lib --name kbide-serial-monitor src/lib.js",

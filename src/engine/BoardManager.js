@@ -49,13 +49,13 @@ const listPackage = async function(boardName, includePlatform = true) {
       let configFile = `${fullPathPackage}/config.js`;
       let packageJsFile = `${fullPathPackage}/dist/${element}.umd.js`;
       if ((await fs.lstat(fullPathPackage)).isFile()) {// skip file
-        return;
+        continue;
       }
       if (!await fileExists(configFile)) {//package must contain config.js
-        return;
+        continue;
       }
       if (!await fileExists(packageJsFile)) {//package must contain js umd file
-        return;
+        continue;
       }
       if (!(element in context)) {
         context[element] = {};
@@ -85,13 +85,13 @@ const listPackage = async function(boardName, includePlatform = true) {
         let configFile = `${fullPathPackage}/config.js`;
         let packageJsFile = `${fullPathPackage}/dist/${element}.umd.js`;
         if ((await fs.lstat(fullPathPackage)).isFile()) {// skip file
-          return;
+          continue;
         }
         if (!await fileExists(configFile)) {//package must contain config.js
-          return;
+          continue;
         }
         if (!await fileExists(packageJsFile)) {//package must contain js umd file
-          return;
+          continue;
         }
         if (!(element in context)) {
           context[element] = {};

@@ -2,7 +2,7 @@
     <div id="appRoot">
         <template v-if="!$route.meta.public">
             <v-app class="app" id="inspire">
-                <app-toolbar class="app--toolbar"></app-toolbar>
+                <app-toolbar ref="toolbar" class="app--toolbar" v-on:created="createToolbar"></app-toolbar>
                 <v-content>
                     <!-- Page Header -->
                     <div class="page-wrapper">
@@ -170,22 +170,20 @@
 </template>
 <script>
   import Vue from "vue";
+  //========= load manager ==========//
+  import bm from "@/engine/BoardManager";
+  import pm from "@/engine/PackageManager";
+  //import AsyncComponent from "@/engine/AsyncComponent";
+  import AppEvents from "./event";
+  import util from "@/engine/utils";
+  import TourSteps from "./tour";
   //import AppToolbar from "@/engine/views/AppToolbar";
   //import AppFooter from "@/engine/views/AppFooter";
   //import {Multipane, MultipaneResizer} from "vue-multipane";
   //import draggable from "vuedraggable";
   const electron = require("electron");
-  //========= load manager ==========//
-  import bm from "@/engine/BoardManager";
-  //import AsyncComponent from "@/engine/AsyncComponent";
-  import AppEvents from "./event";
-  import util from "@/engine/utils";
-  import {stat} from "fs";
-  import {spread} from "q";
   //========= updating =========//
   //import AppUpdater from "@/engine/updater/AppUpdater";
-
-  import TourSteps from "./tour";
 
   require("vue-tour/dist/vue-tour.css");
 
@@ -230,8 +228,6 @@
       //======== INIT ========//
       //----- load color -----//
       this.$vuetify.theme.primary = this.$global.setting.color;
-      //----- load external plugin -----//
-      await this.reloadBoardPackage();
       this.$global.$on("board-change", this.reloadBoardPackage);
       //----- check for update -----//
       this.$global.$on("check-update", this.checkUpdate);
@@ -263,42 +259,78 @@
       initialTab(){
 
       },
-      reloadBoardPackage : async function() {
-        var boardName = this.$global.board.board;
-        var boardPackage = await bm.packages(boardName);
-        console.log("--------- bp ---------");
-        console.log(boardPackage);
+      createToolbar : async function(t)
+      {
+        console.log("toolbar created");
+        setTimeout(()=>{
+          window.getApp.$refs.toolbar.processStaticToolbar(t);
+          //----- load external plugin -----//
+          window.getApp.reloadBoardPackage().then(()=>{
+            window.getApp.$refs.toolbar.processToolbar(t);
+          });
+          //----- load app packages ----//
+          window.getApp.loadAppPackage().then(()=>{
+            window.getApp.$refs.toolbar.processAppToolbar(t);
+          });
+        },1000);
+      },
+      loadPackage : async function(packageInfo){
+        return new Promise((resolve,reject)=>{
+          let bp = {};
+          // re-assign package to board
+          Object.keys(packageInfo).forEach(packageName => {
+            bp[packageName] = {};
+            let boardPackageData = util.loadCofigComponents(packageInfo[packageName].config,
+              "package." + packageName);
+            bp[packageName] = boardPackageData.data;
+          });
 
-        var bp = {};
-        // re-assign package to board
-        Object.keys(boardPackage).forEach(packageName => {
-          bp[packageName] = {};
-          let boardPackageData = util.loadCofigComponents(boardPackage[packageName].config,
-            "board.package." + packageName);
-          bp[packageName] = boardPackageData.data;
-        });
-
-        Object.keys(boardPackage).forEach((packageName, index, arr) => {
-          let targetJsFile = boardPackage[packageName].js;
-          let targetLinkFile = `file:///${targetJsFile}`;
-          if (util.fs.existsSync(targetJsFile)) {
-            let script = document.createElement("script");
-            script.setAttribute("src", targetLinkFile);
-            script.onload = function() {
-              if (packageName in window) {
-                Vue.use(window[packageName]);
-                bp[packageName].loaded = true;
-                console.log(`board [${boardName}] loaded package : ${packageName}`);
-                if (index === arr.length - 1) {
-                  Vue.prototype.$global.board.package = bp;
-                  Vue.prototype.$global.$emit("board-package-loaded");
-                  console.log("emitting board-package-loaded");
+          Object.keys(packageInfo).forEach((packageName, index, arr) => {
+            let targetJsFile = packageInfo[packageName].js;
+            let targetCssFile = packageInfo[packageName].css;
+            let targetLinkFile = `file:///${targetJsFile}`;
+            let targetLinkCssFile = `file:///${targetCssFile}`;
+            if (util.fs.existsSync(targetJsFile)) {
+              let script = document.createElement("script");
+              script.setAttribute("src", targetLinkFile);
+              script.onload = function() {
+                if (packageName in window) {
+                  Vue.use(window[packageName]);
+                  bp[packageName].loaded = true;
+                  console.log(`loaded package : ${packageName}`);
+                  if (index === arr.length - 1) {
+                    resolve(bp);
+                  }
                 }
-              }
-            };
-            document.head.appendChild(script);
-          }
+              };
+              document.head.prepend(script);
+            }
+            if(util.fs.existsSync(targetCssFile)){
+              let css = document.createElement("link");
+              css.setAttribute("rel","stylesheet");
+              css.setAttribute("type","text/css");
+              css.setAttribute("href",targetLinkCssFile);
+              document.head.prepend(css);
+            }
+          });
         });
+      },
+      loadAppPackage : async function(){
+        let appPackage = await pm.packages();
+        console.log("-------- app package --------");
+        console.log(appPackage);
+        Vue.prototype.$global.packages = await this.loadPackage(appPackage);
+        Vue.prototype.$global.$emit("app-package-loaded");
+        console.log("emitting app-package-loaded");
+      },
+      reloadBoardPackage : async function() {
+        let boardName = this.$global.board.board;
+        let boardPackage = await bm.packages(boardName);
+        console.log("--------- board package ---------");
+        console.log(boardPackage);
+        Vue.prototype.$global.board.package = await this.loadPackage(boardPackage);
+        Vue.prototype.$global.$emit("board-package-loaded");
+        console.log("emitting board-package-loaded");
       },
       onResizePanel(pane, container, size) {
         this.$global.$emit("panel-resize", size);

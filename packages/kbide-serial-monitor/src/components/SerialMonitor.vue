@@ -299,8 +299,7 @@
     </v-card>
 </template>
 <script>
-  import util from "@/engine/utils";
-
+  const util = Vue.prototype.$engine.util;
   const SerialPort = util.requireFunc("serialport");
   //const Readline = util.requireFunc("@serialport/parser-readline");
   import LineChart from "./LineChart";

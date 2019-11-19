@@ -98,8 +98,52 @@
           };
           Vue.prototype.$db2.getItems("version", query).then((res) => {
             if(res && res.data && res.data.length === 1){
-              let data = res.data;
+              let data = res.data[0];
+              let arch = require('os').arch();
+              if (process.platform === "win32" && arch === "ia32") {
+                data.zip =  data.zip + "-win32.zip";
+              }else if(process.platform === "win32" && arch === "x64"){
+                data.zip =  data.zip + "-win64.zip";
+              }else if (process.platform === "darwin") {
+                data.zip = data.zip + "-darwin.zip";
+              } else if (process.platform === "linux") {
+                data.zip = data.zip + "-linux.zip";
+              }
+              mother.update = data;
               console.log(data);
+/*
+              EAU.init({
+                server: false, // Where to check. true: server side, false: client side, default: true.
+                debug: false, // Default: false.
+              });
+
+              EAU.process(data, function(error, last, body) {
+                if (!error) {
+                  if (
+                    mother.$global.setting.ignoreUpdateVersion === last &&
+                    forceShowUpdate === false
+                  ) {
+                    console.log("User ignored update popup");
+                    resolve(false);
+                    return false;
+                  }
+                  mother.updateDialog = true;
+                  resolve(true);
+                  return true;
+                } else if (error === "no_update_available") {
+                  if (showNotification) {
+                    mother.$dialog.notify.info("This is newest version");
+                  }
+                  resolve(false);
+                  return false;
+                } else {
+                  mother.$dialog.notify.error("check version error : " + error);
+                  resolve(false);
+                  return false;
+                }
+              });
+*/
+
             }
           }).catch(err => {
             console.error("list online board error : " + err);
