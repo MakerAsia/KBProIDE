@@ -257,25 +257,40 @@
         mother.updateStatus = "UPDATING";
         mother.updateText = "Downloading ... ";
         //======== app update ========//
-        if (mother.update.type === "app") {
-          EAU.progress(mother.progress);
-          EAU.download(function(error) {
-            if (error) {
-              console.log("update app error : " + error);
-              mother.errorAndReset(error);
-              return false;
-            }
-            console.log("Update success");
+        EAU.progress(mother.progress);
+        EAU.registerUnzipCallback(mother.onUnzip);
+        EAU.download(function(error) {
+          if (error) {
+            console.log("update app error : " + error);
+            mother.errorAndReset(error);
+            return false;
+          }
+          console.log("Update success");
+          if(mother.update.type.includes("app")){ // app need to be restarted
             mother.updateText = "Restarting ...";
             setTimeout(() => {
               electron.remote.app.relaunch();
               electron.remote.app.exit(0);
             }, 2000);
-            //--tracking--//
-            mother.$track.event("update", "success",
-                              {evLabel: "app_" + mother.update.version, evValue: 1, clientID: mother.$track.clientID})
-                        .catch(err=>{ console.log(err)});
-          });
+          }else{                                  // others type just reload
+            let timeout = 6;
+            let reloader = function(){
+              timeout--;
+              mother.updateText = "Reloading in "+timeout+" second(s) ...";
+              if(timeout < 0){
+                document.location.reload();
+              }else{
+                setTimeout(()=> reloader(timeout),1000);
+              }
+            };
+            reloader(timeout);
+          }
+          //--tracking--//
+          mother.$track.event("update", "success",
+                            {evLabel: "app_" + mother.update.version, evValue: 1, clientID: mother.$track.clientID})
+                      .catch(err=>{ console.log(err)});
+        });
+        /*
         } else if (mother.update.type === "platform") {
           Updater.progress(mother.progress);
           //let currentPlatformDir = `${util.platformDir}/${mother.$global.board.board_info.platform}`;
@@ -304,6 +319,8 @@
             return false;
           });
         }
+        */
+
       },
       progress(state) {
         if (state.size.total) {
@@ -318,6 +335,10 @@
               state.size.transferred,
           )} , speed : ${util.humanFileSize(speed)}/s`;
         }
+      },
+      onUnzip(file){
+        mother.updateText = "Unzip ... Please wait";
+        mother.updateValue = -1;
       },
       errorAndReset(error) {
         mother.updateStatus = "ERROR";
