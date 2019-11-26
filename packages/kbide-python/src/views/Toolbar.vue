@@ -28,7 +28,7 @@
         <!-- dynamic left toolbar -->
 
         <v-divider class="mx-1" inset vertical></v-divider>
-
+        <h3>KBIDE Python Mode</h3>
         <!-- load board package toolbar -->
 
         <!-- load board package toolbar -->
@@ -37,15 +37,5 @@
         <v-spacer></v-spacer>
 
         <!-- load app package actionbar -->
-
-        <v-divider class="mx-1" inset vertical></v-divider>
-
-        <!-- load dynamic actionbar -->
-
-        <v-divider class="mx-1" inset vertical></v-divider>
-
-        <!-- load board package actionbar -->
-
-        <v-divider class="mx-1" inset vertical></v-divider>
     </v-toolbar>
 </template>

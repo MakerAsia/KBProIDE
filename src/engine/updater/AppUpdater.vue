@@ -17,7 +17,7 @@
                                 :indeterminate="updateValue < 0"
                                 color="teal"
                         >
-                            {{ updateValue }} %
+                            {{ (updateValue > 0)? (updateValue + "%") : "" }}
                         </v-progress-circular>
                     </div>
                     <div class="text-xs-center mt-4">
@@ -30,7 +30,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <p v-html="update.info"></p>
+                    <p v-html="update.description"></p>
                 </template>
             </v-card-text>
             <v-card-actions v-if="updateStatus !== 'UPDATING'">
@@ -97,7 +97,7 @@
             "sort" : "-release_date"
           };
           Vue.prototype.$db2.getItems("version", query).then((res) => {
-            if(res && res.data && res.data.length === 1){
+            if(res && res.data && res.data.length === 1 && res.data[0].status === "published"){
               let data = res.data[0];
               let arch = require('os').arch();
               if (process.platform === "win32" && arch === "ia32") {
@@ -111,11 +111,12 @@
               }
               mother.update = data;
               console.log(data);
-/*
+
               EAU.init({
                 server: false, // Where to check. true: server side, false: client side, default: true.
                 debug: false, // Default: false.
               });
+
 
               EAU.process(data, function(error, last, body) {
                 if (!error) {
@@ -142,7 +143,6 @@
                   return false;
                 }
               });
-*/
 
             }
           }).catch(err => {
@@ -257,13 +257,25 @@
         mother.updateStatus = "UPDATING";
         mother.updateText = "Downloading ... ";
         //======== app update ========//
+        let extractPath = util.baseDir;
         EAU.progress(mother.progress);
         EAU.registerUnzipCallback(mother.onUnzip);
-        EAU.download(function(error) {
+        EAU.download(extractPath, function(error) {
+          mother.updateValue = 100;
           if (error) {
             console.log("update app error : " + error);
             mother.errorAndReset(error);
             return false;
+          }
+          if (fs.existsSync(util.baseDir + "/migrate.js")){
+            mother.updateText = "Migrating to new version ...";
+            let mgFile = util.baseDir + "/migrate.js";
+            let mg = util.requireFunc(mgFile);
+            if("migrate" in mg){
+              mg.migrate();
+            }
+          }else{
+            console.log("not found migrate file.");
           }
           console.log("Update success");
           if(mother.update.type.includes("app")){ // app need to be restarted
