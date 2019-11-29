@@ -183,7 +183,7 @@
   //import draggable from "vuedraggable";
   const electron = require("electron");
   //========= updating =========//
-  //import AppUpdater from "@/engine/updater/AppUpdater";
+  import AppUpdater from "@/engine/updater/AppUpdater";
 
   require("vue-tour/dist/vue-tour.css");
 
@@ -195,7 +195,8 @@
       draggable : ()=> import("vuedraggable"),
       AsyncComponent : () => import("@/engine/AsyncComponent"),
       AppFooter : ()=> import("@/engine/views/AppFooter"),
-      AppUpdater : () => import("@/engine/updater/AppUpdater")
+      AppUpdater
+      //AppUpdater : () => import("@/engine/updater/AppUpdater")
     },
     data() {
       return {
