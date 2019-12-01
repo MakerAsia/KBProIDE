@@ -1,27 +1,27 @@
 <template>
     <div>
         <v-tooltip bottom>
-            <v-btn color="primary darken-2" slot="activator" icon @click="pluginDialog = !pluginDialog">
-                <v-icon dark>fa-plug</v-icon>
+            <v-btn color="primary darken-2" slot="activator" icon @click="packageDialog = !packageDialog">
+                <v-icon dark>fa-cubes</v-icon>
             </v-btn>
-            <span>Plugin Manager</span>
+            <span>Package Manager</span>
         </v-tooltip>
-        <v-dialog v-model="pluginDialog" max-width="70%" max-height="80%" scrollable persistent>
+        <v-dialog v-model="packageDialog" max-width="70%" max-height="80%" scrollable persistent>
             <v-card>
                 <v-card-title>
-                    <span class="headline">Plugin Manager</span>
+                    <span class="headline">Package Manager</span>
                     <v-spacer class="hidden-xs-only"></v-spacer>
                     <v-text-field
                             prepend-icon="search"
-                            label="plugin name"
+                            label="package name"
                             class="ma-0 pa-0 search-board"
                             single-line
                             clearable
                             hide-details
                             :append-outer-icon="searchText ? 'fa-chevron-circle-right' : ''"
-                            @click:append-outer="listAllPlugins(searchText)"
-                            @click:clear="listAllPlugins()"
-                            @change="listAllPlugins(searchText)"
+                            @click:append-outer="listAllPackages(searchText)"
+                            @click:clear="listAllPackages()"
+                            @change="listAllPackages(searchText)"
                             v-model="searchText"></v-text-field>
                     <v-menu v-model="filter.menu" :close-on-content-click="false" :nudge-width="200" left>
                         <v-btn slot="activator" icon>
@@ -43,32 +43,6 @@
                                     </v-list-tile-action>
                                 </v-list-tile-content>
                                 <v-divider></v-divider>
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Categories</v-list-tile-title>
-                                    <div>
-                                        <v-btn flat small color="primary"
-                                               @click="filter.categories.selected = filter.categories.init_selected">select all
-                                        </v-btn>
-                                        <v-btn flat small color="primary"
-                                               @click="filter.categories.selected = []">select none
-                                        </v-btn>
-                                    </div>
-                                    <v-list-tile-action>
-                                        <v-item-group multiple v-model="filter.categories.selected">
-                                            <v-item v-for="(data,index) in filter.categories.name" :key="index">
-                                                <v-chip
-                                                        slot-scope="{active,toggle}"
-                                                        :selected="active"
-                                                        @click="toggle"
-                                                        :color="active ? 'primary' : ''"
-                                                        :text-color="active ? 'white' : ''"
-                                                >
-                                                    {{data}}
-                                                </v-chip>
-                                            </v-item>
-                                        </v-item-group>
-                                    </v-list-tile-action>
-                                </v-list-tile-content>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -86,31 +60,31 @@
                         </v-subheader>
                         <div>
                             <v-list three-line>
-                                <template v-for="(data, index) in localPlugin">
+                                <template v-for="(data, index) in localPackage">
                                     <v-list-tile :key="data.name" avatar class="list-title">
                                         <v-list-tile-avatar size="60px">
-                                            <template v-if="data.category.image">
-                                                <v-img contain v-if="data.category.image.startsWith('http') === true"
-                                                       :src="data.category.image"/>
+                                            <template v-if="data.config.image">
+                                                <v-img contain v-if="data.config.image.startsWith('http') === true"
+                                                       :src="data.config.image"/>
                                                 <v-img contain v-else
-                                                       :src="`file:///${data.directory}/${data.category.image}`"/>
+                                                       :src="`file:///${data.directory}/${data.config.image}`"/>
                                             </template>
                                             <v-img contain v-else src="/static/images/noimage.jpg"/>
                                         </v-list-tile-avatar>
                                         <template>
                                             <v-list-tile-content class="ml-2">
                                                 <v-list-tile-title>
-                                                    <strong v-if="data.category.title || data.category.name">{{data.category.title ? data.category.title :
-                                                        typeof(data.category.name) === "string" ? data.category.name : typeof(data.category.name.en) === "string" ?
-                                                        data.category.name.en : data.dirName}}</strong>
+                                                    <strong v-if="data.config.title || data.config.name">{{data.config.title ? data.config.title :
+                                                        typeof(data.config.name) === "string" ? data.config.name : typeof(data.config.name.en) === "string" ?
+                                                        data.config.name.en : data.dirName}}</strong>
                                                     <strong v-else>{{data.dirName}}</strong>
                                                     <span class="body-1">
-                                                        <span v-if='data.category.version || data.category.author'> [ {{data.category.version ? "v" + data.category.version + " " : ""}}{{data.category.author ? "by " + data.category.author : ""}} ] </span>
-                                                        <span v-if='data.category.git'>[ <a @click="openLink(data.category.git)"> git </a> ]</span>
+                                                        <span v-if='data.config.version || data.config.author'> [ {{data.config.version ? "v" + data.config.version + " " : ""}}{{data.config.author ? "by " + data.config.author : ""}} ] </span>
+                                                        <span v-if='data.config.git'>[ <a @click="openLink(data.config.git)"> git </a> ]</span>
                                                     </span>
                                                 </v-list-tile-title>
                                                 <v-list-tile-sub-title
-                                                        v-html="data.category.description"></v-list-tile-sub-title>
+                                                        v-html="data.config.description"></v-list-tile-sub-title>
                                             </v-list-tile-content>
                                         </template>
                                         <v-list-tile-action>
@@ -118,7 +92,7 @@
                                                    icon fab small dark
                                                    class="red"
                                                    :disabled="data.status != 'READY'"
-                                                   @click="removePlugin(data.category.name)"
+                                                   @click="removePackage(data.config.name)"
                                             >
                                                 <v-icon v-if="data.status == 'READY'">fa-trash</v-icon>
                                                 <v-progress-circular
@@ -132,7 +106,7 @@
                                                 <v-btn
                                                         icon fab small dark
                                                         class="green"
-                                                        @click="updatePlugin(data.category.name)"
+                                                        @click="updatePackage(data.config.name)"
                                                 >
                                                     <v-icon>fa-retweet</v-icon>
                                                 </v-btn>
@@ -157,7 +131,7 @@
                                 Please connect internet to use this feature.
                             </v-flex>
 
-                            <v-flex v-else-if="onlinePluginStatus === 'wait'" xs12 md12 sm12 class="text-xs-center">
+                            <v-flex v-else-if="onlinePackageStatus === 'wait'" xs12 md12 sm12 class="text-xs-center">
                                 <v-progress-circular
                                         :size="50"
                                         color="primary"
@@ -165,8 +139,8 @@
                                 ></v-progress-circular>
                             </v-flex>
 
-                            <v-list three-line v-else-if="onlinePluginStatus != 'wait'">
-                                <template v-for="(data, index) in onlinePlugin">
+                            <v-list three-line v-else-if="onlinePackageStatus != 'wait'">
+                                <template v-for="(data, index) in onlinePackage">
                                     <v-list-tile
                                             :key="data.name"
                                             avatar
@@ -193,7 +167,7 @@
                                                     icon fab small dark
                                                     class="primary"
                                                     :disabled="data.status !== 'READY'"
-                                                    @click="installOnlinePlugin(data.name)"
+                                                    @click="installOnlinePackage(data.name)"
                                             >
                                                 <v-icon v-if="data.status === 'READY'">fa-download</v-icon>
                                                 <v-icon v-if="data.status === 'DRAFT'">fa-pause</v-icon>
@@ -216,9 +190,9 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn v-if="$global.setting.devMode === true" class="btn-primary" flat
-                           @click.native="publishNewPlugin">Publish your plugin
+                           @click.native="publishNewPackage">Publish your package
                     </v-btn>
-                    <v-btn class="btn-danger" flat @click.native="pluginDialog = false">Close</v-btn>
+                    <v-btn class="btn-danger" flat @click.native="packageDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -227,8 +201,6 @@
 
 <script>
   import SmoothScrollbar from "../../views/widgets/list/SmoothScrollbar";
-  import PackagePublishForm from "./PackagePublishForm";
-
   const { shell } = require("electron");
   const fs = require("fs");
   const request = require("request-promise");
@@ -239,30 +211,30 @@
   let mother = null;
 
   export default {
-    components: { SmoothScrollbar, PackagePublishForm },
+    components: { SmoothScrollbar },
     created: function() {
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          if (this.pluginDialog === true) {
-            console.log("---------> Do something when detect escape / Plugin Manager");
-            this.pluginDialog = false;
+          if (this.packageDialog === true) {
+            console.log("---------> Do something when detect escape / Package Manager");
+            this.packageDialog = false;
           }
         }
       });
     },
     data() {
       return {
-        pluginDialog: false,
-        publishPluginDialog: false,
+        packageDialog: false,
+        publishPackageDialog: false,
         confirmRemoveDialog: false,
         confirmInstallDialog: false,
         searchText: "",
         isInstalling: false,
 
-        installedPlugin: [],
-        localPlugin: [],
-        onlinePluginStatus: "wait",
-        onlinePlugin: [],
+        installedPackage: [],
+        localPackage: [],
+        onlinePackageStatus: "wait",
+        onlinePackage: [],
         statusText: "",
         statusProgress: 0,
 
@@ -274,35 +246,19 @@
           order: {
             init_orders: ["Name", "Newest", "Popular", "Recommended"],
             actual_value: { Name: "title", Newest: "-modified_on", Popular: "installed", Recommended: "rating" },
-            sortby: this.$global.plugin.sortby
-          },
-          categories: {
-            init_selected: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            selected: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            name: [
-              "Display",
-              "Communication",
-              "Signal Input/Output",
-              "Sensors",
-              "Device Control",
-              "Timing",
-              "Data Storage",
-              "Data Processing",
-              "Other",
-              "Uncategorized"
-            ]
+            sortby: this.$global.package.sortby
           }
         }
       };
     },
     methods: {
-      getPluginByName(name) {
-        return this.localPlugin.find(obj => {
-          return obj.category.name === name;
+      getPackageByName(name) {
+        return this.localPackage.find(obj => {
+          return obj.name === name;
         });
       },
-      getOnlinePluginByName(name) {
-        return this.onlinePlugin.find(obj => {
+      getOnlinePackageByName(name) {
+        return this.onlinePackage.find(obj => {
           return obj.name === name;
         });
       },
@@ -314,37 +270,24 @@
       },
       onScroll(status) {
         if (status.offset.y >= status.limit.y) {
-          console.log("load more plugins");
-          this.listOnlinePlugin(this.searchText, true);
+          console.log("load more packages");
+          this.listOnlinePackage(this.searchText, true);
         }
       },
-      listAllPlugins(name = "") {
-        //let selected_categories = this.filter.categories.name.filter((el,ind) => this.filter.categories.selected.includes(ind));
-        this.listOnlinePlugin(name);
-        this.listLocalPlugin(name);
+      listAllPackages(name = "") {
+        this.listOnlinePackage(name);
+        this.listLocalPackage(name);
       },
-      listOnlinePlugin(name = "", loadNext = false) {
-        this.onlinePluginStatus = (loadNext)
+      listOnlinePackage(name = "", loadNext = false) {
+        this.onlinePackageStatus = (loadNext)
           ? "OK"
           : "wait";
-        let boardInfo = this.$global.board.board_info;
         //------------//
-        let selected_categories = this.filter.categories.selected.map(el => this.filter.categories.name[el]);
         let query = {
           "limit": this.filter.defaultLimit,
           "page": this.filter.currentPage,
           "meta": "page",
-          "sort": this.filter.order.actual_value[this.filter.order.sortby],
-          filter: {
-            filter1: {
-              logical: "nest",
-              platform: { logical: "or", contains: boardInfo.platform },
-              board: { logical: "or", contains: boardInfo.name }
-            },
-            category: {
-              in: selected_categories
-            }
-          }
+          "sort": this.filter.order.actual_value[this.filter.order.sortby]
         };
         if (name !== "") {
           query.filter.filter2 = {
@@ -361,23 +304,23 @@
           }
         }
         //--------------//
-        pm.listOnlinePlugin(query).then(res => {
-          //name,start return {end : lastVisible, plugins : onlinePlugins}
+        pm.listOnlinePackage(query).then(res => {
+          //name,start return {end : lastVisible, packages : onlinePackages}
           mother.filter.currentPage = res.meta.page;
           mother.filter.nextOffset = res.meta.next_offset;
           let filtered = [];
-          res.plugins.forEach(obj => {
-            let f = mother.localPlugin.find(elm => {
-              let lc = elm.category.name.en
-                ? elm.category.name.en.toLowerCase()
-                : elm.category.name.toLowerCase();
+          res.packages.forEach(obj => {
+            let f = mother.localPackage.find(elm => {
+              let lc = elm.config.name.en
+                ? elm.config.name.en.toLowerCase()
+                : elm.config.name.toLowerCase();
               let rm = obj.name.en
                 ? obj.name.en.toLowerCase()
                 : obj.name.toLowerCase();
               return lc === rm;
             });
             if (f) {
-              if (obj.version > f.category.version && obj.status !== "draft") {
+              if (obj.version > f.config.version && obj.status !== "draft") {
                 f.status = "UPDATABLE";
                 f.nextVersion = obj.version;
               }
@@ -391,50 +334,57 @@
             }
           });
           if (loadNext) {
-            mother.onlinePlugin.push(...filtered);
+            mother.onlinePackage.push(...filtered);
           } else {
-            mother.onlinePlugin = filtered;
+            mother.onlinePackage = filtered;
           }
 
-          //this.onlinePlugin = res.plugins.map(obj=>{ obj.status =  'READY'; return obj;});
-          this.onlinePluginStatus = "OK";
+          //this.onlinePackage = res.packages.map(obj=>{ obj.status =  'READY'; return obj;});
+          this.onlinePackageStatus = "OK";
         }).catch(err => {
-          this.onlinePluginStatus = "ERROR";
+          this.onlinePackageStatus = "ERROR";
         });
       },
-      listLocalPlugin(name = "") {
-        console.log("find pluging = " + name);
-        this.localPlugin = [];
-        this.installedPlugin = pm.plugins(this.$global.board.board_info).map(obj => {
-          obj.status = "READY";
-          return obj;
+      async listLocalPackage(name = "") {
+        console.log("find package = " + name);
+        this.localPackage = [];
+        let installedPackage = await pm.packages();
+        let listedInstalledPackages = [];
+        Object.keys(installedPackage).map(name=>{
+          let objData = {
+            'name' : name,
+            'status' : 'READY'
+          };
+          Object.assign(objData,installedPackage[name]);
+          listedInstalledPackages.push(objData);
         });
+        this.installedPackage = listedInstalledPackages;
         if (name !== "") {
-          this.localPlugin = this.installedPlugin.filter(obj => {
-            return obj.category.title.includes(name);
+          this.localPackage = this.installedPackage.filter(obj => {
+            return obj.config.title.includes(name);
           });
-          this.localPlugin = this.localPlugin.concat(...this.installedPlugin.filter(obj => {
-            return (obj.category.keywords)
-              ? obj.category.keywords.includes(name)
+          this.localPackage = this.localPackage.concat(...this.installedPackage.filter(obj => {
+            return (obj.config.keywords)
+              ? obj.config.keywords.includes(name)
               : false;
           }));
 
         } else {
-          this.localPlugin = this.installedPlugin;
+          this.localPackage = this.installedPackage;
         }
       },
       applyFilter() {
         this.filter.menu = false;
         let sortby = this.filter.order.sortby;
-        this.$global.plugin.sortby = sortby;
-        this.listAllPlugins();
+        this.$global.package.sortby = sortby;
+        this.listAllPackages();
       },
-      installOnlinePlugin(name) {
-        let b = this.getOnlinePluginByName(name);
+      installOnlinePackage(name) {
+        let b = this.getOnlinePackageByName(name);
         b.status = "DOWNLOAD";
         this.statusText = "Downloading";
         this.statusProgress = 0;
-        pm.installOnlinePlugin(b, progress => {
+        pm.installOnlinePackage(b, progress => {
           //{process : 'board', status : 'DOWNLOAD', state:state }
           if (progress.status === "DOWNLOAD") {
             //when download just show to text
@@ -450,11 +400,11 @@
           //install success
           b.status = "INSTALLED";
           this.statusText = "";
-          this.listAllPlugins();
+          this.listAllPackages();
           this.$dialog.notify.info("Install success");
           this.$global.$emit("board-change", this.$global.board.board_info);
           //--tracking--//
-          this.$track.event("plugin", "install", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+          this.$track.event("package", "install", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
         }).catch(err => {
           console.log(err);
           this.statusText = `Error : ${err}`;
@@ -465,42 +415,42 @@
           }, 5000);
         });
       },
-      removePlugin: async function(name) {
+      removePackage: async function(name) {
         const res = await this.$dialog.confirm({
           text: "Do you really want to remove " + name + "? , this process will clear your code.",
           title: "Warning"
         });
         if (res === true) {
-          console.log("removing plugin : " + name);
-          let b = this.getPluginByName(name);
-          pm.removePlugin(b).then(() => {
+          console.log("removing package : " + name);
+          let b = this.getPackageByName(name);
+          pm.removePackage(b).then(() => {
             this.$global.blockCode = "";
-            this.$dialog.notify.info("Remove plugin success");
-            this.listAllPlugins();
+            this.$dialog.notify.info("Remove package success");
+            this.listAllPackages();
             this.$global.$emit("board-change", this.$global.board.board_info);
             //--tracking--//
-            this.$track.event("plugin", "remove", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+            this.$track.event("package", "remove", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
           }).catch(err => {
-            this.$dialog.notify.error("Cannot remove plugin : " + err);
-            console.log("Error : cannot remove plugin");
+            this.$dialog.notify.error("Cannot remove package : " + err);
+            console.log("Error : cannot remove package");
             console.log(err);
           });
         }
       },
-      updatePlugin: async function(name) {
+      updatePackage: async function(name) {
         const res = await this.$dialog.confirm({
-          text: "Do you want to update " + name + " plugin?",
+          text: "Do you want to update " + name + " package?",
           title: "Warning"
         });
         if (res === true) {
-          let p = this.getPluginByName(name);
+          let p = this.getPackageByName(name);
           let st = p.status;
-          pm.backupPlugin(p).then(() => {
-            console.log("update plugin : " + name);
+          pm.backupPackage(p).then(() => {
+            console.log("update package : " + name);
             p.status = "DOWNLOAD";
             this.statusText = "Downloading";
             this.statusProgress = 0;
-            return pm.installOnlinePlugin(p.category, progress => {
+            return pm.installOnlinePackage(p.config, progress => {
               //{process : 'board', status : 'DOWNLOAD', state:state }
               if (progress.status === "DOWNLOAD") {
                 //when download just show to text
@@ -519,9 +469,9 @@
             //install success
             p.status = "READY";
             this.statusText = "";
-            pm.removePlugin(p, true).then(() => {
-              this.$dialog.notify.info("Update plugin success");
-              this.listAllPlugins();
+            pm.removePackage(p, true).then(() => {
+              this.$dialog.notify.info("Update package success");
+              this.listAllPackages();
               setTimeout(() => {
                 this.$global.$emit(
                   "board-change",
@@ -529,7 +479,7 @@
                 );
               }, 1000);
               //--tracking--//
-              Vue.prototype.$track.event("plugin", "update", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
+              Vue.prototype.$track.event("package", "update", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
             });
 
           }).catch(err => {
@@ -539,11 +489,11 @@
               p.status = st;
               this.statusText = "";
             }, 5000);
-            pm.restorePlugin(p).then(() => {});
+            pm.restorePackage(p).then(() => {});
           });
         }
       },
-      publishNewPlugin: async function() {
+      publishNewPackage: async function() {
         let res = await this.$dialog.prompt({
           text: "https://github.com/user/repo/",
           title: "Input Board Repository"
@@ -553,21 +503,20 @@
         }
         this.$dialog.notify.info("Please wait...");
         if (!res.endsWith("/")) { res += "/"; }
-        pm.publishPlugin(res).then(_ => {
-          this.$dialog.notify.success("submit your plugin success, please refresh again");
+        pm.publishPackage(res).then(_ => {
+          this.$dialog.notify.success("submit your package success, please refresh again");
         }).catch(err => {
           if (typeof err === "string") {
             this.$dialog.notify.error(err);
           } else {
             this.$dialog.notify.error("Error something went wrong, please check the log");
           }
-          console.log("publish plugin error -----");
+          console.log("publish package error -----");
           console.error(err);
         });
       }
     },
     mounted() {
-      //console.log(this.localPlugin);
       mother = this;
       if (this.$refs.scrollbar) {
         this.$refs.scrollbar.scrollbar.addListener(this.onScroll);
@@ -579,14 +528,13 @@
       }
     },
     watch: {
-      pluginDialog: function(val) {
+      packageDialog: function(val) {
         if (val) {
           //on opening
           this.searchText = "";
-          this.filter.categories.selected = this.filter.categories.init_selected;
           this.filter.nextOffset = 0;
           this.filter.currentPage = 1;
-          this.listAllPlugins();
+          this.listAllPackages();
         }
       }
     }

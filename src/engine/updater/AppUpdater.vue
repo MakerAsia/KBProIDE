@@ -37,7 +37,7 @@
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.type,update.version)">
+                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.version)">
                             Ignore this version
                         </v-btn>
                     </template>
@@ -233,24 +233,12 @@
           }
         });*/
       },
-      ignoreUpdate(type, version) {
-        if (type === "app") {
-          mother.$global.setting.ignoreUpdateVersion = version;
-          //--tracking--//
-          mother.$track.event("update", "ignore",
+      ignoreUpdate(version) {
+        mother.$global.setting.ignoreUpdateVersion = version;
+        //--tracking--//
+        mother.$track.event("update", "ignore",
                             {evLabel: "app_version_" + version, evValue: 1, clientID: mother.$track.clientID})
                     .catch(err=>{ console.log(err)});
-        } else if (type === "platform") {
-          mother.$global.setting.ignorePlatformVersion = version;
-          //--tracking--//
-          mother.$track.event("update", "ignore", {
-            evLabel: "platform_" + mother.update.platform + "_version_" + version,
-            evValue: 1,
-            clientID: mother.$track.clientID,
-          }).catch(err=>{ console.log(err)});
-        } else if (type === "board") {
-          //not support yet!
-        }
         mother.updateDialog = false;
       },
       updateApp() {
