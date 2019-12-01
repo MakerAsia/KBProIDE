@@ -67,7 +67,7 @@
                                                 <v-img contain v-if="data.config.image.startsWith('http') === true"
                                                        :src="data.config.image"/>
                                                 <v-img contain v-else
-                                                       :src="`file:///${data.directory}/${data.config.image}`"/>
+                                                       :src="`file:///${data.dir}/${data.config.image}`"/>
                                             </template>
                                             <v-img contain v-else src="/static/images/noimage.jpg"/>
                                         </v-list-tile-avatar>
