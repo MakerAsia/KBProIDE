@@ -1,9 +1,9 @@
 {
-  "name": "kbide-serial-monitor",
+  "name": "kbide-extionsion-pack",
   "version": "1.0.0",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name kbide-serial-monitor src/lib.js",
+    "build": "vue-cli-service build --target lib --name kbide-extension-pack src/lib.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
