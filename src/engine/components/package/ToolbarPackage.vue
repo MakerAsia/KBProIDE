@@ -496,7 +496,7 @@
       publishNewPackage: async function() {
         let res = await this.$dialog.prompt({
           text: "https://github.com/user/repo/",
-          title: "Input Board Repository"
+          title: "Input Package Repository"
         });
         if (res === false) { // user cancel
           return;

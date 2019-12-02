@@ -199,14 +199,6 @@ const publishPackage = function(url) {
         }
       })
       .then(res => {
-        /*if (res) {
-          //Vue.prototype.$db_dev.setItems() .collection("packages").doc(json.name).set(json);
-          if (res) {
-            resolve();
-          }
-        } else {
-          reject("Existing package name or is not newest version");
-        }*/
         if (res) {
           delete json.homepage; //please use URL instead.
           json.status = "draft";
@@ -254,8 +246,8 @@ const filterPackageComponent = function(localPackage, name) {
     if ("config" in localPackage[packageName]) {
       let conf = localPackage[packageName].config;
       components[packageName] = [];
-      if ("component" in conf) {
-        conf.component.forEach(componentName => {
+      if ("components" in conf) {
+        conf.components.forEach(componentName => {
           if (componentName.toLowerCase().startsWith(name.toLowerCase())) {
             if (!components[packageName].includes(componentName)) {
               components[packageName].push(componentName);
