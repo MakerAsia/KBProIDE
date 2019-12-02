@@ -400,9 +400,11 @@
           //install success
           b.status = "INSTALLED";
           this.statusText = "";
+          //==========================//
           this.listAllPackages();
           this.$dialog.notify.info("Install success");
-          this.$global.$emit("board-change", this.$global.board.board_info);
+          this.$global.$emit("render-packages", this.$global.board.board_info);
+          //==========================//
           //--tracking--//
           this.$track.event("package", "install", { evLabel: name, evValue: 1, clientID: this.$track.clientID }).catch(err => { console.log(err);});
         }).catch(err => {
@@ -426,6 +428,7 @@
           pm.removePackage(b).then(() => {
             this.$global.blockCode = "";
             this.$dialog.notify.info("Remove package success");
+            pm.clearListedPackage();
             this.listAllPackages();
             this.$global.$emit("board-change", this.$global.board.board_info);
             //--tracking--//
