@@ -64,8 +64,7 @@ const listPackage = async function() {
   return orderedContext;
 };
 
-const listOnlinePackage = function(query)
-{
+const listOnlinePackage = function(query) {
   return new Promise((resolve, reject) => {
     Vue.prototype.$db2.getItems("packages", query).then((data, meta) => {
       resolve({ packages: data.data, meta: data.meta });
@@ -84,7 +83,7 @@ const loadPackageManagerConfig = async function() {
   return util.requireFunc(configFile);
 };
 
-const installOnlinePackages = function(info, cb) {
+const installOnlinePackage = function(info, cb) {
   return new Promise((resolve, reject) => { //download zip
     if (!info.git) { reject("no git found"); }
     let zipUrl = info.git + "/archive/master.zip";
@@ -168,7 +167,6 @@ const restorePackage = function(packageInfo) {
   });
 };
 
-
 const publishPackage = function(url) {
   return new Promise((resolve, reject) => {
     if (!util.regex.isValidGithubUrl(url)) {
@@ -199,17 +197,18 @@ const publishPackage = function(url) {
         }
       })
       .then(res => {
-        /*if (res) {
-          //Vue.prototype.$db_dev.setItems() .collection("packages").doc(json.name).set(json);
-          if (res) {
-            resolve();
-          }
-        } else {
-          reject("Existing package name or is not newest version");
-        }*/
         if (res) {
           delete json.homepage; //please use URL instead.
           json.status = "draft";
+          if(json.data){ delete json.data; }
+          if(json.persistence) { delete json.persistence; }
+          if(typeof json.keywords === "string"){
+            if(json.keywords.includes(",")){
+              json.keywords = json.keywords.split(",").map(el => el.toLowerCase().trim())
+            }else{
+              json.keywords = [json.keywords]
+            }
+          }
           Vue.prototype.$db_dev.createItem("packages", json)
             .then(res => {
               //console.log(res);
@@ -241,6 +240,7 @@ const clearListedPackage = function() {
     }
   });
 };
+
 const packages = async function() {
   if ((Object.entries(listedPackages).length === 0 && listedPackages.constructor === Object)) { // check empty object !!!
     listedPackages = await listPackage();
@@ -254,8 +254,8 @@ const filterPackageComponent = function(localPackage, name) {
     if ("config" in localPackage[packageName]) {
       let conf = localPackage[packageName].config;
       components[packageName] = [];
-      if ("component" in conf) {
-        conf.component.forEach(componentName => {
+      if ("components" in conf) {
+        conf.components.forEach(componentName => {
           if (componentName.toLowerCase().startsWith(name.toLowerCase())) {
             if (!components[packageName].includes(componentName)) {
               components[packageName].push(componentName);
@@ -282,7 +282,7 @@ export default {
   listRightTab: async()  => filterPackageComponent(await packages(), "RightTab"),
   listBottomTab: async()  => filterPackageComponent(await packages(), "BottomTab"),
   loadPackageManagerConfig,
-  installOnlinePackages,
+  installOnlinePackage,
   removePackage,
   removeBackupPackage,
   backupPackage,

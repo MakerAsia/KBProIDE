@@ -232,6 +232,7 @@
       this.$global.$on("board-change", this.reloadBoardPackage);
       //----- check for update -----//
       this.$global.$on("check-update", this.checkUpdate);
+      this.$global.$on("render-packages", await this.renderComponents);
       electron.ipcRenderer.on("file-board-folder", () => {
         electron.shell.openItem(util.boardDir);
       });
@@ -259,6 +260,9 @@
       },
       initialTab(){
 
+      },
+      renderComponents : async function(){
+        await this.createToolbar(window.getApp.$refs.toolbar);
       },
       createToolbar : async function(t)
       {
@@ -319,7 +323,7 @@
         });
       },
       loadAppPackage : async function(){
-        let appPackage = await pm.packages();
+        let appPackage = await pm.listPackage();
         console.log("-------- app package --------");
         console.log(appPackage);
         Vue.prototype.$global.packages = await this.loadPackage(appPackage);
@@ -328,6 +332,7 @@
       },
       reloadBoardPackage : async function() {
         let boardName = this.$global.board.board;
+        //bm.clearListedBoard();
         let boardPackage = await bm.packages(boardName);
         console.log("--------- board package ---------");
         console.log(boardPackage);

@@ -338,8 +338,8 @@ const filerBoardPackageComponent = function(localPackage, name) {
     if ("config" in localPackage[packageName]) {
       let conf = localPackage[packageName].config;
       components[packageName] = [];
-      if ("component" in conf) {
-        conf.component.forEach(componentName => {
+      if ("components" in conf) {
+        conf.components.forEach(componentName => {
           if (componentName.toLowerCase().startsWith(name.toLowerCase())) {
             if (!components[packageName].includes(componentName)) {
               components[packageName].push(componentName);

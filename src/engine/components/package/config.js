@@ -1,5 +1,5 @@
 export default {
-    name : 'pacakage_manager',
+    name : 'package_manager',
     description : "no have",
     index : 2,
     tooltip : 'Package Manager',
