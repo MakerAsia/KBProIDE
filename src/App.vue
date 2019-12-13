@@ -182,6 +182,7 @@
   //import {Multipane, MultipaneResizer} from "vue-multipane";
   //import draggable from "vuedraggable";
   const electron = require("electron");
+  const {Menu, MenuItem} = require("electron").remote;
   //========= updating =========//
   import AppUpdater from "@/engine/updater/AppUpdater";
 
@@ -281,6 +282,43 @@
           }
         },1000);
       },
+      buildPackageMenu : async function(packages){
+        if(Menu === undefined){
+          return;
+        }
+        let menu = Menu.getApplicationMenu();
+        for(let package_key in packages){
+          let pack = packages[package_key];
+          if(pack.config && pack.config.menu){
+            let pack_menu = pack.config.menu;
+            for(let pack_menu_item_key in pack_menu){
+              let pack_menu_item = pack_menu[pack_menu_item_key];
+              let target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
+              if(target_menu == null){ //new main menu, let create main menu first
+                let main_menu = new MenuItem({label : pack_menu_item.main, submenu : []});
+                if(pack_menu_item.main_index){
+                  menu.insert(pack_menu_item.main_index,main_menu);
+                }else{
+                  menu.append(main_menu);
+                }
+                Menu.setApplicationMenu(menu);
+                target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
+              }
+              if(target_menu){
+                pack_menu_item.click = () => Vue.prototype.$global.$emit(pack_menu_item.event_emit);
+                let item = new MenuItem(pack_menu_item);
+                let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
+                if(target_submenu){ //existing, replace one
+                  target_menu = item;
+                }else {
+                  target_menu.submenu.append(item);
+                }
+              }
+            }
+          }
+        }
+
+      },
       loadPackage : async function(packageInfo){
         return new Promise((resolve,reject)=>{
           let bp = {};
@@ -326,6 +364,7 @@
         let appPackage = await pm.listPackage();
         console.log("-------- app package --------");
         console.log(appPackage);
+        await this.buildPackageMenu(appPackage);
         Vue.prototype.$global.packages = await this.loadPackage(appPackage);
         Vue.prototype.$global.$emit("app-package-loaded");
         console.log("emitting app-package-loaded");
@@ -336,6 +375,7 @@
         let boardPackage = await bm.packages(boardName);
         console.log("--------- board package ---------");
         console.log(boardPackage);
+        await this.buildPackageMenu(boardPackage);
         Vue.prototype.$global.board.package = await this.loadPackage(boardPackage);
         Vue.prototype.$global.$emit("board-package-loaded");
         console.log("emitting board-package-loaded");

@@ -645,7 +645,7 @@
           startScale: 1,
           maxScale: 2,
           minScale: 0.3,
-          scaleSpeed: 1.2
+          scaleSpeed: 1.07
           //scrollbars: false
         }
       });
