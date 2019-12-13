@@ -301,15 +301,16 @@
                 }else{
                   menu.append(main_menu);
                 }
-                Menu.setApplicationMenu(menu);
                 target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
               }
               if(target_menu){
                 pack_menu_item.click = () => Vue.prototype.$global.$emit(pack_menu_item.event_emit);
                 let item = new MenuItem(pack_menu_item);
                 let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
-                if(target_submenu){ //existing, replace one
-                  target_menu = item;
+                if(target_submenu){ //existing, new i cannot remove it so let camouflage it.
+                  target_menu.submenu.items = target_menu.submenu.items.filter(item=>item.label !== pack_menu_item.label);
+                  //target_submenu.visible = true;
+                  target_menu.submenu.append(item);
                 }else {
                   target_menu.submenu.append(item);
                 }
@@ -317,7 +318,38 @@
             }
           }
         }
-
+        /*for(let package_key in packages){
+          let pack = packages[package_key];
+          if(pack.config && pack.config.menu){
+            let pack_menu = pack.config.menu;
+            for(let pack_menu_item_key in pack_menu){
+              let pack_menu_item = pack_menu[pack_menu_item_key];
+              let target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
+              if(target_menu == null){ //new main menu, let create main menu first
+                let main_menu = new MenuItem({label : pack_menu_item.main, submenu : []});
+                if(pack_menu_item.main_index){
+                  menu.insert(pack_menu_item.main_index,main_menu);
+                }else{
+                  menu.append(main_menu);
+                }
+                Menu.setApplicationMenu(menu);
+                target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
+              }
+              if(target_menu){
+                pack_menu_item.click = () => Vue.prototype.$global.$emit(pack_menu_item.event_emit);
+                let item = new MenuItem(pack_menu_item);
+                let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
+                if(target_submenu){ //existing, new i cannot remove it so let camouflage it.
+                  target_submenu.visible = true;
+                  target_menu.submenu.append(item);
+                }else {
+                  target_menu.submenu.append(item);
+                }
+              }
+            }
+          }
+        }*/
+        Menu.setApplicationMenu(menu);
       },
       loadPackage : async function(packageInfo){
         return new Promise((resolve,reject)=>{
