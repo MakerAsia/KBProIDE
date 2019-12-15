@@ -286,39 +286,8 @@
         if(Menu === undefined){
           return;
         }
-        let menu = Menu.getApplicationMenu();
+        let menu = Menu.getApplicationMenu(); // get electron menu
         for(let package_key in packages){
-          let pack = packages[package_key];
-          if(pack.config && pack.config.menu){
-            let pack_menu = pack.config.menu;
-            for(let pack_menu_item_key in pack_menu){
-              let pack_menu_item = pack_menu[pack_menu_item_key];
-              let target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
-              if(target_menu == null){ //new main menu, let create main menu first
-                let main_menu = new MenuItem({label : pack_menu_item.main, submenu : []});
-                if(pack_menu_item.main_index){
-                  menu.insert(pack_menu_item.main_index,main_menu);
-                }else{
-                  menu.append(main_menu);
-                }
-                target_menu = menu.items.find(item=>item.label === pack_menu_item.main);
-              }
-              if(target_menu){
-                pack_menu_item.click = () => Vue.prototype.$global.$emit(pack_menu_item.event_emit);
-                let item = new MenuItem(pack_menu_item);
-                let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
-                if(target_submenu){ //existing, new i cannot remove it so let camouflage it.
-                  target_menu.submenu.items = target_menu.submenu.items.filter(item=>item.label !== pack_menu_item.label);
-                  //target_submenu.visible = true;
-                  target_menu.submenu.append(item);
-                }else {
-                  target_menu.submenu.append(item);
-                }
-              }
-            }
-          }
-        }
-        /*for(let package_key in packages){
           let pack = packages[package_key];
           if(pack.config && pack.config.menu){
             let pack_menu = pack.config.menu;
@@ -340,16 +309,21 @@
                 let item = new MenuItem(pack_menu_item);
                 let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
                 if(target_submenu){ //existing, new i cannot remove it so let camouflage it.
-                  target_submenu.visible = true;
-                  target_menu.submenu.append(item);
+                  let old_submenu = target_menu.submenu.items.splice(0); //Shallow copy, aka clone;
+                  let new_submenu = old_submenu.filter(item=>item.label !== pack_menu_item.label);
+                  new_submenu.push(item);
+                  target_menu.submenu.clear(); // this didn't link to items
+                  target_menu.submenu.items = [];
+                  for(let item in new_submenu){
+                    target_menu.submenu.append(new_submenu[item]); //this linked to items , wtf electron?
+                  }
                 }else {
                   target_menu.submenu.append(item);
                 }
               }
             }
           }
-        }*/
-        Menu.setApplicationMenu(menu);
+        }
       },
       loadPackage : async function(packageInfo){
         return new Promise((resolve,reject)=>{
