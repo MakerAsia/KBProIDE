@@ -49,3 +49,6 @@
 [submodule "packages/kbide-extension-pack"]
 	path = packages/kbide-extension-pack
 	url = https://github.com/cmmc-kbide/kbide-extension-pack
+[submodule "board/openkb"]
+	path = board/openkb
+	url = https://github.com/MakerAsia/openkb
