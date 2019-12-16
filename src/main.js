@@ -27,7 +27,7 @@ Vue.use(SmoothScrollbar);
 
 //const fs = require("fs");
 const { promises: fs } = require("fs");
-
+const checkFileExists = async path => !!(await fs.stat(path).catch(e => false));
 //========= directus ==========//
 const DirectusSDK = require('@directus/sdk-js');
 const directus_client = DirectusSDK({
@@ -120,9 +120,7 @@ let parseConfig = function() {
 const appVersion = require("electron").remote.app.getVersion();
 (async() => {
   //---------------- first run -----------//
-  try{
-    await fs.access(util.baseDir + "/INSTALLED");
-  }catch (e) {
+  if(!await checkFileExists(util.baseDir + "/INSTALLED")){
     await fs.writeFile(util.baseDir + "/INSTALLED", appVersion);
     localStorage.clear();
   }
@@ -200,7 +198,7 @@ const appVersion = require("electron").remote.app.getVersion();
     global.config.mode = parseInt(global.config.mode);
     Vue.prototype.$global.editor.mode = global.config.mode;
   }
-  if (global.config.file && await fs.access(global.config.file)) {
+  if (global.config.file && await checkFileExists(global.config.file)) {
     let targetFile = global.config.file;
     if (targetFile.endsWith(".bly")) {
       let contentFile = await fs.readFile(targetFile, "utf8");
@@ -231,4 +229,6 @@ const appVersion = require("electron").remote.app.getVersion();
     render: h => h(App)
   }).$mount("#app");
   //=======================================================//
-})();
+})().catch(err=>{
+  console.error(err);
+});
