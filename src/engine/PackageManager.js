@@ -202,6 +202,7 @@ const publishPackage = function(url) {
           json.status = "draft";
           if(json.data){ delete json.data; }
           if(json.persistence) { delete json.persistence; }
+          if(json.menu) { delete json.menu; }
           if(typeof json.keywords === "string"){
             if(json.keywords.includes(",")){
               json.keywords = json.keywords.split(",").map(el => el.toLowerCase().trim())
