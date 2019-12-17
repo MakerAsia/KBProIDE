@@ -52,3 +52,6 @@
 [submodule "boards/openkb"]
 	path = boards/openkb
 	url = https://github.com/MakerAsia/openkb
+[submodule "boards/kbm5stack"]
+	path = boards/kbm5stack
+	url = https://github.com/MakerAsia/kbm5stack
