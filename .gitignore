@@ -24,7 +24,7 @@ clang_source.js
 /dist_electron
 boards/kbpro/build
 dist_electronupdater-log.txt
-build
+#build
 boards/esp32-wrover/lib/README.md
 boards/esp32-wrover/include/pins_arduino.h
 boards/esp32-wrover/context.json
