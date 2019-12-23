@@ -114,8 +114,6 @@
                 }else{
                   data.zip = data.zip + "-linux.zip";
                 }
-              }else if (process.platform === "arm"){
-                data.zip = data.zip + "-arm.zip";
               }
               mother.update = data;
               console.log(data);
