@@ -107,7 +107,15 @@
               }else if (process.platform === "darwin") {
                 data.zip = data.zip + "-darwin.zip";
               } else if (process.platform === "linux") {
-                data.zip = data.zip + "-linux.zip";
+                if(arch.startsWith("armv7")){
+                  data.zip = data.zip + "-linux-armv7.zip";
+                }else if(arch.startsWith("arm64")){
+                  data.zip = data.zip + "-linux-arm64.zip";
+                }else{
+                  data.zip = data.zip + "-linux.zip";
+                }
+              }else if (process.platform === "arm"){
+                data.zip = data.zip + "-arm.zip";
               }
               mother.update = data;
               console.log(data);
@@ -116,7 +124,6 @@
                 server: false, // Where to check. true: server side, false: client side, default: true.
                 debug: false, // Default: false.
               });
-
 
               EAU.process(data, function(error, last, body) {
                 if (!error) {
