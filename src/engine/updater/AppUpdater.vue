@@ -340,7 +340,7 @@
         } else {
           mother.updateText = `Downloading ${util.humanFileSize(
               state.size.transferred,
-          )} , speed : ${util.humanFileSize(speed)}/s`;
+          )} , speed : ${util.humanFileSize(state.speed)}/s`;
         }
       },
       onUnzip(file){
