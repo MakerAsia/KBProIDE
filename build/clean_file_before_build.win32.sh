@@ -99,7 +99,7 @@ rm ../platforms/esp-idf/tools/xtensa-esp32-elf/xtensa-esp32-elf/bin/ranlib
 rm ../platforms/esp-idf/tools/xtensa-esp32-elf/xtensa-esp32-elf/bin/strip
 
 #clean all build folder
-bdirs=$(find ./boards -maxdepth 2 -name "build" -type d)
+bdirs=$(find ../boards -maxdepth 2 -name "build" -type d)
 for bdir in $bdirs; do
   echo "delete $bdir"
   rm -rf $bdir

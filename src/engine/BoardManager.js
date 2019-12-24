@@ -74,10 +74,7 @@ const listPackage = async function(boardName, includePlatform = true) {
     let targetBoard = (await boards()).find(obj => obj.name === boardName);
     let platformName = targetBoard.platform;
     let platformPackageDir = `${util.platformDir}/${platformName}/package`;
-    console.log("check");
-    console.log(platformPackageDir);
     if (await fileExists(platformPackageDir)) {
-      console.log("exist");
       let platformPackageName = await fs.readdir(platformPackageDir);
       for(let i in platformPackageName){
         let element = platformPackageName[i];

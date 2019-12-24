@@ -230,7 +230,7 @@
       //======== INIT ========//
       //----- load color -----//
       this.$vuetify.theme.primary = this.$global.setting.color;
-      this.$global.$on("board-change", this.reloadBoardPackage);
+      this.$global.$on("board-change",await this.renderComponents);
       //----- check for update -----//
       this.$global.$on("check-update", this.checkUpdate);
       this.$global.$on("render-packages", await this.renderComponents);
