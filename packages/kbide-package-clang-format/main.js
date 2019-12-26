@@ -39,6 +39,7 @@ const format = function(sourcecode){
     let cwd = `${engine.util.packageDir}/kbide-package-clang-format`;
     const options = {
       style: 'file',
+      'sort-includes' : 'false'
     };
     const args = Object.keys(options).reduce((memo, optionKey) => {
       const optionValue = options[optionKey];
