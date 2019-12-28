@@ -329,6 +329,7 @@
             }
           }
         }
+        Menu.setApplicationMenu(menu);
       },
       loadPackage : async function(packageInfo){
         return new Promise((resolve,reject)=>{
