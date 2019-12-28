@@ -182,7 +182,7 @@
   //import {Multipane, MultipaneResizer} from "vue-multipane";
   //import draggable from "vuedraggable";
   const electron = require("electron");
-  const {Menu, MenuItem} = require("electron").remote;
+  const {Menu, MenuItem, globalShortcut} = require("electron").remote;
   //========= updating =========//
   import AppUpdater from "@/engine/updater/AppUpdater";
 
@@ -306,6 +306,11 @@
               }
               if(target_menu){
                 pack_menu_item.click = () => Vue.prototype.$global.$emit(pack_menu_item.event_emit);
+                globalShortcut.unregister(pack_menu_item.accelerator);
+                globalShortcut.register(pack_menu_item.accelerator, () => {
+                  console.log("Emiting event...");
+                  Vue.prototype.$global.$emit(pack_menu_item.event_emit);
+                });
                 let item = new MenuItem(pack_menu_item);
                 let target_submenu = target_menu.submenu.items.find(item=>item.label === pack_menu_item.label);
                 if(target_submenu){ //existing, new i cannot remove it so let camouflage it.
