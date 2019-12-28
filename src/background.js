@@ -14,7 +14,10 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 let win;
 
 // Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(["app"], { secure: true });
+// protocol.registerStandardSchemes(["app"], { secure: true });
+protocol.registerSchemesAsPrivileged([{
+  scheme: 'app', privileges: {standard: true, secure: true, supportFetchAPI: true},
+}]);
 
 function createWindow() {
   win = new BrowserWindow({
@@ -22,7 +25,8 @@ function createWindow() {
     height: 600,
     icon: path.join(__static, "icon.png"),
     webPreferences: { //TODO check here!
-      webSecurity: false
+      webSecurity: false,
+      nodeIntegration: true
     }
   });
   win.maximize();
