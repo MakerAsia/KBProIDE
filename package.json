@@ -27,6 +27,7 @@
   "dependencies": {
     "@directus/sdk-js": "^5.3.4",
     "@johmun/vue-tags-input": "^2.0.1",
+    "adm-zip": "^0.4.13",
     "chart.js": "^2.8.0",
     "electron-asar-hot-updater": "git+https://github.com/comdet/electron-asar-hot-updater.git",
     "electron-google-analytics": "^0.1.0",
@@ -75,6 +76,7 @@
     "vuex": "^3.0.1",
     "yauzl": "^2.10.0"
   },
+
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
@@ -87,10 +89,10 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "braces": "^3.0.2",
-    "electron": "^4.1.4",
-    "electron-builder": "21.2.0",
+    "electron": "4.2.2",
+    "electron-builder": "22.2.0",
     "electron-icon-builder": "^1.0.0",
-    "electron-rebuild": "^1.8.6",
+    "electron-rebuild": "1.8.8",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "fstream": "^1.0.12",
@@ -99,7 +101,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "tar": "^4.4.8",
-    "vue-cli-plugin-electron-builder": "1.1.2",
+    "vue-cli-plugin-electron-builder": "1.4.4",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "2.6.10",
     "vuetify-loader": "^1.0.5",
