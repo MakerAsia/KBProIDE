@@ -533,6 +533,10 @@
           bm.installOnlineBoard(boardInfo, progress => {
             //{process : 'board', status : 'DOWNLOAD', state:state }
             if (progress.status === "DOWNLOAD") {
+              //update status if download platform
+              if(progress.process === "platform"){
+                boardInfo.status = "DOWNLOAD";
+              }
               //when download just show to text
               this.statusText = `Downloading ... ${util.humanFileSize(
                 progress.state.size.transferred

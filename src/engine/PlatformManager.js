@@ -7,74 +7,81 @@ const progress = require("request-progress");
 
 const getPlatformInfo = function(name) {
   return new Promise((resolve, reject) => {
-    Vue.prototype.$db.collection("platforms")
-    .where("name", "==", name)
-    .get()
-    .then(platformData => {
-        platformData.forEach(element => {
-        resolve(element.data());
-      });
-    }).
-    catch(err => {
+    let query = { filter: { name: { eq: name } } };
+    Vue.prototype.$db2.getItems("platforms", query).then((data, meta) => {
+      resolve(data.data);
+    }).catch(err => {
+      console.error("list online platform error : " + err);
       reject(err);
     });
   });
 };
 const installPlatformByName = function(name, cb) {
   return new Promise((resolve, reject) => {
-    return getPlatformInfo(name);
-  }).then(info => {
-    if (info.platform) {
-      return installPlatformByName(info.name);
-    }
-    return info;
-  }).then((info) => {
-    if (info && info.zip) {
+    getPlatformInfo(name).then(info=>{
+      if(!info){
+        reject("no platform info");
+      }
+      if(info.length === 0){
+        reject("no platform info");
+      }
+      console.log("received platform");
+      console.log(info);
+      info = info[0];
+      if (info.status !== "published"){
+        reject("platform is not published yet");
+      }
+      if (info.platform && info.platform !== "") {
+        return installPlatformByName(info.name);
+      }
+      if (info.zip == null){
+        reject("platform not contain release zip file");
+      }
       if (fs.readdirSync(util.platformDir).includes(info.name)) {
-        return null;
+        reject("your already have this platform");
       } else { //download file
-        let targetPlatform = process.platform;
         let arch = require('os').arch();
-        if(targetPlatform === "win32" && arch === "ia32"){
-          targetPlatform = "win32";
-        }else if(targetPlatform === "win32" && arch === "x64"){
-          targetPlatform = "win64";
+        if (process.platform === "win32" && arch === "ia32") {
+          info.zip =  info.zip + "-win32.zip";
+        }else if(process.platform === "win32" && arch === "x64"){
+          info.zip =  info.zip + "-win64.zip";
+        }else if (process.platform === "darwin") {
+          info.zip = info.zip + "-darwin.zip";
+        } else if (process.platform === "linux") {
+          if(arch.startsWith("armv7")){
+            info.zip = info.zip + "-linux-armv7.zip";
+          }else if(arch.startsWith("arm64")){
+            info.zip = info.zip + "-linux-arm64.zip";
+          }else{
+            info.zip = info.zip + "-linux.zip";
+          }
         }
-        let zipUrl = info.zip + "-" + targetPlatform +".zip";
+        let zipUrl = info.zip;
         let zipFile = os.tmpdir() + "/" + util.randomString(10) + ".zip";
         progress(
-            request(zipUrl),
-            {
-              throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms 
-              delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms 
-              followAllRedirects: true,
-              follow: true,
-            },
+          request(zipUrl),
+          {
+            throttle: 2000, // Throttle the progress event to 2000ms, defaults to 1000ms
+            delay: 1000,    // Only start to emit after 1000ms delay, defaults to 0ms
+            followAllRedirects: true,
+            follow: true,
+          },
         ).on("progress", function(state) {
           cb && cb({process: "platform", status: "DOWNLOAD", state: state});
         }).on("error", function(err) {
-          return Promise.reject(err);
+          reject(err);
         }).on("end", function() { //downloaded
-          return utils.unzip(zipFile, {dir: utils.platformDir}, p => {
+          util.unzip(zipFile, {dir: util.platformDir}, p => {
             cb && cb({process: "platform", status: "UNZIP", state: p});
+          }).then(()=>{
+            resolve();
+          }).catch(err=>{
+            reject(err);
           });
         }).pipe(fs.createWriteStream(zipFile));
       }
-    } else {
-      return Promise.reject("no data passing");
-    }
-  }).then(() => {
-    /*let dirs = fs.readdirSync(util.platformDir);
-    for (let i = 0; i < dirs.length; i++) {
-      let dirname = dirs[i];
-      if (fs.statSync(dirname).isDirectory() && dirname.endsWith("-master")) {
-        fs.renameSync(path.join(util.platformDir, dirname),
-                      path.join(util.platformDir,
-                                dirname.replace("-master", "")));
-      }
-    }*/
-    return true;
-  });
+    });
+  })
 };
 
 const updatePlatformByName = function(name) {

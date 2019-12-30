@@ -185,10 +185,12 @@ const installOnlineBoard = function(info, cb) {
     }else{
       nonExistPlatform = info.platform.filter(el => !havePlatform.includes(el));
     }
-    for(let nPlatform in nonExistPlatform){
-      let np = nonExistPlatform[nPlatform];
-      pfm.installPlatformByName(np);
+    if(nonExistPlatform && nonExistPlatform.length === 1){ //we only support single platform only
+      let np = nonExistPlatform[0];
+      return pfm.installPlatformByName(np,cb);
     }
+    return true;
+  }).then(()=>{
     return Promise.resolve();
   });
 };

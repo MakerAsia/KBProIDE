@@ -44,3 +44,4 @@ package-lock.json
 INSTALLED
 boards/arduino-nano/
 boards/arduino-mega/
+dist
