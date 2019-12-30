@@ -37,7 +37,7 @@
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.version)">
+                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.id)">
                             Ignore this version
                         </v-btn>
                     </template>
@@ -70,6 +70,7 @@
         update: {
           info: "",
           version: "",
+          id : -1
         },
         updateStatus: "IDLE",
         updateValue: 0,
@@ -122,124 +123,62 @@
                 server: false, // Where to check. true: server side, false: client side, default: true.
                 debug: false, // Default: false.
               });
-
-              EAU.process(data, function(error, last, body) {
-                if (!error) {
-                  if (
-                    mother.$global.setting.ignoreUpdateVersion === last &&
-                    forceShowUpdate === false
-                  ) {
-                    console.log("User ignored update popup");
-                    resolve(false);
-                    return false;
-                  }
-                  mother.updateDialog = true;
-                  resolve(true);
-                  return true;
-                } else if (error === "no_update_available") {
+              if(data.type.length === 1 && data.type[0] === "platform"){
+                //single platform update, let check
+                let havePlatform = fs.readdirSync(util.platformDir);
+                if(!havePlatform.includes(data.name)) {//found target platform
+                  return resolve("no target platform");
+                }
+                let platformInfoFile = `${util.platformDir}/${data.name}/config.js`;
+                if (!fs.existsSync(platformInfoFile)) {
+                  return resolve("Target platform no config file");
+                }
+                if (mother.$global.setting.ignoreUpdateVersionID === data.id && forceShowUpdate === false){
+                  console.log("User ignored update popup");
+                  return resolve(false);
+                }
+                let currentPlatformInfo = eval(fs.readFileSync(platformInfoFile, "utf8"));
+                if (data.version <= currentPlatformInfo.version) {
                   if (showNotification) {
                     mother.$dialog.notify.info("This is newest version");
                   }
-                  resolve(false);
-                  return false;
-                } else {
-                  mother.$dialog.notify.error("check version error : " + error);
-                  resolve(false);
-                  return false;
+                  return resolve(false); // no
                 }
-              });
-
+                EAU.update = { last: data.version, info : data, source : data.zip };
+                mother.updateDialog = true;
+                return resolve(true);
+              }else if(data.type.includes("app")) {
+                EAU.process(data, function(error, last, body) {
+                  if (!error) {
+                    if (
+                      mother.$global.setting.ignoreUpdateVersionID === last &&
+                      forceShowUpdate === false
+                    ) {
+                      console.log("User ignored update popup");
+                      return resolve(false);
+                    }
+                    mother.updateDialog = true;
+                    return resolve(true);
+                  } else if (error === "no_update_available") {
+                    if (showNotification) {
+                      mother.$dialog.notify.info("This is newest version");
+                    }
+                    return resolve(false);
+                  } else {
+                    mother.$dialog.notify.error("check version error : " + error);
+                    return resolve(false);
+                  }
+                });
+              }
             }
           }).catch(err => {
             console.error("list online board error : " + err);
             reject(err);
           });
         });
-        /*return new Promise((resolve, reject) => {
-          mother.$db.collection("apps").orderBy("date", "desc").limit(1).get().then(appData => {
-            if (appData.size >= 1) {
-              let data = appData.docs[0].data();
-              mother.update = data;
-              mother.update.type = "app";
-              let arch = require('os').arch();
-              if (process.platform === "win32" && arch === "ia32") {
-                data.asar =  data.asar + "-win32.zip";
-              }else if(process.platform === "win32" && arch === "x64"){
-                data.asar =  data.asar + "-win64.zip";
-              }else if (process.platform === "darwin") {
-                data.asar = data.asar + "-darwin.zip";
-              } else if (process.platform === "linux") {
-                data.asar = data.asar + "-linux.zip";
-              }
-              EAU.init({
-                         server: false, // Where to check. true: server side, false: client side, default: true.
-                         debug: false, // Default: false.
-                       });
-
-              EAU.process(data, function(error, last, body) {
-                if (!error) {
-                  if (
-                      mother.$global.setting.ignoreUpdateVersion === last &&
-                      forceShowUpdate === false
-                  ) {
-                    console.log("User ignored update popup");
-                    resolve(false);
-                    return false;
-                  }
-                  mother.updateDialog = true;
-                  resolve(true);
-                  return true;
-                } else if (error === "no_update_available") {
-                  if (showNotification) {
-                    mother.$dialog.notify.info("This is newest version");
-                  }
-                  resolve(false);
-                  return false;
-                } else {
-                  mother.$dialog.notify.error("check version error : " + error);
-                  resolve(false);
-                  return false;
-                }
-              });
-            }
-          });
-        }).then(res => {
-          if (!res) { //apps already ignored or updated
-            mother.$db.collection("platforms").
-            where("platform", "==", mother.$global.board.board_info.platform).
-            orderBy("date", "desc").
-            limit(1).
-            get().
-            then(appData => {
-              if (appData.size >= 1) {
-                let data = appData.docs[0].data();
-                mother.update = data;
-                mother.update.type = "platform";
-                Updater.init(mother.update);
-                let pinfoFile = `${util.platformDir}/${mother.$global.board.board_info.platform}/config.js`;
-                if (!fs.existsSync(pinfoFile)) {
-                  return;
-                }
-                let currentPlatformInfo = eval(fs.readFileSync(pinfoFile, "utf8"));
-                if (mother.update.platform !== mother.$global.board.board_info.platform) {
-                  return;
-                }
-                if (mother.update.version <= currentPlatformInfo.version) {
-                  return;
-                }
-                if (mother.$global.setting.ignorePlatformVersion === mother.update.version && forceShowUpdate ===
-                    false) {
-                  console.log("User ignored this platform update popup");
-                  return;
-                }
-                mother.updateDialog = true;
-              }
-            });
-          }
-        });*/
       },
       ignoreUpdate(version) {
-        mother.$global.setting.ignoreUpdateVersion = version;
+        mother.$global.setting.ignoreUpdateVersionID = version;
         //--tracking--//
         mother.$track.event("update", "ignore",
                             {evLabel: "app_version_" + version, evValue: 1, clientID: mother.$track.clientID})
