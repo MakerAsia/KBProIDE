@@ -88,7 +88,7 @@
     "babel-jest": "^23.6.0",
     "braces": "^3.0.2",
     "electron": "^4.1.4",
-    "electron-builder": "21.0.2",
+    "electron-builder": "21.2.0",
     "electron-icon-builder": "^1.0.0",
     "electron-rebuild": "^1.8.6",
     "eslint": "^5.8.0",
