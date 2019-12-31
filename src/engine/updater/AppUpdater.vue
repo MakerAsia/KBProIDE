@@ -37,7 +37,7 @@
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.ID)">
+                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.id)">
                             Ignore this version
                         </v-btn>
                     </template>
