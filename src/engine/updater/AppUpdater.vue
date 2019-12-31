@@ -37,7 +37,7 @@
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.id)">
+                        <v-btn color="blue darken-1" flat v-on="on" @click="ignoreUpdate(update.ID)">
                             Ignore this version
                         </v-btn>
                     </template>
@@ -117,6 +117,7 @@
                 }
               }
               mother.update = data;
+              console.log("checking new update ==>");
               console.log(data);
 
               EAU.init({
