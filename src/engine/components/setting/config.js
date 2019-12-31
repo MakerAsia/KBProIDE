@@ -9,6 +9,7 @@ export default {
         devMode : false,
         ignoreUpdateVersion : '',
         ignorePlatformVersion : '',
+        ignoreUpdateVersionID : -1,
         firstUse : true
     },
     data:{
