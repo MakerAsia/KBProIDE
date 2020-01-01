@@ -76,7 +76,6 @@
     "vuex": "^3.0.1",
     "yauzl": "^2.10.0"
   },
-
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
@@ -89,8 +88,8 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "braces": "^3.0.2",
-    "electron": "4.2.2",
-    "electron-builder": "22.2.0",
+    "electron": "5.0.0",
+    "electron-builder": "^20.38.5",
     "electron-icon-builder": "^1.0.0",
     "electron-rebuild": "1.8.8",
     "eslint": "^5.8.0",
@@ -101,7 +100,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "tar": "^4.4.8",
-    "vue-cli-plugin-electron-builder": "1.4.4",
+    "vue-cli-plugin-electron-builder": "1.1.2",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "2.6.10",
     "vuetify-loader": "^1.0.5",

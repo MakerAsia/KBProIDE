@@ -132,7 +132,8 @@
           height: 600,
           icon: path.join(__static, "icon.png"),
           webPreferences: { //TODO check here!
-            webSecurity: false
+            webSecurity: false,
+            nodeIntegration: true
           }
         });
         win.on("close", function() { win = null; });
