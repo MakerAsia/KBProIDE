@@ -56,7 +56,7 @@ export default {
       },
     },
     {//3
-      target: "#inspire > div.application--wrap > nav > div > div:nth-child(2)",
+      target: "#inspire > div.application--wrap > nav > div > div:nth-child(5)",
       content: `เมนูนี้ใช้สำหรับการเลือกโหมดการเขียนโปรแกรม </br>เราจะเข้าไปดูด้านในกัน`,
       params: {
         highlight: true,
@@ -177,7 +177,7 @@ we'll take a look later`,
       },
     },
     {//3
-      target: "#inspire > div.application--wrap > nav > div > div:nth-child(2)",
+      target: "#inspire > div.application--wrap > nav > div > div:nth-child(5)",
       content: `This menu for changing IDE's mode, let take a look inside`,
       params: {
         highlight: true,
