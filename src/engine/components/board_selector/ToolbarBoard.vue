@@ -472,7 +472,7 @@
           });
           this.localBoards = this.orderBoardBy(
             filtered,
-            this.orderBoardBy,
+            this.boardOrderBy,
             "Installed"
           );
         } else {

@@ -59,14 +59,14 @@ const listPackage = async function(boardName, includePlatform = true) {
       }
       if (!(element in context)) {
         context[element] = {};
-      }
-      try {
-        context[element]["config"] = util.requireFunc(configFile);
-        context[element]["dir"] = fullPathPackage;
-        context[element]["js"] = packageJsFile;
-        context[element]["scope"] = "board";
-      } catch (error) {
-        console.log("connot import config : " + fullPathPackage);
+        try {
+          context[element]["config"] = util.requireFunc(configFile);
+          context[element]["dir"] = fullPathPackage;
+          context[element]["js"] = packageJsFile;
+          context[element]["scope"] = "board";
+        } catch (error) {
+          console.log("connot import config : " + fullPathPackage);
+        }
       }
     }
   }
@@ -92,14 +92,14 @@ const listPackage = async function(boardName, includePlatform = true) {
         }
         if (!(element in context)) {
           context[element] = {};
-        }
-        try {
-          context[element]["config"] = util.requireFunc(configFile);
-          context[element]["dir"] = fullPathPackage;
-          context[element]["js"] = packageJsFile;
-          context[element]["scope"] = "platform";
-        } catch (error) {
-          console.log("connot import config : " + fullPathPackage);
+          try {
+            context[element]["config"] = util.requireFunc(configFile);
+            context[element]["dir"] = fullPathPackage;
+            context[element]["js"] = packageJsFile;
+            context[element]["scope"] = "platform";
+          } catch (error) {
+            console.log("connot import config : " + fullPathPackage);
+          }
         }
       }
     }
